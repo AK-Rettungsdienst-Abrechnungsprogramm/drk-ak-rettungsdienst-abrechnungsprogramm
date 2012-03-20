@@ -62,7 +62,12 @@ public class MainWindow extends JFrame implements ItemListener {
 		);
 	
 	public MainWindow() {
-		// Setup ShiftContainer
+		
+      /// TEST ///
+      PdfCreator pdf = new PdfCreator();
+      pdf.createAccounting();
+      /// END TEST ///
+      // Setup ShiftContainer
 		shiftContainer.loadShifts();
 		
 		setTitle("AK-RD Abrechnungsprogramm");
