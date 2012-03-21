@@ -63,13 +63,25 @@ public class MainWindow extends JFrame implements ItemListener {
 	
 	public MainWindow() {
 		
-      /// TEST ///
-      PdfCreator pdf = new PdfCreator();
-      pdf.createAccounting();
-      /// END TEST ///
       // Setup ShiftContainer
 		shiftContainer.loadShifts();
-		
+		/// TEST ///
+      PdfCreator pdf = new PdfCreator();
+      ShiftInstance[] shiftsToAccount = new ShiftInstance[20];
+      Shift beispiel = shiftContainer.getShifts()[0];
+      for(int i=0; i<20; i++){
+        
+        shiftsToAccount[i] = new ShiftInstance();
+        shiftsToAccount[i].actualBreakTime = 31;
+        shiftsToAccount[i].actualEndTime = 1400;
+        shiftsToAccount[i].actualStartingTime = 900;
+        shiftsToAccount[i].comment = ""+i;
+        shiftsToAccount[i].partner = "dummy";
+        shiftsToAccount[i].timeAsFloat = 8f;
+        shiftsToAccount[i].instanceOf = beispiel;
+      }
+      pdf.createAccounting(shiftsToAccount);
+      /// END TEST ///
 		setTitle("AK-RD Abrechnungsprogramm");
 		setSize(562, 367); // default size is 0,0
 		setLocation(10, 200); // default is 0,0 (top left corner)

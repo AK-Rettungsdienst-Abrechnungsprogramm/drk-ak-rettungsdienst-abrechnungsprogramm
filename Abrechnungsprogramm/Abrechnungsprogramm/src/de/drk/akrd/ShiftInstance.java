@@ -2,14 +2,14 @@ package de.drk.akrd;
 
 public class ShiftInstance{
 
-	Shift instanceOf;
+	public Shift instanceOf;
 	
-	private int actualStartingTime;
-	private int actualEndTime;
-	private int actualBreakTime;
+	public int actualStartingTime;
+	public int actualEndTime;
+	public int actualBreakTime;
 	
-	private float timeAsFloat;
+	public float timeAsFloat;
 	
-	private String partner;
-	private String comment;
+	public String partner;
+	public String comment;
 }
