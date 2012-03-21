@@ -14,6 +14,7 @@ import com.itextpdf.text.pdf.PdfAnnotation;
 import com.itextpdf.text.pdf.RadioCheckField;
 import com.itextpdf.text.pdf.PdfFormField;
 import com.itextpdf.text.pdf.PdfContentByte;
+import java.util.*;
 
 /**
  *
@@ -23,11 +24,45 @@ public class PdfCreator {
 
   public PdfCreator() {
   }
-
-  public static void createAccounting() {
+  public static void createAccounting(ShiftInstance[] shiftsToAccount){
+     ArrayList<ShiftInstance> rd = new ArrayList<>();
+     ArrayList<ShiftInstance> ktp = new ArrayList<>();
+     ArrayList<ShiftInstance> rdAussenBaby = new ArrayList<>();
+     ArrayList<ShiftInstance> event = new ArrayList<>();
+     ArrayList<ShiftInstance> kvs = new ArrayList<>();
+     for (int i =0; i < shiftsToAccount.length; i++){
+       switch(shiftsToAccount[i].instanceOf.getType()){
+         case 0: ktp.add(shiftsToAccount[i]);
+         case 1: rd.add(shiftsToAccount[i]);
+           
+       }
+         
+     }
+     ArrayList<ShiftInstance>[] allShifts = new ArrayList<>[]{rd, ktp, rdAussenBaby, event, kvs};    
+     for(int i=0; i < allShifts.length; i++){
+       if(!allShifts[i].isEmpty()){
+         int numberOfPages = ((int)(allShifts[i].size()/13))+1;
+         System.out.println("numberofPages: "+numberOfPages);
+         int counter = 0;
+         for(int j=1; j<= numberOfPages; j++){
+           ArrayList<ShiftInstance> tempShiftInstances = new ArrayList<>();
+           for(int k=0; k<13; k++){
+             if(counter >= (allShifts[i].size()-1)) break;
+             tempShiftInstances.add(allShifts[i].get(counter));
+             counter++;
+           }
+           if(numberOfPages>1)
+             createSingleAccounting("Abrechnungstest_"+j+".pdf", tempShiftInstances);
+         }
+       }
+     }
+     
+  }
+  private static void createSingleAccounting(String path, ArrayList<ShiftInstance> shifts) {
     Document testDocument = new Document();
+    System.out.println("anzahl der schichten in "+path+": "+shifts.size());
     try {
-      PdfWriter writer = PdfWriter.getInstance(testDocument, new FileOutputStream("Abrechnungstest.pdf"));
+      PdfWriter writer = PdfWriter.getInstance(testDocument, new FileOutputStream(path));
       testDocument.open();
       Font helveticaFont8 = FontFactory.getFont(FontFactory.HELVETICA, 8);
       Font helveticaFont9 = FontFactory.getFont(FontFactory.HELVETICA, 9);
@@ -135,7 +170,7 @@ public class PdfCreator {
         int xPosition = 45;
         int yPosition = 740;
         try {
-          for (int j = 0; j < 5; j++) {
+          for (int j = 0; j < KoSt.length; j++) {
           for (int i = 0; i < KoSt[j].length; i++) {
             rect = new Rectangle((xPosition + 10), (yPosition - 10 - i * 15), xPosition, yPosition - i * 15);
             checkbox = new RadioCheckField(writer, rect, KoSt[j][i], KoSt[j][i]);
@@ -281,8 +316,11 @@ public class PdfCreator {
       table7.addCell(cell41);
 
       for (int i = 0; i <= 12; i++) {
+        ShiftInstance currentShift = null;
+        if(shifts.size()> i)
+          currentShift = shifts.get(i);
         PdfPCell tempCell = emptyPdfPCell();
-        Paragraph content = new Paragraph("", helveticaFont9);
+        Paragraph content = new Paragraph((currentShift==null)? "": shifts.get(i).instanceOf.getId(), helveticaFont9);
         tempCell.addElement(content);
         tempCell.setFixedHeight(19f);
         table7.addCell(tempCell);
@@ -299,7 +337,7 @@ public class PdfCreator {
         tempCell.addElement(content);
         table7.addCell(tempCell);
         tempCell = emptyPdfPCell();
-        content = new Paragraph("", helveticaFont9);
+        content = new Paragraph((currentShift==null)? "":currentShift.partner, helveticaFont9);
         tempCell.addElement(content);
         table7.addCell(tempCell);
         tempCell = emptyPdfPCell();
@@ -319,7 +357,7 @@ public class PdfCreator {
         tempCell.addElement(content);
         table7.addCell(tempCell);
         tempCell = emptyPdfPCell();
-        content = new Paragraph("", helveticaFont9);
+        content = new Paragraph((currentShift==null)? "":currentShift.comment, helveticaFont9);
         tempCell.addElement(content);
         table7.addCell(tempCell);
       }
@@ -448,6 +486,10 @@ public class PdfCreator {
     cell.setHorizontalAlignment(Rectangle.ALIGN_CENTER);
     //cell.setBorderWidth(1);
     return cell;
+  }
+  private static void setAligneMiddleCenter(PdfPCell cell){
+    cell.setVerticalAlignment(Rectangle.ALIGN_MIDDLE);
+    cell.setHorizontalAlignment(Rectangle.ALIGN_CENTER);
   }
 
   private static void createCheckbox(PdfWriter writer, PdfContentByte canvas, Font font, String[] label, int xPosition, int yPosition, boolean[] checked) {
