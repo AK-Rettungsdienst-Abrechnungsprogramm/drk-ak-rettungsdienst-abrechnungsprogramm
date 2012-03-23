@@ -7,12 +7,15 @@ import java.util.List;
 // Contains all shifts and takes care of loading and managing
 public class ShiftContainer {
 	
-	public static int KTW = 0;
-	public static int RTW = 1;
-	public static int KIZA = 2;
-	public static int BREISACH = 3;
+	public static final int KTW = 0;
+	public static final int RTW = 1;
+	public static final int KIZA = 2;
+	public static final int BREISACH = 3;
+    public static final int BABY = 4;
+    public static final int EVENT = 5;
+    public static final int KVS = 6;
 	
-	private ArrayList<Shift> shifts = new ArrayList<Shift>();
+	private ArrayList<Shift> shifts = new ArrayList<>();
 	
 	public ShiftContainer()
 	{

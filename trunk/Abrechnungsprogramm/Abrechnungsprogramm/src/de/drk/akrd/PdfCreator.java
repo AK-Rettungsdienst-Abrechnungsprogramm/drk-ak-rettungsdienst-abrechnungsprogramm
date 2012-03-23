@@ -9,8 +9,6 @@ import java.io.*;
 import java.net.MalformedURLException;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.GrayColor;
-import com.itextpdf.text.pdf.PdfAppearance;
-import com.itextpdf.text.pdf.PdfAnnotation;
 import com.itextpdf.text.pdf.RadioCheckField;
 import com.itextpdf.text.pdf.PdfFormField;
 import com.itextpdf.text.pdf.PdfContentByte;
@@ -24,43 +22,98 @@ public class PdfCreator {
 
   public PdfCreator() {
   }
-  public static void createAccounting(ShiftInstance[] shiftsToAccount){
-     ArrayList<ShiftInstance> rd = new ArrayList<>();
-     ArrayList<ShiftInstance> ktp = new ArrayList<>();
-     ArrayList<ShiftInstance> rdAussenBaby = new ArrayList<>();
-     ArrayList<ShiftInstance> event = new ArrayList<>();
-     ArrayList<ShiftInstance> kvs = new ArrayList<>();
-     for (int i =0; i < shiftsToAccount.length; i++){
-       switch(shiftsToAccount[i].instanceOf.getType()){
-         case 0: ktp.add(shiftsToAccount[i]);
-         case 1: rd.add(shiftsToAccount[i]);
-           
-       }
-         
-     }
-     ArrayList<ShiftInstance>[] allShifts = new ArrayList<>[]{rd, ktp, rdAussenBaby, event, kvs};    
-     for(int i=0; i < allShifts.length; i++){
-       if(!allShifts[i].isEmpty()){
-         int numberOfPages = ((int)(allShifts[i].size()/13))+1;
-         System.out.println("numberofPages: "+numberOfPages);
-         int counter = 0;
-         for(int j=1; j<= numberOfPages; j++){
-           ArrayList<ShiftInstance> tempShiftInstances = new ArrayList<>();
-           for(int k=0; k<13; k++){
-             if(counter >= (allShifts[i].size()-1)) break;
-             tempShiftInstances.add(allShifts[i].get(counter));
-             counter++;
-           }
-           if(numberOfPages>1)
-             createSingleAccounting("Abrechnungstest_"+j+".pdf", tempShiftInstances);
-         }
-       }
-     }
-     
+
+  public static void createAccounting(ShiftInstance[] shiftsToAccount) {
+    ArrayList<ShiftInstance> rd = new ArrayList<>();
+    ArrayList<ShiftInstance> ktp = new ArrayList<>();
+    ArrayList<ShiftInstance> baby = new ArrayList<>();
+    ArrayList<ShiftInstance> breisach = new ArrayList<>();
+    ArrayList<ShiftInstance> kiza = new ArrayList<>();
+    ArrayList<ShiftInstance> event = new ArrayList<>();
+    ArrayList<ShiftInstance> kvs = new ArrayList<>();
+    for (int i = 0; i < shiftsToAccount.length; i++) {
+      switch (shiftsToAccount[i].getType()) {
+        case ShiftContainer.KTW:
+          ktp.add(shiftsToAccount[i]);
+          break;
+        case ShiftContainer.RTW:
+          rd.add(shiftsToAccount[i]);
+          break;
+        case ShiftContainer.EVENT:
+          event.add(shiftsToAccount[i]);
+          break;
+        case ShiftContainer.KVS:
+          kvs.add(shiftsToAccount[i]);
+          break;
+        case ShiftContainer.BABY:
+          baby.add(shiftsToAccount[i]);
+          break;
+        case ShiftContainer.BREISACH:
+          breisach.add(shiftsToAccount[i]);
+          break;
+        case ShiftContainer.KIZA:
+          kiza.add(shiftsToAccount[i]);
+          break;
+        default:
+          break;
+      }
+
+    }
+    ArrayList<ShiftInstance>[] allShifts = new ArrayList<>[]{rd, ktp, baby, breisach, kiza, event, kvs};
+    for (int i = 0; i < allShifts.length; i++) {
+      if (!allShifts[i].isEmpty()) {
+        int numberOfPages = ((int) (allShifts[i].size() / 13)) + 1;
+        String fileName;
+        switch (allShifts[i].get(0).getType()) {
+          case ShiftContainer.KTW:
+            fileName = "KTWFr";
+            break;
+          case ShiftContainer.RTW:
+            fileName = "RTWFr";
+            break;
+          case ShiftContainer.EVENT:
+            fileName = "Veranstaltung";
+            break;
+          case ShiftContainer.KVS:
+            fileName = "KVS";
+            break;
+          case ShiftContainer.BABY:
+            fileName = "BabyNAW";
+            break;
+          case ShiftContainer.BREISACH:
+            fileName = "Breisach";
+            break;
+          case ShiftContainer.KIZA:
+            fileName = "KiZa";
+            break;
+          default:
+            fileName = "";
+            break;
+        }
+        int counter = 0;
+        for (int j = 1; j <= numberOfPages; j++) {
+          ArrayList<ShiftInstance> tempShiftInstances = new ArrayList<>();
+          for (int k = 0; k < 13; k++) {
+            if (counter >= (allShifts[i].size() - 1)) {
+              break;
+            }
+            tempShiftInstances.add(allShifts[i].get(counter));
+            counter++;
+          }
+          if (numberOfPages > 1) {
+            createSingleAccounting("Abrechnungstest_" + fileName + "_" + j + ".pdf", tempShiftInstances);
+          } else {
+            createSingleAccounting("Abrechnungstest_" + fileName + ".pdf", tempShiftInstances);
+          }
+        }
+      }
+    }
+
   }
+
   private static void createSingleAccounting(String path, ArrayList<ShiftInstance> shifts) {
     Document testDocument = new Document();
-    System.out.println("anzahl der schichten in "+path+": "+shifts.size());
+    System.out.println("anzahl der schichten in " + path + ": " + shifts.size());
     try {
       PdfWriter writer = PdfWriter.getInstance(testDocument, new FileOutputStream(path));
       testDocument.open();
@@ -162,41 +215,17 @@ public class PdfCreator {
         "RS (6,70 €/h)", "RA (7,60 €/h)"};
       KoSt[4] = new String[]{"RH - RA (9,00 €/h"};
       boolean[] boolArray = new boolean[]{false, false, false, false, false, false};
-      {
-        PdfContentByte canvas = writer.getDirectContent();
-        Rectangle rect;
-        PdfFormField field;
-        RadioCheckField checkbox;
-        int xPosition = 45;
-        int yPosition = 740;
-        try {
-          for (int j = 0; j < KoSt.length; j++) {
-          for (int i = 0; i < KoSt[j].length; i++) {
-            rect = new Rectangle((xPosition + 10), (yPosition - 10 - i * 15), xPosition, yPosition - i * 15);
-            checkbox = new RadioCheckField(writer, rect, KoSt[j][i], KoSt[j][i]);
-            //checkbox.setChecked(checked[i]);
-            //checkbox.setChecked(true);
-            //checkbox.setOptions(RadioCheckField.READ_ONLY);
-            checkbox.setBorderColor(BaseColor.BLACK);
-            checkbox.setBackgroundColor(GrayColor.WHITE);
-            checkbox.setBorderWidth(1.5f);
-            checkbox.setCheckType(RadioCheckField.TYPE_CHECK);
-            field = checkbox.getCheckField();
-            writer.addAnnotation(field);
-            ColumnText.showTextAligned(canvas, Element.ALIGN_LEFT,
-                    new Phrase(KoSt[j][i], helveticaFont8), (xPosition + 16), (yPosition - 8 - i * 15), 0);
-          }
-          xPosition+=10;
-          rect = new Rectangle((xPosition + 10), (yPosition - 10 - 4 * 15), xPosition, yPosition - 4 * 15);
-          checkbox = new RadioCheckField(writer, rect, KoSt[j][0], KoSt[j][0]);
-          writer.addAnnotation(checkbox.getCheckField());
-        }
-        } catch (com.itextpdf.text.DocumentException | java.io.IOException e) {
-        }
+      int checkboxSetter;
+      switch(shifts.get(0).getType()) {
+        // TODO: set checkboxSetter
       }
-      //createCheckbox(writer, helveticaFont9, rdKtpFreiburg, 50, 737, boolArray);
-      //createCheckbox(writer, helveticaFont9, rdKtpFreiburg, 50, 737, boolArray);
-      //createCheckbox(writer, helveticaFont9, rdKtpFreiburg, 50, 737, boolArray);
+      int xPosition = 50;
+      for (int i = 0; i < KoSt.length; i++) {
+        // TODO: set boolArray
+        createCheckbox(writer, helveticaFont9, KoSt[i], xPosition, 740, boolArray);
+        boolArray = new boolean[]{false, false, false, false, false, false};
+        xPosition += 105;
+      }
       // create another empty line
       PdfPTable table4 = new PdfPTable(1);
       table4.setWidthPercentage(100);
@@ -317,10 +346,15 @@ public class PdfCreator {
 
       for (int i = 0; i <= 12; i++) {
         ShiftInstance currentShift = null;
-        if(shifts.size()> i)
+        String startTimeAsString = "";
+        String endTimeAsString = "";
+        if (shifts.size() > i) {
           currentShift = shifts.get(i);
+          startTimeAsString = createTimeStringFromInt(currentShift.getActualStartingTime());
+          endTimeAsString = createTimeStringFromInt(currentShift.getActualEndTime());
+        }
         PdfPCell tempCell = emptyPdfPCell();
-        Paragraph content = new Paragraph((currentShift==null)? "": shifts.get(i).instanceOf.getId(), helveticaFont9);
+        Paragraph content = new Paragraph((currentShift == null) ? "" : currentShift.getId(), helveticaFont9);
         tempCell.addElement(content);
         tempCell.setFixedHeight(19f);
         table7.addCell(tempCell);
@@ -329,23 +363,15 @@ public class PdfCreator {
         tempCell.addElement(content);
         table7.addCell(tempCell);
         tempCell = emptyPdfPCell();
-        content = new Paragraph("", helveticaFont9);
+        content = new Paragraph(startTimeAsString, helveticaFont9);
         tempCell.addElement(content);
         table7.addCell(tempCell);
         tempCell = emptyPdfPCell();
-        content = new Paragraph("", helveticaFont9);
+        content = new Paragraph(endTimeAsString, helveticaFont9);
         tempCell.addElement(content);
         table7.addCell(tempCell);
         tempCell = emptyPdfPCell();
-        content = new Paragraph((currentShift==null)? "":currentShift.partner, helveticaFont9);
-        tempCell.addElement(content);
-        table7.addCell(tempCell);
-        tempCell = emptyPdfPCell();
-        content = new Paragraph("", helveticaFont9);
-        tempCell.addElement(content);
-        table7.addCell(tempCell);
-        tempCell = emptyPdfPCell();
-        content = new Paragraph("", helveticaFont9);
+        content = new Paragraph((currentShift == null) ? "" : currentShift.getPartner(), helveticaFont9);
         tempCell.addElement(content);
         table7.addCell(tempCell);
         tempCell = emptyPdfPCell();
@@ -357,7 +383,15 @@ public class PdfCreator {
         tempCell.addElement(content);
         table7.addCell(tempCell);
         tempCell = emptyPdfPCell();
-        content = new Paragraph((currentShift==null)? "":currentShift.comment, helveticaFont9);
+        content = new Paragraph("", helveticaFont9);
+        tempCell.addElement(content);
+        table7.addCell(tempCell);
+        tempCell = emptyPdfPCell();
+        content = new Paragraph("", helveticaFont9);
+        tempCell.addElement(content);
+        table7.addCell(tempCell);
+        tempCell = emptyPdfPCell();
+        content = new Paragraph((currentShift == null) ? "" : currentShift.getComment(), helveticaFont9);
         tempCell.addElement(content);
         table7.addCell(tempCell);
       }
@@ -470,13 +504,9 @@ public class PdfCreator {
       testDocument.add(table11);
       testDocument.close();
     } catch (DocumentException e) {
-      e.printStackTrace();
     } catch (FileNotFoundException e) {
-      e.printStackTrace();
     } catch (MalformedURLException e) {
-      e.printStackTrace();
     } catch (IOException e) {
-      e.printStackTrace();
     }
   }
 
@@ -487,52 +517,45 @@ public class PdfCreator {
     //cell.setBorderWidth(1);
     return cell;
   }
-  private static void setAligneMiddleCenter(PdfPCell cell){
+
+  private static void setAligneMiddleCenter(PdfPCell cell) {
     cell.setVerticalAlignment(Rectangle.ALIGN_MIDDLE);
     cell.setHorizontalAlignment(Rectangle.ALIGN_CENTER);
   }
 
-  private static void createCheckbox(PdfWriter writer, PdfContentByte canvas, Font font, String[] label, int xPosition, int yPosition, boolean[] checked) {
-    //PdfContentByte canvas = writer.getDirectContent();
+  private static void createCheckbox(PdfWriter writer, Font font, String[] label, int xPosition, int yPosition, boolean[] checked) {
+    PdfContentByte canvas = writer.getDirectContent();
     Rectangle rect;
     PdfFormField field;
-    PdfFormField checkboxGroup = PdfFormField.createRadioButton(writer, true);
     RadioCheckField checkbox;
-
     try {
       for (int i = 0; i < label.length; i++) {
         rect = new Rectangle((xPosition + 10), (yPosition - 10 - i * 15), xPosition, yPosition - i * 15);
-        checkbox = new RadioCheckField(writer, rect, label[i], label[i]);
-        //checkbox.setChecked(checked[i]);
-        checkbox.setChecked(true);
-        //checkbox.setOptions(RadioCheckField.READ_ONLY);
+        checkbox = new RadioCheckField(writer, rect, xPosition + "," + i, "on");
+        checkbox.setChecked(checked[i]);
+        checkbox.setOptions(RadioCheckField.READ_ONLY);
         checkbox.setBorderColor(BaseColor.BLACK);
+        checkbox.setBackgroundColor(GrayColor.WHITE);
         checkbox.setBorderWidth(1.5f);
+        checkbox.setCheckType(RadioCheckField.TYPE_CHECK);
         field = checkbox.getCheckField();
-        checkboxGroup.addKid(field);
+        writer.addAnnotation(field);
         ColumnText.showTextAligned(canvas, Element.ALIGN_LEFT,
                 new Phrase(label[i], font), (xPosition + 16), (yPosition - 8 - i * 15), 0);
       }
-      writer.addAnnotation(checkboxGroup);
-      String[] LANGUAGES = {"English", "German", "French", "Spanish", "Dutch"};
-      PdfFormField radiogroup = PdfFormField.createRadioButton(writer, true);
-      radiogroup.setFieldName("language");
-      RadioCheckField radio;
-      for (int i = 0; i < LANGUAGES.length; i++) {
-        rect = new Rectangle((xPosition + 10), (yPosition - 10 - i * 15), xPosition, yPosition - i * 15);
-        radio = new RadioCheckField(writer, rect, null, LANGUAGES[i]);
-        radio.setBorderColor(GrayColor.GRAYBLACK);
-        radio.setBackgroundColor(GrayColor.GRAYWHITE);
-        radio.setCheckType(RadioCheckField.TYPE_CIRCLE);
-        field = radio.getRadioField();
-        radiogroup.addKid(field);
-        ColumnText.showTextAligned(canvas, Element.ALIGN_LEFT,
-                new Phrase(LANGUAGES[i], font), (xPosition + 16), (yPosition - 8 - i * 15), 0);
-      }
-      writer.addAnnotation(radiogroup);
-    } catch (com.itextpdf.text.DocumentException e) {
-    } catch (java.io.IOException e) {
-    }
 
+    } catch (com.itextpdf.text.DocumentException | java.io.IOException e) {
+    }
+  }
+  
+  private static String createTimeStringFromInt(int time) {
+    String timeString;
+    if (time >= 1000) {
+      timeString = ((int) (time / 100)) + "";
+    } else {
+      timeString = "0" + ((int) (time / 100));
+    }
+    timeString = timeString + (((time % 100) < 10) ? ":0" : ":") + (time % 100);
+    return timeString;
   }
 }
