@@ -64,18 +64,15 @@ public class MainWindow extends JFrame implements ItemListener {
 	public MainWindow() {
 		
       // Setup ShiftContainer
-		shiftContainer.loadShifts();
+		shiftContainer.loadShifts("Schichten.xml");
 		/// TEST ///
-      ShiftInstance[] shiftsToAccount = new ShiftInstance[25];
-      Shift beispiel = shiftContainer.getShifts()[0];
+      ShiftInstance[] shiftsToAccount = new ShiftInstance[46];
+      
       int iterator =0;
-      for(iterator=0;iterator<20; iterator++){
-        shiftsToAccount[iterator] = new ShiftInstance(beispiel, 900, 1400, 31, 5f, "heino", ""+iterator);
-      }
-      Shift beispiel2 = shiftContainer.getShifts()[9];
-      while(iterator<25) {
-        shiftsToAccount[iterator] = new ShiftInstance(beispiel2, 900, 1800+iterator, 31, 9f, "peter", ""+iterator);
-        iterator++;
+      for(iterator=0;iterator<46; iterator++){
+        int shiftIndex = (iterator>= shiftContainer.getShifts().length)? 0: iterator;
+        Shift beispiel = shiftContainer.getShifts()[shiftIndex];
+        shiftsToAccount[iterator] = new ShiftInstance(beispiel, 5f, "heino"+iterator, ""+iterator);
       }
       PdfCreator.createAccounting(shiftsToAccount);
       /// END TEST ///

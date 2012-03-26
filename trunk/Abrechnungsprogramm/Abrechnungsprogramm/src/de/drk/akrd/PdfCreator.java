@@ -31,6 +31,7 @@ public class PdfCreator {
     ArrayList<ShiftInstance> kiza = new ArrayList<>();
     ArrayList<ShiftInstance> event = new ArrayList<>();
     ArrayList<ShiftInstance> kvs = new ArrayList<>();
+    System.out.println("shiftsToAccount: "+shiftsToAccount.length);
     for (int i = 0; i < shiftsToAccount.length; i++) {
       switch (shiftsToAccount[i].getType()) {
         case ShiftContainer.KTW:
@@ -94,7 +95,7 @@ public class PdfCreator {
         for (int j = 1; j <= numberOfPages; j++) {
           ArrayList<ShiftInstance> tempShiftInstances = new ArrayList<>();
           for (int k = 0; k < 13; k++) {
-            if (counter >= (allShifts[i].size() - 1)) {
+            if (counter >= (allShifts[i].size())) {
               break;
             }
             tempShiftInstances.add(allShifts[i].get(counter));
@@ -348,10 +349,18 @@ public class PdfCreator {
         ShiftInstance currentShift = null;
         String startTimeAsString = "";
         String endTimeAsString = "";
+        String partner = "";
+        String timeInHours = "";
         if (shifts.size() > i) {
           currentShift = shifts.get(i);
-          startTimeAsString = createTimeStringFromInt(currentShift.getActualStartingTime());
-          endTimeAsString = createTimeStringFromInt(currentShift.getActualEndTime());
+          int startTime = currentShift.getActualStartingTime();
+          int endTime = currentShift.getActualEndTime();
+          int breakTime = currentShift.getActualBreakTime();
+          startTimeAsString = createTimeStringFromInt(startTime);
+          endTimeAsString = createTimeStringFromInt(endTime);
+          partner = currentShift.getPartner();
+          timeInHours = calculateTimeInHours(startTime, endTime, breakTime);
+          
         }
         PdfPCell tempCell = emptyPdfPCell();
         Paragraph content = new Paragraph((currentShift == null) ? "" : currentShift.getId(), helveticaFont9);
@@ -371,11 +380,11 @@ public class PdfCreator {
         tempCell.addElement(content);
         table7.addCell(tempCell);
         tempCell = emptyPdfPCell();
-        content = new Paragraph((currentShift == null) ? "" : currentShift.getPartner(), helveticaFont9);
+        content = new Paragraph(partner, helveticaFont9);
         tempCell.addElement(content);
         table7.addCell(tempCell);
         tempCell = emptyPdfPCell();
-        content = new Paragraph("", helveticaFont9);
+        content = new Paragraph(timeInHours, helveticaFont9);
         tempCell.addElement(content);
         table7.addCell(tempCell);
         tempCell = emptyPdfPCell();
@@ -557,5 +566,23 @@ public class PdfCreator {
     }
     timeString = timeString + (((time % 100) < 10) ? ":0" : ":") + (time % 100);
     return timeString;
+  }
+  private static String calculateTimeInHours(int start, int end, int breakTime) {
+    if (start > end) {
+      int startHours = 24-((int)(start/100));
+      int startMinutes = (start%100);
+      int endHours = ((int)(end/100));
+      int endMinutes = (end%100);
+      if (endMinutes >=startMinutes) {
+        end = 100*(endHours+startHours) + (endMinutes-startMinutes);
+      }
+      else {
+        end = 100*(endHours+startHours-1) + (60+(endMinutes-startMinutes));
+      }
+    }
+    else {
+      end -= start-breakTime;
+    }
+    return createTimeStringFromInt(end);
   }
 }

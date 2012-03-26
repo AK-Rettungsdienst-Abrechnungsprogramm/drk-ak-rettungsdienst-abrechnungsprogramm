@@ -10,6 +10,15 @@ public class ShiftInstance {
   private String partner;
   private String comment;
 
+  public ShiftInstance(Shift instanceOf, float timeAsFloat, String partner, String comment) {
+    this.instanceOf = instanceOf;
+    actualStartingTime = instanceOf.getStartingTime();
+    actualEndTime = instanceOf.getEndTime();
+    actualBreakTime = instanceOf.getBreakTime();
+    this.timeAsFloat = timeAsFloat;
+    this.partner = partner;
+    this.comment = comment;
+  }
   public ShiftInstance(Shift instanceOf, int actualStartingTime, int actualEndTime, int actualBreakTime, float timeAsFloat, String partner, String comment) {
     this.instanceOf = instanceOf;
     this.actualStartingTime = actualStartingTime;
