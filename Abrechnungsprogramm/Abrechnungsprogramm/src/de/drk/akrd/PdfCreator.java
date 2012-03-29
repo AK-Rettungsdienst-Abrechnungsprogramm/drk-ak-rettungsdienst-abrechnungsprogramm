@@ -114,6 +114,7 @@ public class PdfCreator {
 
   private static void createSingleAccounting(String path, ArrayList<ShiftInstance> shifts) {
     Document testDocument = new Document();
+    PersonalData personalData = PersonalData.getInstance();
     System.out.println("anzahl der schichten in " + path + ": " + shifts.size());
     try {
       PdfWriter writer = PdfWriter.getInstance(testDocument, new FileOutputStream(path));
@@ -239,6 +240,15 @@ public class PdfCreator {
       PdfPTable table5 = new PdfPTable(4);
       table5.setWidthPercentage(100);
       table5.setWidths(new float[]{137f, 4f, 192f, 115});
+      String bankNameAndCity = "Bekannt";
+      String accountNumber = "Bekannt";
+      String blz = "Bekannt";
+      if(!personalData.isDataKnown()) {
+        bankNameAndCity = personalData.getBankNameAndCity();
+        accountNumber = Integer.toString(personalData.getAccountNumber());
+        blz = Integer.toString(personalData.getBlz());
+      }
+      
       // name
       PdfPCell cell20 = new PdfPCell(new Paragraph("Name", helveticaFont11Bold));
       cell20.setFixedHeight(22f);
@@ -246,7 +256,9 @@ public class PdfCreator {
       PdfPCell cell21 = new PdfPCell(new Paragraph(":", helveticaFont11Bold));
       cell21.disableBorderSide(Rectangle.LEFT);
       cell21.disableBorderSide(Rectangle.RIGHT);
-      PdfPCell cell22 = new PdfPCell();
+      PdfPCell cell22 = new PdfPCell(
+              new Paragraph(" "+personalData.getFirstName()+" "+
+              personalData.getLastName()));
       cell22.setColspan(2);
       cell22.disableBorderSide(Rectangle.LEFT);
       // bankname
@@ -256,7 +268,7 @@ public class PdfCreator {
       PdfPCell cell24 = new PdfPCell(new Paragraph(":", helveticaFont11Bold));
       cell24.disableBorderSide(Rectangle.LEFT);
       cell24.disableBorderSide(Rectangle.RIGHT);
-      PdfPCell cell25 = new PdfPCell();
+      PdfPCell cell25 = new PdfPCell(new Paragraph(" "+bankNameAndCity));
       cell25.disableBorderSide(Rectangle.LEFT);
       cell25.setColspan(2);
       // accountnr
@@ -266,10 +278,10 @@ public class PdfCreator {
       PdfPCell cell27 = new PdfPCell(new Paragraph(":", helveticaFont11Bold));
       cell27.disableBorderSide(Rectangle.LEFT);
       cell27.disableBorderSide(Rectangle.RIGHT);
-      PdfPCell cell28 = new PdfPCell();
+      PdfPCell cell28 = new PdfPCell(new Paragraph(" "+accountNumber));
       cell28.disableBorderSide(Rectangle.LEFT);
       cell28.disableBorderSide(Rectangle.RIGHT);
-      PdfPCell cell29 = new PdfPCell(new Paragraph("BLZ*:", helveticaFont11Bold));
+      PdfPCell cell29 = new PdfPCell(new Paragraph("BLZ*: "+blz, helveticaFont11Bold));
       cell29.disableBorderSide(Rectangle.LEFT);
 
       PdfPCell cell30 = new PdfPCell(new Paragraph("zu belastende Kostenstelle:", helveticaFont11Bold));
