@@ -21,10 +21,17 @@ public class PersonalData {
   private int blz;
   private Qualification qualification;
   private boolean dataKnown;
-  public static enum Qualification {RH, RS, RA}
+  public static enum Qualification {
+    RH, RS, RA
+  }
 
   private PersonalData(){}
 
+  /**
+   * 
+   * @return the data-instance if a datafile exists or the data is already set,
+   * null oterwise
+   */
   public static PersonalData getInstance() {
     if ((instance == null) || (!dataSet)) {
       instance = new PersonalData();
@@ -36,7 +43,8 @@ public class PersonalData {
     return instance;
   }
   /**
-   * 
+   * set personal data
+   * (only necessary if PersonalData.getInstance(); returns null!)
    * @param firstName
    * @param LastName
    * @param BankNameAndCity
