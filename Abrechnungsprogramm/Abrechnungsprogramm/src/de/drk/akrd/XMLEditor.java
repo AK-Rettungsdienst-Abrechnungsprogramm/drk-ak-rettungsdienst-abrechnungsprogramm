@@ -14,13 +14,16 @@ import org.w3c.dom.Element;
 import java.io.File;
 import java.util.ArrayList;
 import org.xml.sax.SAXException;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.util.Properties;
 /**
  *
  * @author Jo
  */
-public class XMLReader {
+public class XMLEditor {
 
-  public XMLReader() {
+  public XMLEditor() {
   }
   public static void fillShiftList(String filePath, ArrayList<Shift> shiftList) {
     try {
@@ -52,5 +55,31 @@ public class XMLReader {
     NodeList nList = element.getElementsByTagName(tag).item(0).getChildNodes();
     Node nValue = (Node) nList.item(0);
     return nValue.getNodeValue();
+  }
+  public static boolean writePersonalData(PersonalData dataInstance) {
+    File dataFile = new File("PersonalData.xml");
+    if (false){
+      
+    }
+    else {
+      Properties prop = new Properties();
+      prop.setProperty("first Name", dataInstance.getFirstName());
+      prop.setProperty("last Name", dataInstance.getLastName());
+      try {
+        OutputStream outputStream = new FileOutputStream("PersonalData.xml");
+        prop.storeToXML(outputStream, "personal data");
+        
+      }
+      catch (java.io.IOException e){
+        
+      }
+      
+      
+    }
+    return true;
+  }
+  public static boolean loadPersonalData() {
+    
+    return true;
   }
 }
