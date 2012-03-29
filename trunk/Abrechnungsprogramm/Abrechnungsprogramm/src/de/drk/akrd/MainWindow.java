@@ -66,7 +66,7 @@ public class MainWindow extends JFrame implements ItemListener {
       // Setup ShiftContainer
 		shiftContainer.loadShifts("Schichten.xml");
 		/// TEST ///
-      ShiftInstance[] shiftsToAccount = new ShiftInstance[46];
+      /*ShiftInstance[] shiftsToAccount = new ShiftInstance[46];
       
       int iterator =0;
       for(iterator=0;iterator<46; iterator++){
@@ -75,6 +75,9 @@ public class MainWindow extends JFrame implements ItemListener {
         shiftsToAccount[iterator] = new ShiftInstance(beispiel, 5f, "heino"+iterator, ""+iterator);
       }
       PdfCreator.createAccounting(shiftsToAccount);
+      //personaldatatest
+      PersonalData.setData("Heino", "Meyer", "Privatbank Musterhausen", 1234, 666, PersonalData.Qualification.RA, false);
+      XMLEditor.writePersonalData(PersonalData.getInstance());*/
       /// END TEST ///
 		setTitle("AK-RD Abrechnungsprogramm");
 		setSize(562, 367); // default size is 0,0

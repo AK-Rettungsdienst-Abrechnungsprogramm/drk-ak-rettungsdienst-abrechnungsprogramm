@@ -38,7 +38,7 @@ public class ShiftContainer {
 		shifts.add(new Shift("KRN", 1800, 900, false ,KIZA));
      * 
      */
-        XMLReader.fillShiftList("Schichten.xml", shifts);
+        XMLEditor.fillShiftList("Schichten.xml", shifts);
 	}
 	
 	public Shift[] getShifts()
