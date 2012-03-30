@@ -1,8 +1,9 @@
 package de.drk.akrd;
-
+import java.text.SimpleDateFormat;
 public class ShiftInstance {
 
   private Shift instanceOf;
+  private String date;
   private int actualStartingTime;
   private int actualEndTime;
   private int actualBreakTime;
@@ -10,8 +11,9 @@ public class ShiftInstance {
   private String partner;
   private String comment;
 
-  public ShiftInstance(Shift instanceOf, float timeAsFloat, String partner, String comment) {
+  public ShiftInstance(Shift instanceOf, String date, float timeAsFloat, String partner, String comment) {
     this.instanceOf = instanceOf;
+    this.date = date;
     actualStartingTime = instanceOf.getStartingTime();
     actualEndTime = instanceOf.getEndTime();
     actualBreakTime = instanceOf.getBreakTime();
@@ -19,14 +21,23 @@ public class ShiftInstance {
     this.partner = partner;
     this.comment = comment;
   }
-  public ShiftInstance(Shift instanceOf, int actualStartingTime, int actualEndTime, int actualBreakTime, float timeAsFloat, String partner, String comment) {
+  public ShiftInstance(Shift instanceOf, String date, int actualStartingTime, int actualEndTime, int actualBreakTime, float timeAsFloat, String partner, String comment) {
     this.instanceOf = instanceOf;
+    this.date = date;
     this.actualStartingTime = actualStartingTime;
     this.actualEndTime = actualEndTime;
     this.actualBreakTime = actualBreakTime;
     this.timeAsFloat = timeAsFloat;
     this.partner = partner;
     this.comment = comment;
+  }
+
+  /**
+   * 
+   * @return the date string
+   */
+  public String getDate() {
+    return date;
   }
 
   /**
