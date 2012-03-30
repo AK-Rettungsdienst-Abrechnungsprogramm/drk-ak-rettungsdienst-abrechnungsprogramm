@@ -12,6 +12,7 @@ import com.itextpdf.text.pdf.GrayColor;
 import com.itextpdf.text.pdf.RadioCheckField;
 import com.itextpdf.text.pdf.PdfFormField;
 import com.itextpdf.text.pdf.PdfContentByte;
+import java.text.DecimalFormat;
 import java.util.*;
 
 /**
@@ -218,12 +219,57 @@ public class PdfCreator {
       KoSt[4] = new String[]{"RH - RA (9,00 €/h"};
       boolean[] boolArray = new boolean[]{false, false, false, false, false, false};
       int checkboxSetter;
+      switch(PersonalData.getInstance().getQualification()) {
+        case RH:
+          checkboxSetter=0;
+          break;
+        case RS:
+          checkboxSetter=1;
+          break;
+        case RA:
+          checkboxSetter=2;
+          break;
+        default:
+          checkboxSetter=0;
+      }
+      int accountType;
       switch(shifts.get(0).getType()) {
-        // TODO: set checkboxSetter
+        case ShiftContainer.RTW:
+          accountType = 0;
+          break;
+        case ShiftContainer.KTW:
+          accountType = 1;
+          break;
+        case ShiftContainer.EVENT:
+          accountType = 3;
+          break;
+        case ShiftContainer.KVS:
+          accountType = 4;
+          checkboxSetter = 0;
+          break;
+        default:
+          accountType = 2;
       }
       int xPosition = 50;
       for (int i = 0; i < KoSt.length; i++) {
-        // TODO: set boolArray
+        if(accountType==i) {
+          if(i==2) {
+            switch(shifts.get(0).getType()) {
+              case ShiftContainer.BABY:
+                boolArray[0] = true;
+                break;
+              case ShiftContainer.BREISACH:
+                boolArray[1] = true;
+                break;
+              default:
+                boolArray[2] = true;
+            }
+            boolArray[checkboxSetter+3] = true;
+          }
+          else {
+            boolArray[checkboxSetter]= true;
+          }
+        }
         createCheckbox(writer, helveticaFont9, KoSt[i], xPosition, 740, boolArray);
         boolArray = new boolean[]{false, false, false, false, false, false};
         xPosition += 105;
@@ -357,12 +403,18 @@ public class PdfCreator {
       table7.addCell(cell40);
       table7.addCell(cell41);
 
+      float salary = calculateSalary(shifts.get(0));
       for (int i = 0; i <= 12; i++) {
         ShiftInstance currentShift = null;
         String startTimeAsString = "";
         String endTimeAsString = "";
         String partner = "";
         String timeInHours = "";
+        String timeasFloat = "";
+        String salaryPerHour = "";
+        String shiftSalary = "";
+        String comment = "";
+        
         if (shifts.size() > i) {
           currentShift = shifts.get(i);
           int startTime = currentShift.getActualStartingTime();
@@ -372,7 +424,11 @@ public class PdfCreator {
           endTimeAsString = createTimeStringFromInt(endTime);
           partner = currentShift.getPartner();
           timeInHours = calculateTimeInHours(startTime, endTime, breakTime);
-          
+          timeasFloat = Float.toString(currentShift.getTimeAsFloat());
+          DecimalFormat df = new DecimalFormat("#0.00");
+          salaryPerHour = df.format(salary);
+          shiftSalary = df.format(currentShift.getTimeAsFloat()*salary);
+          comment = currentShift.getComment();
         }
         PdfPCell tempCell = emptyPdfPCell();
         Paragraph content = new Paragraph((currentShift == null) ? "" : currentShift.getId(), helveticaFont9);
@@ -400,19 +456,19 @@ public class PdfCreator {
         tempCell.addElement(content);
         table7.addCell(tempCell);
         tempCell = emptyPdfPCell();
-        content = new Paragraph("", helveticaFont9);
+        content = new Paragraph(timeasFloat, helveticaFont9);
         tempCell.addElement(content);
         table7.addCell(tempCell);
         tempCell = emptyPdfPCell();
-        content = new Paragraph("", helveticaFont9);
+        content = new Paragraph(salaryPerHour, helveticaFont9);
         tempCell.addElement(content);
         table7.addCell(tempCell);
         tempCell = emptyPdfPCell();
-        content = new Paragraph("", helveticaFont9);
+        content = new Paragraph(shiftSalary, helveticaFont9);
         tempCell.addElement(content);
         table7.addCell(tempCell);
         tempCell = emptyPdfPCell();
-        content = new Paragraph((currentShift == null) ? "" : currentShift.getComment(), helveticaFont9);
+        content = new Paragraph(comment, helveticaFont9);
         tempCell.addElement(content);
         table7.addCell(tempCell);
       }
@@ -596,5 +652,38 @@ public class PdfCreator {
       end -= start-breakTime;
     }
     return createTimeStringFromInt(end);
+  }
+  private static float calculateSalary(ShiftInstance shift) {
+    float salary;
+    switch (shift.getType()) {
+      case ShiftContainer.KTW:
+      case ShiftContainer.RTW:
+        switch(PersonalData.getInstance().getQualification()) {
+          case RH:
+            salary=7.8f;
+            break;
+          case RS:
+            salary=8.8f;
+            break;
+          default:
+            salary=9.9f;
+        }
+        break;
+      case ShiftContainer.KVS:
+        salary = 9f;
+        break;
+      default:
+        switch(PersonalData.getInstance().getQualification()) {
+          case RH:
+            salary=5.9f;
+            break;
+          case RS:
+            salary=6.7f;
+            break;
+          default:
+            salary=7.6f;
+        }
+    }
+    return salary;
   }
 }
