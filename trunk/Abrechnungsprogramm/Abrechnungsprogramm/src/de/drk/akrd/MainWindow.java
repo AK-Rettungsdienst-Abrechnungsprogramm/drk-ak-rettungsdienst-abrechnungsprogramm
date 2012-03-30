@@ -7,6 +7,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
@@ -76,10 +79,15 @@ public class MainWindow extends JFrame implements ItemListener {
       for(iterator=0;iterator<46; iterator++){
         int shiftIndex = (iterator>= shiftContainer.getShifts().length)? 0: iterator;
         Shift beispiel = shiftContainer.getShifts()[shiftIndex];
-        shiftsToAccount[iterator] = new ShiftInstance(beispiel, 5f, "heino"+iterator, ""+iterator);
+        shiftsToAccount[iterator] = new ShiftInstance(beispiel, "30.5.12", 5f, "heino"+iterator, ""+iterator);
       }
       PdfCreator.createAccounting(shiftsToAccount);
-      /// END TEST ///*/
+      SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+      Calendar cal = Calendar.getInstance();
+      Date date = cal.getTime();
+      
+      */
+      /// END TEST ///
 		setTitle("AK-RD Abrechnungsprogramm");
 		setSize(562, 367); // default size is 0,0
 		setLocation(10, 200); // default is 0,0 (top left corner)

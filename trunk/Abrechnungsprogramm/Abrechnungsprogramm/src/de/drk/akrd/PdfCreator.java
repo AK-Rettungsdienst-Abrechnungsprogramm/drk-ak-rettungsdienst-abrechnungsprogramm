@@ -62,6 +62,7 @@ public class PdfCreator {
 
     }
     ArrayList<ShiftInstance>[] allShifts = new ArrayList<>[]{rd, ktp, baby, breisach, kiza, event, kvs};
+    Document accounting = new Document();
     for (int i = 0; i < allShifts.length; i++) {
       if (!allShifts[i].isEmpty()) {
         int numberOfPages = ((int) (allShifts[i].size() / 13)) + 1;
@@ -406,6 +407,7 @@ public class PdfCreator {
       float salary = calculateSalary(shifts.get(0));
       for (int i = 0; i <= 12; i++) {
         ShiftInstance currentShift = null;
+        String date = "";
         String startTimeAsString = "";
         String endTimeAsString = "";
         String partner = "";
@@ -417,6 +419,7 @@ public class PdfCreator {
         
         if (shifts.size() > i) {
           currentShift = shifts.get(i);
+          date = currentShift.getDate();
           int startTime = currentShift.getActualStartingTime();
           int endTime = currentShift.getActualEndTime();
           int breakTime = currentShift.getActualBreakTime();
@@ -431,7 +434,7 @@ public class PdfCreator {
           comment = currentShift.getComment();
         }
         PdfPCell tempCell = emptyPdfPCell();
-        Paragraph content = new Paragraph((currentShift == null) ? "" : currentShift.getId(), helveticaFont9);
+        Paragraph content = new Paragraph(date, helveticaFont9);
         tempCell.addElement(content);
         tempCell.setFixedHeight(19f);
         table7.addCell(tempCell);
