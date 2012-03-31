@@ -49,6 +49,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 public class MainWindow extends JFrame implements ItemListener {
 
@@ -94,13 +95,17 @@ public class MainWindow extends JFrame implements ItemListener {
       for(iterator=0;iterator<46; iterator++){
         int shiftIndex = (iterator>= shiftContainer.getShifts().length)? 0: iterator;
         Shift beispiel = shiftContainer.getShifts()[shiftIndex];
-        shiftsToAccount[iterator] = new ShiftInstance(beispiel, "30.5.12", 5f, "heino"+iterator, ""+iterator);
+        shiftsToAccount[iterator] = new ShiftInstance(beispiel, "30.05.2012", 5f, "heino"+iterator, ""+iterator);
       }
       PdfCreator.createAccounting(shiftsToAccount);
       SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
       Calendar cal = Calendar.getInstance();
       Date date = cal.getTime();
-      
+      ArrayList<ShiftInstance> testList = new ArrayList<>();
+      for (int it=0; it<shiftsToAccount.length; it++){
+        testList.add(shiftsToAccount[it]);
+      }
+      XMLEditor.storeShifts(testList, 2012);
       
       /// END TEST ///
       
