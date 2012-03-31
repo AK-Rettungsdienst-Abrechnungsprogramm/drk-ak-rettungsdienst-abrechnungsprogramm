@@ -2,18 +2,20 @@ package de.drk.akrd;
 
 import java.util.ArrayList;
 import java.util.List;
+import sun.security.util.Resources_zh_TW;
 
 
 // Contains all shifts and takes care of loading and managing
 public class ShiftContainer {
 	
-	public static final int KTW = 0;
+  public static final int KTW = 0;
 	public static final int RTW = 1;
 	public static final int KIZA = 2;
 	public static final int BREISACH = 3;
     public static final int BABY = 4;
     public static final int EVENT = 5;
-    public static final int KVS = 6;
+    public static final int KVS = 6;  
+  public enum ShiftType {RTW, KTW, KIZA, BREISACH, BABY, EVENT, KVS}
 	
 	private ArrayList<Shift> shifts = new ArrayList<>();
 	
@@ -46,7 +48,7 @@ public class ShiftContainer {
 		return (Shift[]) shifts.toArray(new Shift[shifts.size()]);
 	}
 	
-	public Shift[] filterShifts(int type)
+	public Shift[] filterShifts(ShiftContainer.ShiftType type)
 	{
 		ArrayList<Shift> filteredShifts = new ArrayList<Shift>();
 		

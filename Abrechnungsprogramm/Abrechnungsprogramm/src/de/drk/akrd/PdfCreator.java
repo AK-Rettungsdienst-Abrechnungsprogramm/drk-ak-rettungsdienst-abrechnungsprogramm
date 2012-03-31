@@ -32,95 +32,68 @@ public class PdfCreator {
     ArrayList<ShiftInstance> kiza = new ArrayList<>();
     ArrayList<ShiftInstance> event = new ArrayList<>();
     ArrayList<ShiftInstance> kvs = new ArrayList<>();
-    System.out.println("shiftsToAccount: "+shiftsToAccount.length);
+    System.out.println("shiftsToAccount: " + shiftsToAccount.length);
+    // add shifts to seperate shift lists
     for (int i = 0; i < shiftsToAccount.length; i++) {
       switch (shiftsToAccount[i].getType()) {
-        case ShiftContainer.KTW:
+        case KTW:
           ktp.add(shiftsToAccount[i]);
           break;
-        case ShiftContainer.RTW:
+        case RTW:
           rd.add(shiftsToAccount[i]);
           break;
-        case ShiftContainer.EVENT:
+        case EVENT:
           event.add(shiftsToAccount[i]);
           break;
-        case ShiftContainer.KVS:
+        case KVS:
           kvs.add(shiftsToAccount[i]);
           break;
-        case ShiftContainer.BABY:
+        case BABY:
           baby.add(shiftsToAccount[i]);
           break;
-        case ShiftContainer.BREISACH:
+        case BREISACH:
           breisach.add(shiftsToAccount[i]);
           break;
-        case ShiftContainer.KIZA:
+        case KIZA:
           kiza.add(shiftsToAccount[i]);
           break;
         default:
           break;
       }
-
     }
     ArrayList<ShiftInstance>[] allShifts = (ArrayList<ShiftInstance>[])new ArrayList[]{rd, ktp, baby, breisach, kiza, event, kvs};
-    Document accounting = new Document();
-    for (int i = 0; i < allShifts.length; i++) {
-      if (!allShifts[i].isEmpty()) {
-        int numberOfPages = ((int) (allShifts[i].size() / 13)) + 1;
-        String fileName;
-        switch (allShifts[i].get(0).getType()) {
-          case ShiftContainer.KTW:
-            fileName = "KTWFr";
-            break;
-          case ShiftContainer.RTW:
-            fileName = "RTWFr";
-            break;
-          case ShiftContainer.EVENT:
-            fileName = "Veranstaltung";
-            break;
-          case ShiftContainer.KVS:
-            fileName = "KVS";
-            break;
-          case ShiftContainer.BABY:
-            fileName = "BabyNAW";
-            break;
-          case ShiftContainer.BREISACH:
-            fileName = "Breisach";
-            break;
-          case ShiftContainer.KIZA:
-            fileName = "KiZa";
-            break;
-          default:
-            fileName = "";
-            break;
-        }
-        int counter = 0;
-        for (int j = 1; j <= numberOfPages; j++) {
-          ArrayList<ShiftInstance> tempShiftInstances = new ArrayList<>();
-          for (int k = 0; k < 13; k++) {
-            if (counter >= (allShifts[i].size())) {
-              break;
+    try {
+      Document accounting = new Document();
+      PdfWriter pdfWriter = PdfWriter.getInstance(accounting, new FileOutputStream("Abrechnungstest.pdf"));
+      accounting.open();
+      for (int i = 0; i < allShifts.length; i++) {
+        if (!allShifts[i].isEmpty()) {
+          int numberOfPages = ((int) (allShifts[i].size() / 13)) + 1;
+          int counter = 0;
+          for (int j = 1; j <= numberOfPages; j++) {
+            ArrayList<ShiftInstance> tempShiftInstances = new ArrayList<>();
+            for (int k = 0; k < 13; k++) {
+              if (counter >= (allShifts[i].size())) {
+                break;
+              }
+              tempShiftInstances.add(allShifts[i].get(counter));
+              counter++;
             }
-            tempShiftInstances.add(allShifts[i].get(counter));
-            counter++;
-          }
-          if (numberOfPages > 1) {
-            createSingleAccounting("Abrechnungstest_" + fileName + "_" + j + ".pdf", tempShiftInstances);
-          } else {
-            createSingleAccounting("Abrechnungstest_" + fileName + ".pdf", tempShiftInstances);
+            accounting.newPage();
+            createSingleAccounting(accounting, pdfWriter, tempShiftInstances, i*10+j);
           }
         }
       }
+      accounting.close();
+    } catch (FileNotFoundException | DocumentException e) {
     }
+
 
   }
 
-  private static void createSingleAccounting(String path, ArrayList<ShiftInstance> shifts) {
-    Document testDocument = new Document();
+  private static void createSingleAccounting(Document accountingDocument, PdfWriter writer, ArrayList<ShiftInstance> shifts, int pageNr) {
     PersonalData personalData = PersonalData.getInstance();
-    System.out.println("anzahl der schichten in " + path + ": " + shifts.size());
     try {
-      PdfWriter writer = PdfWriter.getInstance(testDocument, new FileOutputStream(path));
-      testDocument.open();
       Font helveticaFont8 = FontFactory.getFont(FontFactory.HELVETICA, 8);
       Font helveticaFont9 = FontFactory.getFont(FontFactory.HELVETICA, 9);
       Font helveticaFont10 = FontFactory.getFont(FontFactory.HELVETICA, 10);
@@ -220,61 +193,70 @@ public class PdfCreator {
       KoSt[4] = new String[]{"RH - RA (9,00 €/h"};
       boolean[] boolArray = new boolean[]{false, false, false, false, false, false};
       int checkboxSetter;
-      switch(PersonalData.getInstance().getQualification()) {
+      switch (PersonalData.getInstance().getQualification()) {
         case RH:
-          checkboxSetter=0;
+          checkboxSetter = 0;
           break;
         case RS:
-          checkboxSetter=1;
+          checkboxSetter = 1;
           break;
         case RA:
-          checkboxSetter=2;
+          checkboxSetter = 2;
           break;
         default:
-          checkboxSetter=0;
+          checkboxSetter = 0;
       }
       int accountType;
-      switch(shifts.get(0).getType()) {
-        case ShiftContainer.RTW:
+      String costUnit;
+      switch (shifts.get(0).getType()) {
+        case RTW:
           accountType = 0;
+          costUnit = "964001";
           break;
-        case ShiftContainer.KTW:
+        case KTW:
           accountType = 1;
+          costUnit = "962100";
           break;
-        case ShiftContainer.EVENT:
+        case EVENT:
           accountType = 3;
+          costUnit = "365301";
           break;
-        case ShiftContainer.KVS:
+        case KVS:
           accountType = 4;
           checkboxSetter = 0;
+          costUnit = "973100";
           break;
         default:
           accountType = 2;
+          costUnit = "964";
       }
       int xPosition = 50;
       for (int i = 0; i < KoSt.length; i++) {
-        if(accountType==i) {
-          if(i==2) {
-            switch(shifts.get(0).getType()) {
-              case ShiftContainer.BABY:
+        if (accountType == i) {
+          if (i == 2) {
+            switch (shifts.get(0).getType()) {
+              case BABY:
                 boolArray[0] = true;
+                costUnit = costUnit+"01 (Baby-NAW)";
                 break;
-              case ShiftContainer.BREISACH:
+              case BREISACH:
                 boolArray[1] = true;
+                costUnit = costUnit+"03 (RD Breisach)";
                 break;
               default:
                 boolArray[2] = true;
+                costUnit = costUnit+"10 (RD Kirchzarten)";
             }
-            boolArray[checkboxSetter+3] = true;
-          }
-          else {
-            boolArray[checkboxSetter]= true;
+            boolArray[checkboxSetter + 3] = true;
+          } else {
+            boolArray[checkboxSetter] = true;
           }
         }
-        createCheckbox(writer, helveticaFont9, KoSt[i], xPosition, 740, boolArray);
+        createCheckbox(writer, helveticaFont9, KoSt[i], xPosition, 740, boolArray, pageNr);
         boolArray = new boolean[]{false, false, false, false, false, false};
         xPosition += 105;
       }
+      
       // create another empty line
       PdfPTable table4 = new PdfPTable(1);
       table4.setWidthPercentage(100);
@@ -290,12 +272,12 @@ public class PdfCreator {
       String bankNameAndCity = "Bekannt";
       String accountNumber = "Bekannt";
       String blz = "Bekannt";
-      if(!personalData.isDataKnown()) {
+      if (!personalData.isDataKnown()) {
         bankNameAndCity = personalData.getBankNameAndCity();
         accountNumber = Integer.toString(personalData.getAccountNumber());
         blz = Integer.toString(personalData.getBlz());
       }
-      
+
       // name
       PdfPCell cell20 = new PdfPCell(new Paragraph("Name", helveticaFont11Bold));
       cell20.setFixedHeight(22f);
@@ -304,8 +286,8 @@ public class PdfCreator {
       cell21.disableBorderSide(Rectangle.LEFT);
       cell21.disableBorderSide(Rectangle.RIGHT);
       PdfPCell cell22 = new PdfPCell(
-              new Paragraph(" "+personalData.getFirstName()+" "+
-              personalData.getLastName()));
+              new Paragraph(" " + personalData.getFirstName() + " "
+              + personalData.getLastName()));
       cell22.setColspan(2);
       cell22.disableBorderSide(Rectangle.LEFT);
       // bankname
@@ -315,7 +297,7 @@ public class PdfCreator {
       PdfPCell cell24 = new PdfPCell(new Paragraph(":", helveticaFont11Bold));
       cell24.disableBorderSide(Rectangle.LEFT);
       cell24.disableBorderSide(Rectangle.RIGHT);
-      PdfPCell cell25 = new PdfPCell(new Paragraph(" "+bankNameAndCity));
+      PdfPCell cell25 = new PdfPCell(new Paragraph(" " + bankNameAndCity));
       cell25.disableBorderSide(Rectangle.LEFT);
       cell25.setColspan(2);
       // accountnr
@@ -325,13 +307,13 @@ public class PdfCreator {
       PdfPCell cell27 = new PdfPCell(new Paragraph(":", helveticaFont11Bold));
       cell27.disableBorderSide(Rectangle.LEFT);
       cell27.disableBorderSide(Rectangle.RIGHT);
-      PdfPCell cell28 = new PdfPCell(new Paragraph(" "+accountNumber));
+      PdfPCell cell28 = new PdfPCell(new Paragraph(" " + accountNumber));
       cell28.disableBorderSide(Rectangle.LEFT);
       cell28.disableBorderSide(Rectangle.RIGHT);
-      PdfPCell cell29 = new PdfPCell(new Paragraph("BLZ*: "+blz, helveticaFont11Bold));
+      PdfPCell cell29 = new PdfPCell(new Paragraph("BLZ*: " + blz, helveticaFont11Bold));
       cell29.disableBorderSide(Rectangle.LEFT);
 
-      PdfPCell cell30 = new PdfPCell(new Paragraph("zu belastende Kostenstelle:", helveticaFont11Bold));
+      PdfPCell cell30 = new PdfPCell(new Paragraph("zu belastende Kostenstelle:  "+costUnit, helveticaFont11Bold));
       cell30.setColspan(4);
       cell30.setFixedHeight(22f);
 
@@ -416,7 +398,7 @@ public class PdfCreator {
         String salaryPerHour = "";
         String shiftSalary = "";
         String comment = "";
-        
+
         if (shifts.size() > i) {
           currentShift = shifts.get(i);
           date = currentShift.getDate();
@@ -430,7 +412,7 @@ public class PdfCreator {
           timeasFloat = Float.toString(currentShift.getTimeAsFloat());
           DecimalFormat df = new DecimalFormat("#0.00");
           salaryPerHour = df.format(salary);
-          shiftSalary = df.format(currentShift.getTimeAsFloat()*salary);
+          shiftSalary = df.format(currentShift.getTimeAsFloat() * salary);
           comment = currentShift.getComment();
         }
         PdfPCell tempCell = emptyPdfPCell();
@@ -568,21 +550,20 @@ public class PdfCreator {
       table11.addCell(new PdfPCell());
 
       // add tables to document
-      testDocument.add(table1);
-      testDocument.add(drkLogo);
-      testDocument.add(table2);
-      testDocument.add(table3);
-      testDocument.add(table4);
-      testDocument.add(table5);
-      testDocument.add(table6);
-      testDocument.add(table7);
-      testDocument.add(table8);
-      testDocument.add(table9);
-      testDocument.add(table8);
-      testDocument.add(table10);
-      testDocument.add(table8);
-      testDocument.add(table11);
-      testDocument.close();
+      accountingDocument.add(table1);
+      accountingDocument.add(drkLogo);
+      accountingDocument.add(table2);
+      accountingDocument.add(table3);
+      accountingDocument.add(table4);
+      accountingDocument.add(table5);
+      accountingDocument.add(table6);
+      accountingDocument.add(table7);
+      accountingDocument.add(table8);
+      accountingDocument.add(table9);
+      accountingDocument.add(table8);
+      accountingDocument.add(table10);
+      accountingDocument.add(table8);
+      accountingDocument.add(table11);
     } catch (DocumentException e) {
     } catch (FileNotFoundException e) {
     } catch (MalformedURLException e) {
@@ -603,7 +584,7 @@ public class PdfCreator {
     cell.setHorizontalAlignment(Rectangle.ALIGN_CENTER);
   }
 
-  private static void createCheckbox(PdfWriter writer, Font font, String[] label, int xPosition, int yPosition, boolean[] checked) {
+  private static void createCheckbox(PdfWriter writer, Font font, String[] label, int xPosition, int yPosition, boolean[] checked, int pageNr) {
     PdfContentByte canvas = writer.getDirectContent();
     Rectangle rect;
     PdfFormField field;
@@ -611,7 +592,7 @@ public class PdfCreator {
     try {
       for (int i = 0; i < label.length; i++) {
         rect = new Rectangle((xPosition + 10), (yPosition - 10 - i * 15), xPosition, yPosition - i * 15);
-        checkbox = new RadioCheckField(writer, rect, xPosition + "," + i, "on");
+        checkbox = new RadioCheckField(writer, rect, xPosition + "," + pageNr + i, "on");
         checkbox.setChecked(checked[i]);
         checkbox.setOptions(RadioCheckField.READ_ONLY);
         checkbox.setBorderColor(BaseColor.BLACK);
@@ -627,7 +608,7 @@ public class PdfCreator {
     } catch (com.itextpdf.text.DocumentException | java.io.IOException e) {
     }
   }
-  
+
   private static String createTimeStringFromInt(int time) {
     String timeString;
     if (time >= 1000) {
@@ -638,53 +619,53 @@ public class PdfCreator {
     timeString = timeString + (((time % 100) < 10) ? ":0" : ":") + (time % 100);
     return timeString;
   }
+
   private static String calculateTimeInHours(int start, int end, int breakTime) {
     if (start > end) {
-      int startHours = 24-((int)(start/100));
-      int startMinutes = (start%100);
-      int endHours = ((int)(end/100));
-      int endMinutes = (end%100);
-      if (endMinutes >=startMinutes) {
-        end = 100*(endHours+startHours) + (endMinutes-startMinutes);
+      int startHours = 24 - ((int) (start / 100));
+      int startMinutes = (start % 100);
+      int endHours = ((int) (end / 100));
+      int endMinutes = (end % 100);
+      if (endMinutes >= startMinutes) {
+        end = 100 * (endHours + startHours) + (endMinutes - startMinutes);
+      } else {
+        end = 100 * (endHours + startHours - 1) + (60 + (endMinutes - startMinutes));
       }
-      else {
-        end = 100*(endHours+startHours-1) + (60+(endMinutes-startMinutes));
-      }
-    }
-    else {
-      end -= start-breakTime;
+    } else {
+      end -= start - breakTime;
     }
     return createTimeStringFromInt(end);
   }
+
   private static float calculateSalary(ShiftInstance shift) {
     float salary;
     switch (shift.getType()) {
-      case ShiftContainer.KTW:
-      case ShiftContainer.RTW:
-        switch(PersonalData.getInstance().getQualification()) {
+      case KTW:
+      case RTW:
+        switch (PersonalData.getInstance().getQualification()) {
           case RH:
-            salary=7.8f;
+            salary = 7.8f;
             break;
           case RS:
-            salary=8.8f;
+            salary = 8.8f;
             break;
           default:
-            salary=9.9f;
+            salary = 9.9f;
         }
         break;
-      case ShiftContainer.KVS:
+      case KVS:
         salary = 9f;
         break;
       default:
-        switch(PersonalData.getInstance().getQualification()) {
+        switch (PersonalData.getInstance().getQualification()) {
           case RH:
-            salary=5.9f;
+            salary = 5.9f;
             break;
           case RS:
-            salary=6.7f;
+            salary = 6.7f;
             break;
           default:
-            salary=7.6f;
+            salary = 7.6f;
         }
     }
     return salary;
