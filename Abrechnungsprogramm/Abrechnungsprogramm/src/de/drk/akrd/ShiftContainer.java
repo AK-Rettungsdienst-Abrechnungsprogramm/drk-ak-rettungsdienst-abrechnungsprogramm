@@ -50,20 +50,6 @@ public class ShiftContainer {
 	
 	public void loadShifts(String shiftfilePath)
 	{
-	/*	
-      shifts.add(new Shift("K01", 900, 1800, false, KTW));
-		shifts.add(new Shift("K02", 900, 1800, false, KTW));
-		shifts.add(new Shift("K03", 900, 1800, false, KTW));
-		shifts.add(new Shift("K04", 900, 1800, false, KTW));
-		shifts.add(new Shift("K05", 900, 1800, false, KTW));
-		shifts.add(new Shift("K06", 900, 1800, false, KTW));
-		shifts.add(new Shift("R1F", 900, 1800, false ,RTW));
-		shifts.add(new Shift("R2F", 900, 1800, false ,RTW));
-		shifts.add(new Shift("BRT", 900, 1800, false ,BREISACH));
-		shifts.add(new Shift("KRT", 900, 1800, false ,KIZA));
-		shifts.add(new Shift("KRN", 1800, 900, false ,KIZA));
-     * 
-     */
         XMLEditor.fillShiftList("Schichten.xml", shifts);
 	}
 	
