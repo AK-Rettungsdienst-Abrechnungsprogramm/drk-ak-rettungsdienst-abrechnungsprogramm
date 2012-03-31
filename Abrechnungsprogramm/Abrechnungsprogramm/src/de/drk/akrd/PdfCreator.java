@@ -14,6 +14,7 @@ import com.itextpdf.text.pdf.PdfFormField;
 import com.itextpdf.text.pdf.PdfContentByte;
 import java.text.DecimalFormat;
 import java.util.*;
+import javax.xml.bind.ParseConversionEvent;
 
 /**
  *
@@ -93,6 +94,9 @@ public class PdfCreator {
 
   private static void createSingleAccounting(Document accountingDocument, PdfWriter writer, ArrayList<ShiftInstance> shifts, int pageNr) {
     PersonalData personalData = PersonalData.getInstance();
+    float timeSumAsFloat = 0;
+    DecimalFormat euroFormat = new DecimalFormat("#0.00");
+    float salarySum = 0; 
     try {
       Font helveticaFont8 = FontFactory.getFont(FontFactory.HELVETICA, 8);
       Font helveticaFont9 = FontFactory.getFont(FontFactory.HELVETICA, 9);
@@ -228,7 +232,7 @@ public class PdfCreator {
           break;
         default:
           accountType = 2;
-          costUnit = "964";
+          costUnit = "9640";
       }
       int xPosition = 50;
       for (int i = 0; i < KoSt.length; i++) {
@@ -266,9 +270,9 @@ public class PdfCreator {
       table4.addCell(cellEmpty2);
 
       // create personal-date-table
-      PdfPTable table5 = new PdfPTable(4);
+      PdfPTable table5 = new PdfPTable(5);
       table5.setWidthPercentage(100);
-      table5.setWidths(new float[]{137f, 4f, 192f, 115});
+      table5.setWidths(new float[]{137f, 4f, 192f, 30f, 115f});
       String bankNameAndCity = "Bekannt";
       String accountNumber = "Bekannt";
       String blz = "Bekannt";
@@ -288,7 +292,7 @@ public class PdfCreator {
       PdfPCell cell22 = new PdfPCell(
               new Paragraph(" " + personalData.getFirstName() + " "
               + personalData.getLastName()));
-      cell22.setColspan(2);
+      cell22.setColspan(3);
       cell22.disableBorderSide(Rectangle.LEFT);
       // bankname
       PdfPCell cell23 = new PdfPCell(new Paragraph("Bankname und Ort*", helveticaFont11Bold));
@@ -299,7 +303,7 @@ public class PdfCreator {
       cell24.disableBorderSide(Rectangle.RIGHT);
       PdfPCell cell25 = new PdfPCell(new Paragraph(" " + bankNameAndCity));
       cell25.disableBorderSide(Rectangle.LEFT);
-      cell25.setColspan(2);
+      cell25.setColspan(3);
       // accountnr
       PdfPCell cell26 = new PdfPCell(new Paragraph("Kontonummer*", helveticaFont11Bold));
       cell26.setFixedHeight(22f);
@@ -310,12 +314,21 @@ public class PdfCreator {
       PdfPCell cell28 = new PdfPCell(new Paragraph(" " + accountNumber));
       cell28.disableBorderSide(Rectangle.LEFT);
       cell28.disableBorderSide(Rectangle.RIGHT);
-      PdfPCell cell29 = new PdfPCell(new Paragraph("BLZ*: " + blz, helveticaFont11Bold));
+      PdfPCell cell29 = new PdfPCell(new Paragraph("BLZ :", helveticaFont11Bold));
       cell29.disableBorderSide(Rectangle.LEFT);
+      cell29.disableBorderSide(Rectangle.RIGHT);
+      PdfPCell cell2930 = new PdfPCell(new Paragraph(blz));
+      cell2930.disableBorderSide(Rectangle.LEFT);
 
-      PdfPCell cell30 = new PdfPCell(new Paragraph("zu belastende Kostenstelle:  "+costUnit, helveticaFont11Bold));
-      cell30.setColspan(4);
+      PdfPCell cell30 = new PdfPCell(new Paragraph("zu belastende Kostenstelle", helveticaFont11Bold));
       cell30.setFixedHeight(22f);
+      cell30.disableBorderSide(Rectangle.RIGHT);
+      PdfPCell cell3031 = new PdfPCell(new Paragraph(":", helveticaFont11Bold));
+      cell3031.disableBorderSide(Rectangle.LEFT);
+      cell3031.disableBorderSide(Rectangle.RIGHT);
+      PdfPCell cell3032 = new PdfPCell(new Paragraph(" "+costUnit));
+      cell3032.disableBorderSide(Rectangle.LEFT);
+      cell3032.setColspan(3);
 
       table5.addCell(cell20);
       table5.addCell(cell21);
@@ -327,7 +340,10 @@ public class PdfCreator {
       table5.addCell(cell27);
       table5.addCell(cell28);
       table5.addCell(cell29);
+      table5.addCell(cell2930);
       table5.addCell(cell30);
+      table5.addCell(cell3031);
+      table5.addCell(cell3032);
 
       // set textline
       PdfPTable table6 = new PdfPTable(1);
@@ -410,9 +426,11 @@ public class PdfCreator {
           partner = currentShift.getPartner();
           timeInHours = calculateTimeInHours(startTime, endTime, breakTime);
           timeasFloat = Float.toString(currentShift.getTimeAsFloat());
-          DecimalFormat df = new DecimalFormat("#0.00");
-          salaryPerHour = df.format(salary);
-          shiftSalary = df.format(currentShift.getTimeAsFloat() * salary);
+          timeSumAsFloat += currentShift.getTimeAsFloat();
+          
+          salaryPerHour = euroFormat.format(salary)+ " €";
+          shiftSalary = euroFormat.format(currentShift.getTimeAsFloat() * salary)+" €";
+          salarySum += currentShift.getTimeAsFloat() * salary;
           comment = currentShift.getComment();
         }
         PdfPCell tempCell = emptyPdfPCell();
@@ -463,14 +481,14 @@ public class PdfCreator {
       cell42.addElement(new Paragraph("Summe der geleisteten Stunden / Auszahlungsbetrag:", helveticaFont11Bold));
       cell42.setVerticalAlignment(Rectangle.ALIGN_MIDDLE);
       cell42.setPaddingBottom(6);
-      PdfPCell cell43 = emptyPdfPCell();
+      PdfPCell cell43 = new PdfPCell(new Paragraph(timeSumAsFloat+"", helveticaFont11Bold));
       cell43.setBorderWidthBottom(2);
       cell43.setBorderWidthTop(2);
       cell43.setBorderWidthLeft(2);
-      PdfPCell cell44 = emptyPdfPCell();
+      PdfPCell cell44 = new PdfPCell(new Paragraph(euroFormat.format(salary)+" €", helveticaFont11Bold));
       cell44.setBorderWidthBottom(2);
       cell44.setBorderWidthTop(2);
-      PdfPCell cell45 = emptyPdfPCell();
+      PdfPCell cell45 = new PdfPCell(new Paragraph(euroFormat.format(salarySum)+ " €", helveticaFont11Bold));
       cell45.setBorderWidthBottom(2);
       cell45.setBorderWidthTop(2);
       PdfPCell cell46 = emptyPdfPCell();
