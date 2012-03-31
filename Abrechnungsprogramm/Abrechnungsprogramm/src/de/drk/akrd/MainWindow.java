@@ -7,6 +7,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
+import com.toedter.*;
+import com.toedter.calendar.JCalendar;
+import com.toedter.calendar.JDayChooser;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -26,6 +30,8 @@ import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.Popup;
+import javax.swing.PopupFactory;
 import javax.swing.SpringLayout;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
@@ -38,6 +44,11 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import de.drk.akrd.ShiftContainer.ShiftType;
+import javax.swing.JButton;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class MainWindow extends JFrame implements ItemListener {
 
@@ -59,6 +70,7 @@ public class MainWindow extends JFrame implements ItemListener {
 	private final JLabel lblSchichtart = new JLabel("Schichtart");
 	private JTextField textField;
 	private JTable shiftTable;
+	private JButton calendarButton = new JButton("Kalender");
 	private DefaultTableModel shiftTableModel = new DefaultTableModel(
 			new Object[][] {
 			},
@@ -144,6 +156,16 @@ public class MainWindow extends JFrame implements ItemListener {
 		
 		textField = new JTextField();
 		textField.setColumns(10);
+		calendarButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				  PopupFactory factory = PopupFactory.getSharedInstance();
+			      Popup popup = factory.getPopup(e.getComponent().getParent(), new JCalendar(), e.getComponent().getX(), e.getComponent().getY());
+			      popup.show();
+			}
+		});
+		
+		calendarButton.addItemListener(this);
 		GroupLayout gl_shiftCollector = new GroupLayout(shiftCollector);
 		gl_shiftCollector.setHorizontalGroup(
 			gl_shiftCollector.createParallelGroup(Alignment.LEADING)
@@ -153,10 +175,12 @@ public class MainWindow extends JFrame implements ItemListener {
 						.addComponent(lblSchichtart, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblDatum, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_shiftCollector.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(shiftTypeChooser, 0, 0, Short.MAX_VALUE)
-						.addComponent(textField))
-					.addGap(24)
+					.addGroup(gl_shiftCollector.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_shiftCollector.createParallelGroup(Alignment.LEADING, false)
+							.addComponent(shiftTypeChooser, 0, 0, Short.MAX_VALUE)
+							.addComponent(textField))
+						.addComponent(calendarButton))
+					.addGap(21)
 					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE)
 					.addContainerGap())
 		);
@@ -173,7 +197,9 @@ public class MainWindow extends JFrame implements ItemListener {
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addGroup(gl_shiftCollector.createParallelGroup(Alignment.BASELINE)
 								.addComponent(lblDatum)
-								.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
+								.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(calendarButton)))
 					.addGap(150))
 		);
 		shiftTypeChooser.addItemListener(this);
