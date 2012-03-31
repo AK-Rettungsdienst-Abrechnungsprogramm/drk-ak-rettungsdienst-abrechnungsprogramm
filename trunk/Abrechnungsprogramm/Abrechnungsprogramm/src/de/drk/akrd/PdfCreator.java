@@ -61,7 +61,7 @@ public class PdfCreator {
       }
 
     }
-    ArrayList<ShiftInstance>[] allShifts = new ArrayList<>[]{rd, ktp, baby, breisach, kiza, event, kvs};
+    ArrayList<ShiftInstance>[] allShifts = (ArrayList<ShiftInstance>[])new ArrayList[]{rd, ktp, baby, breisach, kiza, event, kvs};
     Document accounting = new Document();
     for (int i = 0; i < allShifts.length; i++) {
       if (!allShifts[i].isEmpty()) {
