@@ -99,7 +99,7 @@ public class ShiftInstance {
   /**
    * @return the type
    */
-  public int getType() {
+  public ShiftContainer.ShiftType getType() {
     return instanceOf.getType();
   }
 

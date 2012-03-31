@@ -70,7 +70,7 @@ public class MainWindow extends JFrame implements ItemListener {
 		shiftContainer.loadShifts("Schichten.xml");
 		/// TEST ///
       //personaldatatest
-      /*PersonalData.setData("Heino", "Meyer", "Privatbank Musterhausen", 1234, 666, PersonalData.Qualification.RA, false);
+      PersonalData.setData("Heino", "Meyer", "Privatbank Musterhausen", 1234, 666, PersonalData.Qualification.RA, false);
       XMLEditor.writePersonalData(PersonalData.getInstance());
       boolean loadPersonalData = XMLEditor.loadPersonalData();
       ShiftInstance[] shiftsToAccount = new ShiftInstance[46];
@@ -86,7 +86,7 @@ public class MainWindow extends JFrame implements ItemListener {
       Calendar cal = Calendar.getInstance();
       Date date = cal.getTime();
       
-      */
+      
       /// END TEST ///
 		setTitle("AK-RD Abrechnungsprogramm");
 		setSize(562, 367); // default size is 0,0
@@ -214,7 +214,8 @@ public class MainWindow extends JFrame implements ItemListener {
 		}
 		if(source == shiftTypeChooser)
 		{
-			int type = shiftTypeChooser.getSelectedIndex();
+		/*	
+          int type = shiftTypeChooser.getSelectedIndex();
 			Object[][] data = ShiftContainer.toTableData(shiftContainer.filterShifts(type));
 			shiftTableModel.setNumRows(0);
 			for(int i = 0; i < data.length; i++)
@@ -222,7 +223,7 @@ public class MainWindow extends JFrame implements ItemListener {
 				shiftTableModel.addRow(data[i]);
 			}
 			return;
-			
+		*/	
 		}
 	}
 }
