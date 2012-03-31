@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
-import com.toedter.*;
+//import com.toedter.*;
 import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDayChooser;
 
@@ -86,7 +86,7 @@ public class MainWindow extends JFrame implements ItemListener {
 		/// TEST ///
       //personaldatatest
       PersonalData.setData("Heino", "Meyer", "Privatbank Musterhausen", 1234, 666, PersonalData.Qualification.RA, false);
-      XMLEditor.writePersonalData(PersonalData.getInstance());
+      //XMLEditor.writePersonalData(PersonalData.getInstance());
       boolean loadPersonalData = XMLEditor.loadPersonalData();
       ShiftInstance[] shiftsToAccount = new ShiftInstance[46];
       

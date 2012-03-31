@@ -66,7 +66,9 @@ public class PersonalData {
     instance.lastName = LastName;
     instance.qualification = qualifikation;
     instance.dataKnown = dataKnown;
+    instance.dataSet = true;
     dataSet = true;
+    XMLEditor.writePersonalData(instance);
   }
 
   /**
