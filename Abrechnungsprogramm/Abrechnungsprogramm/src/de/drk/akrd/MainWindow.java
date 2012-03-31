@@ -11,6 +11,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import javax.swing.BoxLayout;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -35,6 +37,8 @@ import javax.swing.JMenu;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import de.drk.akrd.ShiftContainer.ShiftType;
+
 public class MainWindow extends JFrame implements ItemListener {
 
 	// Personal Info Components
@@ -49,9 +53,8 @@ public class MainWindow extends JFrame implements ItemListener {
 	// Shift Collector Components
 	private JPanel shiftCollector = new JPanel();
 	private ShiftContainer shiftContainer = new ShiftContainer();
-	private String[] shiftTypes = { "KTW", "RTW FR",
-	"KIZA", "Breisach" };
-	private JComboBox shiftTypeChooser = new JComboBox(shiftTypes);
+	
+	private JComboBox shiftTypeChooser = new JComboBox();
 	private final JLabel lblDatum = new JLabel("Datum");
 	private final JLabel lblSchichtart = new JLabel("Schichtart");
 	private JTextField textField;
@@ -88,6 +91,10 @@ public class MainWindow extends JFrame implements ItemListener {
       
       
       /// END TEST ///
+      
+      // Set Shift Type Chooser from Enum
+      ComboBoxModel enumModel = new DefaultComboBoxModel(ShiftType.values());
+      shiftTypeChooser.setModel(enumModel);
 		setTitle("AK-RD Abrechnungsprogramm");
 		setSize(562, 367); // default size is 0,0
 		setLocation(10, 200); // default is 0,0 (top left corner)
@@ -146,9 +153,9 @@ public class MainWindow extends JFrame implements ItemListener {
 						.addComponent(lblSchichtart, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblDatum, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_shiftCollector.createParallelGroup(Alignment.LEADING)
-						.addComponent(shiftTypeChooser, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
-						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGroup(gl_shiftCollector.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(shiftTypeChooser, 0, 0, Short.MAX_VALUE)
+						.addComponent(textField))
 					.addGap(24)
 					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE)
 					.addContainerGap())
@@ -214,8 +221,8 @@ public class MainWindow extends JFrame implements ItemListener {
 		}
 		if(source == shiftTypeChooser)
 		{
-		/*	
-          int type = shiftTypeChooser.getSelectedIndex();
+		
+            ShiftType type = (ShiftType)shiftTypeChooser.getSelectedItem();
 			Object[][] data = ShiftContainer.toTableData(shiftContainer.filterShifts(type));
 			shiftTableModel.setNumRows(0);
 			for(int i = 0; i < data.length; i++)
@@ -223,7 +230,7 @@ public class MainWindow extends JFrame implements ItemListener {
 				shiftTableModel.addRow(data[i]);
 			}
 			return;
-		*/	
+			
 		}
 	}
 }

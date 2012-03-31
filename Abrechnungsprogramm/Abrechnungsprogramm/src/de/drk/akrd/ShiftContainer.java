@@ -1,8 +1,6 @@
 package de.drk.akrd;
 
 import java.util.ArrayList;
-import java.util.List;
-import sun.security.util.Resources_zh_TW;
 
 
 // Contains all shifts and takes care of loading and managing
@@ -15,7 +13,33 @@ public class ShiftContainer {
     public static final int BABY = 4;
     public static final int EVENT = 5;
     public static final int KVS = 6;  
-  public enum ShiftType {RTW, KTW, KIZA, BREISACH, BABY, EVENT, KVS}
+    public enum ShiftType {RTW, KTW, KIZA, BREISACH, BABY, EVENT, KVS;
+    	
+    	// Override the toString method to get nicer strings for the shiftTypeChooser
+    	@Override
+        public String toString(){
+            
+            switch(name())
+            {
+            case "RTW":
+            	return "RTW";
+            case "KTW":
+            	return "KTW";
+            case "KIZA":
+            	return "RD Kirchzarten";
+            case "BREISACH":
+            	return "RD Breisach";
+            case "BABY":
+            	return "Baby NAW";
+            case "EVENT":
+            	return "Sandienst";
+            case "KVS":
+            	return "KV Dienst";
+            default:
+            	return name();
+            }
+        }
+    }
 	
 	private ArrayList<Shift> shifts = new ArrayList<>();
 	
