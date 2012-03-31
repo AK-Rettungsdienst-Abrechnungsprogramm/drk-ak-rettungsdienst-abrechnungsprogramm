@@ -4,8 +4,8 @@
  */
 package de.drk.akrd;
 
-import com.sun.crypto.provider.RC2Cipher;
-import sun.security.jca.GetInstance;
+//import com.sun.crypto.provider.RC2Cipher;
+//import sun.security.jca.GetInstance;
 
 /**
  *
