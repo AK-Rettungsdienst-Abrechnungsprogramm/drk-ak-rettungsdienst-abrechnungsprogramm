@@ -173,15 +173,26 @@ public class XMLEditor {
           Element currentNode = findElement(rootNode.getChild("M" + month).getChildren(), shiftDateString + shiftIdString);
           // if no node for the shift exists add new node
           if (currentNode == null) {
+            System.out.println("add new shift:"+currentShift.getId()+" "+currentShift.getDate());
             Element tempElement = new Element("Shift");
             ShiftInstance tempShiftInstance = shiftList.get(i);
             addShiftToElement(tempElement, tempShiftInstance);
             document.getRootElement().getChild("M" + month).addContent(tempElement);
           } // else update existing node
           else {
-            //System.out.println("update shift: " + shiftDateString + shiftIdString);
+            System.out.println("update shift: " + shiftDateString + shiftIdString);
+            currentNode.getChild("actStartingTime").setText(Integer.toString(currentShift.getActualStartingTime()));
+            currentNode.getChild("actEndTime").setText(Integer.toString(currentShift.getActualEndTime()));
+            currentNode.getChild("actBreakTime").setText(Integer.toString(currentShift.getActualBreakTime()));
+            currentNode.getChild("timeAsFloat").setText(Float.toString(currentShift.getTimeAsFloat()));
+            currentNode.getChild("partner").setText(currentShift.getPartner());
+            System.out.println("update partner: "+currentShift.getPartner());
+            currentNode.getChild("comment").setText(currentShift.getComment());
           }
         }
+        XMLOutputter xmlOutput = new XMLOutputter();
+        xmlOutput.output(document, new FileWriter(xmlFile));
+        return true;
       }
     } catch (ParseException ex) {
     } catch (JDOMException | IOException e) {
