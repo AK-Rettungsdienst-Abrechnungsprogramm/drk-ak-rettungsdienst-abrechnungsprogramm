@@ -33,7 +33,7 @@ public class PdfCreator {
     ArrayList<ShiftInstance> kiza = new ArrayList<>();
     ArrayList<ShiftInstance> event = new ArrayList<>();
     ArrayList<ShiftInstance> kvs = new ArrayList<>();
-    System.out.println("shiftsToAccount: " + shiftsToAccount.length);
+
     // add shifts to seperate shift lists
     for (int i = 0; i < shiftsToAccount.length; i++) {
       switch (shiftsToAccount[i].getType()) {

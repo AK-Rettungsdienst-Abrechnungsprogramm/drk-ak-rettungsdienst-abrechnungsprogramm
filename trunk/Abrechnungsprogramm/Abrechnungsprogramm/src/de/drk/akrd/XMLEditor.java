@@ -6,6 +6,7 @@ package de.drk.akrd;
 
 import de.drk.akrd.PersonalData.Qualification;
 import java.io.IOException;
+import java.text.ParseException;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
@@ -20,6 +21,10 @@ import org.xml.sax.SAXException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.OutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Properties;
 import org.jdom.Attribute;
 import org.jdom.output.Format;
@@ -35,6 +40,9 @@ import org.jdom.JDOMException;
  * @author Jo
  */
 public class XMLEditor {
+
+  private static SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+  private static Calendar calendar = Calendar.getInstance();
 
   public XMLEditor() {
   }
@@ -138,29 +146,105 @@ public class XMLEditor {
     return false;
   }
 
+  /**
+   * store a list of shiftInstances to a xml-file.
+   * if the shift already exist it will be updated
+   * @param shiftList an Arraylist<ShiftsInstance>
+   * @param year
+   * @return true if successful, false otherwise
+   */
   public static boolean storeShifts(ArrayList<ShiftInstance> shiftList, int year) {
-    String documentName = "Schichten"+year;
+    String documentName = "Schichten" + year;
+    String fileName = documentName + ".xml";
     try {
-      Element documentElement = new Element("Schichten"+year);
+      SAXBuilder saxBuilder = new SAXBuilder();
+      File xmlFile = new File(fileName);
+      if (!xmlFile.exists()) {
+        return storeShiftsInNewFile(shiftList, documentName);
+      } else {
+        Document document = (Document) saxBuilder.build(xmlFile);
+        Element rootNode = document.getRootElement();
+        for (int i = 0; i < shiftList.size(); i++) {
+          ShiftInstance currentShift = shiftList.get(i);
+          String shiftDateString = currentShift.getDate();
+          String shiftIdString = currentShift.getId();
+          calendar.setTime(sdf.parse(shiftDateString));
+          int month = calendar.get(Calendar.MONTH);
+          Element currentNode = findElement(rootNode.getChild("M" + month).getChildren(), shiftDateString + shiftIdString);
+          // if no node for the shift exists add new node
+          if (currentNode == null) {
+            Element tempElement = new Element("Shift");
+            ShiftInstance tempShiftInstance = shiftList.get(i);
+            addShiftToElement(tempElement, tempShiftInstance);
+            document.getRootElement().getChild("M" + month).addContent(tempElement);
+          } // else update existing node
+          else {
+            //System.out.println("update shift: " + shiftDateString + shiftIdString);
+          }
+        }
+      }
+    } catch (ParseException ex) {
+    } catch (JDOMException | IOException e) {
+    }
+    return false;
+  }
+
+  private static void addShiftToElement(Element element, ShiftInstance shift) {
+    if (element == null) {
+      return;
+    }
+    element.addContent(new Element("date").setText(shift.getDate()));
+    element.addContent(new Element("id").setText(shift.getId()));
+    element.addContent(new Element("actStartingTime").setText(Integer.toString(shift.getActualStartingTime())));
+    element.addContent(new Element("actEndTime").setText(Integer.toString(shift.getActualEndTime())));
+    element.addContent(new Element("actBreakTime").setText(Integer.toString(shift.getActualBreakTime())));
+    element.addContent(new Element("timeAsFloat").setText(Float.toString(shift.getTimeAsFloat())));
+    element.addContent(new Element("partner").setText(shift.getPartner()));
+    element.addContent(new Element("comment").setText(shift.getComment()));
+  }
+
+  private static Element findElement(List<Element> elements, String tag) {
+    String text;
+    for (int i = 0; i < elements.size(); i++) {
+      Element currentElement = elements.get(i);
+      text = currentElement.getChildText("date") + currentElement.getChildText("id");
+      if (text.equals(tag)) {
+        return currentElement;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * create or overwrite(!) an xml-file named documentName.xml
+   * @param shiftList
+   * @param documentName
+   * @return true if successful, false otherwise
+   */
+  private static boolean storeShiftsInNewFile(ArrayList<ShiftInstance> shiftList, String documentName) {
+    SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+    Calendar calendar = Calendar.getInstance();
+    try {
+      Element documentElement = new Element(documentName);
       Document document = new Document(documentElement);
-      for (int i=0; i<shiftList.size(); i++) {
+      document.setRootElement(documentElement);
+      for (int month = 0; month < 12; month++) {
+        Element monthElement = new Element("M" + month);
+        document.getRootElement().addContent(monthElement);
+      }
+      for (int i = 0; i < shiftList.size(); i++) {
         Element tempElement = new Element("Shift");
         ShiftInstance tempShiftInstance = shiftList.get(i);
-        tempElement.addContent(new Element("id").setText(tempShiftInstance.getId()));
-        tempElement.addContent(new Element("date").setText(tempShiftInstance.getDate()));
-        tempElement.addContent(new Element("actStartingTime").setText(Integer.toString(tempShiftInstance.getActualStartingTime())));
-        tempElement.addContent(new Element("actEndTime").setText(Integer.toString(tempShiftInstance.getActualEndTime())));
-        tempElement.addContent(new Element("actBreakTime").setText(Integer.toString(tempShiftInstance.getActualBreakTime())));
-        tempElement.addContent(new Element("timeAsFloat").setText(Float.toString(tempShiftInstance.getTimeAsFloat())));
-        tempElement.addContent(new Element("partner").setText(tempShiftInstance.getPartner()));
-        tempElement.addContent(new Element("comment").setText(tempShiftInstance.getComment()));
-        document.getRootElement().addContent(tempElement);
+        addShiftToElement(tempElement, tempShiftInstance);
+        calendar.setTime(sdf.parse(tempShiftInstance.getDate()));
+        int month = calendar.get(Calendar.MONTH);
+        document.getRootElement().getChild("M" + month).addContent(tempElement);
       }
-
       XMLOutputter xmlOutput = new XMLOutputter();
-      xmlOutput.output(document, new FileWriter(documentName+".xml"));
-      
+      xmlOutput.output(document, new FileWriter(documentName + ".xml"));
+
       return true;
+    } catch (ParseException ex) {
     } catch (IOException io) {
       System.out.println(io.getMessage());
     }
