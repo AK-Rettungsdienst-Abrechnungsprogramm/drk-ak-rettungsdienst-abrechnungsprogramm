@@ -11,6 +11,7 @@ import java.awt.event.ItemListener;
 import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDayChooser;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -98,9 +99,34 @@ public class MainWindow extends JFrame implements ItemListener {
         shiftsToAccount[iterator] = new ShiftInstance(beispiel, "30.05.2012", 5f, "heino"+iterator, ""+iterator);
       }
       PdfCreator.createAccounting(shiftsToAccount);
+      /*
       SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
       Calendar cal = Calendar.getInstance();
       Date date = cal.getTime();
+    try {
+      date = sdf.parse("30.05.2012");
+      System.out.println("dateToString: "+date.toString());
+      cal.setTime(date);
+      System.out.println("cal.getDay: "+cal.get(Calendar.DAY_OF_MONTH));
+      System.out.println("cal.getMonth: "+cal.get(Calendar.MONTH));
+      System.out.println("cal.getYear: "+cal.get(Calendar.YEAR));
+      date = sdf.parse("01.01.2012");
+      System.out.println("dateToString: "+date.toString());
+      cal.setTime(date);
+      System.out.println("cal.getDay: "+cal.get(Calendar.DAY_OF_MONTH));
+      System.out.println("cal.getMonth: "+cal.get(Calendar.MONTH));
+      System.out.println("cal.getYear: "+cal.get(Calendar.YEAR));
+      date = sdf.parse("31.12.2012");
+      System.out.println("dateToString: "+date.toString());
+      cal.setTime(date);
+      System.out.println("cal.getDay: "+cal.get(Calendar.DAY_OF_MONTH));
+      System.out.println("cal.getMonth: "+cal.get(Calendar.MONTH));
+      System.out.println("cal.getYear: "+cal.get(Calendar.YEAR));
+    } catch (ParseException ex) {
+      ex.printStackTrace();
+      System.out.println("das war wohl nichts");
+    }
+      */
       ArrayList<ShiftInstance> testList = new ArrayList<>();
       for (int it=0; it<shiftsToAccount.length; it++){
         testList.add(shiftsToAccount[it]);
