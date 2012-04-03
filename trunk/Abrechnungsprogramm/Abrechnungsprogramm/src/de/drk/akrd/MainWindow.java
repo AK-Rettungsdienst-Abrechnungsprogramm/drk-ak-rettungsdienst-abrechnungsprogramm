@@ -129,8 +129,12 @@ public class MainWindow extends JFrame implements ItemListener {
       */
       ArrayList<ShiftInstance> testList = new ArrayList<>();
       for (int it=0; it<shiftsToAccount.length; it++){
-        testList.add(shiftsToAccount[it]);
+        //testList.add(shiftsToAccount[it]);
       }
+      Shift beispiel = shiftContainer.getShifts()[0];
+      testList.add(new ShiftInstance(beispiel, "30.05.2012", 5f, "musterfrau?", "name geändert"));
+      beispiel = shiftContainer.getShifts()[2];
+      testList.add(new ShiftInstance(beispiel, "06.06.2012", 5f, "horst5", "war auch super!"));
       XMLEditor.storeShifts(testList, 2012);
       
       /// END TEST ///
