@@ -21,7 +21,9 @@ public class ShiftInstance {
     this.partner = partner;
     this.comment = comment;
   }
-  public ShiftInstance(Shift instanceOf, String date, int actualStartingTime, int actualEndTime, int actualBreakTime, float timeAsFloat, String partner, String comment) {
+  public ShiftInstance(Shift instanceOf, String date, int actualStartingTime, 
+          int actualEndTime, int actualBreakTime, float timeAsFloat, 
+          String partner, String comment) {
     this.instanceOf = instanceOf;
     this.date = date;
     this.actualStartingTime = actualStartingTime;

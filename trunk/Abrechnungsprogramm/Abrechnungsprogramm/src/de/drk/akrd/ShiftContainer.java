@@ -5,8 +5,8 @@ import java.util.ArrayList;
 
 // Contains all shifts and takes care of loading and managing
 public class ShiftContainer {
-	
-  public static final int KTW = 0;
+	private static ArrayList<Shift> shifts = new ArrayList<>();
+    public static final int KTW = 0;
 	public static final int RTW = 1;
 	public static final int KIZA = 2;
 	public static final int BREISACH = 3;
@@ -41,8 +41,6 @@ public class ShiftContainer {
         }
     }
 	
-	private ArrayList<Shift> shifts = new ArrayList<>();
-	
 	public ShiftContainer()
 	{
 		
@@ -57,6 +55,10 @@ public class ShiftContainer {
 	{
 		return (Shift[]) shifts.toArray(new Shift[shifts.size()]);
 	}
+    
+    public static  ArrayList<Shift> getShiftsAsList() {
+      return shifts;
+    }
 	
 	public Shift[] filterShifts(ShiftContainer.ShiftType type)
 	{

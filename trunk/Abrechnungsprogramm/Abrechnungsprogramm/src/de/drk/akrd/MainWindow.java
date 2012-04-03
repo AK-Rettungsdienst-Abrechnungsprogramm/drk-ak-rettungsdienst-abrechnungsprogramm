@@ -51,6 +51,7 @@ import javax.swing.event.ChangeEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class MainWindow extends JFrame implements ItemListener {
 
@@ -135,8 +136,15 @@ public class MainWindow extends JFrame implements ItemListener {
       testList.add(new ShiftInstance(beispiel, "30.05.2012", 5f, "musterfrau?", "name geändert"));
       beispiel = shiftContainer.getShifts()[2];
       testList.add(new ShiftInstance(beispiel, "06.06.2012", 5f, "horst5", "war auch super!"));
-      XMLEditor.storeShifts(testList, 2012);
-      
+      //XMLEditor.storeShifts(testList, 2012);
+      ArrayList<ArrayList<ShiftInstance>> schichten = XMLEditor.loadSavedShifts(2012);
+      for (Iterator<ArrayList<ShiftInstance>> it = schichten.iterator(); it.hasNext();) {
+        ArrayList<ShiftInstance> arrayList = it.next();
+        for (Iterator<ShiftInstance> it1 = arrayList.iterator(); it1.hasNext();) {
+          ShiftInstance shiftInstance = it1.next();
+          System.out.println("schicht geladen: "+shiftInstance.getDate()+" "+shiftInstance.getId());
+        }
+      }
       /// END TEST ///
       
       // Set Shift Type Chooser from Enum

@@ -7,6 +7,9 @@ package de.drk.akrd;
 import de.drk.akrd.PersonalData.Qualification;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.ListIterator;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
@@ -115,7 +118,7 @@ public class XMLEditor {
   }
 
   /**
-   * loads the personal data from the data file.
+   * load the personal data from the data file.
    * To access the data use PersonalData.getInstance();
    * @return true if successful, false othewise (i.e. file not found)
    */
@@ -146,6 +149,38 @@ public class XMLEditor {
     return false;
   }
 
+  public static ArrayList<ArrayList<ShiftInstance>> loadSavedShifts(int year) {
+    SAXBuilder saxBuilder = new SAXBuilder();
+    File xmlFile = new File("Schichten"+year+".xml");
+    try {
+      ArrayList<ArrayList<ShiftInstance>> outputList = new ArrayList<>();
+      Document document = (Document) saxBuilder.build(xmlFile);
+      Element rootNode = document.getRootElement();
+      List monthList = rootNode.getChildren();
+      for (int i=0; i < monthList.size(); i++) {
+        Element monthNode = (Element) monthList.get(i);
+        ArrayList<ShiftInstance> shiftListOfMonth = new ArrayList<>();
+        List shiftNodesOfMonth = monthNode.getChildren();
+        for (int j=0; j<shiftNodesOfMonth.size(); j++) {
+          Element currentNode = (Element) shiftNodesOfMonth.get(j);
+          shiftListOfMonth.add(new ShiftInstance(
+                  Shift.getShiftFromId(currentNode.getChildText("id")), 
+                  currentNode.getChildText("date"),
+                  Integer.parseInt(currentNode.getChildText("actStartingTime")),
+                  Integer.parseInt(currentNode.getChildText("actEndTime")),
+                  Integer.parseInt(currentNode.getChildText("actBreakTime")),
+                  Float.parseFloat(currentNode.getChildText("timeAsFloat")),
+                  currentNode.getChildText("partner"),
+                  currentNode.getChildText("comment")));
+        }
+        outputList.add(shiftListOfMonth);
+      }
+      return outputList;
+    } catch (JDOMException | IOException | NumberFormatException e) {
+      System.out.println("Exception in XMLEditor.loadSavedShifts: "+e.getMessage());
+    }
+    return new ArrayList<ArrayList<ShiftInstance>>() {};
+  }
   /**
    * store a list of shiftInstances to a xml-file.
    * if the shift already exist it will be updated
@@ -186,7 +221,6 @@ public class XMLEditor {
             currentNode.getChild("actBreakTime").setText(Integer.toString(currentShift.getActualBreakTime()));
             currentNode.getChild("timeAsFloat").setText(Float.toString(currentShift.getTimeAsFloat()));
             currentNode.getChild("partner").setText(currentShift.getPartner());
-            System.out.println("update partner: "+currentShift.getPartner());
             currentNode.getChild("comment").setText(currentShift.getComment());
           }
         }
@@ -200,6 +234,11 @@ public class XMLEditor {
     return false;
   }
 
+  /**
+   * add shift data to the element
+   * @param element
+   * @param shift 
+   */
   private static void addShiftToElement(Element element, ShiftInstance shift) {
     if (element == null) {
       return;
@@ -214,6 +253,13 @@ public class XMLEditor {
     element.addContent(new Element("comment").setText(shift.getComment()));
   }
 
+  /**
+   * find a specific shift in a list of elements using date and shift-id as
+   * identifier 
+   * @param elements
+   * @param tag shift-date+shift-id (i.e. 01.11.2012K01)
+   * @return the element if search is successful, null otherwise
+   */
   private static Element findElement(List<Element> elements, String tag) {
     String text;
     for (int i = 0; i < elements.size(); i++) {

@@ -1,6 +1,9 @@
 package de.drk.akrd;
 
 // Represents a shift
+
+import java.util.ArrayList;
+
 public class Shift {
 
   private String id;
@@ -43,6 +46,20 @@ public class Shift {
     }
   }
 
+  /**
+   * identifie a shift by its id and return it
+   * @param id the shift id
+   * @return Shift-Object if the shift exists, null oterwise
+   */
+  public static Shift getShiftFromId(String id) {
+    ArrayList<Shift> shifts = ShiftContainer.getShiftsAsList();
+    for (int i=0; i<shifts.size(); i++) {
+      if (shifts.get(i).getId().equals(id)) {
+        return shifts.get(i);
+      }
+    }
+    return null;
+  }
   /**
    * @return the breakTime
    */
