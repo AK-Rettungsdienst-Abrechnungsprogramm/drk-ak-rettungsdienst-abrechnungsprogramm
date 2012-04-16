@@ -1,80 +1,59 @@
 package de.drk.akrd;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
-//import com.toedter.*;
-import com.toedter.calendar.JCalendar;
-import com.toedter.calendar.JDayChooser;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import javax.swing.BoxLayout;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
-import javax.swing.Popup;
-import javax.swing.PopupFactory;
 import javax.swing.SpringLayout;
-import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import de.drk.akrd.ShiftContainer.ShiftType;
 import javax.swing.JButton;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ChangeEvent;
 import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class MainWindow extends JFrame implements ItemListener {
+public class MainWindow extends JFrame{
 
+	// Listeners and Adapters
+	private MouseAdapter mouseAdapter = new AKRDMouseAdapter(this);
+	private ItemListener itemListener = new AKRDItemListener(this);
+	
 	// Personal Info Components
 	private JPanel personalInfoTab = new JPanel();
 	private String[] trainingStrings = { "Rettungshelfer", "Rettungssanitäter",
 			"Rettungsassistent" };
 	private JComboBox trainingsChooser = new JComboBox(trainingStrings);
-	private JTextField accountNo = new JTextField();
-	private JTextField blz = new JTextField();
-	private JCheckBox bankInfoKnown = new JCheckBox();
+	protected JTextField accountNo = new JTextField();
+	protected JTextField blz = new JTextField();
+	protected JCheckBox bankInfoKnown = new JCheckBox();
 
 	// Shift Collector Components
 	private JPanel shiftCollector = new JPanel();
-	private ShiftContainer shiftContainer = new ShiftContainer();
+	protected ShiftContainer shiftContainer = new ShiftContainer();
 	
-	private JComboBox shiftTypeChooser = new JComboBox();
+	protected JComboBox shiftTypeChooser = new JComboBox();
 	private final JLabel lblDatum = new JLabel("Datum");
 	private final JLabel lblSchichtart = new JLabel("Schichtart");
 	private JTextField textField;
-	private JTable shiftTable;
+	protected JTable shiftTable;
 	private JButton calendarButton = new JButton("Kalender");
-	private DefaultTableModel shiftTableModel = new DefaultTableModel(
+	protected DefaultTableModel shiftTableModel = new DefaultTableModel(
 			new Object[][] {
 			},
 			new String[] {
@@ -176,7 +155,7 @@ public class MainWindow extends JFrame implements ItemListener {
 				.setToolTipText("Wähle hier deine Ausbildung aus. Das ist wichtig für die Tarifbestimmung.");
 		personalInfoTab.add(new JSeparator(JSeparator.HORIZONTAL));
 		personalInfoTab.add(new JSeparator(JSeparator.HORIZONTAL));
-		bankInfoKnown.addItemListener(this);
+		bankInfoKnown.addItemListener(this.itemListener);
 		personalInfoTab.add(new JLabel("Bankdaten bekannt"));
 		bankInfoKnown
 				.setToolTipText("Wenn deine Bankdaten der Personalabteilung bereits vorliegen, brauchst du sie nicht nochmal angeben.");
@@ -199,16 +178,9 @@ public class MainWindow extends JFrame implements ItemListener {
 		
 		textField = new JTextField();
 		textField.setColumns(10);
-		calendarButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				  PopupFactory factory = PopupFactory.getSharedInstance();
-			      Popup popup = factory.getPopup(e.getComponent().getParent(), new JCalendar(), e.getComponent().getX(), e.getComponent().getY());
-			      popup.show();
-			}
-		});
+		calendarButton.addMouseListener(mouseAdapter);
 		
-		calendarButton.addItemListener(this);
+		calendarButton.addItemListener(this.itemListener);
 		GroupLayout gl_shiftCollector = new GroupLayout(shiftCollector);
 		gl_shiftCollector.setHorizontalGroup(
 			gl_shiftCollector.createParallelGroup(Alignment.LEADING)
@@ -245,7 +217,7 @@ public class MainWindow extends JFrame implements ItemListener {
 							.addComponent(calendarButton)))
 					.addGap(150))
 		);
-		shiftTypeChooser.addItemListener(this);
+		shiftTypeChooser.addItemListener(this.itemListener);
 		
 		shiftTable = new JTable();
 		shiftTable.setShowGrid(false);
@@ -280,26 +252,6 @@ public class MainWindow extends JFrame implements ItemListener {
 		f.setVisible(true);
 	}
 
-	public void itemStateChanged(ItemEvent e) {
 
-		Object source = e.getItemSelectable();
-		if (source == bankInfoKnown) {
-			blz.setEditable(!blz.isEditable());
-			accountNo.setEditable(!accountNo.isEditable());
-			return;
-		}
-		if(source == shiftTypeChooser)
-		{
-		
-            ShiftType type = (ShiftType)shiftTypeChooser.getSelectedItem();
-			Object[][] data = ShiftContainer.toTableData(shiftContainer.filterShifts(type));
-			shiftTableModel.setNumRows(0);
-			for(int i = 0; i < data.length; i++)
-			{
-				shiftTableModel.addRow(data[i]);
-			}
-			return;
-			
-		}
-	}
+	
 }
