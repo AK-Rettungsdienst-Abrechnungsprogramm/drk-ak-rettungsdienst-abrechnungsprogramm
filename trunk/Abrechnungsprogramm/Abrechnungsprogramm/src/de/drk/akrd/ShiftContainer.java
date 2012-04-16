@@ -13,7 +13,7 @@ public class ShiftContainer {
     public static final int BABY = 4;
     public static final int EVENT = 5;
     public static final int KVS = 6;  
-    public enum ShiftType {RTW, KTW, KIZA, BREISACH, BABY, EVENT, KVS;
+    public enum ShiftType {Alle, RTW, KTW, KIZA, BREISACH, BABY, EVENT, KVS;
     	
     	// Override the toString method to get nicer strings for the shiftTypeChooser
     	@Override
@@ -60,7 +60,7 @@ public class ShiftContainer {
       return shifts;
     }
 	/**
-	 * 
+	 * This method is private, since 
 	 * @param type
 	 * @param day - 0 = weekday, 1 = holyday or saturday, 2 = sunday, -1 = no date filtering
 	 * @return
@@ -74,7 +74,7 @@ public class ShiftContainer {
 		
 		for(int i=0; i < shifts.size(); i++)
 		{
-			if(shifts.get(i).getType() == type)
+			if(type == ShiftType.Alle || shifts.get(i).getType() == type)
 			{
 				filteredShifts.add(shifts.get(i));
 			}
