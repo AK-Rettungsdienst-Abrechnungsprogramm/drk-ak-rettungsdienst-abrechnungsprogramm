@@ -11,14 +11,25 @@ public class Shift {
   private int endTime;
   private ShiftContainer.ShiftType type;
   private int breakTime;
-  private boolean external; // external shift? (i.e. Breisach and Kirchzarten)
+  private int days;
+  
+  public int getDays() {
+	return days;
+}
 
-  public Shift(String id, int startingTime, int endTime, int breakTime) {
+public void setDays(int days) {
+	this.days = days;
+}
+
+private boolean external; // external shift? (i.e. Breisach and Kirchzarten)
+
+  public Shift(String id, int startingTime, int endTime, int breakTime, int days) {
     super();
     this.id = id;
     this.startingTime = startingTime;
     this.endTime = endTime;
     this.breakTime = breakTime;
+    this.days = days;
     switch (id.substring(0, 2)) {
       case "KV":
         type = ShiftContainer.ShiftType.KVS;

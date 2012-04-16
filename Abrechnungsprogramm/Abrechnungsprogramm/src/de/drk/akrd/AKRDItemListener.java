@@ -39,7 +39,7 @@ public class AKRDItemListener implements ItemListener {
 		if(source == mainWindow.shiftTypeChooser)
 		{
             ShiftType type = (ShiftType)mainWindow.shiftTypeChooser.getSelectedItem();
-			Object[][] data = ShiftContainer.toTableData(mainWindow.shiftContainer.filterShifts(type));
+			Object[][] data = ShiftContainer.toTableData(mainWindow.shiftContainer.filterShifts(type, -1));
 			mainWindow.shiftTableModel.setNumRows(0);
 			for(int i = 0; i < data.length; i++)
 			{

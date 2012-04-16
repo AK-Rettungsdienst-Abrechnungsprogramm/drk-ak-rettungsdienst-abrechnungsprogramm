@@ -69,7 +69,21 @@ public class XMLEditor {
         int begin = Integer.parseInt(node.getChildText("von"));
         int end = Integer.parseInt(node.getChildText("bis"));
         int breakTime = Integer.parseInt(node.getChildText("Pause"));
-        shiftList.add(new Shift(shiftId, begin, end, breakTime));
+        
+        // Identify days
+        String daysString = node.getChildText("Tage");
+        int days = -1;
+        if(daysString.equals("Mo-Fr")) days = 0;
+        if(daysString.equals("Sa")) days = 1;
+        if(daysString.equals("So")) days = 2;
+        if(daysString.equals("Mo-So")) days = 3;
+        if(days == -1)
+        	{
+        	System.err.println("Could not detect days for shift! Malformed XML!");
+        	System.err.println("Caused by shift: " + node.getChildText("Schichtname"));
+        	}
+        
+        shiftList.add(new Shift(shiftId, begin, end, breakTime, days));
       }
       return true;
     } catch (JDOMException | IOException | NumberFormatException e) {

@@ -59,10 +59,16 @@ public class ShiftContainer {
     public static  ArrayList<Shift> getShiftsAsList() {
       return shifts;
     }
-	
-	public Shift[] filterShifts(ShiftContainer.ShiftType type)
+	/**
+	 * 
+	 * @param type
+	 * @param day - 0 = weekday, 1 = holyday or saturday, 2 = sunday, -1 = no date filtering
+	 * @return
+	 */
+	public Shift[] filterShifts(ShiftContainer.ShiftType type, int day)
 	{
 		ArrayList<Shift> filteredShifts = new ArrayList<Shift>();
+		ArrayList<Shift> resultingShifts = new ArrayList<Shift>();
 		
 		// Iterate over all shifts and filter by type
 		
@@ -74,7 +80,18 @@ public class ShiftContainer {
 			}
 		}
 		
-		return (Shift[]) filteredShifts.toArray(new Shift[filteredShifts.size()]);
+		// iterate over all filtered shifts and filter again by date
+		
+		for(int i=0; i < filteredShifts.size(); i++)
+		{
+			Shift element = filteredShifts.get(i);
+			if(day == -1 || element.getDays() == day || element.getDays() == 3)
+			{
+				resultingShifts.add(element);
+			}
+		}
+		
+		return (Shift[]) resultingShifts.toArray(new Shift[resultingShifts.size()]);
 	}
 	
 	public static Object[][] toTableData(Shift[] input)
