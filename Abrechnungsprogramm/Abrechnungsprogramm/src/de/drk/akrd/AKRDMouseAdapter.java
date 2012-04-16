@@ -40,7 +40,7 @@ public class AKRDMouseAdapter extends MouseAdapter {
 
 		Object source = e.getSource();
 
-		if (source == mainWindow.calendarButton) {
+		if (source == mainWindow.dateField) {
 			PopupFactory factory = PopupFactory.getSharedInstance();
 
 			JPanel panel = new JPanel();
@@ -68,9 +68,26 @@ public class AKRDMouseAdapter extends MouseAdapter {
 			dateString.append(Integer.toString(month));
 			dateString.append(".");
 			dateString.append(Integer.toString(cal.get(Calendar.YEAR)));
+			
+			// Set the selected type of day in mainWindow
+			int dayType = cal.get(Calendar.DAY_OF_WEEK);
+			
+			switch(dayType)
+			{
+			case 1: // sunday
+				mainWindow.currentlySelectedDay = 2;
+				break;
+			case 7: // saturday
+				mainWindow.currentlySelectedDay = 1;
+				break;
+			default:
+				mainWindow.currentlySelectedDay = 0;
+				break;
+			}
 	
 			mainWindow.dateField.setText(dateString.toString());
 			calendarPopup.hide();
+			mainWindow.updateShiftContainer();
 		}
 	}
 
