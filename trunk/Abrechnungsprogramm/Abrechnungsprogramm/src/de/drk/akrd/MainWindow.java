@@ -50,9 +50,9 @@ public class MainWindow extends JFrame{
 	protected JComboBox shiftTypeChooser = new JComboBox();
 	private final JLabel lblDatum = new JLabel("Datum");
 	private final JLabel lblSchichtart = new JLabel("Schichtart");
-	private JTextField textField;
+	protected JTextField dateField;
 	protected JTable shiftTable;
-	private JButton calendarButton = new JButton("Kalender");
+	protected JButton calendarButton = new JButton("Kalender");
 	protected DefaultTableModel shiftTableModel = new DefaultTableModel(
 			new Object[][] {
 			},
@@ -176,8 +176,9 @@ public class MainWindow extends JFrame{
 		
 		JScrollPane scrollPane = new JScrollPane();
 		
-		textField = new JTextField();
-		textField.setColumns(10);
+		dateField = new JTextField();
+		dateField.setEditable(false);
+		dateField.setColumns(10);
 		calendarButton.addMouseListener(mouseAdapter);
 		
 		calendarButton.addItemListener(this.itemListener);
@@ -193,7 +194,7 @@ public class MainWindow extends JFrame{
 					.addGroup(gl_shiftCollector.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_shiftCollector.createParallelGroup(Alignment.LEADING, false)
 							.addComponent(shiftTypeChooser, 0, 0, Short.MAX_VALUE)
-							.addComponent(textField))
+							.addComponent(dateField))
 						.addComponent(calendarButton))
 					.addGap(21)
 					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE)
@@ -212,7 +213,7 @@ public class MainWindow extends JFrame{
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addGroup(gl_shiftCollector.createParallelGroup(Alignment.BASELINE)
 								.addComponent(lblDatum)
-								.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addComponent(dateField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(calendarButton)))
 					.addGap(150))
@@ -251,7 +252,4 @@ public class MainWindow extends JFrame{
 		JFrame f = new MainWindow();
 		f.setVisible(true);
 	}
-
-
-	
 }
