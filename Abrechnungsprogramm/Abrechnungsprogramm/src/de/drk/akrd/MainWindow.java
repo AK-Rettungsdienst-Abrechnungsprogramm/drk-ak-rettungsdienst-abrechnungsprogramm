@@ -21,8 +21,9 @@ import javax.swing.table.DefaultTableModel;
 
 import de.drk.akrd.ShiftContainer.ShiftType;
 import javax.swing.JButton;
-import org.eclipse.wb.swing.FocusTraversalOnArray;
-import java.awt.Component;
+import java.util.ArrayList;
+import java.util.Collections;
+
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
@@ -67,7 +68,7 @@ public class MainWindow extends JFrame {
 					"Ende", "Pause" });
 	protected DefaultTableModel registeredShiftsTableModel = new DefaultTableModel(
 			new Object[][] {}, new String[] { "Datum", "Beginn", "Ende",
-					"Pause", "Dezimal", "Schichtpartner", "Kommentar"  });
+					"Pause", "Dezimal", "Schichtpartner", "Kommentar", "Verdienst" });
 	private JTable registeredShiftsTable;
 	private final JLabel lblSchichtpartner = new JLabel("Schichtpartner:");
 	protected JTextField shiftPartnerField;
@@ -586,13 +587,7 @@ public class MainWindow extends JFrame {
 		scrollPane.setViewportView(shiftTable);
 		scrollPane2.setViewportView(registeredShiftsTable);
 		shiftEditor.setLayout(gl_shiftEditor);
-		shiftEditor.setFocusTraversalPolicy(new FocusTraversalOnArray(
-				new Component[] { shiftPartnerField, beginField, endField,
-						breakField, commentField, submitButton, lblKommentar,
-						dateField, lblSchichtart, lblDatum, shiftTypeChooser,
-						lblSchichtpartner, lblBeginn, lblPause, lblEnde,
-						scrollPane, shiftTable, scrollPane2,
-						registeredShiftsTable }));
+		
 		// basePanel.add(tabbedPane);
 		getContentPane().add(tabbedPane);
 		
@@ -628,14 +623,24 @@ public class MainWindow extends JFrame {
 	}
 
 	public void updateRegisteredShifts() {
+		
+		float completeSalary = 0f;
+		
 		Object[][] data = ShiftContainer
 				.shiftInstancesToTableData((ShiftInstance[]) shiftContainer.shiftInstances
 						.toArray(new ShiftInstance[shiftContainer.shiftInstances
 								.size()]));
 		registeredShiftsTableModel.setNumRows(0);
 		for (int i = 0; i < data.length; i++) {
-			registeredShiftsTableModel.addRow(data[i]);
+			ArrayList<Object> list = new ArrayList<Object>();
+			Collections.addAll(list, data[i]);
+			float salary = 8.8f * shiftContainer.shiftInstances.get(i).getTimeAsFloat();
+			completeSalary += salary;
+			list.add(String.format("%.2f", salary) + "€");
+			registeredShiftsTableModel.addRow(list.toArray());
 		}
+		Object[] lastLine = new Object[] {"","","","","","","Gesamt",String.format("%.2f", completeSalary) + "€"};
+		registeredShiftsTableModel.addRow(lastLine);
 
 	}
 	
