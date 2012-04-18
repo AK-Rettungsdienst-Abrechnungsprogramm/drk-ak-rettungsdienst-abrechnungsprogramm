@@ -5,6 +5,9 @@
 package de.drk.akrd;
 
 //import com.sun.crypto.provider.RC2Cipher;
+
+import sun.util.resources.CalendarData_in_ID;
+
 //import sun.security.jca.GetInstance;
 
 /**
@@ -21,6 +24,8 @@ public class PersonalData {
   private int blz;
   private Qualification qualification;
   private boolean dataKnown;
+  private String emailAdress;
+  private String calendarId;
   public static enum Qualification {
     RH, RS, RA;
     @Override
@@ -70,7 +75,7 @@ public class PersonalData {
    */
   public static void setData(String firstName, String LastName,
           String BankNameAndCity, int accountNumber, int blz, Qualification qualifikation,
-          boolean dataKnown) {
+          boolean dataKnown, String emailAdress, String calendarId) {
     if(instance==null) {
       instance = new PersonalData();
     }
@@ -83,6 +88,8 @@ public class PersonalData {
     instance.dataKnown = dataKnown;
     instance.dataSet = true;
     dataSet = true;
+    instance.emailAdress = emailAdress;
+    instance.calendarId = calendarId;
     XMLEditor.writePersonalData(instance);
   }
 
@@ -139,7 +146,30 @@ public class PersonalData {
    * @return the qualification (see enum PersonalData.Qualification)
    */
   public Qualification getQualification() {
-    return qualification;
+    return instance.qualification;
+  }
+  /**
+   * 
+   * @return the google calendar Id
+   */
+  public String getCalendarId() {
+    return instance.calendarId;
+  }
+
+  /**
+   * 
+   * @return weather the data is already set
+   */
+  public static boolean isDataSet() {
+    return instance.dataSet;
+  }
+
+  /**
+   * 
+   * @return the email adress
+   */
+  public String getEmailAdress() {
+    return instance.emailAdress;
   }
   
 }

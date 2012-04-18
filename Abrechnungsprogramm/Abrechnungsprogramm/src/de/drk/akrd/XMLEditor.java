@@ -107,13 +107,15 @@ public class XMLEditor {
     File dataFile = new File("PersonalData.xml");
     try (FileWriter fileWriter = new FileWriter(dataFile)) {
       String[] elementNames = new String[]{"firstName", "lastName",
-        "bankaccountAndCity", "accountNumber", "blz", "qualification", "dataKnown"};
+        "bankaccountAndCity", "accountNumber", "blz", "qualification", "dataKnown", "emailAdress", "calendarId"};
       String[] elemetArray = new String[]{dataInstance.getFirstName(),
         dataInstance.getLastName(), dataInstance.getBankNameAndCity(),
         Integer.toString(dataInstance.getAccountNumber()),
         Integer.toString(dataInstance.getBlz()),
         dataInstance.getQualification().name(),
-        Boolean.toString(dataInstance.isDataKnown())};
+        Boolean.toString(dataInstance.isDataKnown()),
+      dataInstance.getEmailAdress(),
+      dataInstance.getCalendarId()};
       fileWriter.write("<personalData>" + System.getProperty("line.separator"));
       fileWriter.write("  <dataset>" + System.getProperty("line.separator"));
       for (int i = 0; i < elementNames.length; i++) {
@@ -146,6 +148,10 @@ public class XMLEditor {
         List nodeList = documentElement.getChildren("dataset");
         for (int i = 0; i < nodeList.size(); i++) {
           Element node = (Element) nodeList.get(i);
+          String emailAdress = node.getChildText("emailAdress");
+          if(emailAdress.equals("null")) emailAdress = null;
+          String calendarId = node.getChildText("calendarId");
+          if(calendarId.equals("null")) calendarId= null;
           PersonalData.setData(
                   node.getChildText("firstName"),
                   node.getChildText("lastName"),
@@ -153,7 +159,9 @@ public class XMLEditor {
                   Integer.parseInt(node.getChildText("accountNumber")),
                   Integer.parseInt(node.getChildText("blz")),
                   PersonalData.Qualification.valueOf(node.getChildText("qualification")),
-                  Boolean.getBoolean(node.getChildText("dataKnown")));
+                  Boolean.getBoolean(node.getChildText("dataKnown")),
+                  emailAdress,
+                  calendarId);
         }
         return true;
       } catch (JDOMException | IOException | NumberFormatException e) {
