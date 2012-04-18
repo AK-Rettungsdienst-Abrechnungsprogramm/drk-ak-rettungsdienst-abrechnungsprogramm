@@ -32,6 +32,10 @@ import javax.swing.JToggleButton;
 import org.eclipse.wb.swing.FocusTraversalOnArray;
 import java.awt.Component;
 import java.awt.event.MouseMotionAdapter;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.RowSpec;
+import com.jgoodies.forms.factories.FormFactory;
 
 public class MainWindow extends JFrame {
 
@@ -49,11 +53,12 @@ public class MainWindow extends JFrame {
 	protected JCheckBox bankInfoKnown = new JCheckBox();
 
 	// Shift Collector Components
-	
+
 	// This int holds the TYPE of day that is currently selected
-	// types are: 0 = weekday, 1 = holyday or saturday, 2 = sunday, -1 means not set
+	// types are: 0 = weekday, 1 = holyday or saturday, 2 = sunday, -1 means not
+	// set
 	protected int currentlySelectedDay = -1;
-	
+
 	private JPanel shiftEditor = new JPanel();
 	protected ShiftContainer shiftContainer = new ShiftContainer(this);
 
@@ -66,8 +71,8 @@ public class MainWindow extends JFrame {
 			new Object[][] {}, new String[] { "Schichtkürzel", "Beginn",
 					"Ende", "Pause" });
 	protected DefaultTableModel registeredShiftsTableModel = new DefaultTableModel(
-			new Object[][] {}, new String[] { "Datum", "Beginn",
-					"Ende", "Pause", "Schichtpartner", "Kommentar" });
+			new Object[][] {}, new String[] { "Datum", "Beginn", "Ende",
+					"Pause", "Schichtpartner", "Kommentar" });
 	private JTable registeredShiftsTable;
 	private final JLabel lblSchichtpartner = new JLabel("Schichtpartner:");
 	protected JTextField shiftPartnerField;
@@ -77,81 +82,93 @@ public class MainWindow extends JFrame {
 	protected JButton submitButton;
 	private final JLabel lblKommentar = new JLabel("Kommentar");
 	protected JTextField commentField = new JTextField();
+	private final JPanel panel = new JPanel();
+	private final JLabel lblName = new JLabel("Name:");
+	private final JTextField textField = new JTextField();
+	private final JLabel lblAusbildung = new JLabel("Ausbildung:");
+	private final JPanel panel_1 = new JPanel();
+	private final JLabel lblBlz = new JLabel("BLZ");
+	private final JLabel lblKontonummer = new JLabel("Kontonummer:");
 
 	public MainWindow() {
+		accountNo.setColumns(10);
+		blz.setColumns(10);
 		commentField.setColumns(10);
 
 		// Setup ShiftContainer
 		shiftContainer.loadShifts("Schichten.xml");
-//		// / TEST ///
-//		// personaldatatest
-//		PersonalData.setData("Heino", "Meyer", "Privatbank Musterhausen", 1234,
-//				666, PersonalData.Qualification.RA, false);
-//		// XMLEditor.writePersonalData(PersonalData.getInstance());
-//		boolean loadPersonalData = XMLEditor.loadPersonalData();
-//		ShiftInstance[] shiftsToAccount = new ShiftInstance[46];
-//
-//		int iterator = 0;
-//		for (iterator = 0; iterator < 46; iterator++) {
-//			int shiftIndex = (iterator >= shiftContainer.getShifts().length) ? 0
-//					: iterator;
-//			Shift beispiel = shiftContainer.getShifts()[shiftIndex];
-//			shiftsToAccount[iterator] = new ShiftInstance(beispiel,
-//					"30.05.2012", 5f, "heino" + iterator, "" + iterator);
-//		}
-//		PdfCreator.createAccounting(shiftsToAccount);
-//		/*
-//		 * SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy"); Calendar
-//		 * cal = Calendar.getInstance(); Date date = cal.getTime(); try { date =
-//		 * sdf.parse("30.05.2012");
-//		 * System.out.println("dateToString: "+date.toString());
-//		 * cal.setTime(date);
-//		 * System.out.println("cal.getDay: "+cal.get(Calendar.DAY_OF_MONTH));
-//		 * System.out.println("cal.getMonth: "+cal.get(Calendar.MONTH));
-//		 * System.out.println("cal.getYear: "+cal.get(Calendar.YEAR)); date =
-//		 * sdf.parse("01.01.2012");
-//		 * System.out.println("dateToString: "+date.toString());
-//		 * cal.setTime(date);
-//		 * System.out.println("cal.getDay: "+cal.get(Calendar.DAY_OF_MONTH));
-//		 * System.out.println("cal.getMonth: "+cal.get(Calendar.MONTH));
-//		 * System.out.println("cal.getYear: "+cal.get(Calendar.YEAR)); date =
-//		 * sdf.parse("31.12.2012");
-//		 * System.out.println("dateToString: "+date.toString());
-//		 * cal.setTime(date);
-//		 * System.out.println("cal.getDay: "+cal.get(Calendar.DAY_OF_MONTH));
-//		 * System.out.println("cal.getMonth: "+cal.get(Calendar.MONTH));
-//		 * System.out.println("cal.getYear: "+cal.get(Calendar.YEAR)); } catch
-//		 * (ParseException ex) { ex.printStackTrace();
-//		 * System.out.println("das war wohl nichts"); }
-//		 */
-//		ArrayList<ShiftInstance> testList = new ArrayList<>();
-//		for (int it = 0; it < shiftsToAccount.length; it++) {
-//			// testList.add(shiftsToAccount[it]);
-//		}
-//		Shift beispiel = shiftContainer.getShifts()[0];
-//		testList.add(new ShiftInstance(beispiel, "30.05.2012", 5f,
-//				"musterfrau?", "name geändert"));
-//		beispiel = shiftContainer.getShifts()[2];
-//		testList.add(new ShiftInstance(beispiel, "06.06.2012", 5f, "horst5",
-//				"war auch super!"));
-//		// XMLEditor.storeShifts(testList, 2012);
-//		ArrayList<ArrayList<ShiftInstance>> schichten = XMLEditor
-//				.loadSavedShifts(2012);
-//		for (Iterator<ArrayList<ShiftInstance>> it = schichten.iterator(); it
-//				.hasNext();) {
-//			ArrayList<ShiftInstance> arrayList = it.next();
-//			for (Iterator<ShiftInstance> it1 = arrayList.iterator(); it1
-//					.hasNext();) {
-//				ShiftInstance shiftInstance = it1.next();
-//				System.out
-//						.println("schicht geladen: " + shiftInstance.getDate()
-//								+ " " + shiftInstance.getId());
-//			}
-//		}
-//		// / END TEST ///
+		// // / TEST ///
+		// // personaldatatest
+		// PersonalData.setData("Heino", "Meyer", "Privatbank Musterhausen",
+		// 1234,
+		// 666, PersonalData.Qualification.RA, false);
+		// // XMLEditor.writePersonalData(PersonalData.getInstance());
+		// boolean loadPersonalData = XMLEditor.loadPersonalData();
+		// ShiftInstance[] shiftsToAccount = new ShiftInstance[46];
+		//
+		// int iterator = 0;
+		// for (iterator = 0; iterator < 46; iterator++) {
+		// int shiftIndex = (iterator >= shiftContainer.getShifts().length) ? 0
+		// : iterator;
+		// Shift beispiel = shiftContainer.getShifts()[shiftIndex];
+		// shiftsToAccount[iterator] = new ShiftInstance(beispiel,
+		// "30.05.2012", 5f, "heino" + iterator, "" + iterator);
+		// }
+		// PdfCreator.createAccounting(shiftsToAccount);
+		// /*
+		// * SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy"); Calendar
+		// * cal = Calendar.getInstance(); Date date = cal.getTime(); try { date
+		// =
+		// * sdf.parse("30.05.2012");
+		// * System.out.println("dateToString: "+date.toString());
+		// * cal.setTime(date);
+		// * System.out.println("cal.getDay: "+cal.get(Calendar.DAY_OF_MONTH));
+		// * System.out.println("cal.getMonth: "+cal.get(Calendar.MONTH));
+		// * System.out.println("cal.getYear: "+cal.get(Calendar.YEAR)); date =
+		// * sdf.parse("01.01.2012");
+		// * System.out.println("dateToString: "+date.toString());
+		// * cal.setTime(date);
+		// * System.out.println("cal.getDay: "+cal.get(Calendar.DAY_OF_MONTH));
+		// * System.out.println("cal.getMonth: "+cal.get(Calendar.MONTH));
+		// * System.out.println("cal.getYear: "+cal.get(Calendar.YEAR)); date =
+		// * sdf.parse("31.12.2012");
+		// * System.out.println("dateToString: "+date.toString());
+		// * cal.setTime(date);
+		// * System.out.println("cal.getDay: "+cal.get(Calendar.DAY_OF_MONTH));
+		// * System.out.println("cal.getMonth: "+cal.get(Calendar.MONTH));
+		// * System.out.println("cal.getYear: "+cal.get(Calendar.YEAR)); } catch
+		// * (ParseException ex) { ex.printStackTrace();
+		// * System.out.println("das war wohl nichts"); }
+		// */
+		// ArrayList<ShiftInstance> testList = new ArrayList<>();
+		// for (int it = 0; it < shiftsToAccount.length; it++) {
+		// // testList.add(shiftsToAccount[it]);
+		// }
+		// Shift beispiel = shiftContainer.getShifts()[0];
+		// testList.add(new ShiftInstance(beispiel, "30.05.2012", 5f,
+		// "musterfrau?", "name geändert"));
+		// beispiel = shiftContainer.getShifts()[2];
+		// testList.add(new ShiftInstance(beispiel, "06.06.2012", 5f, "horst5",
+		// "war auch super!"));
+		// // XMLEditor.storeShifts(testList, 2012);
+		// ArrayList<ArrayList<ShiftInstance>> schichten = XMLEditor
+		// .loadSavedShifts(2012);
+		// for (Iterator<ArrayList<ShiftInstance>> it = schichten.iterator(); it
+		// .hasNext();) {
+		// ArrayList<ShiftInstance> arrayList = it.next();
+		// for (Iterator<ShiftInstance> it1 = arrayList.iterator(); it1
+		// .hasNext();) {
+		// ShiftInstance shiftInstance = it1.next();
+		// System.out
+		// .println("schicht geladen: " + shiftInstance.getDate()
+		// + " " + shiftInstance.getId());
+		// }
+		// }
+		// // / END TEST ///
 
 		// Set Shift Type Chooser from Enum
-		DefaultComboBoxModel enumModel = new DefaultComboBoxModel(ShiftType.values());
+		DefaultComboBoxModel enumModel = new DefaultComboBoxModel(
+				ShiftType.values());
 		shiftTypeChooser.setModel(enumModel);
 		setTitle("AK-RD Abrechnungsprogramm");
 		setSize(800, 600); // default size is 0,0
@@ -165,172 +182,406 @@ public class MainWindow extends JFrame {
 		basePanel.add(logo);
 
 		JTabbedPane tabbedPane = new JTabbedPane();
+		textField.setColumns(10);
 
 		// Assebmle personal Layout
-		SpringLayout personalLayout = new SpringLayout();
-		personalInfoTab.setLayout(personalLayout);
-		JTextField name = new JTextField(20);
-		JLabel nameLabel = new JLabel("Name");
-		personalInfoTab.add(nameLabel);
-		personalInfoTab.add(name);
-		personalInfoTab.add(new JLabel("Ausbildung"));
-		personalInfoTab.add(trainingsChooser);
-		trainingsChooser
-				.setToolTipText("Wähle hier deine Ausbildung aus. Das ist wichtig für die Tarifbestimmung.");
-		personalInfoTab.add(new JSeparator(JSeparator.HORIZONTAL));
-		personalInfoTab.add(new JSeparator(JSeparator.HORIZONTAL));
-		bankInfoKnown.addItemListener(this.itemListener);
-		personalInfoTab.add(new JLabel("Bankdaten bekannt"));
-		bankInfoKnown
-				.setToolTipText("Wenn deine Bankdaten der Personalabteilung bereits vorliegen, brauchst du sie nicht nochmal angeben.");
-		personalInfoTab.add(bankInfoKnown);
-		personalInfoTab.add(new JLabel("Kontonummer:"));
-		personalInfoTab.add(accountNo);
-		personalInfoTab.add(new JLabel("BLZ:"));
-		personalInfoTab.add(blz);
 
-		SpringUtilities.makeCompactGrid(personalInfoTab,
-				personalInfoTab.getComponentCount() / 2, 2, // rows, cols
-				6, 10, // initX, initY
-				6, 6); // xPad, yPad
+		bankInfoKnown.addItemListener(itemListener);
+
 		tabbedPane.addTab("Persönliche Info", null, personalInfoTab,
 				"Persönliche Daten eingeben");
+		GroupLayout gl_personalInfoTab = new GroupLayout(personalInfoTab);
+		gl_personalInfoTab.setHorizontalGroup(gl_personalInfoTab
+				.createParallelGroup(Alignment.LEADING).addGroup(
+						gl_personalInfoTab
+								.createSequentialGroup()
+								.addContainerGap()
+								.addComponent(panel,
+										GroupLayout.PREFERRED_SIZE, 405,
+										GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(ComponentPlacement.UNRELATED)
+								.addComponent(panel_1,
+										GroupLayout.PREFERRED_SIZE, 352,
+										GroupLayout.PREFERRED_SIZE)
+								.addContainerGap(GroupLayout.DEFAULT_SIZE,
+										Short.MAX_VALUE)));
+		gl_personalInfoTab
+				.setVerticalGroup(gl_personalInfoTab
+						.createParallelGroup(Alignment.LEADING)
+						.addGroup(
+								gl_personalInfoTab
+										.createSequentialGroup()
+										.addContainerGap()
+										.addGroup(
+												gl_personalInfoTab
+														.createParallelGroup(
+																Alignment.LEADING)
+														.addComponent(
+																panel_1,
+																GroupLayout.PREFERRED_SIZE,
+																116,
+																GroupLayout.PREFERRED_SIZE)
+														.addComponent(
+																panel,
+																GroupLayout.PREFERRED_SIZE,
+																115,
+																GroupLayout.PREFERRED_SIZE))
+										.addContainerGap(411, Short.MAX_VALUE)));
+		panel_1.setLayout(new FormLayout(new ColumnSpec[] {
+				FormFactory.RELATED_GAP_COLSPEC, FormFactory.DEFAULT_COLSPEC,
+				FormFactory.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("default:grow"), }, new RowSpec[] {
+				FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC, }));
+		bankInfoKnown.setText("Bankdaten bekannt");
+
+		panel_1.add(bankInfoKnown, "2, 2");
+
+		panel_1.add(lblBlz, "2, 4, right, default");
+
+		panel_1.add(blz, "4, 4, fill, default");
+
+		panel_1.add(lblKontonummer, "2, 6, right, default");
+
+		panel_1.add(accountNo, "4, 6, fill, default");
+		panel.setLayout(new FormLayout(new ColumnSpec[] {
+				FormFactory.RELATED_GAP_COLSPEC, FormFactory.DEFAULT_COLSPEC,
+				FormFactory.RELATED_GAP_COLSPEC, FormFactory.DEFAULT_COLSPEC,
+				FormFactory.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("default:grow"), }, new RowSpec[] {
+				FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC, }));
+
+		panel.add(lblName, "2, 4");
+
+		panel.add(textField, "6, 4, fill, default");
+
+		panel.add(lblAusbildung, "2, 6");
+
+		panel.add(trainingsChooser, "6, 6, fill, default");
+		personalInfoTab.setLayout(gl_personalInfoTab);
 		tabbedPane.addTab("Schichten", null, shiftEditor,
 				"Schichten eingeben und bearbeiten");
 
 		JScrollPane scrollPane = new JScrollPane();
 		JScrollPane scrollPane2 = new JScrollPane();
 
-
 		dateField = new JTextField();
 		dateField.setText("bitte auswählen");
 		dateField.addMouseListener(mouseAdapter);
 		dateField.setEditable(false);
 		dateField.setColumns(10);
-		
+
 		registeredShiftsTable = new JTable();
-		
+
 		shiftPartnerField = new JTextField();
 		shiftPartnerField.setColumns(10);
-		
+
 		JLabel lblBeginn = new JLabel("Beginn:");
-		
+
 		beginField = new JTextField();
 		beginField.setColumns(10);
-		
+
 		JLabel lblEnde = new JLabel("Ende:");
-		
+
 		endField = new JTextField();
 		endField.setColumns(10);
-		
+
 		JLabel lblPause = new JLabel("Pause:");
-		
+
 		breakField = new JTextField();
 		breakField.setColumns(10);
-		
+
 		submitButton = new JButton("Eintragen");
 		submitButton.addMouseListener(mouseAdapter);
-		
+
 		GroupLayout gl_shiftEditor = new GroupLayout(shiftEditor);
-		gl_shiftEditor.setHorizontalGroup(
-			gl_shiftEditor.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_shiftEditor.createSequentialGroup()
-					.addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_shiftEditor.createSequentialGroup()
-							.addGap(1)
-							.addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_shiftEditor.createSequentialGroup()
-									.addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING)
-										.addComponent(lblSchichtart, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)
-										.addComponent(lblDatum, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE))
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING, false)
-										.addComponent(shiftTypeChooser, 0, 0, Short.MAX_VALUE)
-										.addComponent(dateField)))
-								.addGroup(gl_shiftEditor.createSequentialGroup()
-									.addComponent(lblSchichtpartner)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(shiftPartnerField, GroupLayout.PREFERRED_SIZE, 137, GroupLayout.PREFERRED_SIZE))
-								.addGroup(gl_shiftEditor.createSequentialGroup()
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING)
-										.addGroup(gl_shiftEditor.createSequentialGroup()
-											.addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING)
-												.addComponent(lblBeginn)
-												.addComponent(lblPause))
-											.addPreferredGap(ComponentPlacement.UNRELATED)
-											.addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING, false)
-												.addComponent(breakField, 0, 0, Short.MAX_VALUE)
-												.addComponent(beginField, GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE))
-											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(lblEnde)
-											.addPreferredGap(ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
-											.addComponent(endField, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE))
-										.addGroup(gl_shiftEditor.createSequentialGroup()
-											.addComponent(lblKommentar)
-											.addGap(21)
-											.addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING)
-												.addGroup(gl_shiftEditor.createSequentialGroup()
-													.addGap(12)
-													.addComponent(submitButton))
-												.addComponent(commentField, GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE))))
-									.addPreferredGap(ComponentPlacement.RELATED)))
-							.addPreferredGap(ComponentPlacement.RELATED, 18, GroupLayout.PREFERRED_SIZE)
-							.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_shiftEditor.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(scrollPane2, GroupLayout.DEFAULT_SIZE, 769, Short.MAX_VALUE)))
-					.addContainerGap())
-		);
-		gl_shiftEditor.setVerticalGroup(
-			gl_shiftEditor.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_shiftEditor.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_shiftEditor.createSequentialGroup()
-							.addGroup(gl_shiftEditor.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblSchichtart)
-								.addComponent(shiftTypeChooser, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(gl_shiftEditor.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblDatum)
-								.addComponent(dateField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblSchichtpartner)
-								.addComponent(shiftPartnerField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_shiftEditor.createParallelGroup(Alignment.TRAILING)
-									.addGroup(gl_shiftEditor.createParallelGroup(Alignment.BASELINE)
-										.addComponent(lblEnde)
-										.addComponent(endField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-									.addGroup(gl_shiftEditor.createSequentialGroup()
-										.addComponent(beginField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-										.addGap(2)))
-								.addComponent(lblBeginn))
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addGroup(gl_shiftEditor.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblPause)
-								.addComponent(breakField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addGroup(gl_shiftEditor.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblKommentar)
-								.addComponent(commentField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(submitButton))
-						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 203, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(scrollPane2, GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
-					.addContainerGap())
-		);
+		gl_shiftEditor
+				.setHorizontalGroup(gl_shiftEditor
+						.createParallelGroup(Alignment.LEADING)
+						.addGroup(
+								gl_shiftEditor
+										.createSequentialGroup()
+										.addGroup(
+												gl_shiftEditor
+														.createParallelGroup(
+																Alignment.LEADING)
+														.addGroup(
+																gl_shiftEditor
+																		.createSequentialGroup()
+																		.addGap(1)
+																		.addGroup(
+																				gl_shiftEditor
+																						.createParallelGroup(
+																								Alignment.LEADING)
+																						.addGroup(
+																								gl_shiftEditor
+																										.createSequentialGroup()
+																										.addGroup(
+																												gl_shiftEditor
+																														.createParallelGroup(
+																																Alignment.LEADING)
+																														.addComponent(
+																																lblSchichtart,
+																																GroupLayout.PREFERRED_SIZE,
+																																78,
+																																GroupLayout.PREFERRED_SIZE)
+																														.addComponent(
+																																lblDatum,
+																																GroupLayout.PREFERRED_SIZE,
+																																78,
+																																GroupLayout.PREFERRED_SIZE))
+																										.addPreferredGap(
+																												ComponentPlacement.RELATED)
+																										.addGroup(
+																												gl_shiftEditor
+																														.createParallelGroup(
+																																Alignment.LEADING,
+																																false)
+																														.addComponent(
+																																shiftTypeChooser,
+																																0,
+																																0,
+																																Short.MAX_VALUE)
+																														.addComponent(
+																																dateField)))
+																						.addGroup(
+																								gl_shiftEditor
+																										.createSequentialGroup()
+																										.addComponent(
+																												lblSchichtpartner)
+																										.addPreferredGap(
+																												ComponentPlacement.RELATED)
+																										.addComponent(
+																												shiftPartnerField,
+																												GroupLayout.PREFERRED_SIZE,
+																												137,
+																												GroupLayout.PREFERRED_SIZE))
+																						.addGroup(
+																								gl_shiftEditor
+																										.createSequentialGroup()
+																										.addPreferredGap(
+																												ComponentPlacement.RELATED)
+																										.addGroup(
+																												gl_shiftEditor
+																														.createParallelGroup(
+																																Alignment.LEADING)
+																														.addGroup(
+																																gl_shiftEditor
+																																		.createSequentialGroup()
+																																		.addGroup(
+																																				gl_shiftEditor
+																																						.createParallelGroup(
+																																								Alignment.LEADING)
+																																						.addComponent(
+																																								lblBeginn)
+																																						.addComponent(
+																																								lblPause))
+																																		.addPreferredGap(
+																																				ComponentPlacement.UNRELATED)
+																																		.addGroup(
+																																				gl_shiftEditor
+																																						.createParallelGroup(
+																																								Alignment.LEADING,
+																																								false)
+																																						.addComponent(
+																																								breakField,
+																																								0,
+																																								0,
+																																								Short.MAX_VALUE)
+																																						.addComponent(
+																																								beginField,
+																																								GroupLayout.DEFAULT_SIZE,
+																																								71,
+																																								Short.MAX_VALUE))
+																																		.addPreferredGap(
+																																				ComponentPlacement.RELATED)
+																																		.addComponent(
+																																				lblEnde)
+																																		.addPreferredGap(
+																																				ComponentPlacement.RELATED,
+																																				45,
+																																				Short.MAX_VALUE)
+																																		.addComponent(
+																																				endField,
+																																				GroupLayout.PREFERRED_SIZE,
+																																				69,
+																																				GroupLayout.PREFERRED_SIZE))
+																														.addGroup(
+																																gl_shiftEditor
+																																		.createSequentialGroup()
+																																		.addComponent(
+																																				lblKommentar)
+																																		.addGap(21)
+																																		.addGroup(
+																																				gl_shiftEditor
+																																						.createParallelGroup(
+																																								Alignment.LEADING)
+																																						.addGroup(
+																																								gl_shiftEditor
+																																										.createSequentialGroup()
+																																										.addGap(12)
+																																										.addComponent(
+																																												submitButton))
+																																						.addComponent(
+																																								commentField,
+																																								GroupLayout.DEFAULT_SIZE,
+																																								207,
+																																								Short.MAX_VALUE))))
+																										.addPreferredGap(
+																												ComponentPlacement.RELATED)))
+																		.addPreferredGap(
+																				ComponentPlacement.RELATED,
+																				18,
+																				GroupLayout.PREFERRED_SIZE)
+																		.addComponent(
+																				scrollPane,
+																				GroupLayout.PREFERRED_SIZE,
+																				GroupLayout.DEFAULT_SIZE,
+																				GroupLayout.PREFERRED_SIZE))
+														.addGroup(
+																gl_shiftEditor
+																		.createSequentialGroup()
+																		.addContainerGap()
+																		.addComponent(
+																				scrollPane2,
+																				GroupLayout.DEFAULT_SIZE,
+																				769,
+																				Short.MAX_VALUE)))
+										.addContainerGap()));
+		gl_shiftEditor
+				.setVerticalGroup(gl_shiftEditor
+						.createParallelGroup(Alignment.LEADING)
+						.addGroup(
+								gl_shiftEditor
+										.createSequentialGroup()
+										.addContainerGap()
+										.addGroup(
+												gl_shiftEditor
+														.createParallelGroup(
+																Alignment.LEADING)
+														.addGroup(
+																gl_shiftEditor
+																		.createSequentialGroup()
+																		.addGroup(
+																				gl_shiftEditor
+																						.createParallelGroup(
+																								Alignment.BASELINE)
+																						.addComponent(
+																								lblSchichtart)
+																						.addComponent(
+																								shiftTypeChooser,
+																								GroupLayout.PREFERRED_SIZE,
+																								GroupLayout.DEFAULT_SIZE,
+																								GroupLayout.PREFERRED_SIZE))
+																		.addPreferredGap(
+																				ComponentPlacement.RELATED)
+																		.addGroup(
+																				gl_shiftEditor
+																						.createParallelGroup(
+																								Alignment.BASELINE)
+																						.addComponent(
+																								lblDatum)
+																						.addComponent(
+																								dateField,
+																								GroupLayout.PREFERRED_SIZE,
+																								GroupLayout.DEFAULT_SIZE,
+																								GroupLayout.PREFERRED_SIZE))
+																		.addPreferredGap(
+																				ComponentPlacement.RELATED)
+																		.addGroup(
+																				gl_shiftEditor
+																						.createParallelGroup(
+																								Alignment.LEADING)
+																						.addComponent(
+																								lblSchichtpartner)
+																						.addComponent(
+																								shiftPartnerField,
+																								GroupLayout.PREFERRED_SIZE,
+																								GroupLayout.DEFAULT_SIZE,
+																								GroupLayout.PREFERRED_SIZE))
+																		.addPreferredGap(
+																				ComponentPlacement.RELATED)
+																		.addGroup(
+																				gl_shiftEditor
+																						.createParallelGroup(
+																								Alignment.LEADING)
+																						.addGroup(
+																								gl_shiftEditor
+																										.createParallelGroup(
+																												Alignment.TRAILING)
+																										.addGroup(
+																												gl_shiftEditor
+																														.createParallelGroup(
+																																Alignment.BASELINE)
+																														.addComponent(
+																																lblEnde)
+																														.addComponent(
+																																endField,
+																																GroupLayout.PREFERRED_SIZE,
+																																GroupLayout.DEFAULT_SIZE,
+																																GroupLayout.PREFERRED_SIZE))
+																										.addGroup(
+																												gl_shiftEditor
+																														.createSequentialGroup()
+																														.addComponent(
+																																beginField,
+																																GroupLayout.PREFERRED_SIZE,
+																																GroupLayout.DEFAULT_SIZE,
+																																GroupLayout.PREFERRED_SIZE)
+																														.addGap(2)))
+																						.addComponent(
+																								lblBeginn))
+																		.addPreferredGap(
+																				ComponentPlacement.UNRELATED)
+																		.addGroup(
+																				gl_shiftEditor
+																						.createParallelGroup(
+																								Alignment.BASELINE)
+																						.addComponent(
+																								lblPause)
+																						.addComponent(
+																								breakField,
+																								GroupLayout.PREFERRED_SIZE,
+																								GroupLayout.DEFAULT_SIZE,
+																								GroupLayout.PREFERRED_SIZE))
+																		.addPreferredGap(
+																				ComponentPlacement.UNRELATED)
+																		.addGroup(
+																				gl_shiftEditor
+																						.createParallelGroup(
+																								Alignment.BASELINE)
+																						.addComponent(
+																								lblKommentar)
+																						.addComponent(
+																								commentField,
+																								GroupLayout.PREFERRED_SIZE,
+																								GroupLayout.DEFAULT_SIZE,
+																								GroupLayout.PREFERRED_SIZE))
+																		.addPreferredGap(
+																				ComponentPlacement.UNRELATED)
+																		.addComponent(
+																				submitButton))
+														.addComponent(
+																scrollPane,
+																GroupLayout.PREFERRED_SIZE,
+																203,
+																GroupLayout.PREFERRED_SIZE))
+										.addPreferredGap(
+												ComponentPlacement.UNRELATED)
+										.addComponent(scrollPane2,
+												GroupLayout.DEFAULT_SIZE, 300,
+												Short.MAX_VALUE)
+										.addContainerGap()));
 		shiftTypeChooser.addItemListener(this.itemListener);
 
 		shiftTable = new JTable();
 		shiftTable.addMouseListener(mouseAdapter);
 		shiftTable.setShowGrid(false);
-		Object[][] data = ShiftContainer
-				.shiftToTableData(shiftContainer.getShifts());
+		Object[][] data = ShiftContainer.shiftToTableData(shiftContainer
+				.getShifts());
 		for (int i = 0; i < data.length; i++) {
 			shiftTableModel.addRow(data[i]);
 		}
@@ -339,7 +590,13 @@ public class MainWindow extends JFrame {
 		scrollPane.setViewportView(shiftTable);
 		scrollPane2.setViewportView(registeredShiftsTable);
 		shiftEditor.setLayout(gl_shiftEditor);
-		shiftEditor.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{shiftPartnerField, beginField, endField, breakField, commentField, submitButton, lblKommentar, dateField, lblSchichtart, lblDatum, shiftTypeChooser, lblSchichtpartner, lblBeginn, lblPause, lblEnde, scrollPane, shiftTable, scrollPane2, registeredShiftsTable}));
+		shiftEditor.setFocusTraversalPolicy(new FocusTraversalOnArray(
+				new Component[] { shiftPartnerField, beginField, endField,
+						breakField, commentField, submitButton, lblKommentar,
+						dateField, lblSchichtart, lblDatum, shiftTypeChooser,
+						lblSchichtpartner, lblBeginn, lblPause, lblEnde,
+						scrollPane, shiftTable, scrollPane2,
+						registeredShiftsTable }));
 		// basePanel.add(tabbedPane);
 		getContentPane().add(tabbedPane);
 	}
@@ -369,28 +626,28 @@ public class MainWindow extends JFrame {
 	 * 
 	 * @author niklas
 	 */
-	public void updateShiftContainer()
-	{
+	public void updateShiftContainer() {
 		// Get currently selected shift type
-		ShiftType type = (ShiftType)shiftTypeChooser.getSelectedItem();
-		
-		Object[][] data = ShiftContainer.shiftToTableData(shiftContainer.filterShifts(type, currentlySelectedDay));
+		ShiftType type = (ShiftType) shiftTypeChooser.getSelectedItem();
+
+		Object[][] data = ShiftContainer.shiftToTableData(shiftContainer
+				.filterShifts(type, currentlySelectedDay));
 		shiftTableModel.setNumRows(0);
-		for(int i = 0; i < data.length; i++)
-		{
+		for (int i = 0; i < data.length; i++) {
 			shiftTableModel.addRow(data[i]);
 		}
-		
+
 	}
-	
-	public void updateRegisteredShifts()
-	{
-		Object[][] data = ShiftContainer.shiftInstancesToTableData((ShiftInstance[]) shiftContainer.shiftInstances.toArray(new ShiftInstance[shiftContainer.shiftInstances.size()]));
+
+	public void updateRegisteredShifts() {
+		Object[][] data = ShiftContainer
+				.shiftInstancesToTableData((ShiftInstance[]) shiftContainer.shiftInstances
+						.toArray(new ShiftInstance[shiftContainer.shiftInstances
+								.size()]));
 		registeredShiftsTableModel.setNumRows(0);
-		for(int i = 0; i < data.length; i++)
-		{
+		for (int i = 0; i < data.length; i++) {
 			registeredShiftsTableModel.addRow(data[i]);
-		}		
-		
+		}
+
 	}
 }
