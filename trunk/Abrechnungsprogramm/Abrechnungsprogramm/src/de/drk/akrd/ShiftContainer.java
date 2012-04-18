@@ -5,6 +5,10 @@ import java.util.ArrayList;
 
 // Contains all shifts and takes care of loading and managing
 public class ShiftContainer {
+	
+	// a pointer to the posessing mainWindow
+	private MainWindow mainWindow;
+	
 	private static ArrayList<Shift> shifts = new ArrayList<>();
     public static final int KTW = 0;
 	public static final int RTW = 1;
@@ -40,10 +44,14 @@ public class ShiftContainer {
             }
         }
     }
+    
+    // Holds all registered shifts.
+    public ArrayList<ShiftInstance> shiftInstances = new ArrayList<ShiftInstance>();
 	
-	public ShiftContainer()
+
+	public ShiftContainer(MainWindow mainWindow)
 	{
-		
+		this.mainWindow = mainWindow;
 	}
 	
 	public void loadShifts(String shiftfilePath)
@@ -94,7 +102,14 @@ public class ShiftContainer {
 		return (Shift[]) resultingShifts.toArray(new Shift[resultingShifts.size()]);
 	}
 	
-	public static Object[][] toTableData(Shift[] input)
+	/**
+	 * 	Converts an array of Shifts to an Object[][] that fits into a table
+	 * 
+	 * @param input 
+	 * @return the converted object
+	 * @author niklas
+	 */
+	public static Object[][] shiftToTableData(Shift[] input)
 	{
 		ArrayList<String[]> result = new ArrayList<String[]>();
 		
@@ -111,6 +126,53 @@ public class ShiftContainer {
 		
 		return (Object[][]) result.toArray(new Object[result.size()][4]);
 		
+		
+	}
+	/**
+	 * 	Converts an array of ShiftInstances to an Object[][] that fits into a table
+	 * 
+	 * @param input 
+	 * @return the converted object
+	 * @author niklas
+	 */	
+	public static Object[][] shiftInstancesToTableData(ShiftInstance[] input)
+	{
+		ArrayList<String[]> result = new ArrayList<String[]>();
+		
+		for(int i=0; i < input.length; i++)
+		{
+			ArrayList<String> entry = new ArrayList<String>();
+			entry.add(input[i].getDate());
+			entry.add(Integer.toString(input[i].getActualStartingTime()));
+			entry.add(Integer.toString(input[i].getActualStartingTime()));
+			entry.add(Integer.toString(input[i].getActualBreakTime()));
+			entry.add(input[i].getPartner());
+			entry.add(input[i].getComment());
+			
+			result.add((String[]) entry.toArray(new String[entry.size()]));
+		}
+		
+		return (Object[][]) result.toArray(new Object[result.size()][4]);
+		
+		
+	}
+	/**
+	 * @param instanceOf The shift this is an instance of, null if not applicable (e.g. sandienst)
+	 * @param date	The date the shift was worked.
+	 * @param actualStart The actual starting time
+	 * @param actualEnd the actual end time
+	 * @param actualBreak the actual break time
+	 * @param partner The colleague of the shift
+	 * @param comment 
+	 * @author niklas
+	 */
+	protected void  registerShift(Shift instanceOf, String date, int actualStart, int actualEnd, int actualBreak, String partner, String comment)
+	{
+		ShiftInstance entry = new ShiftInstance(instanceOf, date, actualStart, actualEnd, actualBreak, 0.0f , partner, comment);
+		
+		shiftInstances.add(entry);
+		
+		mainWindow.updateRegisteredShifts();
 		
 	}
 }
