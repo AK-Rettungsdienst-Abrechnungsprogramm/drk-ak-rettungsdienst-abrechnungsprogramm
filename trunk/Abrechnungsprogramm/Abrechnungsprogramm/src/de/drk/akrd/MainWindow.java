@@ -160,6 +160,7 @@ public class MainWindow extends JFrame {
 		// + " " + shiftInstance.getId());
 		// }
 		// }
+        PDFReader.parseDutyRota(PDFReader.TypeOfAction.CreateGoogleCalendarEntry);
 		// // / END TEST ///
 
 		// Set Shift Type Chooser from Enum
