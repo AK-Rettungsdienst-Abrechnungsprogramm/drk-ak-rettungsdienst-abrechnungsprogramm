@@ -22,7 +22,22 @@ public class PersonalData {
   private Qualification qualification;
   private boolean dataKnown;
   public static enum Qualification {
-    RH, RS, RA
+    RH, RS, RA;
+    @Override
+    public String toString(){
+        
+        switch(name())
+        {
+        case "RH":
+        	return "Rettungshelfer";
+        case "RS":
+        	return "Rettungssanitäter";
+        case "RA":
+        	return "Rettungsassistent";
+        default:
+        	return name();
+        }
+    }
   }
 
   private PersonalData(){}

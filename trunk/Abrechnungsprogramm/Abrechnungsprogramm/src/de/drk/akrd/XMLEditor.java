@@ -112,7 +112,7 @@ public class XMLEditor {
         dataInstance.getLastName(), dataInstance.getBankNameAndCity(),
         Integer.toString(dataInstance.getAccountNumber()),
         Integer.toString(dataInstance.getBlz()),
-        dataInstance.getQualification().toString(),
+        dataInstance.getQualification().name(),
         Boolean.toString(dataInstance.isDataKnown())};
       fileWriter.write("<personalData>" + System.getProperty("line.separator"));
       fileWriter.write("  <dataset>" + System.getProperty("line.separator"));
