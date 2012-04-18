@@ -132,4 +132,9 @@ public class ShiftInstance {
   public boolean isExternal() {
     return instanceOf.isExternal();
   }
+  
+  public static float timeToFloat(int time)
+  {
+	  return (float)((Math.floor(time)/100) + (float)((time % 60)/60));
+  }
 }

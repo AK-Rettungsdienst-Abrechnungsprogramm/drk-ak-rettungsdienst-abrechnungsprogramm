@@ -7,8 +7,6 @@ import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Popup;
 import javax.swing.PopupFactory;
@@ -135,7 +133,7 @@ public class AKRDMouseAdapter extends MouseAdapter {
 
 			// If no date has been selected create popup
 			if (date.equals("bitte auswählen")) {
-				showMessagePopup("Bitte Datum auswählen!");
+				mainWindow.showMessagePopup("Bitte Datum auswählen!");
 				return;
 			}
 
@@ -143,25 +141,25 @@ public class AKRDMouseAdapter extends MouseAdapter {
 			try {
 				begin = Integer.parseInt(mainWindow.beginField.getText());
 			} catch (NumberFormatException exception) {
-				showMessagePopup("Ungültige Anfangszeit!");
+				mainWindow.showMessagePopup("Ungültige Anfangszeit!");
 				return;
 			}
 			try {
 				end = Integer.parseInt(mainWindow.endField.getText());
 			} catch (NumberFormatException exception) {
-				showMessagePopup("Ungültige Endezeit!");
+				mainWindow.showMessagePopup("Ungültige Endezeit!");
 				return;
 			}
 			try {
 				breakTime = Integer.parseInt(mainWindow.breakField.getText());
 			} catch (NumberFormatException exception) {
-				showMessagePopup("Ungültige Pausenzeit!");
+				mainWindow.showMessagePopup("Ungültige Pausenzeit!");
 				return;
 			}
 			
 			if(partner.equals(""))
 			{
-				showMessagePopup("Bitte Schichtpartner angeben!");
+				mainWindow.showMessagePopup("Bitte Schichtpartner angeben!");
 				return;
 			}
 
@@ -175,9 +173,6 @@ public class AKRDMouseAdapter extends MouseAdapter {
 		}
 	}
 
-	private void showMessagePopup(String message) {
-		JOptionPane.showMessageDialog(mainWindow, message, "Fehler",
-				JOptionPane.ERROR_MESSAGE);
-	}
+
 
 }

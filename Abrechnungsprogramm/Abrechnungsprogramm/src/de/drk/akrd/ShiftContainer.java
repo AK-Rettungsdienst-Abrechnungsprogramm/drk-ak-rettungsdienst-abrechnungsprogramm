@@ -144,8 +144,9 @@ public class ShiftContainer {
 			ArrayList<String> entry = new ArrayList<String>();
 			entry.add(input[i].getDate());
 			entry.add(Integer.toString(input[i].getActualStartingTime()));
-			entry.add(Integer.toString(input[i].getActualStartingTime()));
+			entry.add(Integer.toString(input[i].getActualEndTime()));
 			entry.add(Integer.toString(input[i].getActualBreakTime()));
+			entry.add(Float.toString(input[i].getTimeAsFloat()));
 			entry.add(input[i].getPartner());
 			entry.add(input[i].getComment());
 			
@@ -168,7 +169,17 @@ public class ShiftContainer {
 	 */
 	protected void  registerShift(Shift instanceOf, String date, int actualStart, int actualEnd, int actualBreak, String partner, String comment)
 	{
-		ShiftInstance entry = new ShiftInstance(instanceOf, date, actualStart, actualEnd, actualBreak, 0.0f , partner, comment);
+		// calculate time in float
+		float startingFloat = ShiftInstance.timeToFloat(actualStart);
+		float endFloat = ShiftInstance.timeToFloat(actualEnd);
+		float breakFloat = ShiftInstance.timeToFloat(actualBreak);
+
+		// account for shifts ending after midnight
+		if(endFloat < startingFloat) endFloat += 24;
+		
+		float shiftAsFloat = endFloat - startingFloat - breakFloat;
+		
+		ShiftInstance entry = new ShiftInstance(instanceOf, date, actualStart, actualEnd, actualBreak, shiftAsFloat , partner, comment);
 		
 		shiftInstances.add(entry);
 		

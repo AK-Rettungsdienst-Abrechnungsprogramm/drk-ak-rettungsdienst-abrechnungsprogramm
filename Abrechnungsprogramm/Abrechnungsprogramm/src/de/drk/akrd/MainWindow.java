@@ -1,21 +1,18 @@
 package de.drk.akrd;
 
-import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
-import javax.swing.SpringLayout;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -24,30 +21,28 @@ import javax.swing.table.DefaultTableModel;
 
 import de.drk.akrd.ShiftContainer.ShiftType;
 import javax.swing.JButton;
-import java.awt.event.MouseAdapter;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.awt.event.MouseEvent;
-import javax.swing.JToggleButton;
 import org.eclipse.wb.swing.FocusTraversalOnArray;
 import java.awt.Component;
-import java.awt.event.MouseMotionAdapter;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.factories.FormFactory;
+import de.drk.akrd.PersonalData.Qualification;
 
 public class MainWindow extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	// Listeners and Adapters
-	private MouseAdapter mouseAdapter = new AKRDMouseAdapter(this);
+	private AKRDMouseAdapter mouseAdapter = new AKRDMouseAdapter(this);
 	private ItemListener itemListener = new AKRDItemListener(this);
 
 	// Personal Info Components
 	private JPanel personalInfoTab = new JPanel();
-	private String[] trainingStrings = { "Rettungshelfer", "Rettungssanitäter",
-			"Rettungsassistent" };
-	private JComboBox trainingsChooser = new JComboBox(trainingStrings);
+
+	private JComboBox<PersonalData.Qualification> trainingsChooser = new JComboBox<>();
 	protected JTextField accountNo = new JTextField();
 	protected JTextField blz = new JTextField();
 	protected JCheckBox bankInfoKnown = new JCheckBox();
@@ -62,7 +57,7 @@ public class MainWindow extends JFrame {
 	private JPanel shiftEditor = new JPanel();
 	protected ShiftContainer shiftContainer = new ShiftContainer(this);
 
-	protected JComboBox shiftTypeChooser = new JComboBox();
+	protected JComboBox<ShiftContainer.ShiftType> shiftTypeChooser = new JComboBox<>();
 	private final JLabel lblDatum = new JLabel("Datum");
 	private final JLabel lblSchichtart = new JLabel("Schichtart");
 	protected JTextField dateField;
@@ -72,7 +67,7 @@ public class MainWindow extends JFrame {
 					"Ende", "Pause" });
 	protected DefaultTableModel registeredShiftsTableModel = new DefaultTableModel(
 			new Object[][] {}, new String[] { "Datum", "Beginn", "Ende",
-					"Pause", "Schichtpartner", "Kommentar" });
+					"Pause", "Dezimal", "Schichtpartner", "Kommentar"  });
 	private JTable registeredShiftsTable;
 	private final JLabel lblSchichtpartner = new JLabel("Schichtpartner:");
 	protected JTextField shiftPartnerField;
@@ -84,7 +79,7 @@ public class MainWindow extends JFrame {
 	protected JTextField commentField = new JTextField();
 	private final JPanel panel = new JPanel();
 	private final JLabel lblName = new JLabel("Name:");
-	private final JTextField textField = new JTextField();
+	private final JTextField nameField = new JTextField();
 	private final JLabel lblAusbildung = new JLabel("Ausbildung:");
 	private final JPanel panel_1 = new JPanel();
 	private final JLabel lblBlz = new JLabel("BLZ");
@@ -167,7 +162,7 @@ public class MainWindow extends JFrame {
 		// // / END TEST ///
 
 		// Set Shift Type Chooser from Enum
-		DefaultComboBoxModel enumModel = new DefaultComboBoxModel(
+		DefaultComboBoxModel<ShiftContainer.ShiftType> enumModel = new DefaultComboBoxModel<>(
 				ShiftType.values());
 		shiftTypeChooser.setModel(enumModel);
 		setTitle("AK-RD Abrechnungsprogramm");
@@ -182,7 +177,7 @@ public class MainWindow extends JFrame {
 		basePanel.add(logo);
 
 		JTabbedPane tabbedPane = new JTabbedPane();
-		textField.setColumns(10);
+		nameField.setColumns(10);
 
 		// Assebmle personal Layout
 
@@ -256,9 +251,10 @@ public class MainWindow extends JFrame {
 
 		panel.add(lblName, "2, 4");
 
-		panel.add(textField, "6, 4, fill, default");
+		panel.add(nameField, "6, 4, fill, default");
 
 		panel.add(lblAusbildung, "2, 6");
+		trainingsChooser.setModel(new DefaultComboBoxModel<>(Qualification.values()));
 
 		panel.add(trainingsChooser, "6, 6, fill, default");
 		personalInfoTab.setLayout(gl_personalInfoTab);
@@ -599,25 +595,17 @@ public class MainWindow extends JFrame {
 						registeredShiftsTable }));
 		// basePanel.add(tabbedPane);
 		getContentPane().add(tabbedPane);
+		
+		
+		
 	}
 
 	public static void main(String[] args) {
 
-		// try {
-		// for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-		// if ("Nimbus".equals(info.getName())) {
-		// UIManager.setLookAndFeel(info.getClassName());
-		// break;
-		// }
-		//
-		// } catch (Exception e) {
-		// // If Nimbus is not available, you can set the GUI to another look
-		// and feel.
-		// }
-
-		// Setup Shift Container
-		JFrame f = new MainWindow();
+		MainWindow f = new MainWindow();
 		f.setVisible(true);
+		f.loadPersonalData();
+		
 	}
 
 	/**
@@ -649,5 +637,31 @@ public class MainWindow extends JFrame {
 			registeredShiftsTableModel.addRow(data[i]);
 		}
 
+	}
+	
+	public void loadPersonalData()
+	{
+		// Try to load personal data and fill the fields
+				PersonalData pd = null;
+				try
+				{
+					pd = PersonalData.getInstance();
+				}
+				catch(Exception e)
+				{
+					showMessagePopup("Fehler beim Laden der persönlichen Daten");
+				}
+				if(pd != null)
+				{
+					nameField.setText(pd.getFirstName() + " " + pd.getLastName());
+					trainingsChooser.setSelectedItem(pd.getQualification());
+					blz.setText(Integer.toString(pd.getBlz()));
+					accountNo.setText(Integer.toString(pd.getAccountNumber()));
+					bankInfoKnown.setSelected(pd.isDataKnown());
+				}
+	}
+	protected void showMessagePopup(String message) {
+		JOptionPane.showMessageDialog(this, message, "Fehler",
+				JOptionPane.ERROR_MESSAGE);
 	}
 }
