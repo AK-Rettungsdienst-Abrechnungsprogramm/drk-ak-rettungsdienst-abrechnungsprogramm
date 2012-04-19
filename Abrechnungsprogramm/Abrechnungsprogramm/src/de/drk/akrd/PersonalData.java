@@ -6,7 +6,6 @@ package de.drk.akrd;
 
 //import com.sun.crypto.provider.RC2Cipher;
 
-import sun.util.resources.CalendarData_in_ID;
 
 //import sun.security.jca.GetInstance;
 
