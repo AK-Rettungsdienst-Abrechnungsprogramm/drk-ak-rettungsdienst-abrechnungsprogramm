@@ -97,7 +97,7 @@ public class PersonalData {
    * @return the account number
    */
   public int getAccountNumber() {
-    return instance.accountNumber;
+    return accountNumber;
   }
 
   /**
@@ -105,7 +105,7 @@ public class PersonalData {
    * @return the bank name and city as string
    */
   public String getBankNameAndCity() {
-    return instance.bankNameAndCity;
+    return bankNameAndCity;
   }
 
   /**
@@ -113,7 +113,7 @@ public class PersonalData {
    * @return the BLZ
    */
   public int getBlz() {
-    return instance.blz;
+    return blz;
   }
 
   /**
@@ -121,7 +121,7 @@ public class PersonalData {
    * @return true if (bank-)data is already known, false otherwise
    */
   public boolean isDataKnown() {
-    return instance.dataKnown;
+    return dataKnown;
   }
 
   /**
@@ -129,7 +129,7 @@ public class PersonalData {
    * @return the first name
    */
   public String getFirstName() {
-    return instance.firstName;
+    return firstName;
   }
 
   /**

@@ -169,7 +169,7 @@ public class MainWindow extends JFrame {
 		// + " " + shiftInstance.getId());
 		// }
 		// }
-       // PDFReader.parseDutyRota(PDFReader.TypeOfAction.CreateGoogleCalendarEntry);
+       // DRManager.parseDutyRota(DRManager.TypeOfAction.CreateGoogleCalendarEntry);
 		// // / END TEST ///
 
 		// Set Shift Type Chooser from Enum
@@ -721,8 +721,8 @@ public class MainWindow extends JFrame {
 	
 	protected void updateShiftsFromDPL()
 	{
-		Shift[] shifts = PDFReader.getSavedShifts();
-		Date[] shiftDates = PDFReader.getSavedShiftDates();
+		Shift[] shifts = DRManager.getSavedShifts();
+		Date[] shiftDates = DRManager.getSavedShiftDates();
 		
 		dplTableModel.setNumRows(0);
 		
