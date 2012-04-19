@@ -109,42 +109,17 @@ public class MainWindow extends JFrame {
 		// 666, PersonalData.Qualification.RA, false);
 		// // XMLEditor.writePersonalData(PersonalData.getInstance());
 		// boolean loadPersonalData = XMLEditor.loadPersonalData();
-		// ShiftInstance[] shiftsToAccount = new ShiftInstance[46];
-		//
-		// int iterator = 0;
-		// for (iterator = 0; iterator < 46; iterator++) {
-		// int shiftIndex = (iterator >= shiftContainer.getShifts().length) ? 0
-		// : iterator;
-		// Shift beispiel = shiftContainer.getShifts()[shiftIndex];
-		// shiftsToAccount[iterator] = new ShiftInstance(beispiel,
-		// "30.05.2012", 5f, "heino" + iterator, "" + iterator);
-		// }
-		// PdfCreator.createAccounting(shiftsToAccount);
-		// /*
-		// * SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy"); Calendar
-		// * cal = Calendar.getInstance(); Date date = cal.getTime(); try { date
-		// =
-		// * sdf.parse("30.05.2012");
-		// * System.out.println("dateToString: "+date.toString());
-		// * cal.setTime(date);
-		// * System.out.println("cal.getDay: "+cal.get(Calendar.DAY_OF_MONTH));
-		// * System.out.println("cal.getMonth: "+cal.get(Calendar.MONTH));
-		// * System.out.println("cal.getYear: "+cal.get(Calendar.YEAR)); date =
-		// * sdf.parse("01.01.2012");
-		// * System.out.println("dateToString: "+date.toString());
-		// * cal.setTime(date);
-		// * System.out.println("cal.getDay: "+cal.get(Calendar.DAY_OF_MONTH));
-		// * System.out.println("cal.getMonth: "+cal.get(Calendar.MONTH));
-		// * System.out.println("cal.getYear: "+cal.get(Calendar.YEAR)); date =
-		// * sdf.parse("31.12.2012");
-		// * System.out.println("dateToString: "+date.toString());
-		// * cal.setTime(date);
-		// * System.out.println("cal.getDay: "+cal.get(Calendar.DAY_OF_MONTH));
-		// * System.out.println("cal.getMonth: "+cal.get(Calendar.MONTH));
-		// * System.out.println("cal.getYear: "+cal.get(Calendar.YEAR)); } catch
-		// * (ParseException ex) { ex.printStackTrace();
-		// * System.out.println("das war wohl nichts"); }
-		// */
+//		 ShiftInstance[] shiftsToAccount = new ShiftInstance[46];
+//		 int iterator = 0;
+//		 for (iterator = 0; iterator < 46; iterator++) {
+//		 int shiftIndex = (iterator >= shiftContainer.getShifts().length) ? 0
+//		 : iterator;
+//		 Shift beispiel = shiftContainer.getShifts()[shiftIndex];
+//		 shiftsToAccount[iterator] = new ShiftInstance(beispiel,
+//		 "30.05.2012", 5f, "heino" + iterator, "" + iterator);
+//		 }
+//		PdfCreator.createAccounting(shiftsToAccount);
+         
 		// ArrayList<ShiftInstance> testList = new ArrayList<>();
 		// for (int it = 0; it < shiftsToAccount.length; it++) {
 		// // testList.add(shiftsToAccount[it]);
