@@ -22,13 +22,15 @@ import java.util.SimpleTimeZone;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
+import sun.security.jca.GetInstance;
 
 /**
  *
  * @author Jo
  */
-public class PDFReader {
+public class DRManager {
 
+  private static DRManager INSTANCE = null;
   private static String failMessage = null;
   private static Shift[] savedShifts = null;
   private static Date[] savedShiftDates = null;
@@ -37,8 +39,56 @@ public class PDFReader {
     CreateGoogleCalendarEntry,
     CreateIcs;
   }
+  private DRManager(){}
+  public static DRManager GetInstance() {
+    if (INSTANCE==null) {
+      INSTANCE = new DRManager();
+    }
+    return INSTANCE;
+  }
 
-  public static void parseDutyRota() {
+  /**
+   * creates Googleclaendar-entrys for the saved shifts
+   * @return true if successful, false otherwise
+   */
+  public boolean createGoogleCalendarEntry() {
+    if (savedShifts == null || savedShiftDates == null) {
+      return false;
+    }
+    Calendar cal = Calendar.getInstance();
+    String[][] entryStrings = new String[savedShifts.length][4];
+      SimpleTimeZone mez = new SimpleTimeZone(+1 * 60 * 60 * 1000, "ECT");
+      mez.setStartRule(Calendar.MARCH, -1, Calendar.SUNDAY, 2 * 60 * 60 * 1000);
+      mez.setEndRule(Calendar.OCTOBER, -1, Calendar.SUNDAY, 2 * 60 * 60 * 1000);
+      for (int i = 0; i < savedShifts.length; i++) {
+        Shift shift = savedShifts[i];
+        int startHour = (int) (shift.getStartingTime() / 100);
+        int startMinutes = (int) (shift.getStartingTime() % 100);
+        int endHour = (int) (shift.getEndTime() / 100);
+        int endMinutes = (int) (shift.getEndTime() % 100);
+        cal.setTime(savedShiftDates[i]);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        int month = cal.get(Calendar.MONTH);
+        int year = cal.get(Calendar.YEAR);
+        int timeCorrection = (mez.inDaylightTime(cal.getTime()))? 2: 1;
+        String beginString = getDateTimeString(year, month, day, startHour, startMinutes, timeCorrection);
+        if(endHour<startHour) {
+          // night shift
+          cal.add(Calendar.DATE, 1);
+          day = cal.get(Calendar.DAY_OF_MONTH);
+          month = cal.get(Calendar.MONTH);
+          year = cal.get(Calendar.YEAR);
+        }
+        String endString = getDateTimeString(year, month, day, endHour, endMinutes, timeCorrection);
+        entryStrings[i][0] = savedShifts[i].getId().substring(0, 3);
+        entryStrings[i][1] = "Termintext";
+        entryStrings[i][2] = beginString;
+        entryStrings[i][3] = endString;
+      }
+      GoogleConnect.createNewAppointment(entryStrings);
+    return false;
+  }
+  public void parseDutyRota() {
     String filePath = getPdfFilePath();
     String[] contentStrings = parsePdf(filePath);
     if (contentStrings == null) {
@@ -99,37 +149,6 @@ public class PDFReader {
       Shift shift = shifts.get(i);
       System.out.println("Schicht " + i + ": " + shift.getId() + " am " + shiftDates[i] + "." + (month + 1) + "." + year);
     }
-    if (false){//typeOfAction == TypeOfAction.CreateGoogleCalendarEntry) {
-      String[][] entryStrings = new String[shifts.size()][4];
-      SimpleTimeZone mez = new SimpleTimeZone(+1 * 60 * 60 * 1000, "ECT");
-      mez.setStartRule(Calendar.MARCH, -1, Calendar.SUNDAY, 2 * 60 * 60 * 1000);
-      mez.setEndRule(Calendar.OCTOBER, -1, Calendar.SUNDAY, 2 * 60 * 60 * 1000);
-      for (int i = 0; i < shifts.size(); i++) {
-        Shift shift = shifts.get(i);
-        int day = shiftDates[i];
-        int startHour = (int) (shift.getStartingTime() / 100);
-        int startMinutes = (int) (shift.getStartingTime() % 100);
-        int endHour = (int) (shift.getEndTime() / 100);
-        int endMinutes = (int) (shift.getEndTime() % 100);
-        cal.set(year, month, day);
-        int timeCorrection = (mez.inDaylightTime(cal.getTime()))? 2: 1;
-        String beginString = getDateTimeString(year, month, day, startHour, startMinutes, timeCorrection);
-        if(endHour<startHour) {
-          // night shift
-          cal.add(Calendar.DATE, 1);
-          day = cal.get(Calendar.DAY_OF_MONTH);
-          month = cal.get(Calendar.MONTH);
-          year = cal.get(Calendar.YEAR);
-        }
-        String endString = getDateTimeString(year, month, day, endHour, endMinutes, timeCorrection);
-        entryStrings[i][0] = shiftStrings[i];
-        entryStrings[i][1] = "Termintext";
-        entryStrings[i][2] = beginString;
-        entryStrings[i][3] = endString;
-      }
-      GoogleConnect.createNewAppointment(entryStrings);
-    }
-
   }
 
 private static String getTwoLetterStringFromInt(int x) {
@@ -275,7 +294,7 @@ private static String getDateTimeString(int year, int month, int day, int hour, 
 
   /**
    * get the saved shifts. Make sure you get the correesponding dates too.
-   * (call PDFReader.getSavedShiftDates())
+   * (call DRManager.getSavedShiftDates())
    * @return array of Shift
    */
   public static Shift[] getSavedShifts() {

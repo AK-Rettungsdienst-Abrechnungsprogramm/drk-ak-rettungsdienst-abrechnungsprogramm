@@ -175,8 +175,7 @@ public class AKRDMouseAdapter extends MouseAdapter {
 		
 		if(source == mainWindow.read_DPL)
 		{
-			PDFReader.parseDutyRota();
-			
+			DRManager.GetInstance().parseDutyRota();
 			mainWindow.updateShiftsFromDPL();
 		}
 	}
