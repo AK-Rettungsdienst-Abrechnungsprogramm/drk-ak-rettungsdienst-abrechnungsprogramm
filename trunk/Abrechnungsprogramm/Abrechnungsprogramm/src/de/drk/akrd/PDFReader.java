@@ -55,6 +55,7 @@ import com.itextpdf.text.pdf.PdfDictionary;
 import com.itextpdf.text.pdf.PdfName;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfWriter;
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -71,6 +72,8 @@ import javax.swing.filechooser.FileFilter;
 public class PDFReader {
 
   private static String failMessage = null;
+  private static Shift[] savedShifts = null;
+  private static Date[] savedShiftDates = null;
   public static enum TypeOfAction {
 
     CreateGoogleCalendarEntry,
@@ -99,7 +102,6 @@ public class PDFReader {
     Date date = cal.getTime();
     try {
       date = sdf.parse(contentStrings[0]);
-      System.out.println("dateToString: " + date.toString());
     } catch (ParseException ex) {
       System.out.println("Exception in PDFReader.parseDutyRota "
               + "(parsing date): " + ex.getMessage());
@@ -127,11 +129,19 @@ public class PDFReader {
         }
       }
     }
+    savedShifts = new Shift[shifts.size()];
+    savedShifts = shifts.toArray(savedShifts);
+    savedShiftDates = new Date[shiftDates.length];
+    for (int i = 0; i < shiftDates.length; i++) {
+      int j = shiftDates[i];
+      cal.set(year, month, j);
+      savedShiftDates[i] = cal.getTime();
+    }
     for (int i = 0; i < shifts.size(); i++) {
       Shift shift = shifts.get(i);
       System.out.println("Schicht " + i + ": " + shift.getId() + " am " + shiftDates[i] + "." + (month + 1) + "." + year);
     }
-    if (typeOfAction == TypeOfAction.CreateGoogleCalendarEntry) {
+    if (false){//typeOfAction == TypeOfAction.CreateGoogleCalendarEntry) {
       String[][] entryStrings = new String[shifts.size()][4];
       SimpleTimeZone mez = new SimpleTimeZone(+1 * 60 * 60 * 1000, "ECT");
       mez.setStartRule(Calendar.MARCH, -1, Calendar.SUNDAY, 2 * 60 * 60 * 1000);
@@ -168,7 +178,7 @@ private static String getTwoLetterStringFromInt(int x) {
   return ((x<10)? ("0"+x): x+"");
 }
 private static String getPdfFilePath() {
-  JFileChooser fileChooser = new JFileChooser();
+  JFileChooser fileChooser = new JFileChooser(new File(System.getProperty("user.dir")));
   fileChooser.setFileFilter(new FileFilter() {
 
       @Override
@@ -296,4 +306,22 @@ private static String getDateTimeString(int year, int month, int day, int hour, 
   private static void parsingFailed(String message) {
     JOptionPane.showMessageDialog(null, message, "Fehler beim Lesen des Dienstplans", JOptionPane.ERROR_MESSAGE);
   }
+
+  /**
+   * get the dates of parsed shifts
+   * @return array of Date
+   */
+  public static Date[] getSavedShiftDates() {
+    return savedShiftDates;
+  }
+
+  /**
+   * get the saved shifts. Make sure you get the correesponding dates too.
+   * (call PDFReader.getSavedShiftDates())
+   * @return array of Shift
+   */
+  public static Shift[] getSavedShifts() {
+    return savedShifts;
+  }
+  
 }
