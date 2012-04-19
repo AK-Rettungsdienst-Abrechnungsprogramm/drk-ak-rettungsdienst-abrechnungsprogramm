@@ -22,7 +22,9 @@ import javax.swing.table.DefaultTableModel;
 import de.drk.akrd.ShiftContainer.ShiftType;
 import javax.swing.JButton;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
@@ -66,6 +68,9 @@ public class MainWindow extends JFrame {
 	protected DefaultTableModel shiftTableModel = new DefaultTableModel(
 			new Object[][] {}, new String[] { "Schichtkürzel", "Beginn",
 					"Ende", "Pause" });
+	protected DefaultTableModel dplTableModel = new DefaultTableModel(
+			new Object[][] {}, new String[] { "Datum", "Schichtkürzel", "Beginn",
+					"Ende"});
 	protected DefaultTableModel registeredShiftsTableModel = new DefaultTableModel(
 			new Object[][] {}, new String[] { "Datum", "Beginn", "Ende",
 					"Pause", "Dezimal", "Schichtpartner", "Kommentar", "Verdienst" });
@@ -85,6 +90,10 @@ public class MainWindow extends JFrame {
 	private final JPanel panel_1 = new JPanel();
 	private final JLabel lblBlz = new JLabel("BLZ");
 	private final JLabel lblKontonummer = new JLabel("Kontonummer:");
+	
+	// DPL Tab
+	protected JButton read_DPL;
+	private JTable dplTable;
 
 	public MainWindow() {
 		accountNo.setColumns(10);
@@ -160,7 +169,7 @@ public class MainWindow extends JFrame {
 		// + " " + shiftInstance.getId());
 		// }
 		// }
-        PDFReader.parseDutyRota();
+       // PDFReader.parseDutyRota(PDFReader.TypeOfAction.CreateGoogleCalendarEntry);
 		// // / END TEST ///
 
 		// Set Shift Type Chooser from Enum
@@ -592,6 +601,45 @@ public class MainWindow extends JFrame {
 		// basePanel.add(tabbedPane);
 		getContentPane().add(tabbedPane);
 		
+		JPanel DPL_Tab = new JPanel();
+		tabbedPane.addTab("Dienstplan auslesen", null, DPL_Tab, null);
+		
+		JLabel DPLLabel = new JLabel("<html>Hier kannst du den Monatsdienstplan automatisch auslesen lassen,<br/>um eine Übersicht über deine Schichten zu bekommen<br/>\nAußerdem kannst du deine Dienste gleich in einen Google Calender eintragen.</html>");
+		
+		read_DPL = new JButton("Dienstplan auslesen");
+		read_DPL.addMouseListener(mouseAdapter);
+		
+		JScrollPane DPLScrollPane = new JScrollPane();
+		
+		dplTable = new JTable();
+		DPLScrollPane.setViewportView(dplTable);
+		
+		GroupLayout gl_DPL_Tab = new GroupLayout(DPL_Tab);
+		gl_DPL_Tab.setHorizontalGroup(
+			gl_DPL_Tab.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_DPL_Tab.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_DPL_Tab.createParallelGroup(Alignment.LEADING)
+						.addComponent(DPLLabel, GroupLayout.PREFERRED_SIZE, 760, GroupLayout.PREFERRED_SIZE)
+						.addComponent(read_DPL)
+						.addComponent(DPLScrollPane, GroupLayout.PREFERRED_SIZE, 543, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(21, Short.MAX_VALUE))
+		);
+		gl_DPL_Tab.setVerticalGroup(
+			gl_DPL_Tab.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_DPL_Tab.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(DPLLabel)
+					.addGap(18)
+					.addComponent(read_DPL)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(DPLScrollPane, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(292, Short.MAX_VALUE))
+		);
+		DPL_Tab.setLayout(gl_DPL_Tab);
+		dplTable.setModel(dplTableModel);
+
+		
 		
 		
 	}
@@ -655,7 +703,7 @@ public class MainWindow extends JFrame {
 				}
 				catch(Exception e)
 				{
-					showMessagePopup("Fehler beim Laden der persönlichen Daten");
+					showMessagePopup("Fehler beim Laden der persönlichen Daten" + e.getMessage());
 				}
 				if(pd != null)
 				{
@@ -669,5 +717,26 @@ public class MainWindow extends JFrame {
 	protected void showMessagePopup(String message) {
 		JOptionPane.showMessageDialog(this, message, "Fehler",
 				JOptionPane.ERROR_MESSAGE);
+	}
+	
+	protected void updateShiftsFromDPL()
+	{
+		Shift[] shifts = PDFReader.getSavedShifts();
+		Date[] shiftDates = PDFReader.getSavedShiftDates();
+		
+		dplTableModel.setNumRows(0);
+		
+		Calendar cal = Calendar.getInstance();
+		
+		for(int i = 0; i < shifts.length; i++)
+		{
+			// Assemble date string
+			cal.setTime(shiftDates[i]);
+			String dateString = Integer.toString(cal.get(Calendar.DAY_OF_MONTH)) + "." + Integer.toString(cal.get(Calendar.MONTH)) + "." + Integer.toString(cal.get(Calendar.YEAR));
+			Object[] entry = new Object[] {dateString, shifts[i].getId(), Integer.toString(shifts[i].getStartingTime()), Integer.toString(shifts[i].getEndTime())};
+			dplTableModel.addRow(entry);
+			
+		}
+		
 	}
 }

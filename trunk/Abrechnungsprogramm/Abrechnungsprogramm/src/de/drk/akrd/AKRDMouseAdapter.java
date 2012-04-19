@@ -124,6 +124,7 @@ public class AKRDMouseAdapter extends MouseAdapter {
 			return;
 		}
 
+		// Register Shifts
 		if (source == mainWindow.submitButton) {
 			String date = mainWindow.dateField.getText();
 			String partner = mainWindow.shiftPartnerField.getText();
@@ -170,6 +171,13 @@ public class AKRDMouseAdapter extends MouseAdapter {
 					partner,
 					mainWindow.commentField.getText());
 			return;
+		}
+		
+		if(source == mainWindow.read_DPL)
+		{
+			PDFReader.parseDutyRota();
+			
+			mainWindow.updateShiftsFromDPL();
 		}
 	}
 
