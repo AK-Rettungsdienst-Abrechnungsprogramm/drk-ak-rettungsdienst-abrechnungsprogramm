@@ -13,6 +13,8 @@ import com.itextpdf.text.pdf.RadioCheckField;
 import com.itextpdf.text.pdf.PdfFormField;
 import com.itextpdf.text.pdf.PdfContentByte;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.xml.bind.ParseConversionEvent;
 
@@ -405,6 +407,7 @@ public class PdfCreator {
       float salary = calculateSalary(shifts.get(0));
       for (int i = 0; i <= 12; i++) {
         ShiftInstance currentShift = null;
+        String weekDay = "";
         String date = "";
         String startTimeAsString = "";
         String endTimeAsString = "";
@@ -415,9 +418,18 @@ public class PdfCreator {
         String shiftSalary = "";
         String comment = "";
 
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+        Calendar cal = Calendar.getInstance();
         if (shifts.size() > i) {
           currentShift = shifts.get(i);
           date = currentShift.getDate();
+          try {
+            cal.setTime(sdf.parse(date));
+            weekDay = getDayOfWeekString(cal.get(Calendar.DAY_OF_WEEK));
+          } catch (ParseException ex) {
+            System.out.println("Exception in PdfCreator.createAccounting "
+                    + "(parsing date failed): "+ex.getMessage());
+          }
           int startTime = currentShift.getActualStartingTime();
           int endTime = currentShift.getActualEndTime();
           int breakTime = currentShift.getActualBreakTime();
@@ -439,7 +451,7 @@ public class PdfCreator {
         tempCell.setFixedHeight(19f);
         table7.addCell(tempCell);
         tempCell = emptyPdfPCell();
-        content = new Paragraph("", helveticaFont9);
+        content = new Paragraph(weekDay, helveticaFont9);
         tempCell.addElement(content);
         table7.addCell(tempCell);
         tempCell = emptyPdfPCell();
@@ -687,5 +699,25 @@ public class PdfCreator {
         }
     }
     return salary;
+  }
+  private static String getDayOfWeekString(int dayOfWeek) {
+    switch (dayOfWeek) {
+      case Calendar.MONDAY:
+        return "Mo";
+      case Calendar.TUESDAY:
+        return "Di";
+      case Calendar.WEDNESDAY:
+        return "Mi";
+      case Calendar.THURSDAY:
+        return "Do";
+      case Calendar.FRIDAY:
+        return "Fr";
+      case Calendar.SATURDAY:
+        return "Sa";
+      case Calendar.SUNDAY:
+        return "So";
+      default:
+        return "";
+    }
   }
 }
