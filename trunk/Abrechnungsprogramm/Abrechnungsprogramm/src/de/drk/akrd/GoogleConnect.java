@@ -5,13 +5,12 @@
 package de.drk.akrd;
 
 import com.google.gdata.client.*;
-import com.google.gdata.client.calendar.*;
 import com.google.gdata.data.*;
 import com.google.gdata.data.extensions.*;
 import com.google.gdata.util.*;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 
@@ -19,9 +18,31 @@ import javax.swing.JPasswordField;
  *
  * @author Jo
  */
-public class GoogleConnect {
+public class GoogleConnect extends CalendarManager {
 
-  public static void createNewAppointment(String[][] entrys) {
+  public GoogleConnect() {
+    super();
+  }
+    /**
+   * creates Googleclaendar-entrys for the saved shifts
+   * @return true if successful, false otherwise
+   */
+  public boolean createGoogleCalendarEntry(Shift[] shifts, Date[] shiftDates) {
+    if (shifts == null || shiftDates == null) {
+      return false;
+    }
+    String[][] entryStrings = new String[shifts.length][4];
+      for (int i = 0; i < shifts.length; i++) {
+        String[] beginEndStrings = getBeginEndStrings(shifts[i], shiftDates[i], calendarEntryType.GOOGLE_ENTRY);
+        entryStrings[i][0] = shifts[i].getId().substring(0, 3);
+        entryStrings[i][1] = "Termintext";
+        entryStrings[i][2] = beginEndStrings[0];
+        entryStrings[i][3] = beginEndStrings[1];
+      }
+      GoogleConnect.createNewAppointment(entryStrings);
+    return false;
+  }
+  private static void createNewAppointment(String[][] entrys) {
 
     try {
       PersonalData personalData = PersonalData.getInstance();
