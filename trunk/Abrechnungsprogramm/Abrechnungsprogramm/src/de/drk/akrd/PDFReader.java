@@ -80,7 +80,7 @@ public class PDFReader {
     CreateIcs;
   }
 
-  public static void parseDutyRota(TypeOfAction typeOfAction) {
+  public static void parseDutyRota() {
     String filePath = getPdfFilePath();
     String[] contentStrings = parsePdf(filePath);
     if (contentStrings == null) {
