@@ -152,6 +152,7 @@ public class XMLEditor {
           if(emailAdress.equals("null")) emailAdress = null;
           String calendarId = node.getChildText("calendarId");
           if(calendarId.equals("null")) calendarId= null;
+          System.out.println("Name: "+node.getChildText("firstName")+" "+node.getChildText("lastName"));
           PersonalData.setData(
                   node.getChildText("firstName"),
                   node.getChildText("lastName"),
@@ -166,6 +167,7 @@ public class XMLEditor {
         return true;
       } catch (JDOMException | IOException | NumberFormatException e) {
         System.out.println("Exception in XMLEditor.loadPersonalData: " + e.getMessage());
+        return false;
       }
     }
     return false;
