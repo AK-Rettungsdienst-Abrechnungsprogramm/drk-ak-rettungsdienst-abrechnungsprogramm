@@ -184,6 +184,54 @@ public class AKRDMouseAdapter extends MouseAdapter {
 		{
 			 ICalendar iCalendar = new ICalendar();
 	         iCalendar.createICalendarFile(DRManager.GetInstance().getSavedShifts(), DRManager.GetInstance().getSavedShiftDates());
+	         return;
+		}
+		
+		// Apply personal info
+		if(source == mainWindow.personalInfoApply)
+		{
+			String firstName = mainWindow.firstNameField.getText();
+			String lastName = mainWindow.lastNameField.getText();
+			
+			PersonalData.Qualification quali = (PersonalData.Qualification)mainWindow.trainingsChooser.getSelectedItem();
+			
+			if(firstName.length() == 0 || lastName.length() == 0)
+			{
+				mainWindow.showMessagePopup("Bitte Namen korrekt eingeben!");
+				return;
+			}
+			
+			int blz = 0;
+			int account = 0;
+			try
+			{
+				blz = Integer.parseInt(mainWindow.blz.getText());
+				account = Integer.parseInt(mainWindow.accountNo.getText());
+			}
+			catch(NumberFormatException exeption)
+			{
+				mainWindow.showMessagePopup("Bitte Bankdaten korrekt eingeben!");
+				return;
+			}
+			
+			String bankName = mainWindow.bankNameField.getText();
+			
+			boolean dataKnown = mainWindow.bankInfoKnown.isSelected();
+			
+			
+			if(bankName.length() == 0)
+			{
+				mainWindow.showMessagePopup("Bitte Bankdaten korrekt eingeben!");
+				return;
+			}
+			
+			String gmail = mainWindow.gMailAdressField.getText();
+			String calID = mainWindow.calendarIDFiled.getText();
+			
+			PersonalData pd = PersonalData.getInstance();
+			
+			pd.setData(firstName, lastName, bankName, account, blz, quali, dataKnown, gmail, calID);
+			
 		}
 	}
 

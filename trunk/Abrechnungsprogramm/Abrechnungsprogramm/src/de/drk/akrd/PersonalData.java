@@ -15,7 +15,7 @@ package de.drk.akrd;
  */
 public class PersonalData {
   private static PersonalData instance = null;
-  private static boolean dataSet = false;
+  private boolean dataSet = false;
   private String firstName;
   private String lastName;
   private String bankNameAndCity;
@@ -48,13 +48,13 @@ public class PersonalData {
 
   /**
    * 
-   * @return the data-instance if a datafile exists or the data is already set,
+   * @return the data-instance if a datafile exists
    * null oterwise
    */
   public static PersonalData getInstance() {
-    if ((instance == null) || (!dataSet)) {
+    if ((instance == null)) {
       instance = new PersonalData();
-      boolean loadingSuccessful = XMLEditor.loadPersonalData();
+      boolean loadingSuccessful = XMLEditor.loadPersonalData(instance);
       if(!loadingSuccessful) {
         return null;
       }
@@ -72,23 +72,20 @@ public class PersonalData {
    * @param qualifikation (enum PersonalData.Qualification)
    * @param dataKnown 
    */
-  public static void setData(String firstName, String LastName,
+  public void setData(String firstName, String LastName,
           String BankNameAndCity, int accountNumber, int blz, Qualification qualifikation,
           boolean dataKnown, String emailAdress, String calendarId) {
-    if(instance==null) {
-      instance = new PersonalData();
-    }
-    instance.accountNumber = accountNumber;
-    instance.bankNameAndCity = BankNameAndCity;
-    instance.blz = blz;
-    instance.firstName = firstName;
-    instance.lastName = LastName;
-    instance.qualification = qualifikation;
-    instance.dataKnown = dataKnown;
-    instance.dataSet = true;
-    dataSet = true;
-    instance.emailAdress = emailAdress;
-    instance.calendarId = calendarId;
+
+    this.accountNumber = accountNumber;
+    this.bankNameAndCity = BankNameAndCity;
+    this.blz = blz;
+    this.firstName = firstName;
+    this.lastName = LastName;
+    this.qualification = qualifikation;
+    this.dataKnown = dataKnown;
+    this.dataSet = true;
+    this.emailAdress = emailAdress;
+    this.calendarId = calendarId;
     XMLEditor.writePersonalData(instance);
   }
 

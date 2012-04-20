@@ -31,6 +31,8 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.factories.FormFactory;
 import de.drk.akrd.PersonalData.Qualification;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.EtchedBorder;
 
 public class MainWindow extends JFrame {
 
@@ -45,11 +47,25 @@ public class MainWindow extends JFrame {
 	// Personal Info Components
 	private JPanel personalInfoTab = new JPanel();
 
-	private JComboBox<PersonalData.Qualification> trainingsChooser = new JComboBox<>();
-	protected JTextField accountNo = new JTextField();
+	// Name Fields
+	private final JLabel lblName = new JLabel("Vorname:");
+	protected final JTextField firstNameField = new JTextField();
+	private final JLabel lblNachname = new JLabel("Nachname:");
+	protected final JTextField lastNameField = new JTextField();
+	
+	protected final JComboBox<PersonalData.Qualification> trainingsChooser = new JComboBox<>();
+	protected final JTextField accountNo = new JTextField();
 	protected JTextField blz = new JTextField();
 	protected JCheckBox bankInfoKnown = new JCheckBox();
+	protected final JTextField bankNameField = new JTextField();
 
+
+	
+	protected JTextField gMailAdressField;
+	protected JTextField calendarIDFiled;
+	
+	protected JButton personalInfoApply;
+	
 	// Shift Collector Components
 
 	// This int holds the TYPE of day that is currently selected
@@ -84,8 +100,7 @@ public class MainWindow extends JFrame {
 	private final JLabel lblKommentar = new JLabel("Kommentar");
 	protected JTextField commentField = new JTextField();
 	private final JPanel panel = new JPanel();
-	private final JLabel lblName = new JLabel("Name:");
-	private final JTextField nameField = new JTextField();
+
 	private final JLabel lblAusbildung = new JLabel("Ausbildung:");
 	private final JPanel panel_1 = new JPanel();
 	private final JLabel lblBlz = new JLabel("BLZ");
@@ -95,8 +110,13 @@ public class MainWindow extends JFrame {
 	protected JButton read_DPL;
 	protected JButton iCalButton;
 	private JTable dplTable;
-
+	private final JLabel lblNameDerBank = new JLabel("Name der Bank:");
+	
+	
+	
 	public MainWindow() {
+		bankNameField.setColumns(10);
+		lastNameField.setColumns(10);
 		accountNo.setColumns(10);
 		blz.setColumns(10);
 		commentField.setColumns(10);
@@ -164,7 +184,6 @@ public class MainWindow extends JFrame {
 		basePanel.add(logo);
 
 		JTabbedPane tabbedPane = new JTabbedPane();
-		nameField.setColumns(10);
 
 		// Assebmle personal Layout
 
@@ -172,50 +191,103 @@ public class MainWindow extends JFrame {
 
 		tabbedPane.addTab("Persönliche Info", null, personalInfoTab,
 				"Persönliche Daten eingeben");
+		
+		JPanel panel_2 = new JPanel();
+		panel_2.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		
+		personalInfoApply = new JButton("Änderungen Speichern");
+		personalInfoApply.addMouseListener(mouseAdapter);
 		GroupLayout gl_personalInfoTab = new GroupLayout(personalInfoTab);
-		gl_personalInfoTab.setHorizontalGroup(gl_personalInfoTab
-				.createParallelGroup(Alignment.LEADING).addGroup(
-						gl_personalInfoTab
-								.createSequentialGroup()
-								.addContainerGap()
-								.addComponent(panel,
-										GroupLayout.PREFERRED_SIZE, 405,
-										GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(ComponentPlacement.UNRELATED)
-								.addComponent(panel_1,
-										GroupLayout.PREFERRED_SIZE, 352,
-										GroupLayout.PREFERRED_SIZE)
-								.addContainerGap(GroupLayout.DEFAULT_SIZE,
-										Short.MAX_VALUE)));
-		gl_personalInfoTab
-				.setVerticalGroup(gl_personalInfoTab
-						.createParallelGroup(Alignment.LEADING)
-						.addGroup(
-								gl_personalInfoTab
-										.createSequentialGroup()
-										.addContainerGap()
-										.addGroup(
-												gl_personalInfoTab
-														.createParallelGroup(
-																Alignment.LEADING)
-														.addComponent(
-																panel_1,
-																GroupLayout.PREFERRED_SIZE,
-																116,
-																GroupLayout.PREFERRED_SIZE)
-														.addComponent(
-																panel,
-																GroupLayout.PREFERRED_SIZE,
-																115,
-																GroupLayout.PREFERRED_SIZE))
-										.addContainerGap(411, Short.MAX_VALUE)));
+		gl_personalInfoTab.setHorizontalGroup(
+			gl_personalInfoTab.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_personalInfoTab.createSequentialGroup()
+					.addGroup(gl_personalInfoTab.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_personalInfoTab.createSequentialGroup()
+							.addContainerGap()
+							.addGroup(gl_personalInfoTab.createParallelGroup(Alignment.LEADING)
+								.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 768, GroupLayout.PREFERRED_SIZE)
+								.addGroup(gl_personalInfoTab.createSequentialGroup()
+									.addComponent(panel, GroupLayout.PREFERRED_SIZE, 411, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 352, GroupLayout.PREFERRED_SIZE))))
+						.addGroup(gl_personalInfoTab.createSequentialGroup()
+							.addGap(292)
+							.addComponent(personalInfoApply)))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		gl_personalInfoTab.setVerticalGroup(
+			gl_personalInfoTab.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_personalInfoTab.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_personalInfoTab.createParallelGroup(Alignment.LEADING)
+						.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 116, GroupLayout.PREFERRED_SIZE)
+						.addComponent(panel, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 102, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(personalInfoApply)
+					.addContainerGap(260, Short.MAX_VALUE))
+		);
+		panel_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		
+		JLabel lblNewLabel = new JLabel("<html>Diese Angaben brauchst du nur, wenn du den Dienstplan automatisch in deinen Google Kalender<br>importieren willst.</html>");
+		
+		JLabel lblNewLabel_1 = new JLabel("Google Mail Adresse:");
+		
+		gMailAdressField = new JTextField();
+		gMailAdressField.setColumns(10);
+		
+		JLabel lblCalendarid = new JLabel("Calendar-ID:");
+		
+		calendarIDFiled = new JTextField();
+		calendarIDFiled.setColumns(10);
+		GroupLayout gl_panel_2 = new GroupLayout(panel_2);
+		gl_panel_2.setHorizontalGroup(
+			gl_panel_2.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_2.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 744, Short.MAX_VALUE)
+						.addGroup(gl_panel_2.createSequentialGroup()
+							.addComponent(lblNewLabel_1)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(gMailAdressField, GroupLayout.PREFERRED_SIZE, 198, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(lblCalendarid)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(calendarIDFiled, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap())
+		);
+		gl_panel_2.setVerticalGroup(
+			gl_panel_2.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_2.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblNewLabel)
+					.addGap(18)
+					.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel_2.createParallelGroup(Alignment.BASELINE)
+							.addComponent(lblNewLabel_1)
+							.addComponent(gMailAdressField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel_2.createParallelGroup(Alignment.BASELINE)
+							.addComponent(lblCalendarid)
+							.addComponent(calendarIDFiled, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap(23, Short.MAX_VALUE))
+		);
+		panel_2.setLayout(gl_panel_2);
 		panel_1.setLayout(new FormLayout(new ColumnSpec[] {
-				FormFactory.RELATED_GAP_COLSPEC, FormFactory.DEFAULT_COLSPEC,
 				FormFactory.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("default:grow"), }, new RowSpec[] {
-				FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC, }));
+				FormFactory.DEFAULT_COLSPEC,
+				FormFactory.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("default:grow"),},
+			new RowSpec[] {
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,}));
 		bankInfoKnown.setText("Bankdaten bekannt");
 
 		panel_1.add(bankInfoKnown, "2, 2");
@@ -227,24 +299,46 @@ public class MainWindow extends JFrame {
 		panel_1.add(lblKontonummer, "2, 6, right, default");
 
 		panel_1.add(accountNo, "4, 6, fill, default");
+		
+		panel_1.add(lblNameDerBank, "2, 8, right, default");
+		
+		panel_1.add(bankNameField, "4, 8, fill, default");
 		panel.setLayout(new FormLayout(new ColumnSpec[] {
-				FormFactory.RELATED_GAP_COLSPEC, FormFactory.DEFAULT_COLSPEC,
-				FormFactory.RELATED_GAP_COLSPEC, FormFactory.DEFAULT_COLSPEC,
 				FormFactory.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("default:grow"), }, new RowSpec[] {
-				FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC, }));
+				FormFactory.DEFAULT_COLSPEC,
+				FormFactory.RELATED_GAP_COLSPEC,
+				FormFactory.DEFAULT_COLSPEC,
+				FormFactory.RELATED_GAP_COLSPEC,
+				FormFactory.DEFAULT_COLSPEC,
+				FormFactory.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("default:grow"),},
+			new RowSpec[] {
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,}));
 
 		panel.add(lblName, "2, 4");
-
-		panel.add(nameField, "6, 4, fill, default");
-
-		panel.add(lblAusbildung, "2, 6");
-		trainingsChooser.setModel(new DefaultComboBoxModel<>(Qualification.values()));
-
-		panel.add(trainingsChooser, "6, 6, fill, default");
+		firstNameField.setColumns(10);
+		
+				panel.add(firstNameField, "6, 4, 3, 1, fill, default");
+						
+						panel.add(lblNachname, "2, 6");
+						
+						panel.add(lastNameField, "6, 6, 3, 1, fill, default");
+				
+						panel.add(lblAusbildung, "2, 8");
+								trainingsChooser.setModel(new DefaultComboBoxModel<>(Qualification.values()));
+								
+										panel.add(trainingsChooser, "6, 8, 3, 1");
 		personalInfoTab.setLayout(gl_personalInfoTab);
+		
+		// Shift Collector
+		
 		tabbedPane.addTab("Schichten", null, shiftEditor,
 				"Schichten eingeben und bearbeiten");
 
@@ -689,11 +783,15 @@ public class MainWindow extends JFrame {
 				}
 				if(pd != null)
 				{
-					nameField.setText(pd.getFirstName() + " " + pd.getLastName());
+					firstNameField.setText(pd.getFirstName());
 					trainingsChooser.setSelectedItem(pd.getQualification());
 					blz.setText(Integer.toString(pd.getBlz()));
 					accountNo.setText(Integer.toString(pd.getAccountNumber()));
 					bankInfoKnown.setSelected(pd.isDataKnown());
+					lastNameField.setText(pd.getLastName());
+					gMailAdressField.setText(pd.getEmailAdress());
+					calendarIDFiled.setText(pd.getCalendarId());
+					bankNameField.setText(pd.getBankNameAndCity());
 				}
 	}
 	protected void showMessagePopup(String message) {
