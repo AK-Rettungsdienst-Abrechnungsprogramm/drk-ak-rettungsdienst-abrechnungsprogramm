@@ -138,7 +138,7 @@ public class XMLEditor {
    * To access the data use PersonalData.getInstance();
    * @return true if successful, false othewise (i.e. file not found)
    */
-  public static boolean loadPersonalData() {
+  public static boolean loadPersonalData(PersonalData pd) {
     File dataFile = new File("PersonalData.xml");
     if (dataFile.exists()) {
       SAXBuilder saxBuilder = new SAXBuilder();
@@ -153,7 +153,7 @@ public class XMLEditor {
           String calendarId = node.getChildText("calendarId");
           if(calendarId.equals("null")) calendarId= null;
           System.out.println("Name: "+node.getChildText("firstName")+" "+node.getChildText("lastName"));
-          PersonalData.setData(
+          pd.setData(
                   node.getChildText("firstName"),
                   node.getChildText("lastName"),
                   node.getChildText("bankaccountAndCity"),
