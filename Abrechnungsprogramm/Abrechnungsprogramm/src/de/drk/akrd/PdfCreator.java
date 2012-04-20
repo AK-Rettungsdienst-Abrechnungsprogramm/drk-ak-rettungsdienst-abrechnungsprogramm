@@ -639,7 +639,7 @@ public class PdfCreator {
     }
   }
 
-  private static String createTimeStringFromInt(int time) {
+  protected static String createTimeStringFromInt(int time) {
     String timeString;
     if (time >= 1000) {
       timeString = ((int) (time / 100)) + "";

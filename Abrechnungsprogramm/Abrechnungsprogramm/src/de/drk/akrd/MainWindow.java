@@ -93,6 +93,7 @@ public class MainWindow extends JFrame {
 	
 	// DPL Tab
 	protected JButton read_DPL;
+	protected JButton iCalButton;
 	private JTable dplTable;
 
 	public MainWindow() {
@@ -589,6 +590,9 @@ public class MainWindow extends JFrame {
 		dplTable = new JTable();
 		DPLScrollPane.setViewportView(dplTable);
 		
+		iCalButton = new JButton("iCal Datei erstellen");
+		iCalButton.addMouseListener(this.mouseAdapter);
+		
 		GroupLayout gl_DPL_Tab = new GroupLayout(DPL_Tab);
 		gl_DPL_Tab.setHorizontalGroup(
 			gl_DPL_Tab.createParallelGroup(Alignment.LEADING)
@@ -597,7 +601,8 @@ public class MainWindow extends JFrame {
 					.addGroup(gl_DPL_Tab.createParallelGroup(Alignment.LEADING)
 						.addComponent(DPLLabel, GroupLayout.PREFERRED_SIZE, 760, GroupLayout.PREFERRED_SIZE)
 						.addComponent(read_DPL)
-						.addComponent(DPLScrollPane, GroupLayout.PREFERRED_SIZE, 543, GroupLayout.PREFERRED_SIZE))
+						.addComponent(DPLScrollPane, GroupLayout.PREFERRED_SIZE, 543, GroupLayout.PREFERRED_SIZE)
+						.addComponent(iCalButton))
 					.addContainerGap(21, Short.MAX_VALUE))
 		);
 		gl_DPL_Tab.setVerticalGroup(
@@ -609,7 +614,9 @@ public class MainWindow extends JFrame {
 					.addComponent(read_DPL)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(DPLScrollPane, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(292, Short.MAX_VALUE))
+					.addGap(18)
+					.addComponent(iCalButton)
+					.addContainerGap(249, Short.MAX_VALUE))
 		);
 		DPL_Tab.setLayout(gl_DPL_Tab);
 		dplTable.setModel(dplTableModel);
@@ -696,8 +703,8 @@ public class MainWindow extends JFrame {
 	
 	protected void updateShiftsFromDPL()
 	{
-		Shift[] shifts = DRManager.getSavedShifts();
-		Date[] shiftDates = DRManager.getSavedShiftDates();
+		Shift[] shifts = DRManager.GetInstance().getSavedShifts();
+		Date[] shiftDates = DRManager.GetInstance().getSavedShiftDates();
 		
 		dplTableModel.setNumRows(0);
 		
@@ -706,9 +713,11 @@ public class MainWindow extends JFrame {
 		for(int i = 0; i < shifts.length; i++)
 		{
 			// Assemble date string
+			String startingTime = PdfCreator.createTimeStringFromInt(shifts[i].getStartingTime());
+			String endTime = PdfCreator.createTimeStringFromInt(shifts[i].getEndTime());
 			cal.setTime(shiftDates[i]);
 			String dateString = Integer.toString(cal.get(Calendar.DAY_OF_MONTH)) + "." + Integer.toString(cal.get(Calendar.MONTH)) + "." + Integer.toString(cal.get(Calendar.YEAR));
-			Object[] entry = new Object[] {dateString, shifts[i].getId(), Integer.toString(shifts[i].getStartingTime()), Integer.toString(shifts[i].getEndTime())};
+			Object[] entry = new Object[] {dateString, shifts[i].getId(), startingTime, endTime};
 			dplTableModel.addRow(entry);
 			
 		}
