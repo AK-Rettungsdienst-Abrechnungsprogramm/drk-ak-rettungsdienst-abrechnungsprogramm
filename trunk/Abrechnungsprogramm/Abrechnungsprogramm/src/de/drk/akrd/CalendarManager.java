@@ -15,8 +15,10 @@ import java.util.SimpleTimeZone;
 public class CalendarManager {
 
   public enum calendarEntryType {
+
     GOOGLE_ENTRY, ICALENDAR_ENTRY;
   }
+
   public CalendarManager() {
   }
 
@@ -39,6 +41,7 @@ public class CalendarManager {
 
     return returnArray;
   }
+
   public String getDateTimeString(Date date, int hour, int minute, calendarEntryType entryType) {
     SimpleTimeZone mez = new SimpleTimeZone(+1 * 60 * 60 * 1000, "ECT");
     mez.setStartRule(Calendar.MARCH, -1, Calendar.SUNDAY, 2 * 60 * 60 * 1000);
@@ -46,7 +49,7 @@ public class CalendarManager {
     Calendar cal = Calendar.getInstance();
     cal.setTime(date);
     int year = cal.get(Calendar.YEAR);
-    String monthString = getTwoLetterStringFromInt(cal.get(Calendar.MONTH)+1);
+    String monthString = getTwoLetterStringFromInt(cal.get(Calendar.MONTH) + 1);
     String dayString = getTwoLetterStringFromInt(cal.get(Calendar.DAY_OF_MONTH));
     String seperatorOne = "";
     String seperatorTwo = "";
@@ -54,13 +57,19 @@ public class CalendarManager {
       seperatorOne = "-";
       seperatorTwo = ":";
     }
-    int timeCorrection = (mez.inDaylightTime(cal.getTime()))? 2: 1;
-    String returnString = year+seperatorOne+monthString+seperatorOne+dayString+"T"
-            +getTwoLetterStringFromInt(hour)+seperatorTwo+getTwoLetterStringFromInt(minute)+seperatorTwo
-            +"00+"+getTwoLetterStringFromInt(timeCorrection)+seperatorTwo+"00";
+    int timeCorrection = (mez.inDaylightTime(cal.getTime())) ? 2 : 1;
+    String returnString = year + seperatorOne + monthString + seperatorOne + dayString + "T"
+            + getTwoLetterStringFromInt(hour) + seperatorTwo + getTwoLetterStringFromInt(minute) + seperatorTwo
+            + "00";
+    if (entryType == calendarEntryType.GOOGLE_ENTRY) {
+      returnString += "+" + getTwoLetterStringFromInt(timeCorrection) + seperatorTwo + "00";
+    } else if (entryType == calendarEntryType.ICALENDAR_ENTRY) {
+      returnString += "Z";
+    }
     return returnString;
   }
-  public  String getTwoLetterStringFromInt(int x) {
+
+  public String getTwoLetterStringFromInt(int x) {
     return ((x < 10) ? ("0" + x) : x + "");
   }
 }

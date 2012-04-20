@@ -47,15 +47,36 @@ public class ICalendar extends CalendarManager {
     return success;
   }
   private String getFileContent(Shift[] shifts, Date[] dates) {
-    String fileContent = "BEGIN:VCALENDAR\nVERSION:2.0\n";
+    String fileContent = ""
+            + "BEGIN:VCALENDAR\n"
+            + "VERSION:2.0\n"
+            + "BEGIN:VTIMEZONE\n"
+            + "TZID:Europe/Berlin\n"
+            + "X-LIC-LOCATION:Europe/Berlin\n"
+            + "BEGIN:DAYLIGHT\n"
+            + "TZOFFSETFROM:+0100\n"
+            + "TZOFFSETTO:+0200\n"
+            + "TZNAME:CEST\n"
+            + "DTSTART:19700329T020000\n"
+            + "RRULE:FREQ=YEARLY;BYDAY=-1SU;BYMONTH=3\n"
+            + "END:DAYLIGHT\n"
+            + "BEGIN:STANDARD\n"
+            + "TZOFFSETFROM:+0200\n"
+            + "TZOFFSETTO:+0100\n"
+            + "TZNAME:CET\n"
+            + "DTSTART:19701025T030000\n"
+            + "RRULE:FREQ=YEARLY;BYDAY=-1SU;BYMONTH=10\n"
+            + "END:STANDARD\n"
+            + "END:VTIMEZONE\n";
     for (int i = 0; i < shifts.length; i++) {
       Shift shift = shifts[i];
       String[] beginEndStrings = getBeginEndStrings(shift, dates[i], calendarEntryType.ICALENDAR_ENTRY);
       fileContent +=""
               + "BEGIN:VEVENT\n"
-              + "DTSTART:"+beginEndStrings[0]+"\n"
-              + "DTEND:"+beginEndStrings[1]+"\n"
+              + "DTSTART;TZID=Europe/Berlin:"+beginEndStrings[0]+"\n"
+              + "DTEND;TZID=Europe/Berlin:"+beginEndStrings[1]+"\n"
               + "SUMMARY:"+shift.getId().substring(0, 3)+"\n"
+              + "DESCRIPTION:" + "Beschreibung" + "\n"
               + "END:VEVENT\n";
     }
     

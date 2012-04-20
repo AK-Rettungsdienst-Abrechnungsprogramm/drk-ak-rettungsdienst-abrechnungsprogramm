@@ -18,11 +18,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.SimpleTimeZone;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
-import sun.security.jca.GetInstance;
 
 /**
  *
@@ -235,7 +233,7 @@ private static String getPdfFilePath() {
    * get the dates of parsed shifts
    * @return array of Date
    */
-  public static Date[] getSavedShiftDates() {
+  public Date[] getSavedShiftDates() {
     return savedShiftDates;
   }
 
@@ -244,7 +242,7 @@ private static String getPdfFilePath() {
    * (call DRManager.getSavedShiftDates())
    * @return array of Shift
    */
-  public static Shift[] getSavedShifts() {
+  public Shift[] getSavedShifts() {
     return savedShifts;
   }
   
