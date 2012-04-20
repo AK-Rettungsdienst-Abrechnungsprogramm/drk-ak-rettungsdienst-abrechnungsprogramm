@@ -116,6 +116,10 @@ public class MainWindow extends JFrame {
 	
 	
 	public MainWindow() {
+		
+		// Instanciate UtilityBox
+		UtilityBox.instanciate(this);
+		
 		bankNameField.setColumns(10);
 		lastNameField.setColumns(10);
 		accountNo.setColumns(10);
@@ -786,7 +790,7 @@ public class MainWindow extends JFrame {
 				}
 				catch(Exception e)
 				{
-					showMessagePopup("Fehler beim Laden der persönlichen Daten" + e.getMessage());
+					UtilityBox.getInstance().displayErrorPopup("Fehler", "Fehler beim Laden der persönlichen Daten");
 				}
 				if(pd != null)
 				{
@@ -801,10 +805,7 @@ public class MainWindow extends JFrame {
 					bankNameField.setText(pd.getBankNameAndCity());
 				}
 	}
-	protected void showMessagePopup(String message) {
-		JOptionPane.showMessageDialog(this, message, "Fehler",
-				JOptionPane.ERROR_MESSAGE);
-	}
+
 	
 	protected void updateShiftsFromDPL()
 	{
