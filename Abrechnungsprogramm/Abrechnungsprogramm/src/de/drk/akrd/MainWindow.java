@@ -111,6 +111,7 @@ public class MainWindow extends JFrame {
 	protected JButton iCalButton;
 	private JTable dplTable;
 	private final JLabel lblNameDerBank = new JLabel("Name der Bank:");
+	protected final JButton googleCalButton = new JButton("Dienste in Google Kalender eintragen");
 	
 	
 	
@@ -686,6 +687,7 @@ public class MainWindow extends JFrame {
 		
 		iCalButton = new JButton("iCal Datei erstellen");
 		iCalButton.addMouseListener(this.mouseAdapter);
+		googleCalButton.addMouseListener(mouseAdapter);
 		
 		GroupLayout gl_DPL_Tab = new GroupLayout(DPL_Tab);
 		gl_DPL_Tab.setHorizontalGroup(
@@ -696,7 +698,10 @@ public class MainWindow extends JFrame {
 						.addComponent(DPLLabel, GroupLayout.PREFERRED_SIZE, 760, GroupLayout.PREFERRED_SIZE)
 						.addComponent(read_DPL)
 						.addComponent(DPLScrollPane, GroupLayout.PREFERRED_SIZE, 543, GroupLayout.PREFERRED_SIZE)
-						.addComponent(iCalButton))
+						.addGroup(gl_DPL_Tab.createSequentialGroup()
+							.addComponent(iCalButton)
+							.addGap(41)
+							.addComponent(googleCalButton)))
 					.addContainerGap(21, Short.MAX_VALUE))
 		);
 		gl_DPL_Tab.setVerticalGroup(
@@ -709,7 +714,9 @@ public class MainWindow extends JFrame {
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(DPLScrollPane, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE)
 					.addGap(18)
-					.addComponent(iCalButton)
+					.addGroup(gl_DPL_Tab.createParallelGroup(Alignment.BASELINE)
+						.addComponent(iCalButton)
+						.addComponent(googleCalButton))
 					.addContainerGap(249, Short.MAX_VALUE))
 		);
 		DPL_Tab.setLayout(gl_DPL_Tab);

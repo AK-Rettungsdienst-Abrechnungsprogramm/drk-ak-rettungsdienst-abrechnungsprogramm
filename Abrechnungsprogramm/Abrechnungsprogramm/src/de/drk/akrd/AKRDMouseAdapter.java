@@ -180,11 +180,26 @@ public class AKRDMouseAdapter extends MouseAdapter {
 			return;
 		}
 		
-		if(source == mainWindow.iCalButton)
+		if(source == mainWindow.iCalButton || source == mainWindow.googleCalButton)
 		{
+			if(DRManager.GetInstance().getSavedShifts() == null)
+			{
+				mainWindow.showMessagePopup("Bitte zuerst Dienstplan auslesen!");
+				return;
+			}
+			
+			if(source == mainWindow.iCalButton)
+			{
 			 ICalendar iCalendar = new ICalendar();
 	         iCalendar.createICalendarFile(DRManager.GetInstance().getSavedShifts(), DRManager.GetInstance().getSavedShiftDates());
 	         return;
+			}
+			if(source == mainWindow.googleCalButton)
+			{
+				GoogleConnect gc = new GoogleConnect();
+				
+				gc.createGoogleCalendarEntry(DRManager.GetInstance().getSavedShifts(), DRManager.GetInstance().getSavedShiftDates());
+			}
 		}
 		
 		// Apply personal info
