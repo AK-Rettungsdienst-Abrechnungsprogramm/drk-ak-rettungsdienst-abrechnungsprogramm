@@ -134,7 +134,7 @@ public class AKRDMouseAdapter extends MouseAdapter {
 
 			// If no date has been selected create popup
 			if (date.equals("bitte auswählen")) {
-				mainWindow.showMessagePopup("Bitte Datum auswählen!");
+				UtilityBox.getInstance().displayErrorPopup("Fehler", "Bitte Datum auswählen!");
 				return;
 			}
 
@@ -142,25 +142,25 @@ public class AKRDMouseAdapter extends MouseAdapter {
 			try {
 				begin = Integer.parseInt(mainWindow.beginField.getText());
 			} catch (NumberFormatException exception) {
-				mainWindow.showMessagePopup("Ungültige Anfangszeit!");
+				UtilityBox.getInstance().displayErrorPopup("Fehler", "Ungültige Anfangszeit!");
 				return;
 			}
 			try {
 				end = Integer.parseInt(mainWindow.endField.getText());
 			} catch (NumberFormatException exception) {
-				mainWindow.showMessagePopup("Ungültige Endezeit!");
+				UtilityBox.getInstance().displayErrorPopup("Fehler", "Ungültige Endezeit!");
 				return;
 			}
 			try {
 				breakTime = Integer.parseInt(mainWindow.breakField.getText());
 			} catch (NumberFormatException exception) {
-				mainWindow.showMessagePopup("Ungültige Pausenzeit!");
+				UtilityBox.getInstance().displayErrorPopup("Fehler", "Ungültige Pausenzeit!");
 				return;
 			}
 			
 			if(partner.equals(""))
 			{
-				mainWindow.showMessagePopup("Bitte Schichtpartner angeben!");
+				UtilityBox.getInstance().displayErrorPopup("Fehler", "Bitte Schichtpartner angeben!");
 				return;
 			}
 
@@ -184,7 +184,7 @@ public class AKRDMouseAdapter extends MouseAdapter {
 		{
 			if(DRManager.GetInstance().getSavedShifts() == null)
 			{
-				mainWindow.showMessagePopup("Bitte zuerst Dienstplan auslesen!");
+				UtilityBox.getInstance().displayErrorPopup("Fehler", "Bitte zuerst Dienstplan auslesen!");
 				return;
 			}
 			
@@ -212,7 +212,7 @@ public class AKRDMouseAdapter extends MouseAdapter {
 			
 			if(firstName.length() == 0 || lastName.length() == 0)
 			{
-				mainWindow.showMessagePopup("Bitte Namen korrekt eingeben!");
+				UtilityBox.getInstance().displayErrorPopup("Fehler", "Bitte Namen korrekt eingeben!");
 				return;
 			}
 			
@@ -225,7 +225,7 @@ public class AKRDMouseAdapter extends MouseAdapter {
 			}
 			catch(NumberFormatException exeption)
 			{
-				mainWindow.showMessagePopup("Bitte Bankdaten korrekt eingeben!");
+				UtilityBox.getInstance().displayErrorPopup("Fehler", "Bitte Bankdaten korrekt eingeben!");
 				return;
 			}
 			
@@ -236,7 +236,7 @@ public class AKRDMouseAdapter extends MouseAdapter {
 			
 			if(bankName.length() == 0)
 			{
-				mainWindow.showMessagePopup("Bitte Bankdaten korrekt eingeben!");
+				UtilityBox.getInstance().displayErrorPopup("Fehler", "Bitte Bankdaten korrekt eingeben!");
 				return;
 			}
 			
