@@ -177,6 +177,13 @@ public class AKRDMouseAdapter extends MouseAdapter {
 		{
 			DRManager.GetInstance().parseDutyRota();
 			mainWindow.updateShiftsFromDPL();
+			return;
+		}
+		
+		if(source == mainWindow.iCalButton)
+		{
+			 ICalendar iCalendar = new ICalendar();
+	         iCalendar.createICalendarFile(DRManager.GetInstance().getSavedShifts(), DRManager.GetInstance().getSavedShiftDates());
 		}
 	}
 
