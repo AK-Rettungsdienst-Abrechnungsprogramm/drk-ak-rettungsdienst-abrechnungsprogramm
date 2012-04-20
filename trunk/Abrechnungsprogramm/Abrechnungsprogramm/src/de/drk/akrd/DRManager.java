@@ -32,11 +32,6 @@ public class DRManager {
   private static String failMessage = null;
   private static Shift[] savedShifts = null;
   private static Date[] savedShiftDates = null;
-  public static enum TypeOfAction {
-
-    CreateGoogleCalendarEntry,
-    CreateIcs;
-  }
   private DRManager(){}
   public static DRManager GetInstance() {
     if (INSTANCE==null) {
@@ -110,6 +105,7 @@ public class DRManager {
 
 private static String getPdfFilePath() {
   JFileChooser fileChooser = new JFileChooser(new File(System.getProperty("user.dir")));
+  fileChooser.setMultiSelectionEnabled(false);
   fileChooser.setFileFilter(new FileFilter() {
 
       @Override

@@ -13,7 +13,7 @@ import java.util.SimpleTimeZone;
  * @author Jo
  */
 public class CalendarManager {
-
+  private Calendar cal = Calendar.getInstance();
   public enum calendarEntryType {
 
     GOOGLE_ENTRY, ICALENDAR_ENTRY;
@@ -46,7 +46,6 @@ public class CalendarManager {
     SimpleTimeZone mez = new SimpleTimeZone(+1 * 60 * 60 * 1000, "ECT");
     mez.setStartRule(Calendar.MARCH, -1, Calendar.SUNDAY, 2 * 60 * 60 * 1000);
     mez.setEndRule(Calendar.OCTOBER, -1, Calendar.SUNDAY, 2 * 60 * 60 * 1000);
-    Calendar cal = Calendar.getInstance();
     cal.setTime(date);
     int year = cal.get(Calendar.YEAR);
     String monthString = getTwoLetterStringFromInt(cal.get(Calendar.MONTH) + 1);
@@ -63,13 +62,21 @@ public class CalendarManager {
             + "00";
     if (entryType == calendarEntryType.GOOGLE_ENTRY) {
       returnString += "+" + getTwoLetterStringFromInt(timeCorrection) + seperatorTwo + "00";
-    } else if (entryType == calendarEntryType.ICALENDAR_ENTRY) {
-      returnString += "Z";
+//    } else if (entryType == calendarEntryType.ICALENDAR_ENTRY) {
+//      returnString += "Z";
     }
     return returnString;
   }
 
   public String getTwoLetterStringFromInt(int x) {
     return ((x < 10) ? ("0" + x) : x + "");
+  }
+  public int getMonth(Date date) {
+    cal.setTime(date);
+    return cal.get(Calendar.MONTH);
+  }
+  public int getYear(Date date) {
+    cal.setTime(date);
+    return cal.get(Calendar.YEAR);
   }
 }
