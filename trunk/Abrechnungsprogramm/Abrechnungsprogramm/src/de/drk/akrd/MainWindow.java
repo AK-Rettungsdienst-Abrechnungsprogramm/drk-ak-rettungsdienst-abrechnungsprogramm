@@ -246,21 +246,27 @@ public class MainWindow extends JFrame {
 		
 		calendarIDFiled = new JTextField();
 		calendarIDFiled.setColumns(10);
+		
+		JLabel lblNewLabel_2 = new JLabel("");
+		lblNewLabel_2.setToolTipText("Die Kalender ID findest du unter Kalender-Einstellungen bei \"Kalenderadresse\"");
+		lblNewLabel_2.setIcon(new ImageIcon(MainWindow.class.getResource("/com/sun/java/swing/plaf/motif/icons/Question.gif")));
 		GroupLayout gl_panel_2 = new GroupLayout(panel_2);
 		gl_panel_2.setHorizontalGroup(
 			gl_panel_2.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_2.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 744, Short.MAX_VALUE)
+						.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 740, Short.MAX_VALUE)
 						.addGroup(gl_panel_2.createSequentialGroup()
 							.addComponent(lblNewLabel_1)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addComponent(gMailAdressField, GroupLayout.PREFERRED_SIZE, 198, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addComponent(lblCalendarid)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(calendarIDFiled, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(lblNewLabel_2)
+							.addGap(10)
+							.addComponent(calendarIDFiled, GroupLayout.PREFERRED_SIZE, 217, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
 		);
 		gl_panel_2.setVerticalGroup(
@@ -268,15 +274,17 @@ public class MainWindow extends JFrame {
 				.addGroup(gl_panel_2.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(lblNewLabel)
-					.addGap(18)
-					.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel_2.createParallelGroup(Alignment.BASELINE)
-							.addComponent(lblNewLabel_1)
-							.addComponent(gMailAdressField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_panel_2.createParallelGroup(Alignment.BASELINE)
-							.addComponent(lblCalendarid)
-							.addComponent(calendarIDFiled, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(23, Short.MAX_VALUE))
+					.addGap(13)
+					.addGroup(gl_panel_2.createParallelGroup(Alignment.TRAILING)
+						.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
+							.addGroup(gl_panel_2.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblNewLabel_1)
+								.addComponent(gMailAdressField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addGroup(gl_panel_2.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblCalendarid)
+								.addComponent(calendarIDFiled, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+						.addComponent(lblNewLabel_2))
+					.addContainerGap(19, Short.MAX_VALUE))
 		);
 		panel_2.setLayout(gl_panel_2);
 		panel_1.setLayout(new FormLayout(new ColumnSpec[] {
@@ -378,285 +386,107 @@ public class MainWindow extends JFrame {
 
 		submitButton = new JButton("Eintragen");
 		submitButton.addMouseListener(mouseAdapter);
+		
+		JButton createSalaryStatementButton = new JButton("Abrechnung erstellen");
 
 		GroupLayout gl_shiftEditor = new GroupLayout(shiftEditor);
-		gl_shiftEditor
-				.setHorizontalGroup(gl_shiftEditor
-						.createParallelGroup(Alignment.LEADING)
-						.addGroup(
-								gl_shiftEditor
-										.createSequentialGroup()
-										.addGroup(
-												gl_shiftEditor
-														.createParallelGroup(
-																Alignment.LEADING)
-														.addGroup(
-																gl_shiftEditor
-																		.createSequentialGroup()
-																		.addGap(1)
-																		.addGroup(
-																				gl_shiftEditor
-																						.createParallelGroup(
-																								Alignment.LEADING)
-																						.addGroup(
-																								gl_shiftEditor
-																										.createSequentialGroup()
-																										.addGroup(
-																												gl_shiftEditor
-																														.createParallelGroup(
-																																Alignment.LEADING)
-																														.addComponent(
-																																lblSchichtart,
-																																GroupLayout.PREFERRED_SIZE,
-																																78,
-																																GroupLayout.PREFERRED_SIZE)
-																														.addComponent(
-																																lblDatum,
-																																GroupLayout.PREFERRED_SIZE,
-																																78,
-																																GroupLayout.PREFERRED_SIZE))
-																										.addPreferredGap(
-																												ComponentPlacement.RELATED)
-																										.addGroup(
-																												gl_shiftEditor
-																														.createParallelGroup(
-																																Alignment.LEADING,
-																																false)
-																														.addComponent(
-																																shiftTypeChooser,
-																																0,
-																																0,
-																																Short.MAX_VALUE)
-																														.addComponent(
-																																dateField)))
-																						.addGroup(
-																								gl_shiftEditor
-																										.createSequentialGroup()
-																										.addComponent(
-																												lblSchichtpartner)
-																										.addPreferredGap(
-																												ComponentPlacement.RELATED)
-																										.addComponent(
-																												shiftPartnerField,
-																												GroupLayout.PREFERRED_SIZE,
-																												137,
-																												GroupLayout.PREFERRED_SIZE))
-																						.addGroup(
-																								gl_shiftEditor
-																										.createSequentialGroup()
-																										.addPreferredGap(
-																												ComponentPlacement.RELATED)
-																										.addGroup(
-																												gl_shiftEditor
-																														.createParallelGroup(
-																																Alignment.LEADING)
-																														.addGroup(
-																																gl_shiftEditor
-																																		.createSequentialGroup()
-																																		.addGroup(
-																																				gl_shiftEditor
-																																						.createParallelGroup(
-																																								Alignment.LEADING)
-																																						.addComponent(
-																																								lblBeginn)
-																																						.addComponent(
-																																								lblPause))
-																																		.addPreferredGap(
-																																				ComponentPlacement.UNRELATED)
-																																		.addGroup(
-																																				gl_shiftEditor
-																																						.createParallelGroup(
-																																								Alignment.LEADING,
-																																								false)
-																																						.addComponent(
-																																								breakField,
-																																								0,
-																																								0,
-																																								Short.MAX_VALUE)
-																																						.addComponent(
-																																								beginField,
-																																								GroupLayout.DEFAULT_SIZE,
-																																								71,
-																																								Short.MAX_VALUE))
-																																		.addPreferredGap(
-																																				ComponentPlacement.RELATED)
-																																		.addComponent(
-																																				lblEnde)
-																																		.addPreferredGap(
-																																				ComponentPlacement.RELATED,
-																																				45,
-																																				Short.MAX_VALUE)
-																																		.addComponent(
-																																				endField,
-																																				GroupLayout.PREFERRED_SIZE,
-																																				69,
-																																				GroupLayout.PREFERRED_SIZE))
-																														.addGroup(
-																																gl_shiftEditor
-																																		.createSequentialGroup()
-																																		.addComponent(
-																																				lblKommentar)
-																																		.addGap(21)
-																																		.addGroup(
-																																				gl_shiftEditor
-																																						.createParallelGroup(
-																																								Alignment.LEADING)
-																																						.addGroup(
-																																								gl_shiftEditor
-																																										.createSequentialGroup()
-																																										.addGap(12)
-																																										.addComponent(
-																																												submitButton))
-																																						.addComponent(
-																																								commentField,
-																																								GroupLayout.DEFAULT_SIZE,
-																																								207,
-																																								Short.MAX_VALUE))))
-																										.addPreferredGap(
-																												ComponentPlacement.RELATED)))
-																		.addPreferredGap(
-																				ComponentPlacement.RELATED,
-																				18,
-																				GroupLayout.PREFERRED_SIZE)
-																		.addComponent(
-																				scrollPane,
-																				GroupLayout.PREFERRED_SIZE,
-																				GroupLayout.DEFAULT_SIZE,
-																				GroupLayout.PREFERRED_SIZE))
-														.addGroup(
-																gl_shiftEditor
-																		.createSequentialGroup()
-																		.addContainerGap()
-																		.addComponent(
-																				scrollPane2,
-																				GroupLayout.DEFAULT_SIZE,
-																				769,
-																				Short.MAX_VALUE)))
-										.addContainerGap()));
-		gl_shiftEditor
-				.setVerticalGroup(gl_shiftEditor
-						.createParallelGroup(Alignment.LEADING)
-						.addGroup(
-								gl_shiftEditor
-										.createSequentialGroup()
-										.addContainerGap()
-										.addGroup(
-												gl_shiftEditor
-														.createParallelGroup(
-																Alignment.LEADING)
-														.addGroup(
-																gl_shiftEditor
-																		.createSequentialGroup()
-																		.addGroup(
-																				gl_shiftEditor
-																						.createParallelGroup(
-																								Alignment.BASELINE)
-																						.addComponent(
-																								lblSchichtart)
-																						.addComponent(
-																								shiftTypeChooser,
-																								GroupLayout.PREFERRED_SIZE,
-																								GroupLayout.DEFAULT_SIZE,
-																								GroupLayout.PREFERRED_SIZE))
-																		.addPreferredGap(
-																				ComponentPlacement.RELATED)
-																		.addGroup(
-																				gl_shiftEditor
-																						.createParallelGroup(
-																								Alignment.BASELINE)
-																						.addComponent(
-																								lblDatum)
-																						.addComponent(
-																								dateField,
-																								GroupLayout.PREFERRED_SIZE,
-																								GroupLayout.DEFAULT_SIZE,
-																								GroupLayout.PREFERRED_SIZE))
-																		.addPreferredGap(
-																				ComponentPlacement.RELATED)
-																		.addGroup(
-																				gl_shiftEditor
-																						.createParallelGroup(
-																								Alignment.LEADING)
-																						.addComponent(
-																								lblSchichtpartner)
-																						.addComponent(
-																								shiftPartnerField,
-																								GroupLayout.PREFERRED_SIZE,
-																								GroupLayout.DEFAULT_SIZE,
-																								GroupLayout.PREFERRED_SIZE))
-																		.addPreferredGap(
-																				ComponentPlacement.RELATED)
-																		.addGroup(
-																				gl_shiftEditor
-																						.createParallelGroup(
-																								Alignment.LEADING)
-																						.addGroup(
-																								gl_shiftEditor
-																										.createParallelGroup(
-																												Alignment.TRAILING)
-																										.addGroup(
-																												gl_shiftEditor
-																														.createParallelGroup(
-																																Alignment.BASELINE)
-																														.addComponent(
-																																lblEnde)
-																														.addComponent(
-																																endField,
-																																GroupLayout.PREFERRED_SIZE,
-																																GroupLayout.DEFAULT_SIZE,
-																																GroupLayout.PREFERRED_SIZE))
-																										.addGroup(
-																												gl_shiftEditor
-																														.createSequentialGroup()
-																														.addComponent(
-																																beginField,
-																																GroupLayout.PREFERRED_SIZE,
-																																GroupLayout.DEFAULT_SIZE,
-																																GroupLayout.PREFERRED_SIZE)
-																														.addGap(2)))
-																						.addComponent(
-																								lblBeginn))
-																		.addPreferredGap(
-																				ComponentPlacement.UNRELATED)
-																		.addGroup(
-																				gl_shiftEditor
-																						.createParallelGroup(
-																								Alignment.BASELINE)
-																						.addComponent(
-																								lblPause)
-																						.addComponent(
-																								breakField,
-																								GroupLayout.PREFERRED_SIZE,
-																								GroupLayout.DEFAULT_SIZE,
-																								GroupLayout.PREFERRED_SIZE))
-																		.addPreferredGap(
-																				ComponentPlacement.UNRELATED)
-																		.addGroup(
-																				gl_shiftEditor
-																						.createParallelGroup(
-																								Alignment.BASELINE)
-																						.addComponent(
-																								lblKommentar)
-																						.addComponent(
-																								commentField,
-																								GroupLayout.PREFERRED_SIZE,
-																								GroupLayout.DEFAULT_SIZE,
-																								GroupLayout.PREFERRED_SIZE))
-																		.addPreferredGap(
-																				ComponentPlacement.UNRELATED)
-																		.addComponent(
-																				submitButton))
-														.addComponent(
-																scrollPane,
-																GroupLayout.PREFERRED_SIZE,
-																203,
-																GroupLayout.PREFERRED_SIZE))
-										.addPreferredGap(
-												ComponentPlacement.UNRELATED)
-										.addComponent(scrollPane2,
-												GroupLayout.DEFAULT_SIZE, 300,
-												Short.MAX_VALUE)
-										.addContainerGap()));
+		gl_shiftEditor.setHorizontalGroup(
+			gl_shiftEditor.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_shiftEditor.createSequentialGroup()
+					.addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_shiftEditor.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(scrollPane2, GroupLayout.DEFAULT_SIZE, 769, Short.MAX_VALUE))
+						.addGroup(gl_shiftEditor.createSequentialGroup()
+							.addGap(1)
+							.addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_shiftEditor.createSequentialGroup()
+									.addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING)
+										.addComponent(lblSchichtart, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)
+										.addComponent(lblDatum, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE))
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING, false)
+										.addComponent(shiftTypeChooser, 0, 0, Short.MAX_VALUE)
+										.addComponent(dateField)))
+								.addGroup(gl_shiftEditor.createSequentialGroup()
+									.addComponent(lblSchichtpartner)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(shiftPartnerField, GroupLayout.PREFERRED_SIZE, 137, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_shiftEditor.createSequentialGroup()
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING)
+										.addGroup(gl_shiftEditor.createSequentialGroup()
+											.addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING)
+												.addComponent(lblBeginn)
+												.addComponent(lblPause))
+											.addPreferredGap(ComponentPlacement.UNRELATED)
+											.addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING, false)
+												.addComponent(breakField, 0, 0, Short.MAX_VALUE)
+												.addComponent(beginField, GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE))
+											.addPreferredGap(ComponentPlacement.RELATED)
+											.addComponent(lblEnde)
+											.addPreferredGap(ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+											.addComponent(endField, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE))
+										.addGroup(gl_shiftEditor.createSequentialGroup()
+											.addComponent(lblKommentar)
+											.addGap(21)
+											.addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING)
+												.addGroup(gl_shiftEditor.createSequentialGroup()
+													.addGap(12)
+													.addComponent(submitButton))
+												.addComponent(commentField, GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE))))
+									.addPreferredGap(ComponentPlacement.RELATED)))
+							.addPreferredGap(ComponentPlacement.RELATED, 18, GroupLayout.PREFERRED_SIZE)
+							.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_shiftEditor.createSequentialGroup()
+							.addGap(284)
+							.addComponent(createSalaryStatementButton)))
+					.addContainerGap())
+		);
+		gl_shiftEditor.setVerticalGroup(
+			gl_shiftEditor.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_shiftEditor.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_shiftEditor.createSequentialGroup()
+							.addGroup(gl_shiftEditor.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblSchichtart)
+								.addComponent(shiftTypeChooser, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_shiftEditor.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblDatum)
+								.addComponent(dateField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblSchichtpartner)
+								.addComponent(shiftPartnerField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_shiftEditor.createParallelGroup(Alignment.TRAILING)
+									.addGroup(gl_shiftEditor.createParallelGroup(Alignment.BASELINE)
+										.addComponent(lblEnde)
+										.addComponent(endField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+									.addGroup(gl_shiftEditor.createSequentialGroup()
+										.addComponent(beginField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addGap(2)))
+								.addComponent(lblBeginn))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addGroup(gl_shiftEditor.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblPause)
+								.addComponent(breakField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addGroup(gl_shiftEditor.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblKommentar)
+								.addComponent(commentField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(submitButton))
+						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 203, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(scrollPane2, GroupLayout.PREFERRED_SIZE, 258, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(createSalaryStatementButton)
+					.addContainerGap(23, Short.MAX_VALUE))
+		);
 		shiftTypeChooser.addItemListener(this.itemListener);
 
 		shiftTable = new JTable();
@@ -819,8 +649,8 @@ public class MainWindow extends JFrame {
 		for(int i = 0; i < shifts.length; i++)
 		{
 			// Assemble date string
-			String startingTime = PdfCreator.createTimeStringFromInt(shifts[i].getStartingTime());
-			String endTime = PdfCreator.createTimeStringFromInt(shifts[i].getEndTime());
+			String startingTime = UtilityBox.createTimeStringFromInt(shifts[i].getStartingTime());
+			String endTime = UtilityBox.createTimeStringFromInt(shifts[i].getEndTime());
 			cal.setTime(shiftDates[i]);
 			String dateString = Integer.toString(cal.get(Calendar.DAY_OF_MONTH)) + "." + Integer.toString(cal.get(Calendar.MONTH)) + "." + Integer.toString(cal.get(Calendar.YEAR));
 			Object[] entry = new Object[] {dateString, shifts[i].getId(), startingTime, endTime};
