@@ -16,6 +16,7 @@ import java.util.SimpleTimeZone;
 import javax.crypto.Mac;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 /**
  *
@@ -34,18 +35,14 @@ public class ICalendar extends CalendarManager {
     boolean success = false;
     File iCalendarFile = null;
     FileWriter fileWriter = null;
-    String osName = System.getProperty("os.name");
-    System.out.println("OS Name: " + osName);
-    String fileEnding;
-    if (osName.toLowerCase().startsWith("mac")) {
-      fileEnding = ".ical";
-    } else {
-      fileEnding = ".ics";
-    }
+    String fileEnding = ".ics";
     String month = getMonthString(getMonth(shiftDates[0]));
     int year = getYear(shiftDates[0]);
-    String filePath = "Schichten_"+month+year+fileEnding;
+    String filePath = "Schichten_" + month + year;
     filePath = saveDialog(fileEnding, filePath);
+    if (filePath == null) {
+      return false;
+    }
     iCalendarFile = new File(filePath);
     try {
       fileWriter = new FileWriter(iCalendarFile);
@@ -95,7 +92,7 @@ public class ICalendar extends CalendarManager {
               + "BEGIN:VEVENT\n"
               + "DTSTART;TZID=Europe/Berlin:" + beginEndStrings[0] + "\n"
               + "DTEND;TZID=Europe/Berlin:" + beginEndStrings[1] + "\n"
-              + "SUMMARY:" + shift.getId().substring(0, 3) + "\n"
+              + "SUMMARY:" + shift.getType().toString() + " " + shift.getId().substring(0, 3) + "\n"
               + "DESCRIPTION:" + "Beschreibung" + "\n"
               + "END:VEVENT\n";
     }
@@ -138,39 +135,27 @@ public class ICalendar extends CalendarManager {
     JFileChooser jFileChooser = new JFileChooser(new File(System.getProperty("user.dir")));
     jFileChooser.setMultiSelectionEnabled(false);
     jFileChooser.setSelectedFile(new File(fileName + fileEnding));
-    if (fileEnding.equals(".ics")) {
-      jFileChooser.setFileFilter(new FileFilter() {
+    jFileChooser.setFileFilter(new FileFilter() {
 
-        @Override
-        public boolean accept(File f) {
-          return f.isDirectory() || f.getName().toLowerCase().endsWith(".ics");
-        }
+      @Override
+      public boolean accept(File f) {
+        return f.isDirectory() || f.getName().toLowerCase().endsWith(".ics");
+      }
 
-        @Override
-        public String getDescription() {
-          return "iCalendar-Dateien";
-        }
-      });
-    }
-    else {
-      jFileChooser.setFileFilter(new FileFilter() {
-
-        @Override
-        public boolean accept(File f) {
-          return f.isDirectory() || f.getName().toLowerCase().endsWith(".ical");
-        }
-
-        @Override
-        public String getDescription() {
-          return "iCalendar-Dateien";
-        }
-      });
-    }
+      @Override
+      public String getDescription() {
+        return "iCalendar-Dateien";
+      }
+    });
     int returnValue = jFileChooser.showSaveDialog(null);
+    if (returnValue == 1) {
+      return null;
+    }
     filePath = jFileChooser.getSelectedFile().getPath();
-    if(!filePath.endsWith(fileEnding)) {
+    if (!filePath.endsWith(fileEnding)) {
       filePath += fileEnding;
     }
+    System.out.println("filepath: " + filePath);
     return filePath;
   }
 }

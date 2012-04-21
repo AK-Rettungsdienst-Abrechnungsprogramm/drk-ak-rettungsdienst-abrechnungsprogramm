@@ -97,10 +97,10 @@ public class DRManager {
       cal.set(year, month, j);
       savedShiftDates[i] = cal.getTime();
     }
-    for (int i = 0; i < shifts.size(); i++) {
-      Shift shift = shifts.get(i);
-      System.out.println("Schicht " + i + ": " + shift.getId() + " am " + shiftDates[i] + "." + (month + 1) + "." + year);
-    }
+//    for (int i = 0; i < shifts.size(); i++) {
+//      Shift shift = shifts.get(i);
+//      System.out.println("Schicht " + i + ": " + shift.getId() + " am " + shiftDates[i] + "." + (month + 1) + "." + year);
+//    }
   }
 
 private static String getPdfFilePath() {
@@ -120,7 +120,6 @@ private static String getPdfFilePath() {
     });
   int state = fileChooser.showOpenDialog(null);
   if (state == JFileChooser.APPROVE_OPTION) {
-    System.out.println(fileChooser.getSelectedFile().getPath());
     return fileChooser.getSelectedFile().getPath();
   }
   return null;
@@ -183,17 +182,14 @@ private static String getPdfFilePath() {
       String lastName = PersonalData.getInstance().getLastName();
       while (line != null) {
         if (line.contains(lastName+", "+firstName)) {
-          System.out.println(line);
           personFound = true;
         } else if (personFound && line.contains("RS Dienstplan")) {
           line = bufferedReader.readLine();
           returnArray[1] = line;
-          System.out.println(line);
           shiftsSaved = true;
         } else if (shiftsSaved && line.contains("Ende")) {
           line = bufferedReader.readLine();
           returnArray[2] = line;
-          System.out.println(line);
           break;
         }
         line = bufferedReader.readLine();
