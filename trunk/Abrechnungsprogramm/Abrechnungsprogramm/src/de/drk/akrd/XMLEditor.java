@@ -190,7 +190,7 @@ public class XMLEditor {
         for (int j=0; j<shiftNodesOfMonth.size(); j++) {
           Element currentNode = (Element) shiftNodesOfMonth.get(j);
           shiftListOfMonth.add(new ShiftInstance(
-                  Shift.getShiftFromId(currentNode.getChildText("id")), 
+                  ShiftContainer.getShiftTypeFromId(currentNode.getChildText("id")), 
                   currentNode.getChildText("date"),
                   Integer.parseInt(currentNode.getChildText("actStartingTime")),
                   Integer.parseInt(currentNode.getChildText("actEndTime")),
@@ -228,13 +228,13 @@ public class XMLEditor {
         for (int i = 0; i < shiftList.size(); i++) {
           ShiftInstance currentShift = shiftList.get(i);
           String shiftDateString = currentShift.getDate();
-          String shiftIdString = currentShift.getId();
+          String shiftIdString = currentShift.getType().name();
           calendar.setTime(sdf.parse(shiftDateString));
           int month = calendar.get(Calendar.MONTH);
           Element currentNode = findElement(rootNode.getChild("M" + month).getChildren(), shiftDateString + shiftIdString);
           // if no node for the shift exists add new node
           if (currentNode == null) {
-            System.out.println("add new shift:"+currentShift.getId()+" "+currentShift.getDate());
+            System.out.println("add new shift:"+currentShift.getType().name()+" "+currentShift.getDate());
             Element tempElement = new Element("Shift");
             ShiftInstance tempShiftInstance = shiftList.get(i);
             addShiftToElement(tempElement, tempShiftInstance);
@@ -270,7 +270,7 @@ public class XMLEditor {
       return;
     }
     element.addContent(new Element("date").setText(shift.getDate()));
-    element.addContent(new Element("id").setText(shift.getId()));
+    element.addContent(new Element("id").setText(shift.getType().name()));
     element.addContent(new Element("actStartingTime").setText(Integer.toString(shift.getActualStartingTime())));
     element.addContent(new Element("actEndTime").setText(Integer.toString(shift.getActualEndTime())));
     element.addContent(new Element("actBreakTime").setText(Integer.toString(shift.getActualBreakTime())));
