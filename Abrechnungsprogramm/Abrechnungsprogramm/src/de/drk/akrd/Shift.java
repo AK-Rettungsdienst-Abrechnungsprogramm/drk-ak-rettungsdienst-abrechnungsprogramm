@@ -30,31 +30,7 @@ private boolean external; // external shift? (i.e. Breisach and Kirchzarten)
     this.endTime = endTime;
     this.breakTime = breakTime;
     this.days = days;
-    switch (id.substring(0, 2)) {
-      case "KV":
-        type = ShiftContainer.ShiftType.KVS;
-        break;
-      case "KT":
-        type = ShiftContainer.ShiftType.KIZA;
-        break;
-      case "KN":
-        type = ShiftContainer.ShiftType.KIZA;
-        break;
-      default:
-        switch (id.substring(0, 1)) {
-          case "K":
-            type = ShiftContainer.ShiftType.KTW;
-            break;
-          case "R":
-            type = ShiftContainer.ShiftType.RTW;
-            break;
-          case "B":
-            type = ShiftContainer.ShiftType.BREISACH;
-            break;
-          default:
-            type = ShiftContainer.ShiftType.BABY;
-        }
-    }
+    this.type = ShiftContainer.getShiftTypeFromId(id);
   }
 
   /**

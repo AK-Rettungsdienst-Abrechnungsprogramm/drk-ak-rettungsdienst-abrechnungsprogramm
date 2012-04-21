@@ -1,8 +1,10 @@
 package de.drk.akrd;
-import java.text.SimpleDateFormat;
+
+import de.drk.akrd.ShiftContainer.ShiftType;
+
 public class ShiftInstance {
 
-  private Shift instanceOf;
+  private ShiftContainer.ShiftType type;
   private String date;
   private int actualStartingTime;
   private int actualEndTime;
@@ -11,20 +13,10 @@ public class ShiftInstance {
   private String partner;
   private String comment;
 
-  public ShiftInstance(Shift instanceOf, String date, float timeAsFloat, String partner, String comment) {
-    this.instanceOf = instanceOf;
-    this.date = date;
-    actualStartingTime = instanceOf.getStartingTime();
-    actualEndTime = instanceOf.getEndTime();
-    actualBreakTime = instanceOf.getBreakTime();
-    this.timeAsFloat = timeAsFloat;
-    this.partner = partner;
-    this.comment = comment;
-  }
-  public ShiftInstance(Shift instanceOf, String date, int actualStartingTime, 
+  public ShiftInstance(ShiftContainer.ShiftType type, String date, int actualStartingTime, 
           int actualEndTime, int actualBreakTime, float timeAsFloat, 
           String partner, String comment) {
-    this.instanceOf = instanceOf;
+    this.type = type;
     this.date = date;
     this.actualStartingTime = actualStartingTime;
     this.actualEndTime = actualEndTime;
@@ -64,13 +56,6 @@ public class ShiftInstance {
   }
 
   /**
-   * @return the corresponding shift
-   */
-  public Shift getInstanceOf() {
-    return instanceOf;
-  }
-
-  /**
    * @return the shift-partner
    */
   public String getPartner() {
@@ -85,13 +70,6 @@ public class ShiftInstance {
   }
 
   /**
-   * @return the breakTime
-   */
-  public int getBreakTime() {
-    return instanceOf.getBreakTime();
-  }
-
-  /**
    * @return the actualBreakTime
    */
   public int getActualBreakTime() {
@@ -99,40 +77,13 @@ public class ShiftInstance {
   }
 
   /**
-   * @return the type
+   * @return the ShiftType (ShiftContainer.ShiftType)
    */
-  public ShiftContainer.ShiftType getType() {
-    return instanceOf.getType();
-  }
-
-  /**
-   * @return the id
-   */
-  public String getId() {
-    return instanceOf.getId();
-  }
-
-  /**
-   * @return the startingTime
-   */
-  public int getStartingTime() {
-    return instanceOf.getStartingTime();
-  }
-
-  /**
-   * @return the endTime
-   */
-  public int getEndTime() {
-    return instanceOf.getEndTime();
-  }
-
-  /**
-   * @return the external
-   */
-  public boolean isExternal() {
-    return instanceOf.isExternal();
+  public ShiftType getType() {
+    return type;
   }
   
+
   public static float timeToFloat(int time)
   {
 	  return (float)((Math.floor(time)/100) + (float)((time % 60)/60));

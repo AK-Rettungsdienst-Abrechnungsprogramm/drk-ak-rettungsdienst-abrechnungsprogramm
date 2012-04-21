@@ -10,13 +10,6 @@ public class ShiftContainer {
 	private MainWindow mainWindow;
 	
 	private static ArrayList<Shift> shifts = new ArrayList<>();
-    public static final int KTW = 0;
-	public static final int RTW = 1;
-	public static final int KIZA = 2;
-	public static final int BREISACH = 3;
-    public static final int BABY = 4;
-    public static final int EVENT = 5;
-    public static final int KVS = 6;  
     public enum ShiftType {Alle, RTW, KTW, KIZA, BREISACH, BABY, EVENT, KVS;
     	
     	// Override the toString method to get nicer strings for the shiftTypeChooser
@@ -167,7 +160,7 @@ public class ShiftContainer {
 	 * @param comment 
 	 * @author niklas
 	 */
-	protected void  registerShift(Shift instanceOf, String date, int actualStart, int actualEnd, int actualBreak, String partner, String comment)
+	protected void  registerShift(ShiftContainer.ShiftType type, String date, int actualStart, int actualEnd, int actualBreak, String partner, String comment)
 	{
 		// calculate time in float
 		float startingFloat = ShiftInstance.timeToFloat(actualStart);
@@ -179,11 +172,33 @@ public class ShiftContainer {
 		
 		float shiftAsFloat = endFloat - startingFloat - breakFloat;
 		
-		ShiftInstance entry = new ShiftInstance(instanceOf, date, actualStart, actualEnd, actualBreak, shiftAsFloat , partner, comment);
+		ShiftInstance entry = new ShiftInstance(type, date, actualStart, actualEnd, actualBreak, shiftAsFloat , partner, comment);
 		
 		shiftInstances.add(entry);
 		
 		mainWindow.updateRegisteredShifts();
 		
 	}
+    
+    public static ShiftType getShiftTypeFromId(String id) {
+    switch (id.substring(0, 2)) {
+      case "KV":
+        return ShiftContainer.ShiftType.KVS;
+      case "KT":
+        return ShiftContainer.ShiftType.KIZA;
+      case "KN":
+        return ShiftContainer.ShiftType.KIZA;
+      default:
+        switch (id.substring(0, 1)) {
+          case "K":
+            return ShiftContainer.ShiftType.KTW;
+          case "R":
+            return ShiftContainer.ShiftType.RTW;
+          case "B":
+            return ShiftContainer.ShiftType.BREISACH;
+          default:
+            return ShiftContainer.ShiftType.BABY;
+        }
+    }
+  }
 }
