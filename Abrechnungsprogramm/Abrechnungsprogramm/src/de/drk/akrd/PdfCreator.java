@@ -433,8 +433,8 @@ public class PdfCreator {
           int startTime = currentShift.getActualStartingTime();
           int endTime = currentShift.getActualEndTime();
           int breakTime = currentShift.getActualBreakTime();
-          startTimeAsString = createTimeStringFromInt(startTime);
-          endTimeAsString = createTimeStringFromInt(endTime);
+          startTimeAsString = UtilityBox.createTimeStringFromInt(startTime);
+          endTimeAsString = UtilityBox.createTimeStringFromInt(endTime);
           partner = currentShift.getPartner();
           timeInHours = calculateTimeInHours(startTime, endTime, breakTime);
           timeasFloat = Float.toString(currentShift.getTimeAsFloat());
@@ -639,16 +639,7 @@ public class PdfCreator {
     }
   }
 
-  protected static String createTimeStringFromInt(int time) {
-    String timeString;
-    if (time >= 1000) {
-      timeString = ((int) (time / 100)) + "";
-    } else {
-      timeString = "0" + ((int) (time / 100));
-    }
-    timeString = timeString + (((time % 100) < 10) ? ":0" : ":") + (time % 100);
-    return timeString;
-  }
+
 
   private static String calculateTimeInHours(int start, int end, int breakTime) {
     if (start > end) {
@@ -664,7 +655,7 @@ public class PdfCreator {
     } else {
       end -= start - breakTime;
     }
-    return createTimeStringFromInt(end);
+    return UtilityBox.createTimeStringFromInt(end);
   }
 
   private static float calculateSalary(ShiftInstance shift) {
