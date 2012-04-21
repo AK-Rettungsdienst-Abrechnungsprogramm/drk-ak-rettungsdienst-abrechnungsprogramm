@@ -152,7 +152,10 @@ public class XMLEditor {
           if(emailAdress.equals("null")) emailAdress = null;
           String calendarId = node.getChildText("calendarId");
           if(calendarId.equals("null")) calendarId= null;
-          System.out.println("Name: "+node.getChildText("firstName")+" "+node.getChildText("lastName"));
+          boolean dataKnown = false;
+          if (node.getChildText("dataKnown").equals("true"))
+            dataKnown = true;
+          System.out.println("dataknown: " +dataKnown);
           pd.setData(
                   node.getChildText("firstName"),
                   node.getChildText("lastName"),
@@ -160,7 +163,7 @@ public class XMLEditor {
                   Integer.parseInt(node.getChildText("accountNumber")),
                   Integer.parseInt(node.getChildText("blz")),
                   PersonalData.Qualification.valueOf(node.getChildText("qualification")),
-                  Boolean.getBoolean(node.getChildText("dataKnown")),
+                  dataKnown,
                   emailAdress,
                   calendarId);
         }

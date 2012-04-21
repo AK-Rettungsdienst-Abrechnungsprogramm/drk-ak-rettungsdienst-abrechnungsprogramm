@@ -79,4 +79,5 @@ public class CalendarManager {
     cal.setTime(date);
     return cal.get(Calendar.YEAR);
   }
+  
 }
