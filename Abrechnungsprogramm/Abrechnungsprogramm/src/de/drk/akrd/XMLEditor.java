@@ -155,7 +155,6 @@ public class XMLEditor {
           boolean dataKnown = false;
           if (node.getChildText("dataKnown").equals("true"))
             dataKnown = true;
-          System.out.println("dataknown: " +dataKnown);
           pd.setData(
                   node.getChildText("firstName"),
                   node.getChildText("lastName"),
