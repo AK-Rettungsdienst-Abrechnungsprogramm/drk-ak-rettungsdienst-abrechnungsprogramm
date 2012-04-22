@@ -38,6 +38,17 @@ public class UtilityBox {
     displayPopup(title, message, JOptionPane.ERROR_MESSAGE);
   }
 
+    /**
+   * Display an information message
+   * 
+   * @param title
+   *            Title of the message
+   * @param message
+   *            Message
+   */
+  public void displayInfoPopup(String title, String message) {
+    displayPopup(title, message, JOptionPane.INFORMATION_MESSAGE);
+  }
   /**
    * 
    * @param title
