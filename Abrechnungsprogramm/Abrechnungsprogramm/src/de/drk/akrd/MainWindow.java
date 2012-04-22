@@ -128,8 +128,18 @@ public class MainWindow extends JFrame {
 
 		// Setup ShiftContainer
 		shiftContainer.loadShifts("Schichten.xml");
-        //ShiftForm.getInstance().createShiftFormPdf();
 		// // / TEST ///
+      // shiftformtest
+//      ShiftForm.TimeCode[] timeCodes = new ShiftForm.TimeCode[29];
+//      for (int i = 0; i < timeCodes.length; i++) {
+//        timeCodes[i] = ShiftForm.TimeCode.EMPTY;
+//      }
+//      timeCodes[5] = ShiftForm.TimeCode.T;
+//      timeCodes[10] = ShiftForm.TimeCode.X;
+//      timeCodes[11] = ShiftForm.TimeCode.F;
+//      timeCodes[17] = ShiftForm.TimeCode.S;
+//      timeCodes[28] = ShiftForm.TimeCode.N;
+//      ShiftForm.getInstance().createShiftFormPdf(timeCodes, 1, 2012, 5, 3, 1);
 		// // personaldatatest
 		// PersonalData.setData("Heino", "Meyer", "Privatbank Musterhausen",
 		// 1234,
