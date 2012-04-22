@@ -48,8 +48,8 @@ public class CalendarManager {
     mez.setEndRule(Calendar.OCTOBER, -1, Calendar.SUNDAY, 2 * 60 * 60 * 1000);
     cal.setTime(date);
     int year = cal.get(Calendar.YEAR);
-    String monthString = getTwoLetterStringFromInt(cal.get(Calendar.MONTH) + 1);
-    String dayString = getTwoLetterStringFromInt(cal.get(Calendar.DAY_OF_MONTH));
+    String monthString = UtilityBox.getTwoLetterStringFromInt(cal.get(Calendar.MONTH) + 1);
+    String dayString = UtilityBox.getTwoLetterStringFromInt(cal.get(Calendar.DAY_OF_MONTH));
     String seperatorOne = "";
     String seperatorTwo = "";
     if (entryType == calendarEntryType.GOOGLE_ENTRY) {
@@ -58,19 +58,16 @@ public class CalendarManager {
     }
     int timeCorrection = (mez.inDaylightTime(cal.getTime())) ? 2 : 1;
     String returnString = year + seperatorOne + monthString + seperatorOne + dayString + "T"
-            + getTwoLetterStringFromInt(hour) + seperatorTwo + getTwoLetterStringFromInt(minute) + seperatorTwo
+            + UtilityBox.getTwoLetterStringFromInt(hour) + seperatorTwo + UtilityBox.getTwoLetterStringFromInt(minute) + seperatorTwo
             + "00";
     if (entryType == calendarEntryType.GOOGLE_ENTRY) {
-      returnString += "+" + getTwoLetterStringFromInt(timeCorrection) + seperatorTwo + "00";
+      returnString += "+" + UtilityBox.getTwoLetterStringFromInt(timeCorrection) + seperatorTwo + "00";
 //    } else if (entryType == calendarEntryType.ICALENDAR_ENTRY) {
 //      returnString += "Z";
     }
     return returnString;
   }
 
-  public String getTwoLetterStringFromInt(int x) {
-    return ((x < 10) ? ("0" + x) : x + "");
-  }
   public int getMonth(Date date) {
     cal.setTime(date);
     return cal.get(Calendar.MONTH);

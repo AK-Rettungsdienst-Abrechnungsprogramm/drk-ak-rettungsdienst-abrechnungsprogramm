@@ -425,7 +425,7 @@ public class PdfCreator {
           date = currentShift.getDate();
           try {
             cal.setTime(sdf.parse(date));
-            weekDay = getDayOfWeekString(cal.get(Calendar.DAY_OF_WEEK));
+            weekDay = UtilityBox.getDayOfWeekString(cal.get(Calendar.DAY_OF_WEEK));
           } catch (ParseException ex) {
             System.out.println("Exception in PdfCreator.createAccounting "
                     + "(parsing date failed): "+ex.getMessage());
@@ -691,24 +691,5 @@ public class PdfCreator {
     }
     return salary;
   }
-  private static String getDayOfWeekString(int dayOfWeek) {
-    switch (dayOfWeek) {
-      case Calendar.MONDAY:
-        return "Mo";
-      case Calendar.TUESDAY:
-        return "Di";
-      case Calendar.WEDNESDAY:
-        return "Mi";
-      case Calendar.THURSDAY:
-        return "Do";
-      case Calendar.FRIDAY:
-        return "Fr";
-      case Calendar.SATURDAY:
-        return "Sa";
-      case Calendar.SUNDAY:
-        return "So";
-      default:
-        return "";
-    }
-  }
+
 }
