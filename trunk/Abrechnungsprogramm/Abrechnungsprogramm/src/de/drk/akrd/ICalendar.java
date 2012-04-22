@@ -36,7 +36,7 @@ public class ICalendar extends CalendarManager {
     File iCalendarFile = null;
     FileWriter fileWriter = null;
     String fileEnding = ".ics";
-    String month = getMonthString(getMonth(shiftDates[0]));
+    String month = UtilityBox.getMonthString(getMonth(shiftDates[0]));
     int year = getYear(shiftDates[0]);
     String filePath = "Schichten_" + month + year;
     filePath = saveDialog(fileEnding, filePath);
@@ -99,35 +99,6 @@ public class ICalendar extends CalendarManager {
 
     fileContent += "END:VCALENDAR";
     return fileContent;
-  }
-
-  private String getMonthString(int month) {
-    switch (month) {
-      case 0:
-        return "Januar";
-      case 1:
-        return "Februar";
-      case 2:
-        return "März";
-      case 3:
-        return "April";
-      case 4:
-        return "Mai";
-      case 5:
-        return "Juni";
-      case 6:
-        return "Juli";
-      case 7:
-        return "August";
-      case 8:
-        return "September";
-      case 9:
-        return "Oktober";
-      case 10:
-        return "November";
-      default:
-        return "Dezember";
-    }
   }
 
   private String saveDialog(String fileEnding, String fileName) {

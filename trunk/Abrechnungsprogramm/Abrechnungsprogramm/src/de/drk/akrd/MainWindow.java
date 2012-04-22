@@ -128,6 +128,7 @@ public class MainWindow extends JFrame {
 
 		// Setup ShiftContainer
 		shiftContainer.loadShifts("Schichten.xml");
+        //ShiftForm.getInstance().createShiftFormPdf();
 		// // / TEST ///
 		// // personaldatatest
 		// PersonalData.setData("Heino", "Meyer", "Privatbank Musterhausen",
