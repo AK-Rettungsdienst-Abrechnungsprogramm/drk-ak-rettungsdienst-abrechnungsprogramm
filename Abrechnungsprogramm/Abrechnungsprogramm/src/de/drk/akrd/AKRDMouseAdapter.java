@@ -120,6 +120,7 @@ public class AKRDMouseAdapter extends MouseAdapter {
 			mainWindow.beginField.setText(begin);
 			mainWindow.endField.setText(end);
 			mainWindow.breakField.setText(breakTime);
+			
 
 			return;
 		}
@@ -246,8 +247,15 @@ public class AKRDMouseAdapter extends MouseAdapter {
 			PersonalData pd = PersonalData.getInstance();
 			
 			pd.setData(firstName, lastName, bankName, account, blz, quali, dataKnown, gmail, calID);
+			return;
 			
 		}
+		
+		if(source == mainWindow.createSalaryStatementButton)
+		{
+			PdfCreator.createAccounting(mainWindow.shiftContainer.shiftInstances.toArray(new ShiftInstance[mainWindow.shiftContainer.shiftInstances.size()]));
+		}
+		
 	}
 
 
