@@ -37,6 +37,7 @@ public class PdfCreator {
     ArrayList<ShiftInstance> kvs = new ArrayList<>();
 
     // add shifts to seperate shift lists
+    System.out.println("länge des arrays: "+shiftsToAccount.length);
     for (int i = 0; i < shiftsToAccount.length; i++) {
       switch (shiftsToAccount[i].getType()) {
         case KTW:
@@ -404,7 +405,7 @@ public class PdfCreator {
       table7.addCell(cell40);
       table7.addCell(cell41);
 
-      float salary = calculateSalary(shifts.get(0));
+      float salary = UtilityBox.getInstance().calculateSalary(shifts.get(0));
       for (int i = 0; i <= 12; i++) {
         ShiftInstance currentShift = null;
         String weekDay = "";
@@ -436,7 +437,7 @@ public class PdfCreator {
           startTimeAsString = UtilityBox.createTimeStringFromInt(startTime);
           endTimeAsString = UtilityBox.createTimeStringFromInt(endTime);
           partner = currentShift.getPartner();
-          timeInHours = calculateTimeInHours(startTime, endTime, breakTime);
+          timeInHours = UtilityBox.getInstance().calculateTimeInHours(startTime, endTime, breakTime);
           timeasFloat = Float.toString(currentShift.getTimeAsFloat());
           timeSumAsFloat += currentShift.getTimeAsFloat();
           
@@ -638,58 +639,4 @@ public class PdfCreator {
     } catch (com.itextpdf.text.DocumentException | java.io.IOException e) {
     }
   }
-
-
-
-  private static String calculateTimeInHours(int start, int end, int breakTime) {
-    if (start > end) {
-      int startHours = 24 - ((int) (start / 100));
-      int startMinutes = (start % 100);
-      int endHours = ((int) (end / 100));
-      int endMinutes = (end % 100);
-      if (endMinutes >= startMinutes) {
-        end = 100 * (endHours + startHours) + (endMinutes - startMinutes);
-      } else {
-        end = 100 * (endHours + startHours - 1) + (60 + (endMinutes - startMinutes));
-      }
-    } else {
-      end -= start - breakTime;
-    }
-    return UtilityBox.createTimeStringFromInt(end);
-  }
-
-  private static float calculateSalary(ShiftInstance shift) {
-    float salary;
-    switch (shift.getType()) {
-      case KTW:
-      case RTW:
-        switch (PersonalData.getInstance().getQualification()) {
-          case RH:
-            salary = 7.8f;
-            break;
-          case RS:
-            salary = 8.8f;
-            break;
-          default:
-            salary = 9.9f;
-        }
-        break;
-      case KVS:
-        salary = 9f;
-        break;
-      default:
-        switch (PersonalData.getInstance().getQualification()) {
-          case RH:
-            salary = 5.9f;
-            break;
-          case RS:
-            salary = 6.7f;
-            break;
-          default:
-            salary = 7.6f;
-        }
-    }
-    return salary;
-  }
-
 }

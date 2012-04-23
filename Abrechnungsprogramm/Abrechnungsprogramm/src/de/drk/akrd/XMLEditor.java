@@ -195,7 +195,6 @@ public class XMLEditor {
                   Integer.parseInt(currentNode.getChildText("actStartingTime")),
                   Integer.parseInt(currentNode.getChildText("actEndTime")),
                   Integer.parseInt(currentNode.getChildText("actBreakTime")),
-                  Float.parseFloat(currentNode.getChildText("timeAsFloat")),
                   currentNode.getChildText("partner"),
                   currentNode.getChildText("comment")));
         }
@@ -274,7 +273,6 @@ public class XMLEditor {
     element.addContent(new Element("actStartingTime").setText(Integer.toString(shift.getActualStartingTime())));
     element.addContent(new Element("actEndTime").setText(Integer.toString(shift.getActualEndTime())));
     element.addContent(new Element("actBreakTime").setText(Integer.toString(shift.getActualBreakTime())));
-    element.addContent(new Element("timeAsFloat").setText(Float.toString(shift.getTimeAsFloat())));
     element.addContent(new Element("partner").setText(shift.getPartner()));
     element.addContent(new Element("comment").setText(shift.getComment()));
   }
@@ -305,8 +303,6 @@ public class XMLEditor {
    * @return true if successful, false otherwise
    */
   private static boolean storeShiftsInNewFile(ArrayList<ShiftInstance> shiftList, String documentName) {
-    SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-    Calendar calendar = Calendar.getInstance();
     try {
       Element documentElement = new Element(documentName);
       Document document = new Document(documentElement);
