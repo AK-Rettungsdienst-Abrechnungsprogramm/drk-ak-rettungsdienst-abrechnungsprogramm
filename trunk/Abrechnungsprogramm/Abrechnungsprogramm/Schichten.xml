@@ -303,7 +303,7 @@
     <Pause>000</Pause>
     <Schichtname>BRT</Schichtname>
     <RuestzeitMin>010</RuestzeitMin>
-    <Tage>Mo-Fr</Tage>
+    <Tage>Mo-So</Tage>
   </Schicht>
   <Schicht>
     <ArtUndOrt>Breisach</ArtUndOrt>
@@ -312,7 +312,7 @@
     <Pause>000</Pause>
     <Schichtname>BRN</Schichtname>
     <RuestzeitMin>010</RuestzeitMin>
-    <Tage>Mo-Fr</Tage>
+    <Tage>Mo-So</Tage>
   </Schicht>
   <Schicht>
     <ArtUndOrt>Kirchzarten</ArtUndOrt>
@@ -321,7 +321,7 @@
     <Pause>000</Pause>
     <Schichtname>KT</Schichtname>
     <RuestzeitMin>010</RuestzeitMin>
-    <Tage>Mo-Fr</Tage>
+    <Tage>Mo-So</Tage>
   </Schicht>
   <Schicht>
     <ArtUndOrt>Kirchzarten</ArtUndOrt>
@@ -330,7 +330,7 @@
     <Pause>000</Pause>
     <Schichtname>KN</Schichtname>
     <RuestzeitMin>010</RuestzeitMin>
-    <Tage>Mo-Fr</Tage>
+    <Tage>Mo-So</Tage>
   </Schicht>
   <Schicht>
     <ArtUndOrt>Baby-NAW</ArtUndOrt>
