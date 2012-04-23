@@ -13,6 +13,8 @@ import javax.swing.PopupFactory;
 
 import com.toedter.calendar.JCalendar;
 
+import de.drk.akrd.ShiftContainer.ShiftType;
+
 /**
  * 
  * @author niklas
@@ -133,6 +135,13 @@ public class AKRDMouseAdapter extends MouseAdapter {
 			int end = 0;
 			int breakTime = 0;
 
+			// if no type was selected, display error
+			if (mainWindow.shiftTypeChooser.getSelectedItem() == ShiftContainer.ShiftType.Alle)
+			{
+				UtilityBox.getInstance().displayErrorPopup("Fehler", "Bitte Schichttyp auswählen!");
+				return;
+			}
+			
 			// If no date has been selected create popup
 			if (date.equals("bitte auswählen")) {
 				UtilityBox.getInstance().displayErrorPopup("Fehler", "Bitte Datum auswählen!");
@@ -165,7 +174,7 @@ public class AKRDMouseAdapter extends MouseAdapter {
 				return;
 			}
 
-			mainWindow.shiftContainer.registerShift(null, date,
+			mainWindow.shiftContainer.registerShift((ShiftContainer.ShiftType)mainWindow.shiftTypeChooser.getSelectedItem(), date,
 					begin,
 					end,
 					breakTime,
