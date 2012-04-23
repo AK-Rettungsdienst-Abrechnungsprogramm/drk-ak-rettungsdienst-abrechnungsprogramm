@@ -172,7 +172,7 @@ public class ShiftContainer {
 		
 		float shiftAsFloat = endFloat - startingFloat - breakFloat;
 		
-		ShiftInstance entry = new ShiftInstance(type, date, actualStart, actualEnd, actualBreak, shiftAsFloat , partner, comment);
+		ShiftInstance entry = new ShiftInstance(type, date, actualStart, actualEnd, actualBreak, partner, comment);
 		
 		shiftInstances.add(entry);
 		

@@ -148,4 +148,84 @@ public class UtilityBox {
   public static String getTwoLetterStringFromInt(int x) {
     return ((x < 10) ? ("0" + x) : x + "");
   }
+
+  public float calculateSalary(ShiftInstance shift) {
+    float salary;
+    switch (shift.getType()) {
+      case KTW:
+      case RTW:
+        switch (PersonalData.getInstance().getQualification()) {
+          case RH:
+            salary = 7.8f;
+            break;
+          case RS:
+            salary = 8.8f;
+            break;
+          default:
+            salary = 9.9f;
+        }
+        break;
+      case KVS:
+        salary = 9f;
+        break;
+      default:
+        switch (PersonalData.getInstance().getQualification()) {
+          case RH:
+            salary = 5.9f;
+            break;
+          case RS:
+            salary = 6.7f;
+            break;
+          default:
+            salary = 7.6f;
+        }
+    }
+    return salary;
+  }
+  public String calculateTimeInHours(int start, int end, int breakTime) {
+    int time = calculateTime(start, end, breakTime);
+    int hours = ((int) (time / 100));
+    int minutes = (time % 100);
+    return createTimeStringFromInt((hours*100)+minutes);
+  }
+  public float calculateTimeAsFloat(int start, int end, int breakTime) {
+    int time = calculateTime(start, end, breakTime);
+    int hours = ((int) (time / 100));
+    int minutes = (time % 100);
+    return (float)(hours+(minutes/60));
+  }
+  private int calculateTime(int start, int end, int breakTime) {
+    int hours = 0;
+    int minutes = 0;
+    int breakTimeHours = ((int) (breakTime / 100));
+    int breakTimeMinutes = (breakTime % 100);
+    int endHours = ((int) (end / 100));
+    int endMinutes = (end % 100);
+    if(start>end) {
+      int firstDayHours = 24 - ((int) (start / 100));
+      int firstDayMinutes = (start % 100);
+      if(firstDayMinutes!=0) {
+        firstDayHours--;
+        firstDayMinutes = 60-firstDayMinutes;
+      }
+      hours = firstDayHours+endHours-breakTimeHours;
+      minutes = firstDayMinutes+endMinutes+breakTimeMinutes;
+      while (minutes>=60) {        
+        minutes-=60;
+        hours++;
+      }
+    }
+    else {
+      int startHours = ((int) (start / 100));
+      int startMinutes = (start % 100);
+      hours = endHours-startHours-breakTimeHours;
+      minutes = endMinutes-startMinutes-breakTimeMinutes;
+      while (minutes<0) {        
+        minutes+=60;
+        hours--;
+      }
+    }
+    
+    return ((hours*100)+minutes);
+  }
 }

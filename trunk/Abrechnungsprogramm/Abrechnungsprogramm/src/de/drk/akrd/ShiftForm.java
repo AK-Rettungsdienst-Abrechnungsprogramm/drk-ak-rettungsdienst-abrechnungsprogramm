@@ -17,11 +17,15 @@ import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import java.awt.Desktop;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.util.Calendar;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
@@ -51,14 +55,15 @@ public class ShiftForm {
   }
 
   public boolean createShiftFormPdf(TimeCode[] timeCodes, int month, int year, int maxShifts, int mentorShift2ndPos, int mentorShift3rdPos) {
-    File dir = new File("Fragebögen");
-    if(!dir.isDirectory()) {
+    File dir = new File("Frageboegen");
+    if (!dir.isDirectory()) {
       dir.mkdir();
     }
-    String filePath = "Fragebögen/Fragebogen_"+UtilityBox.getMonthString(month)+"_"+year+".pdf";
+    Document shiftFormDocument = new Document();
+    String fileName = "Fragebogen_" + UtilityBox.getMonthString(month) + "_" + year + ".pdf";
+    String filePath = "Frageboegen/" + fileName;
     boolean pdfCreated = false;
     try {
-      Document shiftFormDocument = new Document();
       PdfWriter pdfWriter = PdfWriter.getInstance(shiftFormDocument, new FileOutputStream(filePath));
       shiftFormDocument.open();
       shiftFormDocument.newPage();
@@ -68,8 +73,9 @@ public class ShiftForm {
       UtilityBox.getInstance().displayErrorPopup("Fehler beim Erzeugen des Fragebogens", ex.getMessage());
       return false;
     }
-    if(pdfCreated) {
-      UtilityBox.getInstance().displayInfoPopup("Dienst-Fragebogen", "Der Fragebogen wurde unter "+filePath+" gespeichert.");
+    if (pdfCreated) {
+      UtilityBox.getInstance().displayInfoPopup("Dienst-Fragebogen", "Der Fragebogen wurde unter " + filePath + " gespeichert.");
+      //sendEMail(filePath, fileName, month, year);
       return true;
     }
     return false;
@@ -265,7 +271,31 @@ public class ShiftForm {
     PdfPCell returnCell = new PdfPCell();
     returnCell.setColspan(colspan);
     returnCell.setBorder(border);
-    returnCell.setMinimumHeight(minimumCellHeight-3f);
+    returnCell.setMinimumHeight(minimumCellHeight - 3f);
     return returnCell;
+  }
+
+  private void sendEMail(String filePath, String fileName, int month, int year) {
+    PersonalData personalData = PersonalData.getInstance();
+    String spaceUTF8 = "\u00A0";
+    String subject = "Fragebogen" + spaceUTF8 + personalData.getFirstName() 
+            + spaceUTF8 + personalData.getLastName() + spaceUTF8
+            + UtilityBox.getMonthString(month) + spaceUTF8 + year;
+    String body = "Angehängt:" + spaceUTF8 + fileName;
+    try {
+      body = URLEncoder.encode(body, "UTF-8");
+      subject = URLEncoder.encode(subject, "UTF-8");
+      filePath = "'file:///C:/test.txt'";
+      System.out.println("mailprog: ");
+      Desktop.getDesktop().mail(new URI(
+              "mailto:thomas.franz@drk-freiburg.de?subject=" + subject + "&body="
+              + body + "&attachment=" + filePath));
+      System.out.println("pfad: "+filePath);
+      System.out.println("datei existiert: "+new File(filePath).exists());
+    } catch (URISyntaxException | IOException ex) {
+      UtilityBox.getInstance().displayErrorPopup("Fehler beim erstellen der Email", ex.getMessage());
+      System.out.println(ex.getMessage());
+      
+    }
   }
 }

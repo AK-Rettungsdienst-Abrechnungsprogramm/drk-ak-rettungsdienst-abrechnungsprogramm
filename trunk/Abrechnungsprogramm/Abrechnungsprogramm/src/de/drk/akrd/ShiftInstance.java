@@ -9,19 +9,16 @@ public class ShiftInstance {
   private int actualStartingTime;
   private int actualEndTime;
   private int actualBreakTime;
-  private float timeAsFloat;
   private String partner;
   private String comment;
 
   public ShiftInstance(ShiftContainer.ShiftType type, String date, int actualStartingTime, 
-          int actualEndTime, int actualBreakTime, float timeAsFloat, 
-          String partner, String comment) {
+          int actualEndTime, int actualBreakTime, String partner, String comment) {
     this.type = type;
     this.date = date;
     this.actualStartingTime = actualStartingTime;
     this.actualEndTime = actualEndTime;
     this.actualBreakTime = actualBreakTime;
-    this.timeAsFloat = timeAsFloat;
     this.partner = partner;
     this.comment = comment;
   }
@@ -66,7 +63,7 @@ public class ShiftInstance {
    * @return the time als float value
    */
   public float getTimeAsFloat() {
-    return timeAsFloat;
+    return UtilityBox.getInstance().calculateTimeAsFloat(actualStartingTime, actualEndTime, actualBreakTime);
   }
 
   /**
