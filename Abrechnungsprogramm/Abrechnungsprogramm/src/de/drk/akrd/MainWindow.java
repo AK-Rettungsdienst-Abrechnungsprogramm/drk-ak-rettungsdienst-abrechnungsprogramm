@@ -157,6 +157,10 @@ public class MainWindow extends JFrame {
 		// Setup ShiftContainer
 		shiftContainer.loadShifts("Schichten.xml");
 		// // / TEST ///
+        // isHolidayTest
+        // Calendar cal = Calendar.getInstance();
+        // cal.set(2011, 10, 1);
+        // System.out.println("der erste nov ist feiertag: "+UtilityBox.getInstance().isHoliday(cal.getTime()));
 		// shiftformtest
 		// ShiftForm.TimeCode[] timeCodes = new ShiftForm.TimeCode[29];
 		// for (int i = 0; i < timeCodes.length; i++) {

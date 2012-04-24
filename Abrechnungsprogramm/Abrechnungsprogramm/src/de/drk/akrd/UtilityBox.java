@@ -2,16 +2,21 @@ package de.drk.akrd;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Set;
 import javax.swing.JOptionPane;
 
 public class UtilityBox {
 
   private static UtilityBox instance = null;
   private MainWindow mainWindow = null;
+  private Calendar calendar = null;
+  private Date[] holidays = null;
 
   public UtilityBox(MainWindow mainWindow) {
     instance = this;
     this.mainWindow = mainWindow;
+    calendar = Calendar.getInstance();
   }
 
   public static void instanciate(MainWindow mainWindow) {
@@ -225,7 +230,100 @@ public class UtilityBox {
         hours--;
       }
     }
-    
     return ((hours*100)+minutes);
+  }
+  public boolean isHoliday(Date date) {
+    calendar.setTime(date);
+    int day = calendar.get(Calendar.DAY_OF_MONTH);
+    int month = calendar.get(Calendar.MONTH);
+    int year = calendar.get(Calendar.YEAR);
+    if (holidays == null) {
+      holidays = calculateGermanBWHolidays(year);
+    }
+    for (int i = 0; i < holidays.length; i++) {
+      calendar.setTime(holidays[i]);
+      if(day == calendar.get(Calendar.DAY_OF_MONTH)
+              && month == calendar.get(Calendar.MONTH)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private Date[] calculateGermanBWHolidays(int year) {
+    // calculation of easter sunday
+    int ES;
+    {
+      // säkularzahl
+      int säkularzahl = (int) Math.floor(year / 100);
+      // säkulareMondschaltung
+      int säkulareMondschaltung = (int) (15 + Math.floor((3 * säkularzahl + 3) / 4)
+              - Math.floor((8 * säkularzahl + 13) / 25));
+      // säkulareSonnenschaltung
+      int säkulareSonnenschaltung = (int) (2 - Math.floor((3 * säkularzahl + 3) / 4));
+      // Mondarameter
+      int mondParameter = year % 19;
+      // ersterFrühlingsVollmond
+      int ersterFrühlingsVollmond = (19 * mondParameter + säkulareMondschaltung) % 30;
+      // kalendarische Korrekturgröße
+      int kalendarischeKorrekturgröße = (int) (Math.floor(ersterFrühlingsVollmond / 29)
+              + (Math.floor(ersterFrühlingsVollmond / 28)
+              - Math.floor(ersterFrühlingsVollmond / 29))
+              * (Math.floor(mondParameter / 11)));
+
+      // Ostergrenze:
+      int OG = 21 + ersterFrühlingsVollmond - kalendarischeKorrekturgröße;
+      // ersten Sonntag im März
+      int SZ = (int) (7 - (year + Math.floor(year / 4) + säkulareSonnenschaltung) % 7);
+      // Entfernung des Ostersonntags von der Ostergrenze (Osterentfernung in Tagen)
+      int OE = 7 - (OG - SZ) % 7;
+      // Datum des Ostersonntags als Märzdatum (32. März = 1. April usw.)
+      ES = OG + OE;
+    }
+    Date[] holidayDates = new Date[12];
+    calendar.set(year, 2, 1);
+    calendar.add(Calendar.DAY_OF_YEAR, ES);
+    Date easterSunday = calendar.getTime();
+    calendar.add(Calendar.DAY_OF_YEAR, -3);
+    Date goodFriday = calendar.getTime();
+    calendar.add(Calendar.DAY_OF_YEAR, 3);
+    Date easterMonday = calendar.getTime();
+    calendar.add(Calendar.DAY_OF_YEAR, 38);
+    Date ascensionDay = calendar.getTime();
+    calendar.add(Calendar.DAY_OF_YEAR, 11);
+    Date whitMonday = calendar.getTime();
+    calendar.add(Calendar.DAY_OF_YEAR, 10);
+    Date corpusChristi = calendar.getTime();
+    // new years day
+    calendar.set(year, 0, 1);
+    holidayDates[0] = calendar.getTime();
+    // Twelfth Day (the three Magi)
+    calendar.set(year, 0, 6);
+    holidayDates[1] = calendar.getTime();
+    holidayDates[2] = goodFriday;
+    holidayDates[3] = easterMonday;
+    // labour day
+    calendar.set(year, 4, 1);
+    holidayDates[4] = calendar.getTime();
+    holidayDates[5] = ascensionDay;
+    holidayDates[6] = whitMonday;
+    holidayDates[7] = corpusChristi;
+    // German Unification Day
+    calendar.set(year, 9, 3);
+    holidayDates[8] = calendar.getTime();
+    // Allhallows
+    calendar.set(year, 10, 1);
+    holidayDates[9] = calendar.getTime();
+    // first and second chrismas day
+    calendar.set(year, 11, 25);
+    holidayDates[10] = calendar.getTime();
+    calendar.set(year, 11, 26);
+    holidayDates[11] = calendar.getTime();
+    for (int i = 0; i < holidayDates.length; i++) {
+      Date date = holidayDates[i];
+      calendar.setTime(date);
+      System.out.println("feiertag "+(i+1)+": "+calendar.get(Calendar.DAY_OF_MONTH)+"."+(calendar.get(Calendar.MONTH)+1)+"."+calendar.get(Calendar.YEAR));
+    }
+    return holidayDates;
   }
 }
