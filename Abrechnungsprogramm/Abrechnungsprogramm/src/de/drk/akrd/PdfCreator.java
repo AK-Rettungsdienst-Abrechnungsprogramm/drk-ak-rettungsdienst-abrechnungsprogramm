@@ -101,6 +101,9 @@ public class PdfCreator {
     DecimalFormat euroFormat = new DecimalFormat("#0.00");
     float salarySum = 0; 
     try {
+      Font helveticaFont5 = FontFactory.getFont(FontFactory.HELVETICA, 5);
+      Font helveticaFont6 = FontFactory.getFont(FontFactory.HELVETICA, 6);
+      Font helveticaFont7 = FontFactory.getFont(FontFactory.HELVETICA, 7);
       Font helveticaFont8 = FontFactory.getFont(FontFactory.HELVETICA, 8);
       Font helveticaFont9 = FontFactory.getFont(FontFactory.HELVETICA, 9);
       Font helveticaFont10 = FontFactory.getFont(FontFactory.HELVETICA, 10);
@@ -413,11 +416,13 @@ public class PdfCreator {
         String startTimeAsString = "";
         String endTimeAsString = "";
         String partner = "";
+        Font partnerFont = helveticaFont9;
         String timeInHours = "";
         String timeasFloat = "";
         String salaryPerHour = "";
         String shiftSalary = "";
         String comment = "";
+        Font commentFont = helveticaFont9;
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         Calendar cal = Calendar.getInstance();
@@ -437,14 +442,31 @@ public class PdfCreator {
           startTimeAsString = UtilityBox.createTimeStringFromInt(startTime);
           endTimeAsString = UtilityBox.createTimeStringFromInt(endTime);
           partner = currentShift.getPartner();
+          if (partner.length() > 14) {
+            if (partner.length() > 18) {
+              partner = partner.substring(0, 18);
+            }
+            partnerFont = helveticaFont7;
+          }
           timeInHours = UtilityBox.getInstance().calculateTimeInHours(startTime, endTime, breakTime);
           timeasFloat = Float.toString(currentShift.getTimeAsFloat());
           timeSumAsFloat += currentShift.getTimeAsFloat();
-          
           salaryPerHour = euroFormat.format(salary)+ " €";
           shiftSalary = euroFormat.format(currentShift.getTimeAsFloat() * salary)+" €";
           salarySum += currentShift.getTimeAsFloat() * salary;
           comment = currentShift.getComment();
+          int commentLength = comment.length();
+          if (commentLength > 10) {
+            if (commentLength > 13) {
+              if (commentLength > 36) {
+                comment = comment.substring(0, 36);
+              }
+              commentFont = helveticaFont5;
+            }
+            else {
+              commentFont = helveticaFont7;
+            }
+          }
         }
         PdfPCell tempCell = emptyPdfPCell();
         Paragraph content = new Paragraph(date, helveticaFont9);
@@ -464,7 +486,7 @@ public class PdfCreator {
         tempCell.addElement(content);
         table7.addCell(tempCell);
         tempCell = emptyPdfPCell();
-        content = new Paragraph(partner, helveticaFont9);
+        content = new Paragraph(partner, partnerFont);
         tempCell.addElement(content);
         table7.addCell(tempCell);
         tempCell = emptyPdfPCell();
@@ -484,7 +506,7 @@ public class PdfCreator {
         tempCell.addElement(content);
         table7.addCell(tempCell);
         tempCell = emptyPdfPCell();
-        content = new Paragraph(comment, helveticaFont9);
+        content = new Paragraph(comment, commentFont);
         tempCell.addElement(content);
         table7.addCell(tempCell);
       }
@@ -606,6 +628,7 @@ public class PdfCreator {
     PdfPCell cell = new PdfPCell();
     cell.setVerticalAlignment(Rectangle.ALIGN_MIDDLE);
     cell.setHorizontalAlignment(Rectangle.ALIGN_CENTER);
+    cell.setFixedHeight(19f);
     //cell.setBorderWidth(1);
     return cell;
   }
