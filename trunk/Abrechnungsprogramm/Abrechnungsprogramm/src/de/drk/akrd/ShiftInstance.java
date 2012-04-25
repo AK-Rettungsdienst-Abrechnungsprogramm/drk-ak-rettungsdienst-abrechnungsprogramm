@@ -12,6 +12,16 @@ public class ShiftInstance {
   private String partner;
   private String comment;
 
+  /**
+   * create a new ShiftInstance
+   * @param type ShiftContainer.ShiftType
+   * @param date date-string
+   * @param actualStartingTime
+   * @param actualEndTime
+   * @param actualBreakTime
+   * @param partner shift-partner; maximal 18 characters
+   * @param comment comment; maximal 36 characters
+   */
   public ShiftInstance(ShiftContainer.ShiftType type, String date, int actualStartingTime, 
           int actualEndTime, int actualBreakTime, String partner, String comment) {
     this.type = type;
