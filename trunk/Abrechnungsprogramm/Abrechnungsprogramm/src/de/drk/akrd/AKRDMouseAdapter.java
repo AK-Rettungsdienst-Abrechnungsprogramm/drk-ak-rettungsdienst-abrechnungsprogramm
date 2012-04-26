@@ -118,11 +118,18 @@ public class AKRDMouseAdapter extends MouseAdapter {
 			String breakTime = (String) mainWindow.shiftTable.getValueAt(
 					selectedRow, 3);
 
+			String ID = (String) mainWindow.shiftTable.getValueAt(
+					selectedRow, 0);
+			
+			Shift shift = Shift.getShiftFromId(ID);
+			
+			
 			// Set values to fields
 			mainWindow.beginField.setText(begin);
 			mainWindow.endField.setText(end);
 			mainWindow.breakField.setText(breakTime);
-			
+			mainWindow.noShiftTypeUpdate = true;
+			mainWindow.shiftTypeChooser.setSelectedItem(shift.getType());
 
 			return;
 		}

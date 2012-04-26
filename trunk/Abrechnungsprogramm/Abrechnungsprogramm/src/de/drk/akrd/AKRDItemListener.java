@@ -38,6 +38,23 @@ public class AKRDItemListener implements ItemListener {
 		// Resets the shifts list, depending on the selected type
 		if(source == mainWindow.shiftTypeChooser)
 		{
+			// If this is the deselect event don't do anything
+			if(e.getStateChange() == ItemEvent.DESELECTED) return;
+			// If override flag was set don't do anything
+			if(mainWindow.noShiftTypeUpdate)
+			{
+				mainWindow.noShiftTypeUpdate = false;
+				return;
+			}
+			ShiftContainer.ShiftType type = (ShiftContainer.ShiftType)mainWindow.shiftTypeChooser.getSelectedItem();
+			
+			if(type == ShiftContainer.ShiftType.RTW || type == ShiftContainer.ShiftType.KTW || type == ShiftContainer.ShiftType.BREISACH || type == ShiftContainer.ShiftType.KIZA)
+			{
+				mainWindow.prepTimeBox.setSelected(true);
+			}else
+			{
+				mainWindow.prepTimeBox.setSelected(false);
+			}
             mainWindow.updateShiftContainer();
 			return;
 			
