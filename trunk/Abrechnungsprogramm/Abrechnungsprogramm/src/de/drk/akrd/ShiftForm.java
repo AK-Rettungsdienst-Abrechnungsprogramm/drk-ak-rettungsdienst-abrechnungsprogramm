@@ -12,6 +12,7 @@ import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPCell;
@@ -60,6 +61,7 @@ public class ShiftForm {
       dir.mkdir();
     }
     Document shiftFormDocument = new Document();
+    shiftFormDocument.setPageSize(PageSize.A4);
     String fileName = "Fragebogen_" + UtilityBox.getMonthString(month) + "_" + year + ".pdf";
     String filePath = "Frageboegen/" + fileName;
     boolean pdfCreated = false;

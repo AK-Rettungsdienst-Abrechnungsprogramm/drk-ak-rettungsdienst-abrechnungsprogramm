@@ -159,6 +159,9 @@ public class MainWindow extends JFrame {
 		// Setup ShiftContainer
 		shiftContainer.loadShifts("Schichten.xml");
 		// // / TEST ///
+        // printtest
+        //UtilityBox.getInstance().testStuff();
+        //UtilityBox.getInstance().printFile("Abrechnungstest1.pdf");
         // isHolidayTest
         // Calendar cal = Calendar.getInstance();
         // cal.set(2011, 10, 1);
