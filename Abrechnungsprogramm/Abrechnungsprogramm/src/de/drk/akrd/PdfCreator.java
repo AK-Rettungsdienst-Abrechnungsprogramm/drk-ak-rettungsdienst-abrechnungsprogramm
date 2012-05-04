@@ -9,9 +9,12 @@ import java.io.*;
 import java.net.MalformedURLException;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.GrayColor;
+import com.itextpdf.text.pdf.PdfAnnotation;
+import com.itextpdf.text.pdf.PdfAppearance;
 import com.itextpdf.text.pdf.RadioCheckField;
 import com.itextpdf.text.pdf.PdfFormField;
 import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfName;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -37,7 +40,6 @@ public class PdfCreator {
     ArrayList<ShiftInstance> kvs = new ArrayList<>();
 
     // add shifts to seperate shift lists
-    System.out.println("länge des arrays: "+shiftsToAccount.length);
     for (int i = 0; i < shiftsToAccount.length; i++) {
       switch (shiftsToAccount[i].getType()) {
         case KTW:
@@ -65,10 +67,11 @@ public class PdfCreator {
           break;
       }
     }
-    ArrayList<ShiftInstance>[] allShifts = (ArrayList<ShiftInstance>[])new ArrayList[]{rd, ktp, baby, breisach, kiza, event, kvs};
+    ArrayList<ShiftInstance>[] allShifts = (ArrayList<ShiftInstance>[])(new ArrayList[]{rd, ktp, baby, breisach, kiza, event, kvs});
     try {
       Document accounting = new Document();
-      PdfWriter pdfWriter = PdfWriter.getInstance(accounting, new FileOutputStream("Abrechnungstest.pdf"));
+      accounting.setPageSize(PageSize.A4);
+      PdfWriter pdfWriter = PdfWriter.getInstance(accounting, new FileOutputStream("Abrechnungstest1.pdf"));
       accounting.open();
       for (int i = 0; i < allShifts.length; i++) {
         if (!allShifts[i].isEmpty()) {
@@ -89,7 +92,9 @@ public class PdfCreator {
         }
       }
       accounting.close();
+      System.out.println("Accounting saved.");
     } catch (FileNotFoundException | DocumentException e) {
+      UtilityBox.getInstance().displayErrorPopup("Abrechnung erstellen", "Fehler beim Erstellen der Abrechnung:\n"+e.getMessage());
     }
 
 
@@ -266,7 +271,7 @@ public class PdfCreator {
         boolArray = new boolean[]{false, false, false, false, false, false};
         xPosition += 105;
       }
-      
+     
       // create another empty line
       PdfPTable table4 = new PdfPTable(1);
       table4.setWidthPercentage(100);
@@ -646,14 +651,35 @@ public class PdfCreator {
     try {
       for (int i = 0; i < label.length; i++) {
         rect = new Rectangle((xPosition + 10), (yPosition - 10 - i * 15), xPosition, yPosition - i * 15);
+        rect.setBorderWidth(1.5f);
+        rect.setBorderColor(BaseColor.BLACK);
+        // Add the check boxes
+        PdfAppearance[] onOff = new PdfAppearance[2];
+        onOff[0] = canvas.createAppearance(20, 20);
+        onOff[0].rectangle(rect);
+        onOff[0].stroke();
+        onOff[1] = canvas.createAppearance(10, 10);
+        //onOff[1].setRGBColorFill(255, 255, 255);
+        onOff[1].rectangle(rect);
+        onOff[1].fillStroke();
+        onOff[1].moveTo(1, 1);
+        onOff[1].lineTo(10, 10);
+        onOff[1].moveTo(1, 10);
+        onOff[1].lineTo(10, 1);
+        onOff[1].stroke();
         checkbox = new RadioCheckField(writer, rect, xPosition + "," + pageNr + i, "on");
         checkbox.setChecked(checked[i]);
         checkbox.setOptions(RadioCheckField.READ_ONLY);
         checkbox.setBorderColor(BaseColor.BLACK);
         checkbox.setBackgroundColor(GrayColor.WHITE);
         checkbox.setBorderWidth(1.5f);
-        checkbox.setCheckType(RadioCheckField.TYPE_CHECK);
+        checkbox.setCheckType(RadioCheckField.TYPE_DIAMOND);
+        checkbox.setVisibility(RadioCheckField.VISIBLE);
         field = checkbox.getCheckField();
+        field.setAppearance(PdfAnnotation.APPEARANCE_DOWN, "on", onOff[1]);
+        field.setAppearance(PdfAnnotation.APPEARANCE_ROLLOVER, "off", onOff[0]);
+        field.setFlags(PdfFormField.FLAGS_PRINT);
+        
         writer.addAnnotation(field);
         ColumnText.showTextAligned(canvas, Element.ALIGN_LEFT,
                 new Phrase(label[i], font), (xPosition + 16), (yPosition - 8 - i * 15), 0);
