@@ -31,6 +31,12 @@ public class PdfCreator {
   }
 
   public static void createAccounting(ShiftInstance[] shiftsToAccount) {
+    // check if personal Data exists
+    if (!PersonalData.getInstance().isDataSet()) {
+      UtilityBox.getInstance().displayInfoPopup("Fehlende Daten", "Um die "
+              + "Abrechnung zu erstellen müssen\npersönliche Daten gespeichert sein.");
+      return;
+    }
     ArrayList<ShiftInstance> rd = new ArrayList<>();
     ArrayList<ShiftInstance> ktp = new ArrayList<>();
     ArrayList<ShiftInstance> baby = new ArrayList<>();
@@ -68,10 +74,12 @@ public class PdfCreator {
       }
     }
     ArrayList<ShiftInstance>[] allShifts = (ArrayList<ShiftInstance>[])(new ArrayList[]{rd, ktp, baby, breisach, kiza, event, kvs});
+    boolean success = false;
+    String filePath = "Abrechnungstest.pdf";
+    Document accounting = new Document();
     try {
-      Document accounting = new Document();
       accounting.setPageSize(PageSize.A4);
-      PdfWriter pdfWriter = PdfWriter.getInstance(accounting, new FileOutputStream("Abrechnungstest1.pdf"));
+      PdfWriter pdfWriter = PdfWriter.getInstance(accounting, new FileOutputStream(filePath));
       accounting.open();
       for (int i = 0; i < allShifts.length; i++) {
         if (!allShifts[i].isEmpty()) {
@@ -87,25 +95,30 @@ public class PdfCreator {
               counter++;
             }
             accounting.newPage();
-            createSingleAccounting(accounting, pdfWriter, tempShiftInstances, i*10+j);
+            success = createSingleAccounting(accounting, pdfWriter, tempShiftInstances, i*10+j);
           }
         }
       }
-      accounting.close();
-      System.out.println("Accounting saved.");
-    } catch (FileNotFoundException | DocumentException e) {
-      UtilityBox.getInstance().displayErrorPopup("Abrechnung erstellen", "Fehler beim Erstellen der Abrechnung:\n"+e.getMessage());
+    } catch (DocumentException | IOException e) {
+      UtilityBox.getInstance().displayErrorPopup("Abrechnung", "Fehler beim Erstellen der Abrechnung:\n"+e.getMessage());
+    } finally {
+      try {
+        accounting.close();
+        if (success) System.out.println("Accounting saved.");
+      } catch (Exception e) {
+        System.out.println("Dokument nicht geschlossen: "+e.getMessage());
+      }
     }
-
-
   }
 
-  private static void createSingleAccounting(Document accountingDocument, PdfWriter writer, ArrayList<ShiftInstance> shifts, int pageNr) {
-    PersonalData personalData = PersonalData.getInstance();
+  private static boolean createSingleAccounting(Document accountingDocument, PdfWriter writer, ArrayList<ShiftInstance> shifts, int pageNr) {
+    boolean success = false;
+    PersonalData personalData;
     float timeSumAsFloat = 0;
     DecimalFormat euroFormat = new DecimalFormat("#0.00");
     float salarySum = 0; 
     try {
+      personalData = PersonalData.getInstance();
       Font helveticaFont5 = FontFactory.getFont(FontFactory.HELVETICA, 5);
       Font helveticaFont6 = FontFactory.getFont(FontFactory.HELVETICA, 6);
       Font helveticaFont7 = FontFactory.getFont(FontFactory.HELVETICA, 7);
@@ -622,11 +635,12 @@ public class PdfCreator {
       accountingDocument.add(table10);
       accountingDocument.add(table8);
       accountingDocument.add(table11);
-    } catch (DocumentException e) {
-    } catch (FileNotFoundException e) {
-    } catch (MalformedURLException e) {
-    } catch (IOException e) {
+    } catch (DocumentException | IOException | NullPointerException e) {
+      success = false;
+      UtilityBox.getInstance().displayErrorPopup("Abrechnung", 
+              "Fehler beim Erstellen der Abrechnung:\n"+e.getMessage());
     }
+    return success;
   }
 
   private static PdfPCell emptyPdfPCell() {

@@ -134,7 +134,7 @@ public class PersonalData {
    * @return the last name
    */
   public String getLastName() {
-    return instance.lastName;
+    return lastName;
   }
 
   /**
@@ -142,22 +142,22 @@ public class PersonalData {
    * @return the qualification (see enum PersonalData.Qualification)
    */
   public Qualification getQualification() {
-    return instance.qualification;
+    return qualification;
   }
   /**
    * 
    * @return the google calendar Id
    */
   public String getCalendarId() {
-    return instance.calendarId;
+    return calendarId;
   }
 
   /**
    * 
    * @return weather the data is already set
    */
-  public static boolean isDataSet() {
-    return instance.dataSet;
+  public boolean isDataSet() {
+    return dataSet;
   }
 
   /**
@@ -165,7 +165,7 @@ public class PersonalData {
    * @return the email adress
    */
   public String getEmailAdress() {
-    return instance.emailAdress;
+    return emailAdress;
   }
   
 }
