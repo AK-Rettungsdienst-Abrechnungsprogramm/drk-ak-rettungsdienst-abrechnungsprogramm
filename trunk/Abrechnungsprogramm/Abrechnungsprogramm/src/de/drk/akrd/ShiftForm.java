@@ -98,7 +98,7 @@ public class ShiftForm {
       Font helveticaFont16Bold = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16);
       Font helveticaFont18Bold = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18);
 
-      Image drkLogo = Image.getInstance("images/logo_Abrechnung.jpg");
+      Image drkLogo = Image.getInstance(MainWindow.class.getResource("logo_Abrechnung.jpg"));
       drkLogo.scaleAbsolute(152f, 19f);
       drkLogo.setAbsolutePosition(400f, 780f);
       PdfPTable table1 = new PdfPTable(7);
