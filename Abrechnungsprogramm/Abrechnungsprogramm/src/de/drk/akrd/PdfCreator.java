@@ -104,7 +104,7 @@ public class PdfCreator {
     } finally {
       try {
         accounting.close();
-        if (success) System.out.println("Accounting saved.");
+        if (success) UtilityBox.getInstance().displayInfoPopup("Abrechnung", "Abrechnung unter "+filePath+" gespeichert.");
       } catch (Exception e) {
         System.out.println("Dokument nicht geschlossen: "+e.getMessage());
       }
@@ -137,7 +137,7 @@ public class PdfCreator {
       cell1.setVerticalAlignment(Element.ALIGN_BOTTOM);
       cell1.setMinimumHeight(28f);
       cell1.setBorderWidth(1);
-      Image drkLogo = Image.getInstance("images/logo_Abrechnung.jpg");
+      Image drkLogo = Image.getInstance(MainWindow.class.getResource("logo_Abrechnung.jpg"));
       drkLogo.scaleAbsolute(115f, 14f);
       drkLogo.setAbsolutePosition(38f, 788f);
       PdfPCell cell2 = new PdfPCell(new Paragraph("Abrechnung AK-RD/Aushilfen", helveticaFont18Bold));
@@ -280,7 +280,7 @@ public class PdfCreator {
             boolArray[checkboxSetter] = true;
           }
         }
-        createCheckbox(writer, helveticaFont9, KoSt[i], xPosition, 740, boolArray, pageNr);
+        createCheckbox(writer, accountingDocument, helveticaFont9, KoSt[i], xPosition, 740, boolArray, pageNr);
         boolArray = new boolean[]{false, false, false, false, false, false};
         xPosition += 105;
       }
@@ -635,6 +635,7 @@ public class PdfCreator {
       accountingDocument.add(table10);
       accountingDocument.add(table8);
       accountingDocument.add(table11);
+      success = true;
     } catch (DocumentException | IOException | NullPointerException e) {
       success = false;
       UtilityBox.getInstance().displayErrorPopup("Abrechnung", 
@@ -657,49 +658,48 @@ public class PdfCreator {
     cell.setHorizontalAlignment(Rectangle.ALIGN_CENTER);
   }
 
-  private static void createCheckbox(PdfWriter writer, Font font, String[] label, int xPosition, int yPosition, boolean[] checked, int pageNr) {
+  private static void createCheckbox(PdfWriter writer, Document accountingDocument, Font font, String[] label, int xPosition, int yPosition, boolean[] checked, int pageNr) {
     PdfContentByte canvas = writer.getDirectContent();
-    Rectangle rect;
-    PdfFormField field;
-    RadioCheckField checkbox;
+//    Rectangle rect;
+//    PdfFormField field;
+//    RadioCheckField checkbox;
     try {
+      Image checkbox_checked = Image.getInstance(MainWindow.class.getResource("checkbox_checked.jpg"));
+      checkbox_checked.scaleAbsolute(10f, 10f);
+      Image checkbox = Image.getInstance(MainWindow.class.getResource("checkbox.jpg"));
+      checkbox.scaleAbsolute(10f, 10f);
       for (int i = 0; i < label.length; i++) {
-        rect = new Rectangle((xPosition + 10), (yPosition - 10 - i * 15), xPosition, yPosition - i * 15);
-        rect.setBorderWidth(1.5f);
-        rect.setBorderColor(BaseColor.BLACK);
-        // Add the check boxes
-        PdfAppearance[] onOff = new PdfAppearance[2];
-        onOff[0] = canvas.createAppearance(20, 20);
-        onOff[0].rectangle(rect);
-        onOff[0].stroke();
-        onOff[1] = canvas.createAppearance(10, 10);
-        //onOff[1].setRGBColorFill(255, 255, 255);
-        onOff[1].rectangle(rect);
-        onOff[1].fillStroke();
-        onOff[1].moveTo(1, 1);
-        onOff[1].lineTo(10, 10);
-        onOff[1].moveTo(1, 10);
-        onOff[1].lineTo(10, 1);
-        onOff[1].stroke();
-        checkbox = new RadioCheckField(writer, rect, xPosition + "," + pageNr + i, "on");
-        checkbox.setChecked(checked[i]);
-        checkbox.setOptions(RadioCheckField.READ_ONLY);
-        checkbox.setBorderColor(BaseColor.BLACK);
-        checkbox.setBackgroundColor(GrayColor.WHITE);
-        checkbox.setBorderWidth(1.5f);
-        checkbox.setCheckType(RadioCheckField.TYPE_DIAMOND);
-        checkbox.setVisibility(RadioCheckField.VISIBLE);
-        field = checkbox.getCheckField();
-        field.setAppearance(PdfAnnotation.APPEARANCE_DOWN, "on", onOff[1]);
-        field.setAppearance(PdfAnnotation.APPEARANCE_ROLLOVER, "off", onOff[0]);
-        field.setFlags(PdfFormField.FLAGS_PRINT);
-        
-        writer.addAnnotation(field);
+//        rect = new Rectangle((xPosition + 10), (yPosition - 10 - i * 15), xPosition, yPosition - i * 15);
+//        rect.setBorderWidth(1.5f);
+//        rect.setBorderColor(BaseColor.BLACK);
+//        // Add the check boxes
+//        checkbox = new RadioCheckField(writer, rect, xPosition + "," + pageNr + i, "on");
+//        checkbox.setChecked(checked[i]);
+//        checkbox.setOptions(RadioCheckField.READ_ONLY);
+//        checkbox.setBorderColor(BaseColor.BLACK);
+//        checkbox.setBackgroundColor(GrayColor.WHITE);
+//        checkbox.setBorderWidth(1.5f);
+//        checkbox.setCheckType(RadioCheckField.TYPE_DIAMOND);
+//        checkbox.setVisibility(RadioCheckField.VISIBLE);
+//        field = checkbox.getCheckField();
+//        field.setFlags(PdfFormField.FLAGS_PRINT);
+//        
+//        writer.addAnnotation(field);
+        Image checkboxImage;
+        if (checked[i]) {
+          checkboxImage = Image.getInstance(checkbox_checked);
+        } else {
+          checkboxImage = Image.getInstance(checkbox);
+        }
+        checkboxImage.setAbsolutePosition(xPosition, (yPosition - 10 - i * 15));
+        accountingDocument.add(checkboxImage);
         ColumnText.showTextAligned(canvas, Element.ALIGN_LEFT,
                 new Phrase(label[i], font), (xPosition + 16), (yPosition - 8 - i * 15), 0);
       }
 
     } catch (com.itextpdf.text.DocumentException | java.io.IOException e) {
+      UtilityBox.getInstance().displayErrorPopup("Abrechnung", 
+              "Fehler beim Erstellen der Abrechnung: "+e.getMessage());
     }
   }
 }

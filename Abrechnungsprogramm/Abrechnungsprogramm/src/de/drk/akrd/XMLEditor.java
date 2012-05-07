@@ -175,6 +175,12 @@ public class XMLEditor {
     return false;
   }
 
+  /**
+   * load saved shifts from File "SchichtenYYYY.xml", YYYY is the year
+   * @param year
+   * @return ArrayList<ArrayList<ShiftInstance>>
+   * the List contains 12 ArrayList<ShiftInstance> where each stands for a month
+   */
   public static ArrayList<ArrayList<ShiftInstance>> loadSavedShifts(int year) {
     SAXBuilder saxBuilder = new SAXBuilder();
     File xmlFile = new File("Schichten"+year+".xml");
