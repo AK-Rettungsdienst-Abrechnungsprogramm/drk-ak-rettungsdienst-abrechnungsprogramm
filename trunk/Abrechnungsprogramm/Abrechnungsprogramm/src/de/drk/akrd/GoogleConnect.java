@@ -75,9 +75,9 @@ public class GoogleConnect extends CalendarManager {
         EventEntry insertedEntry = myService.insert(postUrl, myEntry);
       }
 
-      System.out.println("termine eingetragen");
+      UtilityBox.getInstance().displayInfoPopup("Google Kalender", "Termine wurden eingetragen.");
     } catch (IOException | ServiceException ex) {
-      System.out.println("Eintragen des Termins fehlgeschlagen: "+ex.getMessage());
+      UtilityBox.getInstance().displayErrorPopup("Google Kalender", "Eintragen des Termins fehlgeschlagen: "+ex.getMessage());
     }
   }
 }

@@ -42,6 +42,9 @@ public class DRManager {
 
   public void parseDutyRota() {
     String filePath = getPdfFilePath();
+    if (!(new File(filePath).exists())) {
+      return;
+    }
     String[] contentStrings = parsePdf(filePath);
     if (contentStrings == null) {
       String message = failMessage;
@@ -63,8 +66,8 @@ public class DRManager {
     try {
       date = sdf.parse(contentStrings[0]);
     } catch (ParseException ex) {
-      System.out.println("Exception in PDFReader.parseDutyRota "
-              + "(parsing date): " + ex.getMessage());
+      parsingFailed("Datum kann nicht ausgelesen werden:\n"+ex.getMessage());
+      return;
     }
     cal.setTime(date);
     month = cal.get(Calendar.MONTH);
@@ -132,7 +135,7 @@ private static String getPdfFilePath() {
    * returnArray[1] String which contains all shifts for the month, seperated by whitespace
    * returnArray[2] endingtimes for the whole month, seperated by whitespace
    */
-  public static String[] parsePdf(String filename) {
+  private String[] parsePdf(String filename) {
     String[] returnArray = null;
     try {
       PdfReader reader = new PdfReader(filename);
@@ -148,12 +151,13 @@ private static String getPdfFilePath() {
         returnArray = getStings(tempFile);
       }
       // delete the temporary file
-      if (!tempFile.delete()) {
-        System.out.println("Deletation of temp-file in PDFReader.parsePDF failed.");
-      }
+//      if (!tempFile.delete()) {
+//        System.out.println("Deletation of temp-file in DRManager.parsePDF failed.");
+//      }
 
     } catch (IOException ex) {
-      System.out.println("Exception in PDFReader.parsePdf: " + ex.getMessage());
+      parsingFailed(ex.getMessage());
+      return null;
     }
     return returnArray;
   }
@@ -183,11 +187,11 @@ private static String getPdfFilePath() {
       while (line != null) {
         if (line.contains(lastName+", "+firstName)) {
           personFound = true;
-        } else if (personFound && line.contains("RS Dienstplan")) {
+        } else if (personFound && line.contains("Dienstplan")) {
           line = bufferedReader.readLine();
           returnArray[1] = line;
           shiftsSaved = true;
-        } else if (shiftsSaved && line.contains("Ende")) {
+        } else if (shiftsSaved && line.contains("Arbeitsp.")) {
           line = bufferedReader.readLine();
           returnArray[2] = line;
           break;
@@ -198,13 +202,12 @@ private static String getPdfFilePath() {
 
     } catch (IOException ex) {
       returnArray = null;
-      System.out.println("Exception in PDFReader.getStrings: " + ex.getMessage());
+      parsingFailed(ex.getMessage());
     } finally {
       try {
         bufferedReader.close();
       } catch (IOException ex) {
-        System.out.println("Exception in PDFReader.getStrings; "
-                + "BufferedReader not closed: " + ex.getMessage());
+        parsingFailed("BufferedReader not closed:\n" + ex.getMessage());
       }
     }
     if (personFound) {
@@ -218,7 +221,7 @@ private static String getPdfFilePath() {
   }
 
   private static void parsingFailed(String message) {
-    JOptionPane.showMessageDialog(null, message, "Fehler beim Lesen des Dienstplans", JOptionPane.ERROR_MESSAGE);
+    UtilityBox.getInstance().displayErrorPopup("Fehler beim Lesen des Dienstplans", message);
   }
 
   /**
