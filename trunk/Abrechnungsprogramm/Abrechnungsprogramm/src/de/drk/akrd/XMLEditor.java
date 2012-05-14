@@ -69,20 +69,27 @@ public class XMLEditor {
         int begin = Integer.parseInt(node.getChildText("von"));
         int end = Integer.parseInt(node.getChildText("bis"));
         int breakTime = Integer.parseInt(node.getChildText("Pause"));
-        
+
         // Identify days
         String daysString = node.getChildText("Tage");
         int days = -1;
-        if(daysString.equals("Mo-Fr")) days = 0;
-        if(daysString.equals("Sa")) days = 1;
-        if(daysString.equals("So")) days = 2;
-        if(daysString.equals("Mo-So")) days = 3;
-        if(days == -1)
-        	{
-        	System.err.println("Could not detect days for shift! Malformed XML!");
-        	System.err.println("Caused by shift: " + node.getChildText("Schichtname"));
-        	}
-        
+        if (daysString.equals("Mo-Fr")) {
+          days = 0;
+        }
+        if (daysString.equals("Sa")) {
+          days = 1;
+        }
+        if (daysString.equals("So")) {
+          days = 2;
+        }
+        if (daysString.equals("Mo-So")) {
+          days = 3;
+        }
+        if (days == -1) {
+          System.err.println("Could not detect days for shift! Malformed XML!");
+          System.err.println("Caused by shift: " + node.getChildText("Schichtname"));
+        }
+
         shiftList.add(new Shift(shiftId, begin, end, breakTime, days));
       }
       return true;
@@ -114,8 +121,8 @@ public class XMLEditor {
         Integer.toString(dataInstance.getBlz()),
         dataInstance.getQualification().name(),
         Boolean.toString(dataInstance.isDataKnown()),
-      dataInstance.getEmailAdress(),
-      dataInstance.getCalendarId()};
+        dataInstance.getEmailAdress(),
+        dataInstance.getCalendarId()};
       fileWriter.write("<personalData>" + System.getProperty("line.separator"));
       fileWriter.write("  <dataset>" + System.getProperty("line.separator"));
       for (int i = 0; i < elementNames.length; i++) {
@@ -130,7 +137,27 @@ public class XMLEditor {
       System.out.println("Exception in XMLEditor.writePersonalData: " + e.getMessage());
     }
     return false;
+  }
 
+  private static void writePersonalDataToElement(Element element, PersonalData dataInstance) {
+    if (element == null) {
+      return;
+    }
+    String[] elementNames = new String[]{"firstName", "lastName",
+      "bankaccountAndCity", "accountNumber", "blz", "qualification",
+      "dataKnown", "emailAdress", "calendarId"};
+    String[] elemetArray = new String[]{dataInstance.getFirstName(),
+      dataInstance.getLastName(), dataInstance.getBankNameAndCity(),
+      Integer.toString(dataInstance.getAccountNumber()),
+      Integer.toString(dataInstance.getBlz()),
+      dataInstance.getQualification().name(),
+      Boolean.toString(dataInstance.isDataKnown()),
+      dataInstance.getEmailAdress(),
+      dataInstance.getCalendarId()};
+    for (int i = 0; i < elemetArray.length; i++) {
+      element.addContent(new Element(elementNames[i]).setText(elemetArray[i]));
+
+    }
   }
 
   /**
@@ -146,26 +173,15 @@ public class XMLEditor {
         Document document = (Document) saxBuilder.build(dataFile);
         Element documentElement = document.getRootElement();
         List nodeList = documentElement.getChildren("dataset");
-        for (int i = 0; i < nodeList.size(); i++) {
-          Element node = (Element) nodeList.get(i);
-          String emailAdress = node.getChildText("emailAdress");
-          if(emailAdress.equals("null")) emailAdress = null;
-          String calendarId = node.getChildText("calendarId");
-          if(calendarId.equals("null")) calendarId= null;
-          boolean dataKnown = false;
-          if (node.getChildText("dataKnown").equals("true"))
-            dataKnown = true;
-          pd.setData(
-                  node.getChildText("firstName"),
-                  node.getChildText("lastName"),
-                  node.getChildText("bankaccountAndCity"),
-                  Integer.parseInt(node.getChildText("accountNumber")),
-                  Integer.parseInt(node.getChildText("blz")),
-                  PersonalData.Qualification.valueOf(node.getChildText("qualification")),
-                  dataKnown,
-                  emailAdress,
-                  calendarId);
+        if ((nodeList == null) || (nodeList.isEmpty())) {
+          UtilityBox.getInstance().displayErrorPopup("Persönliche Daten", 
+                  "Persönliche Daten konnten nicht geladen werden.\n"
+                  + "(Fehlerhafte Datei?)\nErneutes Eintragen/Speichern der "
+                  + "Daten wird das Problem beheben.");
+          return false;
         }
+        Element node = (Element) nodeList.get(0);
+        loadPersonalDataFromNode(node);
         return true;
       } catch (JDOMException | IOException | NumberFormatException e) {
         System.out.println("Exception in XMLEditor.loadPersonalData: " + e.getMessage());
@@ -173,6 +189,31 @@ public class XMLEditor {
       }
     }
     return false;
+  }
+
+  private static void loadPersonalDataFromNode(Element node) {
+    String emailAdress = node.getChildText("emailAdress");
+    if (emailAdress.equals("null")) {
+      emailAdress = null;
+    }
+    String calendarId = node.getChildText("calendarId");
+    if (calendarId.equals("null")) {
+      calendarId = null;
+    }
+    boolean dataKnown = false;
+    if (node.getChildText("dataKnown").equals("true")) {
+      dataKnown = true;
+    }
+    PersonalData.getInstance().setData(
+            node.getChildText("firstName"),
+            node.getChildText("lastName"),
+            node.getChildText("bankaccountAndCity"),
+            Integer.parseInt(node.getChildText("accountNumber")),
+            Integer.parseInt(node.getChildText("blz")),
+            PersonalData.Qualification.valueOf(node.getChildText("qualification")),
+            dataKnown,
+            emailAdress,
+            calendarId);
   }
 
   /**
@@ -183,20 +224,32 @@ public class XMLEditor {
    */
   public static ArrayList<ArrayList<ShiftInstance>> loadSavedShifts(int year) {
     SAXBuilder saxBuilder = new SAXBuilder();
-    File xmlFile = new File("Schichten"+year+".xml");
+    File xmlFile = new File("Schichten" + year + ".xml");
     try {
       ArrayList<ArrayList<ShiftInstance>> outputList = new ArrayList<>();
       Document document = (Document) saxBuilder.build(xmlFile);
       Element rootNode = document.getRootElement();
       List monthList = rootNode.getChildren();
-      for (int i=0; i < monthList.size(); i++) {
+      for (int i = 0; i < monthList.size(); i++) {
         Element monthNode = (Element) monthList.get(i);
-        ArrayList<ShiftInstance> shiftListOfMonth = new ArrayList<>();
-        List shiftNodesOfMonth = monthNode.getChildren();
-        for (int j=0; j<shiftNodesOfMonth.size(); j++) {
-          Element currentNode = (Element) shiftNodesOfMonth.get(j);
-          shiftListOfMonth.add(new ShiftInstance(
-                  ShiftContainer.getShiftTypeFromId(currentNode.getChildText("id")), 
+        ArrayList<ShiftInstance> shiftListOfMonth = loadShiftsFromNode(monthNode);
+        outputList.add(shiftListOfMonth);
+      }
+      return outputList;
+    } catch (JDOMException | IOException | NumberFormatException e) {
+      System.out.println("Exception in XMLEditor.loadSavedShifts: " + e.getMessage());
+    }
+    return new ArrayList<ArrayList<ShiftInstance>>() {
+    };
+  }
+
+  private static ArrayList<ShiftInstance> loadShiftsFromNode(Element node) {
+    ArrayList<ShiftInstance> returnList = new ArrayList<>();
+    List shiftNodes = node.getChildren();
+        for (int j = 0; j < shiftNodes.size(); j++) {
+          Element currentNode = (Element) shiftNodes.get(j);
+          returnList.add(new ShiftInstance(
+                  ShiftContainer.getShiftTypeFromId(currentNode.getChildText("id")),
                   currentNode.getChildText("date"),
                   Integer.parseInt(currentNode.getChildText("actStartingTime")),
                   Integer.parseInt(currentNode.getChildText("actEndTime")),
@@ -204,13 +257,7 @@ public class XMLEditor {
                   currentNode.getChildText("partner"),
                   currentNode.getChildText("comment")));
         }
-        outputList.add(shiftListOfMonth);
-      }
-      return outputList;
-    } catch (JDOMException | IOException | NumberFormatException e) {
-      System.out.println("Exception in XMLEditor.loadSavedShifts: "+e.getMessage());
-    }
-    return new ArrayList<ArrayList<ShiftInstance>>() {};
+    return returnList;
   }
   /**
    * store a list of shiftInstances to a xml-file.
@@ -239,7 +286,7 @@ public class XMLEditor {
           Element currentNode = findElement(rootNode.getChild("M" + month).getChildren(), shiftDateString + shiftIdString);
           // if no node for the shift exists add new node
           if (currentNode == null) {
-            System.out.println("add new shift:"+currentShift.getType().name()+" "+currentShift.getDate());
+            System.out.println("add new shift:" + currentShift.getType().name() + " " + currentShift.getDate());
             Element tempElement = new Element("Shift");
             ShiftInstance tempShiftInstance = shiftList.get(i);
             addShiftToElement(tempElement, tempShiftInstance);
@@ -334,5 +381,65 @@ public class XMLEditor {
       System.out.println(io.getMessage());
     }
     return false;
+  }
+
+  public static boolean exportData(ArrayList<ShiftInstance> shiftList) {
+    try {
+      Element documentElement = new Element("exportData");
+      Document document = new Document(documentElement);
+      document.setRootElement(documentElement);
+      Element personalDataElement = new Element("personalData");
+      Element shiftsElement = new Element("shifts");
+      documentElement.addContent(personalDataElement);
+      documentElement.addContent(shiftsElement);
+      PersonalData personalData = PersonalData.getInstance();
+      if (personalData == null) {
+        UtilityBox.getInstance().displayErrorPopup("Export", "Keine Benutzerdaten gefunden.");
+        return false;
+      }
+      writePersonalDataToElement(personalDataElement, personalData);
+      for (int i = 0; i < shiftList.size(); i++) {
+        Element tempElement = new Element("Shift");
+        ShiftInstance tempShiftInstance = shiftList.get(i);
+        addShiftToElement(tempElement, tempShiftInstance);
+        documentElement.getChild("shifts").addContent(tempElement);
+      }
+      XMLOutputter xmlOutput = new XMLOutputter();
+      xmlOutput.output(document, new FileWriter("export" + ".xml"));
+
+      return true;
+    } catch (IOException io) {
+      UtilityBox.getInstance().displayErrorPopup("Export", "Fehler beim "
+              + "Exportieren der Daten:\n" + io.getMessage());
+      return false;
+    }
+  }
+
+  public static ArrayList<ShiftInstance> importData() {
+    ArrayList<ShiftInstance> returnList = new ArrayList<>();
+    String filePath = UtilityBox.getInstance().getFilePathFromFileCooser(".xml", "XML-Dateien", null);
+    if (filePath == null) {
+      return null;
+    }
+    SAXBuilder saxBuilder = new SAXBuilder();
+    File xmlFile = new File(filePath);
+    try {
+      Document document = (Document) saxBuilder.build(xmlFile);
+      Element rootNode = document.getRootElement();
+      List personalDataList = rootNode.getChildren("personalData");
+      List shiftList = rootNode.getChildren("shifts");
+      if (personalDataList == null||shiftList==null||personalDataList.size() != 1|| shiftList.size() != 1) {
+        UtilityBox.getInstance().displayErrorPopup("Import", "Keine gültige Import-Datei.");
+        return null;
+      }
+      // load the personal Data
+      loadPersonalDataFromNode((Element)personalDataList.get(0));
+      // load shifts
+      returnList = loadShiftsFromNode((Element)shiftList.get(0));
+      return returnList;
+    } catch (JDOMException | IOException | NumberFormatException e) {
+      UtilityBox.getInstance().displayErrorPopup("Import", "Fehler beim Importieren der Daten:\n"+e.getMessage());
+      return null;
+    }
   }
 }

@@ -40,7 +40,9 @@ import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.Copies;
 import javax.print.attribute.standard.MediaSize;
 import javax.print.attribute.standard.Sides;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 public class UtilityBox {
@@ -435,6 +437,31 @@ public class UtilityBox {
 //    }
     return false;
   }
+
+  public String getFilePathFromFileCooser(final String fileEnding, final String fileTypeDescription, String directory) {
+    String startDirectory = (directory == null) ?
+            System.getProperty("user.dir") : directory;
+    JFileChooser fileChooser = new JFileChooser(new File(startDirectory));
+    fileChooser.setMultiSelectionEnabled(false);
+    fileChooser.setFileFilter(new FileFilter() {
+
+      @Override
+      public boolean accept(File f) {
+        return f.isDirectory() || f.getName().toLowerCase().endsWith(fileEnding);
+      }
+
+      @Override
+      public String getDescription() {
+        return fileTypeDescription;
+      }
+    });
+    int state = fileChooser.showOpenDialog(null);
+    if (state == JFileChooser.APPROVE_OPTION) {
+      return fileChooser.getSelectedFile().getPath();
+    }
+    return null;
+  }
+
   public void testStuff() {
     Document document = new Document(PageSize.A4, 50, 50, 50, 50);
     try {

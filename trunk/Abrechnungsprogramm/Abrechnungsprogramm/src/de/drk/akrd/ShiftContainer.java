@@ -181,7 +181,10 @@ public class ShiftContainer {
 	}
     
     public static ShiftType getShiftTypeFromId(String id) {
-    switch (id.substring(0, 2)) {
+      if (id.startsWith("KTW")) {
+        return ShiftContainer.ShiftType.KTW;
+      }
+      switch (id.substring(0, 2)) {
       case "KV":
         return ShiftContainer.ShiftType.KVS;
       case "KT":
