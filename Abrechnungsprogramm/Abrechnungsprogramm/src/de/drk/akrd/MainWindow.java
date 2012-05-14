@@ -36,6 +36,7 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.EtchedBorder;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Iterator;
 
 public class MainWindow extends JFrame {
 
@@ -184,42 +185,28 @@ public class MainWindow extends JFrame {
 		// 666, PersonalData.Qualification.RA, false);
 		// // XMLEditor.writePersonalData(PersonalData.getInstance());
 		// boolean loadPersonalData = XMLEditor.loadPersonalData();
-		// ShiftInstance[] shiftsToAccount = new ShiftInstance[46];
-		// int iterator = 0;
-		// for (iterator = 0; iterator < 46; iterator++) {
-		// int shiftIndex = (iterator >= shiftContainer.getShifts().length) ? 0
-		// : iterator;
-		// Shift beispiel = shiftContainer.getShifts()[shiftIndex];
-		// shiftsToAccount[iterator] = new ShiftInstance(beispiel,
-		// "30.05.2012", 5f, "heino" + iterator, "" + iterator);
-		// }
-		// PdfCreator.createAccounting(shiftsToAccount);
-
-		// ArrayList<ShiftInstance> testList = new ArrayList<>();
-		// for (int it = 0; it < shiftsToAccount.length; it++) {
-		// // testList.add(shiftsToAccount[it]);
-		// }
-		// Shift beispiel = shiftContainer.getShifts()[0];
-		// testList.add(new ShiftInstance(beispiel, "30.05.2012", 5f,
-		// "musterfrau?", "name geändert"));
-		// beispiel = shiftContainer.getShifts()[2];
-		// testList.add(new ShiftInstance(beispiel, "06.06.2012", 5f, "horst5",
-		// "war auch super!"));
-		// // XMLEditor.storeShifts(testList, 2012);
-		// ArrayList<ArrayList<ShiftInstance>> schichten = XMLEditor
-		// .loadSavedShifts(2012);
-		// for (Iterator<ArrayList<ShiftInstance>> it = schichten.iterator(); it
-		// .hasNext();) {
-		// ArrayList<ShiftInstance> arrayList = it.next();
-		// for (Iterator<ShiftInstance> it1 = arrayList.iterator(); it1
-		// .hasNext();) {
-		// ShiftInstance shiftInstance = it1.next();
-		// System.out
-		// .println("schicht geladen: " + shiftInstance.getDate()
-		// + " " + shiftInstance.getId());
-		// }
-		// }
-		// DRManager.parseDutyRota(DRManager.TypeOfAction.CreateGoogleCalendarEntry);
+//		 ShiftInstance[] shiftsToAccount = new ShiftInstance[5];
+//		 int iterator = 0;
+//		 for (iterator = 0; iterator < shiftsToAccount.length; iterator++) {
+//		 int shiftIndex = (iterator >= shiftContainer.getShifts().length) ? 0
+//		 : iterator;
+//		 Shift beispiel = shiftContainer.getShifts()[shiftIndex];
+//		 shiftsToAccount[iterator] = new ShiftInstance(beispiel.getType(), "01.02.2012", beispiel.getStartingTime(), beispiel.getEndTime(), beispiel.getBreakTime(), "testpartner"+iterator, ""+iterator);
+//		 }
+//		// PdfCreator.createAccounting(shiftsToAccount);
+//
+//         ArrayList<ShiftInstance> shifts = new ArrayList<>(shiftsToAccount.length);
+//         for (int i = 0; i < shiftsToAccount.length; i++) {
+//        ShiftInstance shiftInstance = shiftsToAccount[i];
+//        System.out.print("exporttest: "+shiftInstance.getType().toString()+" "+shiftInstance.getComment());
+//        shifts.add(shiftInstance);
+//      }
+//         XMLEditor.exportData(shifts);
+//         ArrayList<ShiftInstance> test = XMLEditor.importData();
+//         for (Iterator<ShiftInstance> it = test.iterator(); it.hasNext();) {
+//        ShiftInstance shiftInstance = it.next();
+//        System.out.println("importtest: "+shiftInstance.getType().toString()+" "+shiftInstance.getComment());
+//      }
 		// // / END TEST ///
 
 		// Set Shift Type Chooser from Enum
