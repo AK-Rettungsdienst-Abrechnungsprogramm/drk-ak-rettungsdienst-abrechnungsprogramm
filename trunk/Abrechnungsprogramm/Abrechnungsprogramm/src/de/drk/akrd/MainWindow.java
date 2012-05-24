@@ -37,6 +37,9 @@ import javax.swing.border.EtchedBorder;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Iterator;
+import javax.swing.JSpinner;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class MainWindow extends JFrame {
 
@@ -160,6 +163,7 @@ public class MainWindow extends JFrame {
 		// Setup ShiftContainer
 		shiftContainer.loadShifts("Schichten.xml");
 		// // / TEST ///
+        // ShiftFormPane shiftFormPane = new ShiftFormPane();
         // printtest
         //UtilityBox.getInstance().testStuff();
         //UtilityBox.getInstance().printFile("Abrechnungstest.pdf");
@@ -511,11 +515,15 @@ public class MainWindow extends JFrame {
 
 		submitButton = new JButton("Eintragen");
 		submitButton.addMouseListener(mouseAdapter);
+		createSalaryStatementButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
 
 		createSalaryStatementButton.setText("Abrechnung erstellen");
 		createSalaryStatementButton.addMouseListener(mouseAdapter);
 		
-		prepTimeBox = new JCheckBox("10 min Rüstzeit");
+		prepTimeBox = new JCheckBox("10 min R�stzeit");
 
 		GroupLayout gl_shiftEditor = new GroupLayout(shiftEditor);
 		gl_shiftEditor.setHorizontalGroup(
@@ -524,7 +532,7 @@ public class MainWindow extends JFrame {
 					.addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_shiftEditor.createSequentialGroup()
 							.addContainerGap()
-							.addComponent(scrollPane2, GroupLayout.DEFAULT_SIZE, 769, Short.MAX_VALUE))
+							.addComponent(scrollPane2, GroupLayout.DEFAULT_SIZE, 865, Short.MAX_VALUE))
 						.addGroup(gl_shiftEditor.createSequentialGroup()
 							.addGap(1)
 							.addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING)
@@ -544,35 +552,40 @@ public class MainWindow extends JFrame {
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING)
 										.addGroup(gl_shiftEditor.createSequentialGroup()
-											.addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING)
-												.addComponent(lblBeginn)
-												.addComponent(lblPause))
-											.addPreferredGap(ComponentPlacement.UNRELATED)
+											.addGroup(gl_shiftEditor.createParallelGroup(Alignment.TRAILING)
+												.addGroup(gl_shiftEditor.createSequentialGroup()
+													.addComponent(lblPause)
+													.addGap(13))
+												.addGroup(gl_shiftEditor.createSequentialGroup()
+													.addComponent(lblBeginn)
+													.addPreferredGap(ComponentPlacement.UNRELATED)))
 											.addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING, false)
 												.addComponent(breakField, 0, 0, Short.MAX_VALUE)
 												.addComponent(beginField, GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE))
-											.addPreferredGap(ComponentPlacement.RELATED)
 											.addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING)
-												.addGroup(gl_shiftEditor.createSequentialGroup()
+												.addGroup(Alignment.TRAILING, gl_shiftEditor.createSequentialGroup()
 													.addComponent(lblEnde)
-													.addPreferredGap(ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
-													.addComponent(endField, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE))
-												.addComponent(prepTimeBox)))
+													.addPreferredGap(ComponentPlacement.UNRELATED)
+													.addComponent(endField, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
+													.addGap(6))
+												.addGroup(gl_shiftEditor.createSequentialGroup()
+													.addGap(18)
+													.addComponent(prepTimeBox))))
 										.addGroup(gl_shiftEditor.createSequentialGroup()
 											.addComponent(lblKommentar)
-											.addGap(21)
 											.addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING)
 												.addGroup(gl_shiftEditor.createSequentialGroup()
-													.addGap(12)
+													.addGap(33)
 													.addComponent(submitButton))
-												.addComponent(commentField, GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE))))
-									.addPreferredGap(ComponentPlacement.RELATED)))
-							.addPreferredGap(ComponentPlacement.RELATED, 18, GroupLayout.PREFERRED_SIZE)
+												.addGroup(gl_shiftEditor.createSequentialGroup()
+													.addGap(21)
+													.addComponent(commentField, GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)))))))
+							.addGap(17)
 							.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_shiftEditor.createSequentialGroup()
 							.addGap(284)
 							.addComponent(createSalaryStatementButton)))
-					.addContainerGap())
+					.addGap(0))
 		);
 		gl_shiftEditor.setVerticalGroup(
 			gl_shiftEditor.createParallelGroup(Alignment.LEADING)
@@ -592,15 +605,15 @@ public class MainWindow extends JFrame {
 								.addComponent(lblSchichtpartner)
 								.addComponent(shiftPartnerField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_shiftEditor.createParallelGroup(Alignment.TRAILING)
+							.addGroup(gl_shiftEditor.createParallelGroup(Alignment.TRAILING)
+								.addGroup(gl_shiftEditor.createParallelGroup(Alignment.BASELINE)
+									.addComponent(lblEnde)
+									.addComponent(endField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_shiftEditor.createSequentialGroup()
 									.addGroup(gl_shiftEditor.createParallelGroup(Alignment.BASELINE)
-										.addComponent(lblEnde)
-										.addComponent(endField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-									.addGroup(gl_shiftEditor.createSequentialGroup()
 										.addComponent(beginField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-										.addGap(2)))
-								.addComponent(lblBeginn))
+										.addComponent(lblBeginn))
+									.addGap(2)))
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addGroup(gl_shiftEditor.createParallelGroup(Alignment.BASELINE)
 								.addComponent(lblPause)
@@ -617,7 +630,7 @@ public class MainWindow extends JFrame {
 					.addComponent(scrollPane2, GroupLayout.PREFERRED_SIZE, 258, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(createSalaryStatementButton)
-					.addContainerGap(23, Short.MAX_VALUE))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		shiftTypeChooser.addItemListener(this.itemListener);
 

@@ -29,14 +29,29 @@ public class PdfCreator {
 
   public PdfCreator() {
   }
-
-  public static void createAccounting(ShiftInstance[] shiftsToAccount) {
+  /**
+   * 
+   * @param shiftsToAccount
+   * @param month
+   * @param year
+   * @return 
+   */
+  public static String createAccounting(ShiftInstance[] shiftsToAccount, int month, int year) {
     // check if personal Data exists
     if (!PersonalData.getInstance().isDataSet()) {
       UtilityBox.getInstance().displayInfoPopup("Fehlende Daten", "Um die "
               + "Abrechnung zu erstellen müssen\npersönliche Daten gespeichert sein.");
-      return;
+      return null;
     }
+    boolean success = false;
+    String filePath = "Abrechnungen/"+year;
+    // create directory if nessessary
+    UtilityBox.createDirectory(filePath);
+    // change filePath from directory to file
+    filePath = filePath + "/Abrechnung"+UtilityBox.getMonthString(month)+year+".pdf";
+    System.out.println("filePath = "+filePath);
+    Document accounting = new Document();
+
     ArrayList<ShiftInstance> rd = new ArrayList<>();
     ArrayList<ShiftInstance> ktp = new ArrayList<>();
     ArrayList<ShiftInstance> baby = new ArrayList<>();
@@ -74,9 +89,6 @@ public class PdfCreator {
       }
     }
     ArrayList<ShiftInstance>[] allShifts = (ArrayList<ShiftInstance>[])(new ArrayList[]{rd, ktp, baby, breisach, kiza, event, kvs});
-    boolean success = false;
-    String filePath = "Abrechnungstest.pdf";
-    Document accounting = new Document();
     try {
       accounting.setPageSize(PageSize.A4);
       PdfWriter pdfWriter = PdfWriter.getInstance(accounting, new FileOutputStream(filePath));
@@ -101,14 +113,17 @@ public class PdfCreator {
       }
     } catch (DocumentException | IOException e) {
       UtilityBox.getInstance().displayErrorPopup("Abrechnung", "Fehler beim Erstellen der Abrechnung:\n"+e.getMessage());
+      filePath = null;
     } finally {
       try {
         accounting.close();
         if (success) UtilityBox.getInstance().displayInfoPopup("Abrechnung", "Abrechnung unter "+filePath+" gespeichert.");
       } catch (Exception e) {
         System.out.println("Dokument nicht geschlossen: "+e.getMessage());
+        filePath = null;
       }
     }
+    return filePath;
   }
 
   private static boolean createSingleAccounting(Document accountingDocument, PdfWriter writer, ArrayList<ShiftInstance> shifts, int pageNr) {
