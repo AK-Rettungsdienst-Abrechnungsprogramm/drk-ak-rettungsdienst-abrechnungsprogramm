@@ -49,7 +49,6 @@ public class PdfCreator {
     UtilityBox.createDirectory(filePath);
     // change filePath from directory to file
     filePath = filePath + "/Abrechnung"+UtilityBox.getMonthString(month)+year+".pdf";
-    System.out.println("filePath = "+filePath);
     Document accounting = new Document();
 
     ArrayList<ShiftInstance> rd = new ArrayList<>();
