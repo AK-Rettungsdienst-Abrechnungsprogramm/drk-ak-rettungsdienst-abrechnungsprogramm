@@ -47,6 +47,7 @@ public class CreateAccountmentFrame {
   private int selectedMonth = 0;
 
   public CreateAccountmentFrame(ArrayList<ShiftInstance> shifts) {
+	createAccountmentFrame.setSize(515, 360);
     createAccountmentFrame.getContentPane().setLayout(null);
     createAccountmentFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     calendar.setTimeInMillis(System.currentTimeMillis());
@@ -57,7 +58,7 @@ public class CreateAccountmentFrame {
         createAccountmentFrame.dispose();
       }
     });
-    btnAbbrechen.setBounds(363, 14, 85, 30);
+    btnAbbrechen.setBounds(390, 10, 100, 30);
     createAccountmentFrame.getContentPane().add(btnAbbrechen);
 
     JButton btnAusgeben = new JButton("Ausgeben");
@@ -71,13 +72,12 @@ public class CreateAccountmentFrame {
         }
       }
     });
-    btnAusgeben.setBounds(273, 14, 80, 30);
+    btnAusgeben.setBounds(280, 10, 100, 30);
     createAccountmentFrame.getContentPane().add(btnAusgeben);
 
     yearComboBox = new JComboBox();
     selectedYear = calendar.get(Calendar.YEAR);
     yearComboBox.setModel(new DefaultComboBoxModel(new String[]{Integer.toString(selectedYear - 1), Integer.toString(selectedYear)}));
-    yearComboBox.setFont(new Font("Tahoma", Font.PLAIN, 11));
     yearComboBox.setBounds(100, 10, 66, 30);
     yearComboBox.setSelectedIndex(1);
     yearComboBox.addActionListener(new ActionListener() {
@@ -108,11 +108,12 @@ public class CreateAccountmentFrame {
 
     displayList = new JList(displayListModel);
     displayList.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-    displayList.setBounds(10, 55, 453, 264);
+    displayList.setBounds(10, 48, 480, 263);
     createAccountmentFrame.getContentPane().add(displayList);
 
     printCheckbox = new JCheckBox("Drucken");
-    printCheckbox.setBounds(201, 18, 66, 23);
+    printCheckbox.setBounds(180, 15, 80, 23);
+    printCheckbox.setSelected(true);
     createAccountmentFrame.getContentPane().add(printCheckbox);
     allShifts = shifts;
     createAccountmentFrame.setVisible(true);
