@@ -303,15 +303,15 @@ public class UtilityBox {
       // Mondarameter
       int mondParameter = year % 19;
       // ersterFrühlingsVollmond
-      int ersterFrühlingsVollmond = (19 * mondParameter + säkulareMondschaltung) % 30;
+      int ersterFruehlingsVollmond = (19 * mondParameter + säkulareMondschaltung) % 30;
       // kalendarische Korrekturgröße
-      int kalendarischeKorrekturgröße = (int) (Math.floor(ersterFrühlingsVollmond / 29)
-              + (Math.floor(ersterFrühlingsVollmond / 28)
-              - Math.floor(ersterFrühlingsVollmond / 29))
+      int kalendarischeKorrekturgroesse = (int) (Math.floor(ersterFruehlingsVollmond / 29)
+              + (Math.floor(ersterFruehlingsVollmond / 28)
+              - Math.floor(ersterFruehlingsVollmond / 29))
               * (Math.floor(mondParameter / 11)));
 
       // Ostergrenze:
-      int OG = 21 + ersterFrühlingsVollmond - kalendarischeKorrekturgröße;
+      int OG = 21 + ersterFruehlingsVollmond - kalendarischeKorrekturgroesse;
       // ersten Sonntag im März
       int SZ = (int) (7 - (year + Math.floor(year / 4) + säkulareSonnenschaltung) % 7);
       // Entfernung des Ostersonntags von der Ostergrenze (Osterentfernung in Tagen)
@@ -503,5 +503,21 @@ public class UtilityBox {
     } catch (DocumentException ex) {
       ex.printStackTrace();
     }
+  }
+  /**
+   * Create a Directory
+   * @param path
+   * @return true if successful, false otherwise
+   */
+  public static boolean createDirectory(String path) {
+    boolean success = false;
+    File dir = new File(path);
+    if (dir.exists()) {
+      success = true;
+    } else {
+      success = dir.mkdirs();
+    }
+    System.out.print("success? "+success);
+    return success;
   }
 }
