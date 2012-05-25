@@ -407,6 +407,8 @@ public class MainWindow extends JFrame {
     dateField.setColumns(10);
 
     registeredShiftsTable = new JTable();
+    registeredShiftsTable.getTableHeader().setReorderingAllowed(false);
+    registeredShiftsTable.getTableHeader().setResizingAllowed(false);
 
     shiftPartnerField = new JTextField();
     shiftPartnerField.setColumns(10);
@@ -447,6 +449,8 @@ public class MainWindow extends JFrame {
     shiftTypeChooser.addItemListener(this.itemListener);
 
     shiftTable = new JTable();
+    shiftTable.getTableHeader().setReorderingAllowed(false);
+    shiftTable.getTableHeader().setResizingAllowed(false);
     shiftTable.addMouseListener(mouseAdapter);
     shiftTable.setShowGrid(false);
     Object[][] data = ShiftContainer.shiftToTableData(shiftContainer.getShifts());
@@ -474,6 +478,8 @@ public class MainWindow extends JFrame {
     JScrollPane DPLScrollPane = new JScrollPane();
 
     dplTable = new JTable();
+    dplTable.getTableHeader().setReorderingAllowed(false);
+    dplTable.getTableHeader().setResizingAllowed(false);
     DPLScrollPane.setViewportView(dplTable);
 
     iCalButton = new JButton("iCal Datei erstellen");
