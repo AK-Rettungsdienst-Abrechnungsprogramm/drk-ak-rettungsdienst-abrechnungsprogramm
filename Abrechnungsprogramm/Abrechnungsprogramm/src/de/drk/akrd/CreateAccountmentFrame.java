@@ -128,6 +128,8 @@ public class CreateAccountmentFrame {
     createAccountmentFrame.getContentPane().add(monthComboBox);
 
     displayTable = new JTable(displayTableModel);
+    displayTable.getTableHeader().setReorderingAllowed(false);
+    displayTable.getTableHeader().setResizingAllowed(false);
     displayPane = new JScrollPane(displayTable);
     displayPane.setBounds(10, 48, 480, 263);
     //displayPane.setAutoscrolls(true);
