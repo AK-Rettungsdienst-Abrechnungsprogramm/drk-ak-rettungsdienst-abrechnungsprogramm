@@ -1,5 +1,6 @@
 package de.drk.akrd;
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.util.StringStack;
 import java.text.ParseException;
 import java.util.ArrayList;
 
@@ -8,6 +9,8 @@ import javax.swing.JPanel;
 import javax.swing.JList;
 import javax.swing.JTable;
 import javax.swing.JButton;
+import javax.swing.ScrollPaneConstants;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.GridLayout;
@@ -26,6 +29,11 @@ import java.util.Calendar;
 import javax.swing.DefaultListModel;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
+import java.awt.ScrollPane;
+import java.awt.List;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JScrollPane;
+import org.omg.CORBA.DATA_CONVERSION;
 
 /**
  *
@@ -39,15 +47,27 @@ public class CreateAccountmentFrame {
   private JComboBox yearComboBox;
   private JComboBox monthComboBox;
   private JCheckBox printCheckbox;
-  private JList displayList;
-  private DefaultListModel displayListModel = new DefaultListModel();
+  private JScrollPane displayPane;
+  private JTable displayTable;
+  private DefaultTableModel displayTableModel = new DefaultTableModel(
+          new Object[][]{}, new String[]{"Tag, Datum", "von - bis",
+            "Schichttyp", "Schichtpartner"}) {
+
+    private static final long serialVersionUID = 1L;
+
+    @Override
+    public boolean isCellEditable(int row, int column) {
+      // all cells false
+      return false;
+    }
+  };
   private Calendar calendar = Calendar.getInstance();
   private static SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
   private int selectedYear = 0;
   private int selectedMonth = 0;
 
   public CreateAccountmentFrame(ArrayList<ShiftInstance> shifts) {
-	createAccountmentFrame.setSize(515, 360);
+    createAccountmentFrame.setSize(515, 360);
     createAccountmentFrame.getContentPane().setLayout(null);
     createAccountmentFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     calendar.setTimeInMillis(System.currentTimeMillis());
@@ -67,7 +87,7 @@ public class CreateAccountmentFrame {
       public void actionPerformed(ActionEvent arg0) {
         // TODO: Abrechnung speichern und evtl drucken
         String filePath = PdfCreator.createAccounting(selectedShifts.toArray(new ShiftInstance[selectedShifts.size()]), selectedMonth, selectedYear);
-        if (printCheckbox.isSelected() && (filePath!=null)) {
+        if (printCheckbox.isSelected() && (filePath != null)) {
           UtilityBox.getInstance().printFile(filePath);
         }
       }
@@ -81,11 +101,12 @@ public class CreateAccountmentFrame {
     yearComboBox.setBounds(100, 10, 66, 30);
     yearComboBox.setSelectedIndex(1);
     yearComboBox.addActionListener(new ActionListener() {
-    	public void actionPerformed(ActionEvent arg0) {
-        selectedYear = Integer.parseInt((String)yearComboBox.getSelectedItem());
-        System.out.println("jahr geändert: "+selectedYear);
+
+      public void actionPerformed(ActionEvent arg0) {
+        selectedYear = Integer.parseInt((String) yearComboBox.getSelectedItem());
+        System.out.println("jahr geändert: " + selectedYear);
         setSelectedShifts(selectedMonth, selectedYear);
-    	}
+      }
     });
     createAccountmentFrame.getContentPane().add(yearComboBox);
 
@@ -100,16 +121,21 @@ public class CreateAccountmentFrame {
       public void actionPerformed(ActionEvent e) {
         // TODO: monat wurde ge�ndert-> liste neu laden
         selectedMonth = monthComboBox.getSelectedIndex();
-        System.out.println("monat geändert: "+selectedMonth);
+        System.out.println("monat geändert: " + selectedMonth);
         setSelectedShifts(selectedMonth, selectedYear);
       }
     });
     createAccountmentFrame.getContentPane().add(monthComboBox);
 
-    displayList = new JList(displayListModel);
-    displayList.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-    displayList.setBounds(10, 48, 480, 263);
-    createAccountmentFrame.getContentPane().add(displayList);
+    displayTable = new JTable(displayTableModel);
+    displayPane = new JScrollPane(displayTable);
+    displayPane.setBounds(10, 48, 480, 263);
+    //displayPane.setAutoscrolls(true);
+//    displayTableModel.addColumn("Tag");
+//    displayTableModel.addColumn("Datum");
+//    displayTableModel.addColumn("von - bis");
+    displayTableModel.addRow(new String[]{"do", "datum?", "1-3", "ktw"});
+    createAccountmentFrame.getContentPane().add(displayPane);
 
     printCheckbox = new JCheckBox("Drucken");
     printCheckbox.setBounds(180, 15, 80, 23);
@@ -117,7 +143,7 @@ public class CreateAccountmentFrame {
     createAccountmentFrame.getContentPane().add(printCheckbox);
     allShifts = shifts;
     createAccountmentFrame.setVisible(true);
-    // fill the displayList
+    // fill the displayTable
     setSelectedShifts(selectedMonth, selectedYear);
   }
 
@@ -126,10 +152,24 @@ public class CreateAccountmentFrame {
    * @param shifts 
    */
   private void fillList(ArrayList<ShiftInstance> shifts) {
-    displayListModel.clear();
+    displayTableModel.setRowCount(0);
     for (int i = 0; i < shifts.size(); i++) {
-      ShiftInstance shiftInstance = shifts.get(i);
-      displayListModel.add(i, getShiftString(shiftInstance));
+      try {
+        ShiftInstance shiftInstance = shifts.get(i);
+        String dateString = shiftInstance.getDate();
+        calendar.setTime(sdf.parse(dateString));
+        String dayOfWeek = UtilityBox.getDayOfWeekString(calendar.get(Calendar.DAY_OF_WEEK));
+        String fromToString =
+                UtilityBox.createTimeStringFromInt(shiftInstance.getActualStartingTime())
+                + " - " + UtilityBox.createTimeStringFromInt(shiftInstance.getActualEndTime());
+        String[] rowData = new String[]{dayOfWeek + ", " + dateString,
+          fromToString, shiftInstance.getType().toString(),
+          shiftInstance.getPartner()};
+        displayTableModel.addRow(rowData);
+      } catch (ParseException ex) {
+        UtilityBox.getInstance().displayErrorPopup("Schicht-Anzeige",
+                "Datum konnte nicht gelesen werden:\n" + ex.getMessage());
+      }
     }
   }
 
@@ -140,7 +180,7 @@ public class CreateAccountmentFrame {
    */
   private String getShiftString(ShiftInstance shiftInstance) {
     // TODO: string bauen
-    String returnString = shiftInstance.getDate()+"\f"+shiftInstance.getType().toString();
+    String returnString = shiftInstance.getDate() + "\f" + shiftInstance.getType().toString();
     return returnString;
   }
 
@@ -159,14 +199,14 @@ public class CreateAccountmentFrame {
 
         ShiftInstance shiftInstance = allShifts.get(i);
         calendar.setTime(sdf.parse(shiftInstance.getDate()));
-        if ((calendar.get(Calendar.MONTH)==month)&&(calendar.get(Calendar.YEAR)==year)) {
+        if ((calendar.get(Calendar.MONTH) == month) && (calendar.get(Calendar.YEAR) == year)) {
           selectedShifts.add(shiftInstance);
-          
+
         }
       }
     } catch (ParseException ex) {
       UtilityBox.getInstance().displayErrorPopup("Schichtfilter", "Schichtdaten"
-              + " konnten nicht ausgelesen werden:\n"+ex.getMessage());
+              + " konnten nicht ausgelesen werden:\n" + ex.getMessage());
     }
     fillList(selectedShifts);
   }
