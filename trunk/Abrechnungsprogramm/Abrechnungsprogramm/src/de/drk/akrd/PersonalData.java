@@ -72,7 +72,7 @@ public class PersonalData {
    * @param qualifikation (enum PersonalData.Qualification)
    * @param dataKnown 
    */
-  public void setData(String firstName, String LastName,
+  public boolean setData(String firstName, String LastName,
           String BankNameAndCity, int accountNumber, int blz, Qualification qualifikation,
           boolean dataKnown, String emailAdress, String calendarId) {
 
@@ -86,7 +86,8 @@ public class PersonalData {
     this.dataSet = true;
     this.emailAdress = emailAdress;
     this.calendarId = calendarId;
-    XMLEditor.writePersonalData(instance);
+    boolean success = XMLEditor.writePersonalData(instance);
+    return success;
   }
 
   /**

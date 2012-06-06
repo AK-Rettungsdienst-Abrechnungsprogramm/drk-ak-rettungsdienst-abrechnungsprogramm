@@ -263,7 +263,10 @@ public class AKRDMouseAdapter extends MouseAdapter {
 			
 			PersonalData pd = PersonalData.getInstance();
 			
-			pd.setData(firstName, lastName, bankName, account, blz, quali, dataKnown, gmail, calID);
+			boolean success = pd.setData(firstName, lastName, bankName, account, blz, quali, dataKnown, gmail, calID);
+            if (success) {
+                UtilityBox.getInstance().displayInfoPopup("Persönliche Daten", "Daten gespeichert.");
+            }
 			return;
 			
 		}
