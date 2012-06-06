@@ -134,7 +134,7 @@ public class XMLEditor {
       fileWriter.flush();
       return true;
     } catch (IOException e) {
-      System.out.println("Exception in XMLEditor.writePersonalData: " + e.getMessage());
+      UtilityBox.getInstance().displayErrorPopup("Persönliche Daten", "Fehler beim Speichern der Daten:\n"+e.getMessage());
     }
     return false;
   }
