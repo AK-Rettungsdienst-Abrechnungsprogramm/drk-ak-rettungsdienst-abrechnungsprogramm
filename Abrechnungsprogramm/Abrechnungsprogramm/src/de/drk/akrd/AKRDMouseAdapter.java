@@ -158,19 +158,19 @@ public class AKRDMouseAdapter extends MouseAdapter {
 
 			// Try to parse the begin time
 			try {
-				begin = Integer.parseInt(mainWindow.beginField.getText());
+				begin = Integer.parseInt(mainWindow.beginField.getText().replaceAll("[^\\d]",""));
 			} catch (NumberFormatException exception) {
 				UtilityBox.getInstance().displayErrorPopup("Fehler", "Ungültige Anfangszeit!");
 				return;
 			}
 			try {
-				end = Integer.parseInt(mainWindow.endField.getText());
+				end = Integer.parseInt(mainWindow.endField.getText().replaceAll("[^\\d]",""));
 			} catch (NumberFormatException exception) {
 				UtilityBox.getInstance().displayErrorPopup("Fehler", "Ungültige Endezeit!");
 				return;
 			}
 			try {
-				breakTime = Integer.parseInt(mainWindow.breakField.getText());
+				breakTime = Integer.parseInt(mainWindow.breakField.getText().replaceAll("[^\\d]",""));
 			} catch (NumberFormatException exception) {
 				UtilityBox.getInstance().displayErrorPopup("Fehler", "Ungültige Pausenzeit!");
 				return;
@@ -191,6 +191,7 @@ public class AKRDMouseAdapter extends MouseAdapter {
 			return;
 		}
 		
+		// Read DPL
 		if(source == mainWindow.read_DPL)
 		{
 			DRManager.GetInstance().parseDutyRota();
@@ -198,6 +199,7 @@ public class AKRDMouseAdapter extends MouseAdapter {
 			return;
 		}
 		
+		// Export calendar data
 		if(source == mainWindow.iCalButton || source == mainWindow.googleCalButton)
 		{
 			if(DRManager.GetInstance().getSavedShifts() == null)
