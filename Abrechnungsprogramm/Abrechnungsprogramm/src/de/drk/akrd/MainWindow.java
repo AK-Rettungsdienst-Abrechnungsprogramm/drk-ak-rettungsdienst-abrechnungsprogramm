@@ -142,6 +142,8 @@ public class MainWindow extends JFrame {
   protected final JButton googleCalButton = new JButton(
           "Dienste in Google Kalender eintragen");
 
+  // DPL Fragebogen tab
+  private JPanel dplSurvey = new JPanel();
   public MainWindow() {
 
     // Instanciate UtilityBox
@@ -439,7 +441,7 @@ public class MainWindow extends JFrame {
     createSalaryStatementButton.setText("Abrechnung erstellen");
     createSalaryStatementButton.addMouseListener(mouseAdapter);
 
-    prepTimeBox = new JCheckBox("10 min R�stzeit");
+    prepTimeBox = new JCheckBox("10 min Rüstzeit");
 
     GroupLayout gl_shiftEditor = new GroupLayout(shiftEditor);
     gl_shiftEditor.setHorizontalGroup(
@@ -511,6 +513,12 @@ public class MainWindow extends JFrame {
             Alignment.BASELINE).addComponent(iCalButton).addComponent(googleCalButton)).addContainerGap(249, Short.MAX_VALUE)));
     DPL_Tab.setLayout(gl_DPL_Tab);
     dplTable.setModel(dplTableModel);
+    
+    
+    // Add Schichtenabgabe pane
+    
+    tabbedPane.addTab("DPL Fragebogen", null, dplSurvey,
+            "Dienstplan Fragebogen ausfüllen");
 
   }
 
