@@ -1,39 +1,20 @@
 package de.drk.akrd;
 
-import com.sun.org.apache.xalan.internal.xsltc.compiler.util.StringStack;
 import java.text.ParseException;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JList;
 import javax.swing.JTable;
 import javax.swing.JButton;
-import javax.swing.ScrollPaneConstants;
-
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.GridLayout;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import java.awt.Font;
-import javax.swing.border.BevelBorder;
 import javax.swing.JCheckBox;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeEvent;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import javax.swing.DefaultListModel;
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
-import java.awt.ScrollPane;
-import java.awt.List;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JScrollPane;
-import org.omg.CORBA.DATA_CONVERSION;
 
 /**
  *
