@@ -110,9 +110,9 @@ public class ShiftContainer {
 		{
 			ArrayList<String> entry = new ArrayList<String>();
 			entry.add(input[i].getId());
-			entry.add(Integer.toString(input[i].getStartingTime()));
-			entry.add(Integer.toString(input[i].getEndTime()));
-			entry.add(Integer.toString(input[i].getBreakTime()));
+			entry.add(UtilityBox.createTimeStringFromInt(input[i].getStartingTime()));
+			entry.add(UtilityBox.createTimeStringFromInt(input[i].getEndTime()));
+			entry.add(UtilityBox.createTimeStringFromInt(input[i].getBreakTime()));
 			
 			result.add((String[]) entry.toArray(new String[entry.size()]));
 		}
