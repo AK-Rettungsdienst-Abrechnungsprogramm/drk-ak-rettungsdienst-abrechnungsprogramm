@@ -114,9 +114,6 @@ public class CreateAccountmentFrame {
     displayPane = new JScrollPane(displayTable);
     displayPane.setBounds(10, 48, 480, 263);
     //displayPane.setAutoscrolls(true);
-//    displayTableModel.addColumn("Tag");
-//    displayTableModel.addColumn("Datum");
-//    displayTableModel.addColumn("von - bis");
     displayTableModel.addRow(new String[]{"do", "datum?", "1-3", "ktw"});
     createAccountmentFrame.getContentPane().add(displayPane);
 

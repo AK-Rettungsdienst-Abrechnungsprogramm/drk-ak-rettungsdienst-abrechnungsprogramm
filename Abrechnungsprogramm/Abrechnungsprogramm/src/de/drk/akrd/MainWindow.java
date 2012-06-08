@@ -158,7 +158,8 @@ public class MainWindow extends JFrame {
     // Setup ShiftContainer
     shiftContainer.loadShifts("Schichten.xml");
     // // / TEST ///
-    // ShiftFormPane shiftFormPane = new ShiftFormPane();
+     ShiftFormPane shiftFormPane = new ShiftFormPane();
+     //UtilityBox.getInstance().testTime();
     // printtest
     //UtilityBox.getInstance().testStuff();
     //UtilityBox.getInstance().printFile("Abrechnungstest.pdf");

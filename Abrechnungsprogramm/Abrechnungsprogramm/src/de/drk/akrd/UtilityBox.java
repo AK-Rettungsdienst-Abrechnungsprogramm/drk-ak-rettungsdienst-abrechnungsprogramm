@@ -11,6 +11,7 @@ import com.itextpdf.text.pdf.PdfFormField;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.RadioCheckField;
 import com.itextpdf.text.BaseColor;
+import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -165,10 +166,21 @@ public class UtilityBox {
             + getTwoLetterStringFromInt(calendar.get(Calendar.MONTH)+1) + "."
             + calendar.get(Calendar.YEAR);
   }
+  /**
+   * returns a two-letter-string if x € {0, ..., 99}
+   * @param x
+   * @return 
+   */
   public static String getTwoLetterStringFromInt(int x) {
     return ((x < 10) ? ("0" + x) : x + "");
   }
 
+  /**
+   * calculates the salary for a given shiftInstance in depandence of the 
+   * Qualification
+   * @param shift
+   * @return salary as float
+   */
   public float calculateSalary(ShiftInstance shift) {
     float salary;
     switch (shift.getType()) {
@@ -208,6 +220,26 @@ public class UtilityBox {
     int minutes = (time % 100);
     return createTimeStringFromInt((hours*100)+minutes);
   }
+  public void  testTime() {
+    printTestTime(0, 1400, 30, 1330);
+    printTestTime(1500, 600, 0, 1500);
+    printTestTime(600, 1431, 30, 801);
+    printTestTime(1650, 213, 45, 838);
+    printTestTime(1550, 36, 30, 816);
+    printTestTime(2350, 112, 0, 122);
+    printTestTime(2330, 57, 45, 42);
+    printTestTime(1550, 6, 30, 746);
+    printTestTime(1550, 20, 30, 800);
+    printTestTime(1506, 57, 30, 921);
+  }
+  private void printTestTime(int start, int end, int breakTime, int expected) {
+    System.out.println(createTimeStringFromInt(start)+"-"
+            +createTimeStringFromInt(end) +"; pause: "
+            +createTimeStringFromInt(breakTime) +"; Ergebnis(String): "
+            +calculateTimeInHours(start, end, breakTime) +" Ergebnis(float): "
+            +calculateTimeAsFloat(start, end, breakTime) + " Ergebnis(fkt): "
+            + calculateTime(start, end, breakTime)+" Erwartet: "+expected);
+  }
   public float calculateTimeAsFloat(int start, int end, int breakTime) {
     int time = calculateTime(start, end, breakTime);
     int hours = ((int) (time / 100));
@@ -225,14 +257,18 @@ public class UtilityBox {
       int firstDayHours = 24 - ((int) (start / 100));
       int firstDayMinutes = (start % 100);
       if(firstDayMinutes!=0) {
-        firstDayHours--;
+        --firstDayHours;
         firstDayMinutes = 60-firstDayMinutes;
       }
       hours = firstDayHours+endHours-breakTimeHours;
-      minutes = firstDayMinutes+endMinutes+breakTimeMinutes;
+      minutes = firstDayMinutes+endMinutes-breakTimeMinutes;
       while (minutes>=60) {        
         minutes-=60;
-        hours++;
+        ++hours;
+      }
+      while (minutes<0) {        
+        --hours;
+        minutes = 60 + minutes;
       }
     }
     else {
@@ -342,9 +378,6 @@ public class UtilityBox {
     return holidayDates;
   }
   public boolean printFile(String filePath) {
-//    FileInputStream fileInputStream = null;
-//    try {
-//      //try {
       File file = new File(filePath);
       if (!file.exists()) {
         displayErrorPopup("Drucken", "Zu druckende Datei nicht gefunden");
@@ -354,63 +387,17 @@ public class UtilityBox {
       try {
         document = PDDocument.load(filePath);
         document.print();
-    } catch (Exception e) {
+    } catch (IOException | PrinterException e) {
+      displayErrorPopup("Drucken", "Fehler während des Druckvorgangs:\n"+e.getMessage());
     } finally {
         if(document!=null){
         try {
           document.close();
         } catch (IOException ex) {
-          ex.printStackTrace();
+          displayErrorPopup("Drucken", "Dokument konnte nicht geschlossen werden:\n"+ex.getMessage());
         }
         }
       }
-//      fileInputStream = new FileInputStream(file);
-//      FileChannel fileChannel = fileInputStream.getChannel();
-//      ByteBuffer byteBuffer = fileChannel.map(FileChannel.MapMode.READ_ONLY, 0, fileChannel.size());
-//      PDFFile pdfFile = new PDFFile(byteBuffer);
-//      PDFPrintPage pdfPrintPage = new PDFPrintPage(pdfFile);
-//      //create print job
-//      PrinterJob printJob = PrinterJob.getPrinterJob();
-//      PageFormat pageFormat = printJob.defaultPage();
-//      //      Paper a4paper = new Paper();
-//      //            double paperWidth = 8.27;
-//      //            double paperHeight = 11.69;
-//      //            a4paper.setSize(paperWidth * 72.0, paperHeight * 72.0);
-//      //
-//      //            /*
-//      //             * set the margins respectively the imageable area
-//      //             */
-//      //            double leftMargin = 0.3;
-//      //            double rightMargin = 0.3;
-//      //            double topMargin = 0.5;
-//      //            double bottomMargin = 0.5;
-//      //
-//      //            a4paper.setImageableArea(leftMargin * 72.0, topMargin * 72.0,
-//      //                    (paperWidth - leftMargin - rightMargin) * 72.0,
-//      //                    (paperHeight - topMargin - bottomMargin) * 72.0);
-//      //            pageFormat.setPaper(a4paper);
-//            printJob.setJobName(file.getName());
-//            Book book = new Book();
-//            book.append(pdfPrintPage, pageFormat, pdfFile.getNumPages());
-//            printJob.setPageable(book);
-//            if (printJob.printDialog()) {
-//                printJob.print();
-//                return true;
-//              }
-//            fileChannel.close();
-//      //    } catch (IOException | PrinterException ex) {
-//      //      displayErrorPopup("Drucken", ex.getMessage());
-//      //    }
-//      return false;
-//    } catch (IOException |PrinterException ex) {
-//      ex.printStackTrace();
-//    } finally {
-//      try {
-//        fileInputStream.close();
-//      } catch (IOException ex) {
-//        ex.printStackTrace();
-//      }
-//    }
     return false;
   }
 
