@@ -244,44 +244,24 @@ public class UtilityBox {
     int time = calculateTime(start, end, breakTime);
     int hours = ((int) (time / 100));
     int minutes = (time % 100);
-    return (float)(hours+(minutes/60));
+    
+    return ((float)(hours+(minutes/60f)));
   }
   private int calculateTime(int start, int end, int breakTime) {
-    int hours = 0;
-    int minutes = 0;
-    int breakTimeHours = ((int) (breakTime / 100));
-    int breakTimeMinutes = (breakTime % 100);
-    int endHours = ((int) (end / 100));
-    int endMinutes = (end % 100);
-    if(start>end) {
-      int firstDayHours = 24 - ((int) (start / 100));
-      int firstDayMinutes = (start % 100);
-      if(firstDayMinutes!=0) {
-        --firstDayHours;
-        firstDayMinutes = 60-firstDayMinutes;
-      }
-      hours = firstDayHours+endHours-breakTimeHours;
-      minutes = firstDayMinutes+endMinutes-breakTimeMinutes;
-      while (minutes>=60) {        
-        minutes-=60;
-        ++hours;
-      }
-      while (minutes<0) {        
-        --hours;
-        minutes = 60 + minutes;
-      }
+    int time = 0;
+    int startMinutes = (((int) (start / 100)) * 60) + (start % 100);
+    int breakTimeMinutes = (((int) (breakTime / 100)) * 60) + (breakTime % 100);
+    int endMinutes = (((int) (end / 100)) * 60) + (end % 100);
+    if (start > end) {
+      int firstDayTotalMinutes = 1440 - startMinutes;
+      time = firstDayTotalMinutes + endMinutes - breakTimeMinutes;
+    } else {
+      time = endMinutes - startMinutes - breakTimeMinutes;
     }
-    else {
-      int startHours = ((int) (start / 100));
-      int startMinutes = (start % 100);
-      hours = endHours-startHours-breakTimeHours;
-      minutes = endMinutes-startMinutes-breakTimeMinutes;
-      while (minutes<0) {        
-        minutes+=60;
-        hours--;
-      }
-    }
-    return ((hours*100)+minutes);
+    int hours = (int) (time/60);
+    int minutes = time % 60;
+    
+    return ((hours*100) + minutes);
   }
   public boolean isHoliday(Date date) {
     calendar.setTime(date);
@@ -480,7 +460,6 @@ public class UtilityBox {
     } else {
       success = dir.mkdirs();
     }
-    System.out.print("success? "+success);
     return success;
   }
 }

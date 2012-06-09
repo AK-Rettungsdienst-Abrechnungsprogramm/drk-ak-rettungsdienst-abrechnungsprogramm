@@ -4,33 +4,15 @@
  */
 package de.drk.akrd;
 
-import de.drk.akrd.PersonalData.Qualification;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.ListIterator;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.ParserConfigurationException;
 //import org.w3c.dom.Document;
-import org.jdom.JDOMException;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Node;
 //import org.w3c.dom.Element;
 import java.io.File;
 import java.util.ArrayList;
-import org.xml.sax.SAXException;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
-import java.io.OutputStream;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Properties;
-import org.jdom.Attribute;
-import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
