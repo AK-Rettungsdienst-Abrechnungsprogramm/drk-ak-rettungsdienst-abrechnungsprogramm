@@ -6,20 +6,12 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.ColumnText;
 import java.io.*;
-import java.net.MalformedURLException;
 import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.pdf.GrayColor;
-import com.itextpdf.text.pdf.PdfAnnotation;
-import com.itextpdf.text.pdf.PdfAppearance;
-import com.itextpdf.text.pdf.RadioCheckField;
-import com.itextpdf.text.pdf.PdfFormField;
 import com.itextpdf.text.pdf.PdfContentByte;
-import com.itextpdf.text.pdf.PdfName;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import javax.xml.bind.ParseConversionEvent;
 
 /**
  *
@@ -481,7 +473,7 @@ public class PdfCreator {
             partnerFont = helveticaFont7;
           }
           timeInHours = UtilityBox.getInstance().calculateTimeInHours(startTime, endTime, breakTime);
-          timeasFloat = Float.toString(currentShift.getTimeAsFloat());
+          timeasFloat = euroFormat.format(currentShift.getTimeAsFloat());
           timeSumAsFloat += currentShift.getTimeAsFloat();
           salaryPerHour = euroFormat.format(salary)+ " €";
           shiftSalary = euroFormat.format(currentShift.getTimeAsFloat() * salary)+" €";
@@ -548,7 +540,7 @@ public class PdfCreator {
       cell42.addElement(new Paragraph("Summe der geleisteten Stunden / Auszahlungsbetrag:", helveticaFont11Bold));
       cell42.setVerticalAlignment(Rectangle.ALIGN_MIDDLE);
       cell42.setPaddingBottom(6);
-      PdfPCell cell43 = new PdfPCell(new Paragraph(timeSumAsFloat+"", helveticaFont11Bold));
+      PdfPCell cell43 = new PdfPCell(new Paragraph(euroFormat.format(timeSumAsFloat), helveticaFont11Bold));
       cell43.setBorderWidthBottom(2);
       cell43.setBorderWidthTop(2);
       cell43.setBorderWidthLeft(2);
