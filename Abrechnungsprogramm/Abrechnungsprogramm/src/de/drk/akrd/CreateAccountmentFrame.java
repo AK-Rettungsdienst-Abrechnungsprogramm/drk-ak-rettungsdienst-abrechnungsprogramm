@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JScrollPane;
 
@@ -85,7 +86,6 @@ public class CreateAccountmentFrame {
 
       public void actionPerformed(ActionEvent arg0) {
         selectedYear = Integer.parseInt((String) yearComboBox.getSelectedItem());
-        System.out.println("jahr geändert: " + selectedYear);
         setSelectedShifts(selectedMonth, selectedYear);
       }
     });
@@ -102,7 +102,6 @@ public class CreateAccountmentFrame {
       public void actionPerformed(ActionEvent e) {
         // TODO: monat wurde ge�ndert-> liste neu laden
         selectedMonth = monthComboBox.getSelectedIndex();
-        System.out.println("monat geändert: " + selectedMonth);
         setSelectedShifts(selectedMonth, selectedYear);
       }
     });

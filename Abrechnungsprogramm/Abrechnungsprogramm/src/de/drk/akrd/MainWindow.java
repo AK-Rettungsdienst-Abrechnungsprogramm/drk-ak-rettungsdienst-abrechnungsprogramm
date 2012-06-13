@@ -41,6 +41,8 @@ import javax.swing.JSpinner;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.ScrollPaneConstants;
+import java.awt.GridLayout;
+import javax.swing.border.TitledBorder;
 
 public class MainWindow extends JFrame {
 
@@ -144,6 +146,12 @@ public class MainWindow extends JFrame {
 
   // DPL Fragebogen tab
   private JPanel dplSurvey = new JPanel();
+  private final JPanel importExportTab = new JPanel();
+  private JTextField textField;
+  // Import/Export tab
+  private final ImportExport importExport = ImportExport.GetInstance();
+  private JComboBox exportMonthComboBox = new JComboBox();
+  private JComboBox exportYearComboBox = new JComboBox();
   public MainWindow() {
 
     // Instanciate UtilityBox
@@ -230,7 +238,7 @@ public class MainWindow extends JFrame {
 
     bankInfoKnown.addItemListener(itemListener);
 
-    tabbedPane.addTab("Persönliche Info", null, personalInfoTab,
+    tabbedPane.addTab("Pers\u00F6nliche Info", null, personalInfoTab,
             "Persönliche Daten eingeben");
 
     JPanel panel_2 = new JPanel();
@@ -520,6 +528,90 @@ public class MainWindow extends JFrame {
     
     tabbedPane.addTab("DPL Fragebogen", null, dplSurvey,
             "Dienstplan Fragebogen ausfüllen");
+    // Import/export pane
+
+    tabbedPane.addTab("Import / Export", null, importExportTab, null);
+    importExportTab.setLayout(null);
+    DefaultTableModel importExportDisplayTableModel = new DefaultTableModel(
+            new Object[][]{}, new String[]{"Tag, Datum", "von - bis",
+              "Schichttyp", "Schichtpartner"}) {
+
+      private static final long serialVersionUID = 1L;
+
+      @Override
+      public boolean isCellEditable(int row, int column) {
+        // all cells false
+        return false;
+      }
+    };
+    JTable importExportDisplayTable = new JTable(importExportDisplayTableModel);
+    importExportDisplayTable = new JTable(importExportDisplayTableModel);
+    importExportDisplayTable.getTableHeader().setReorderingAllowed(false);
+    importExportDisplayTable.getTableHeader().setResizingAllowed(false);
+    JScrollPane importExportShiftPane = new JScrollPane(importExportDisplayTable);
+    importExportShiftPane.setBounds(295, 68, 452, 352);
+    importExportShiftPane.setBorder(new TitledBorder(null, "ausgewählte Schichten", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+    importExportTab.add(importExportShiftPane);
+    
+    JPanel exportPanel = new JPanel();
+    exportPanel.setBorder(new TitledBorder(null, "Exportieren", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+    exportPanel.setBounds(10, 68, 267, 154);
+    importExportTab.add(exportPanel);
+    exportPanel.setLayout(null);
+    
+    ActionListener setSelectetImportExportShifts = new ActionListener() {
+
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        importExport.setSelected(exportMonthComboBox.getSelectedIndex(), exportYearComboBox.getSelectedIndex());
+      }
+    };
+    exportMonthComboBox.setModel(new DefaultComboBoxModel(new String[]{"Januar", "Februar", "M\u00E4rz", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"}));
+    exportMonthComboBox.setBounds(10, 19, 105, 20);
+    exportMonthComboBox.addActionListener(setSelectetImportExportShifts);
+    exportPanel.add(exportMonthComboBox);
+    
+    exportYearComboBox.setModel(new DefaultComboBoxModel(importExport.getYearStrings()));
+    exportYearComboBox.setBounds(147, 19, 90, 20);
+    exportYearComboBox.addActionListener(setSelectetImportExportShifts);
+    exportPanel.add(exportYearComboBox);
+    
+    JButton exportButton = new JButton("Exportieren");
+    exportButton.setBounds(10, 50, 247, 93);
+    exportButton.addActionListener(new ActionListener() {
+
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        importExport.exportSelected();
+      }
+    });
+    exportPanel.add(exportButton);
+    
+    JPanel importPanel = new JPanel();
+    importPanel.setBorder(new TitledBorder(null, "Importieren", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+    importPanel.setBounds(10, 266, 267, 154);
+    importExportTab.add(importPanel);
+    importPanel.setLayout(null);
+    
+    textField = new JTextField();
+    textField.setBounds(106, 25, 151, 20);
+    importPanel.add(textField);
+    textField.setColumns(10);
+    
+    JButton importButton = new JButton("Importieren");
+    importButton.setBounds(10, 50, 247, 93);
+    importButton.addActionListener(new ActionListener() {
+
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        importExport.importSelected();
+      }
+    });
+    importPanel.add(importButton);
+    
+    JLabel lblDateiname = new JLabel("Dateiname:");
+    lblDateiname.setBounds(10, 28, 86, 14);
+    importPanel.add(lblDateiname);
 
   }
 
