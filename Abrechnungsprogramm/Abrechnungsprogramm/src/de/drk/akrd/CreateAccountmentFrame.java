@@ -78,6 +78,7 @@ public class CreateAccountmentFrame {
     createAccountmentFrame.getContentPane().add(btnAusgeben);
 
     yearComboBox = new JComboBox();
+    calendar.setTime(new Date());
     selectedYear = calendar.get(Calendar.YEAR);
     yearComboBox.setModel(new DefaultComboBoxModel(new String[]{Integer.toString(selectedYear - 1), Integer.toString(selectedYear)}));
     yearComboBox.setBounds(100, 10, 66, 30);

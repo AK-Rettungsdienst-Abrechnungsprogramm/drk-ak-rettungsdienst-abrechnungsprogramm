@@ -43,6 +43,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.ScrollPaneConstants;
 import java.awt.GridLayout;
 import javax.swing.border.TitledBorder;
+import java.awt.Button;
 
 public class MainWindow extends JFrame {
 
@@ -147,11 +148,25 @@ public class MainWindow extends JFrame {
   // DPL Fragebogen tab
   private JPanel dplSurvey = new JPanel();
   private final JPanel importExportTab = new JPanel();
-  private JTextField textField;
+  private JButton importExportFileChooseButton;
   // Import/Export tab
-  private final ImportExport importExport = ImportExport.GetInstance();
+  private final ImportExport importExport = ImportExport.GetInstance(this);
   private JComboBox exportMonthComboBox = new JComboBox();
   private JComboBox exportYearComboBox = new JComboBox();
+  private final DefaultTableModel importExportDisplayTableModel = new DefaultTableModel(
+            new Object[][]{}, new String[]{"Tag, Datum", "von - bis",
+              "Schichttyp", "Schichtpartner"}) {
+
+      private static final long serialVersionUID = 1L;
+
+      @Override
+      public boolean isCellEditable(int row, int column) {
+        // all cells false
+        return false;
+      }
+    };
+  private final JTable importExportDisplayTable = new JTable(importExportDisplayTableModel);
+  private final JScrollPane importExportShiftPane = new JScrollPane(importExportDisplayTable); 
   public MainWindow() {
 
     // Instanciate UtilityBox
@@ -532,29 +547,15 @@ public class MainWindow extends JFrame {
 
     tabbedPane.addTab("Import / Export", null, importExportTab, null);
     importExportTab.setLayout(null);
-    DefaultTableModel importExportDisplayTableModel = new DefaultTableModel(
-            new Object[][]{}, new String[]{"Tag, Datum", "von - bis",
-              "Schichttyp", "Schichtpartner"}) {
-
-      private static final long serialVersionUID = 1L;
-
-      @Override
-      public boolean isCellEditable(int row, int column) {
-        // all cells false
-        return false;
-      }
-    };
-    JTable importExportDisplayTable = new JTable(importExportDisplayTableModel);
-    importExportDisplayTable = new JTable(importExportDisplayTableModel);
+    
     importExportDisplayTable.getTableHeader().setReorderingAllowed(false);
     importExportDisplayTable.getTableHeader().setResizingAllowed(false);
-    JScrollPane importExportShiftPane = new JScrollPane(importExportDisplayTable);
     importExportShiftPane.setBounds(295, 68, 452, 352);
     importExportShiftPane.setBorder(new TitledBorder(null, "ausgewählte Schichten", TitledBorder.LEADING, TitledBorder.TOP, null, null));
     importExportTab.add(importExportShiftPane);
     
     JPanel exportPanel = new JPanel();
-    exportPanel.setBorder(new TitledBorder(null, "Exportieren", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+    exportPanel.setBorder(new TitledBorder(null, "Import / Export - Schichten", TitledBorder.LEADING, TitledBorder.TOP, null, null));
     exportPanel.setBounds(10, 68, 267, 154);
     importExportTab.add(exportPanel);
     exportPanel.setLayout(null);
@@ -563,10 +564,11 @@ public class MainWindow extends JFrame {
 
       @Override
       public void actionPerformed(ActionEvent e) {
-        importExport.setSelected(exportMonthComboBox.getSelectedIndex(), exportYearComboBox.getSelectedIndex());
+        importExportShiftPane.setBorder(new TitledBorder(null, "zu exportierende Schichten", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+        importExport.setSelected(importExportDisplayTableModel ,exportMonthComboBox.getSelectedIndex(), exportYearComboBox.getSelectedIndex());
       }
     };
-    exportMonthComboBox.setModel(new DefaultComboBoxModel(new String[]{"Januar", "Februar", "M\u00E4rz", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"}));
+    exportMonthComboBox.setModel(new DefaultComboBoxModel(new String[]{"" ,"Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"}));
     exportMonthComboBox.setBounds(10, 19, 105, 20);
     exportMonthComboBox.addActionListener(setSelectetImportExportShifts);
     exportPanel.add(exportMonthComboBox);
@@ -593,10 +595,21 @@ public class MainWindow extends JFrame {
     importExportTab.add(importPanel);
     importPanel.setLayout(null);
     
-    textField = new JTextField();
-    textField.setBounds(106, 25, 151, 20);
-    importPanel.add(textField);
-    textField.setColumns(10);
+    importExportFileChooseButton = new JButton();
+    importExportFileChooseButton.addActionListener(new ActionListener() {
+
+      public void actionPerformed(ActionEvent arg0) {
+        String filePath = importExport.selectImportFile(importExportDisplayTableModel);
+        if (filePath != null && filePath.length() > 0) {
+          importExportFileChooseButton.setText(filePath);
+          importExportFileChooseButton.setToolTipText(filePath);
+          importExportShiftPane.setBorder(new TitledBorder(null, "zu importierende Schichten", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+        }
+      }
+    });
+    importExportFileChooseButton.setText("Datei wählen...");
+    importExportFileChooseButton.setBounds(10, 19, 247, 20);
+    importPanel.add(importExportFileChooseButton);
     
     JButton importButton = new JButton("Importieren");
     importButton.setBounds(10, 50, 247, 93);
@@ -608,10 +621,6 @@ public class MainWindow extends JFrame {
       }
     });
     importPanel.add(importButton);
-    
-    JLabel lblDateiname = new JLabel("Dateiname:");
-    lblDateiname.setBounds(10, 28, 86, 14);
-    importPanel.add(lblDateiname);
 
   }
 
