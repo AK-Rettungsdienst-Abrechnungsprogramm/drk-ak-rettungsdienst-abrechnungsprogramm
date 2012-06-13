@@ -15,11 +15,15 @@ import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.table.DefaultTableModel;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 public class UtilityBox {
@@ -27,6 +31,7 @@ public class UtilityBox {
   private static UtilityBox instance = null;
   private MainWindow mainWindow = null;
   private Calendar calendar = null;
+  public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
   private Date[] holidays = null;
 
   public UtilityBox(MainWindow mainWindow) {
@@ -462,4 +467,5 @@ public class UtilityBox {
     }
     return success;
   }
+  
 }

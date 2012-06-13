@@ -397,9 +397,8 @@ public class XMLEditor {
     }
   }
 
-  public static ArrayList<ShiftInstance> importData() {
+  public static ArrayList<ShiftInstance> importData(String filePath) {
     ArrayList<ShiftInstance> returnList = new ArrayList<>();
-    String filePath = UtilityBox.getInstance().getFilePathFromFileCooser(".xml", "XML-Dateien", null);
     if (filePath == null) {
       return null;
     }
