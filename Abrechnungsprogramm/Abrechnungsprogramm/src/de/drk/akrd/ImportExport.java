@@ -32,13 +32,26 @@ public class ImportExport {
     }
     return INSTANCE;
   }
-  public void exportSelected() {
-    // TODO: implement
+  public boolean exportSelected() {
+    UtilityBox ub = UtilityBox.getInstance();
+    if (selectedShifts.isEmpty()) {
+      ub.displayInfoPopup("Import", "Keine Schichten ausgewählt.");
+      return false;
+    }
     XMLEditor.exportData(selectedShifts);
+    UtilityBox.getInstance().displayInfoPopup("Export", "Die angezeigten Schichten wurden exportiert.");
+    return true;
   }
 
-  public void importSelected() {
-    // TODO: add selected shifts to global shift instances
+  public boolean importSelected() {
+    UtilityBox ub = UtilityBox.getInstance();
+    if (selectedShifts.isEmpty()) {
+      ub.displayInfoPopup("Import", "Keine Schichten ausgewählt.");
+      return false;
+    }
+    mainWindow.shiftContainer.registerShift(selectedShifts);
+    ub.displayInfoPopup("Import", "Die angezeigten Schichten wurden importiert.");
+    return true;
   }
 
   public void setSelected(DefaultTableModel shiftTableModel, int month, int year) {
@@ -50,8 +63,8 @@ public class ImportExport {
     try {
       for (int i = 0; i < allShifts.size(); i++) {
         ShiftInstance shiftInstance = allShifts.get(i);
-        calendar.setTime(sdf.parse(shiftInstance.getDate()));
-        if ((wholeYear || (calendar.get(Calendar.MONTH) == (month + 1))) && (calendar.get(Calendar.YEAR) == selectableYears[year])) {
+        calendar.setTime(sdf.parse(shiftInstance.getDateString()));
+        if ((wholeYear || (calendar.get(Calendar.MONTH) == (month - 1))) && (calendar.get(Calendar.YEAR) == selectableYears[year])) {
           selectedShifts.add(shiftInstance);
           System.out.println("add shift");
         }
@@ -71,7 +84,7 @@ public class ImportExport {
     for (int i = 0; i < shifts.size(); i++) {
       try {
         ShiftInstance shiftInstance = shifts.get(i);
-        String dateString = shiftInstance.getDate();
+        String dateString = shiftInstance.getDateString();
         calendar.setTime(sdf.parse(dateString));
         String dayOfWeek = UtilityBox.getDayOfWeekString(calendar.get(Calendar.DAY_OF_WEEK));
         String fromToString =

@@ -576,6 +576,7 @@ public class MainWindow extends JFrame {
     exportYearComboBox.setModel(new DefaultComboBoxModel(importExport.getYearStrings()));
     exportYearComboBox.setBounds(147, 19, 90, 20);
     exportYearComboBox.addActionListener(setSelectetImportExportShifts);
+    exportYearComboBox.setSelectedIndex(1);
     exportPanel.add(exportYearComboBox);
     
     JButton exportButton = new JButton("Exportieren");
@@ -584,7 +585,8 @@ public class MainWindow extends JFrame {
 
       @Override
       public void actionPerformed(ActionEvent e) {
-        importExport.exportSelected();
+        boolean suc = importExport.exportSelected();
+          importExportShiftPane.setBorder(new TitledBorder(null, "ausgewählte Schichten", TitledBorder.LEADING, TitledBorder.TOP, null, null));
       }
     });
     exportPanel.add(exportButton);
@@ -603,7 +605,7 @@ public class MainWindow extends JFrame {
         if (filePath != null && filePath.length() > 0) {
           importExportFileChooseButton.setText(filePath);
           importExportFileChooseButton.setToolTipText(filePath);
-          importExportShiftPane.setBorder(new TitledBorder(null, "zu importierende Schichten", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+          importExportShiftPane.setBorder(new TitledBorder(null, filePath, TitledBorder.LEADING, TitledBorder.TOP, null, null));
         }
       }
     });
@@ -617,10 +619,14 @@ public class MainWindow extends JFrame {
 
       @Override
       public void actionPerformed(ActionEvent e) {
-        importExport.importSelected();
+        boolean suc = importExport.importSelected();
+        if(suc) {
+          importExportShiftPane.setBorder(new TitledBorder(null, "ausgewählte Schichten", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+        }
       }
     });
     importPanel.add(importButton);
+    importExport.setSelected(importExportDisplayTableModel, 0, exportYearComboBox.getSelectedIndex());
 
   }
 

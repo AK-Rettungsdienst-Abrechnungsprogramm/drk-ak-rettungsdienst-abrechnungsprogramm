@@ -1,6 +1,7 @@
 package de.drk.akrd;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 // Contains all shifts and takes care of loading and managing
@@ -135,7 +136,7 @@ public class ShiftContainer {
 		for(int i=0; i < input.length; i++)
 		{
 			ArrayList<String> entry = new ArrayList<String>();
-			entry.add(input[i].getDate());
+			entry.add(input[i].getDateString());
 			entry.add(UtilityBox.createTimeStringFromInt(input[i].getActualStartingTime()));
 			entry.add(UtilityBox.createTimeStringFromInt(input[i].getActualEndTime()));
 			entry.add(UtilityBox.createTimeStringFromInt(input[i].getActualBreakTime()));
@@ -175,10 +176,24 @@ public class ShiftContainer {
 		ShiftInstance entry = new ShiftInstance(type, date, actualStart, actualEnd, actualBreak, partner, comment);
 		
 		shiftInstances.add(entry);
+        Collections.sort(shiftInstances);
 		
 		mainWindow.updateRegisteredShifts();
 		
 	}
+    /**
+     * add a list of shifts to the shiftInstances
+     * @param shifts ArrayList<ShiftInstance>
+     * @author Jo
+     */
+    protected void registerShift(ArrayList<ShiftInstance> shifts)
+	{
+        shiftInstances.addAll(shifts);
+        Collections.sort(shiftInstances);
+		
+		mainWindow.updateRegisteredShifts();
+	}
+    
     
     public static ShiftType getShiftTypeFromId(String id) {
       if (id.startsWith("KTW")) {
