@@ -103,7 +103,7 @@ public class PersonalData {
    * @param calendarId
    * @return 
    */
-  public boolean setData(String firstName, String LastName,
+  public boolean setData(String firstName, String lastName,
           String bankNameAndCity, String accountNumber, String blz, String quali,
           String dataKnown, String emailAdress, String calendarId){
 
