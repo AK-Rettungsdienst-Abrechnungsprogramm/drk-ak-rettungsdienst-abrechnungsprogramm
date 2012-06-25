@@ -424,7 +424,7 @@ public class MainWindow extends JFrame {
             "Schichten eingeben und bearbeiten");
 
     JScrollPane scrollPane = new JScrollPane();
-    scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+    //scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
     JScrollPane scrollPane2 = new JScrollPane();
 
     dateField = new JTextField();
