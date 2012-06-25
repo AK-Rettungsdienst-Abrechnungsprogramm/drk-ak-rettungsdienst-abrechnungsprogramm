@@ -136,7 +136,7 @@ public class CreateAccountmentFrame {
     for (int i = 0; i < shifts.size(); i++) {
       try {
         ShiftInstance shiftInstance = shifts.get(i);
-        String dateString = shiftInstance.getDate();
+        String dateString = shiftInstance.getDateString();
         calendar.setTime(sdf.parse(dateString));
         String dayOfWeek = UtilityBox.getDayOfWeekString(calendar.get(Calendar.DAY_OF_WEEK));
         String fromToString =
@@ -160,7 +160,7 @@ public class CreateAccountmentFrame {
    */
   private String getShiftString(ShiftInstance shiftInstance) {
     // TODO: string bauen
-    String returnString = shiftInstance.getDate() + "\f" + shiftInstance.getType().toString();
+    String returnString = shiftInstance.getDateString() + "\f" + shiftInstance.getType().toString();
     return returnString;
   }
 
@@ -178,7 +178,7 @@ public class CreateAccountmentFrame {
       for (int i = 0; i < allShifts.size(); i++) {
 
         ShiftInstance shiftInstance = allShifts.get(i);
-        calendar.setTime(sdf.parse(shiftInstance.getDate()));
+        calendar.setTime(sdf.parse(shiftInstance.getDateString()));
         if ((calendar.get(Calendar.MONTH) == month) && (calendar.get(Calendar.YEAR) == year)) {
           selectedShifts.add(shiftInstance);
 

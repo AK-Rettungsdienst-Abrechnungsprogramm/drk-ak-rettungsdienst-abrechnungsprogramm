@@ -4,21 +4,12 @@
  */
 package de.drk.akrd;
 
-import java.awt.Desktop;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URI;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.SimpleTimeZone;
-import javax.crypto.Mac;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 /**
  *

@@ -261,14 +261,14 @@ public class XMLEditor {
         Element rootNode = document.getRootElement();
         for (int i = 0; i < shiftList.size(); i++) {
           ShiftInstance currentShift = shiftList.get(i);
-          String shiftDateString = currentShift.getDate();
+          String shiftDateString = currentShift.getDateString();
           String shiftIdString = currentShift.getType().name();
           calendar.setTime(sdf.parse(shiftDateString));
           int month = calendar.get(Calendar.MONTH);
           Element currentNode = findElement(rootNode.getChild("M" + month).getChildren(), shiftDateString + shiftIdString);
           // if no node for the shift exists add new node
           if (currentNode == null) {
-            System.out.println("add new shift:" + currentShift.getType().name() + " " + currentShift.getDate());
+            System.out.println("add new shift:" + currentShift.getType().name() + " " + currentShift.getDateString());
             Element tempElement = new Element("Shift");
             ShiftInstance tempShiftInstance = shiftList.get(i);
             addShiftToElement(tempElement, tempShiftInstance);
@@ -303,7 +303,7 @@ public class XMLEditor {
     if (element == null) {
       return;
     }
-    element.addContent(new Element("date").setText(shift.getDate()));
+    element.addContent(new Element("date").setText(shift.getDateString()));
     element.addContent(new Element("id").setText(shift.getType().name()));
     element.addContent(new Element("actStartingTime").setText(Integer.toString(shift.getActualStartingTime())));
     element.addContent(new Element("actEndTime").setText(Integer.toString(shift.getActualEndTime())));
@@ -350,7 +350,7 @@ public class XMLEditor {
         Element tempElement = new Element("Shift");
         ShiftInstance tempShiftInstance = shiftList.get(i);
         addShiftToElement(tempElement, tempShiftInstance);
-        calendar.setTime(sdf.parse(tempShiftInstance.getDate()));
+        calendar.setTime(sdf.parse(tempShiftInstance.getDateString()));
         int month = calendar.get(Calendar.MONTH);
         document.getRootElement().getChild("M" + month).addContent(tempElement);
       }
@@ -387,7 +387,8 @@ public class XMLEditor {
         documentElement.getChild("shifts").addContent(tempElement);
       }
       XMLOutputter xmlOutput = new XMLOutputter();
-      xmlOutput.output(document, new FileWriter("export" + ".xml"));
+      String fileName = UtilityBox.getInstance().saveDialog(".xml", "SchichtenIrgendwann", "XML-Dateien");
+      xmlOutput.output(document, new FileWriter(fileName));
 
       return true;
     } catch (IOException io) {

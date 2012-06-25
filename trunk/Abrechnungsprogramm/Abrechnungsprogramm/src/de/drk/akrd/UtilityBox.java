@@ -467,5 +467,32 @@ public class UtilityBox {
     }
     return success;
   }
+  public String saveDialog(final String fileEnding, String fileName, final String fileTypeDescription) {
+    String filePath;
+    JFileChooser jFileChooser = new JFileChooser(new File(System.getProperty("user.dir")));
+    jFileChooser.setMultiSelectionEnabled(false);
+    jFileChooser.setSelectedFile(new File(fileName + fileEnding));
+    jFileChooser.setFileFilter(new FileFilter() {
+
+      @Override
+      public boolean accept(File f) {
+        return f.isDirectory() || f.getName().toLowerCase().endsWith(fileEnding);
+      }
+
+      @Override
+      public String getDescription() {
+        return fileTypeDescription;
+      }
+    });
+    int returnValue = jFileChooser.showSaveDialog(null);
+    if (returnValue == 1) {
+      return null;
+    }
+    filePath = jFileChooser.getSelectedFile().getPath();
+    if (!filePath.endsWith(fileEnding)) {
+      filePath += fileEnding;
+    }
+    return filePath;
+  }
   
 }

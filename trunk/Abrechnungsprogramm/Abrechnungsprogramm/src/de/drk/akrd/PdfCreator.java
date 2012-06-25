@@ -452,7 +452,7 @@ public class PdfCreator {
         Calendar cal = Calendar.getInstance();
         if (shifts.size() > i) {
           currentShift = shifts.get(i);
-          date = currentShift.getDate();
+          date = currentShift.getDateString();
           try {
             cal.setTime(sdf.parse(date));
             weekDay = UtilityBox.getDayOfWeekString(cal.get(Calendar.DAY_OF_WEEK));
