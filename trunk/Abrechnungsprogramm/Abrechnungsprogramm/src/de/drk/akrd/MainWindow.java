@@ -667,7 +667,8 @@ public class MainWindow extends JFrame {
       ArrayList<Object> list = new ArrayList<Object>();
       Collections.addAll(list, data[i]);
       // TODO: nicht 8.8f benutzen, sondern anpassen
-      float salary = 8.8f * shiftContainer.shiftInstances.get(i).getTimeAsFloat();
+      ShiftInstance currentShift = shiftContainer.shiftInstances.get(i);
+      float salary = UtilityBox.getInstance().calculateSalary(currentShift) * currentShift.getTimeAsFloat();
       completeSalary += salary;
       list.add(String.format("%.2f", salary) + "€");
       registeredShiftsTableModel.addRow(list.toArray());
