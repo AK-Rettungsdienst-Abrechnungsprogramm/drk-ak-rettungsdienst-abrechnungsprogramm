@@ -416,6 +416,7 @@ public class MainWindow extends JFrame {
 
     panel.add(trainingsChooser, "6, 8, 3, 1");
     personalInfoTab.setLayout(gl_personalInfoTab);
+    
 
     // Shift Collector
 

@@ -89,6 +89,45 @@ public class PersonalData {
     boolean success = XMLEditor.writePersonalData(instance);
     return success;
   }
+  /**
+   * set personal data using Strings (i.e. the read Strings from an XML-file)
+   * (only necessary if PersonalData.getInstance(); returns null!)
+   * @param firstName
+   * @param LastName
+   * @param BankNameAndCity
+   * @param accountNumber
+   * @param blz
+   * @param qualifikation
+   * @param dataKnown
+   * @param emailAdress
+   * @param calendarId
+   * @return 
+   */
+  public boolean setData(String firstName, String LastName,
+          String bankNameAndCity, String accountNumber, String blz, String quali,
+          String dataKnown, String emailAdress, String calendarId){
+
+    if (emailAdress.equals("null")) {
+      emailAdress = null;
+    }
+    if (calendarId.equals("null")) {
+      calendarId = null;
+    }
+    boolean isDataKnown = false;
+    if (dataKnown.equals("true")) {
+      isDataKnown = true;
+    }
+    PersonalData.getInstance().setData(
+            firstName,
+            lastName,
+            bankNameAndCity,
+            Integer.parseInt(accountNumber),
+            Integer.parseInt(blz),Qualification.valueOf(quali),
+            isDataKnown,
+            emailAdress,
+            calendarId);
+    return true;
+  }
 
   /**
    * 

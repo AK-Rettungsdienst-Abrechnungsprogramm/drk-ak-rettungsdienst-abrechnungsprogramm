@@ -163,7 +163,18 @@ public class XMLEditor {
           return false;
         }
         Element node = (Element) nodeList.get(0);
-        loadPersonalDataFromNode(node);
+        ArrayList<String> persData = new ArrayList<>();
+        loadPersonalDataFromNode(node, persData);
+        PersonalData.getInstance().setData(
+                persData.get(0),
+                persData.get(1),
+                persData.get(2),
+                persData.get(3),
+                persData.get(4),
+                persData.get(5),
+                persData.get(6),
+                persData.get(7),
+                persData.get(8));
         return true;
       } catch (JDOMException | IOException | NumberFormatException e) {
         System.out.println("Exception in XMLEditor.loadPersonalData: " + e.getMessage());
@@ -173,7 +184,12 @@ public class XMLEditor {
     return false;
   }
 
-  private static void loadPersonalDataFromNode(Element node) {
+  /**
+   * load an eventually write personal data from xml-node
+   * @param node the node containing the data.
+   * @return String list
+   */
+  private static void loadPersonalDataFromNode(Element node, ArrayList<String> persDataList) {
     String emailAdress = node.getChildText("emailAdress");
     if (emailAdress.equals("null")) {
       emailAdress = null;
@@ -186,16 +202,16 @@ public class XMLEditor {
     if (node.getChildText("dataKnown").equals("true")) {
       dataKnown = true;
     }
-    PersonalData.getInstance().setData(
-            node.getChildText("firstName"),
-            node.getChildText("lastName"),
-            node.getChildText("bankaccountAndCity"),
-            Integer.parseInt(node.getChildText("accountNumber")),
-            Integer.parseInt(node.getChildText("blz")),
-            PersonalData.Qualification.valueOf(node.getChildText("qualification")),
-            dataKnown,
-            emailAdress,
-            calendarId);
+    
+    persDataList.add(node.getChildText("firstName"));
+    persDataList.add(node.getChildText("lastName"));
+    persDataList.add(node.getChildText("bankaccountAndCity"));
+    persDataList.add(node.getChildText("accountNumber"));
+    persDataList.add(node.getChildText("blz"));
+    persDataList.add(node.getChildText("qualification"));
+    persDataList.add(node.getChildText("dataKnown"));
+    persDataList.add(node.getChildText("emailAdress"));
+    persDataList.add(node.getChildText("calendarId"));
   }
 
   /**
@@ -398,7 +414,7 @@ public class XMLEditor {
     }
   }
 
-  public static ArrayList<ShiftInstance> importData(String filePath) {
+  public static ArrayList<ShiftInstance> importData(String filePath, ArrayList<String> persData) {
     ArrayList<ShiftInstance> returnList = new ArrayList<>();
     if (filePath == null) {
       return null;
@@ -415,7 +431,7 @@ public class XMLEditor {
         return null;
       }
       // load the personal Data
-      loadPersonalDataFromNode((Element)personalDataList.get(0));
+      loadPersonalDataFromNode((Element)personalDataList.get(0), persData);
       // load shifts
       returnList = loadShiftsFromNode((Element)shiftList.get(0));
       return returnList;
