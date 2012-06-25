@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -22,6 +23,7 @@ public class ImportExport {
   Calendar calendar = Calendar.getInstance();
   private SimpleDateFormat sdf = UtilityBox.SIMPLE_DATE_FORMAT;
   private int[] selectableYears;
+  private ArrayList<String> importedPersData = null;
   private ImportExport(MainWindow mw){
     selectedShifts = new ArrayList<>();
     mainWindow = mw;
@@ -50,10 +52,33 @@ public class ImportExport {
       return false;
     }
     mainWindow.shiftContainer.registerShift(selectedShifts);
+    if (importedPersData!=null) {
+      overwritePersonalData();
+    }
     ub.displayInfoPopup("Import", "Die angezeigten Schichten wurden importiert.");
     return true;
   }
 
+  private void overwritePersonalData() {
+    PersonalData pd = PersonalData.getInstance();
+    if(UtilityBox.getInstance().displayYesNoPopup("Import",
+            "Persönliche Daten von\n"+pd.getFirstName()+" "+pd.getLastName()
+            +"\nmit den importierten Daten von\n"+importedPersData.get(0) +" "
+            +importedPersData.get(1) +"\nüberschreiben?")){
+      System.out.println("daten überschreiben");
+      PersonalData.getInstance().setData(
+            importedPersData.get(0),
+            importedPersData.get(1),
+            importedPersData.get(2),
+            importedPersData.get(3),
+            importedPersData.get(4),
+            importedPersData.get(5),
+            importedPersData.get(6),
+            importedPersData.get(7),
+            importedPersData.get(8));
+    }
+    
+  }
   public void setSelected(DefaultTableModel shiftTableModel, int month, int year) {
     // TODO: globale variable setzen, month ist hier 0=ganzes jahr, 1=januar...
     selectedShifts = new ArrayList<>();
@@ -107,7 +132,8 @@ public class ImportExport {
 
   public String selectImportFile(DefaultTableModel shiftTableModel) {
     String filePath = UtilityBox.getInstance().getFilePathFromFileCooser("xml", "XML-Dateien", System.getProperty("user.dir"));
-    selectedShifts = XMLEditor.importData(filePath);
+    importedPersData = new ArrayList<>();
+    selectedShifts = XMLEditor.importData(filePath, importedPersData);
     fillList(shiftTableModel, selectedShifts);
     return filePath;
   }

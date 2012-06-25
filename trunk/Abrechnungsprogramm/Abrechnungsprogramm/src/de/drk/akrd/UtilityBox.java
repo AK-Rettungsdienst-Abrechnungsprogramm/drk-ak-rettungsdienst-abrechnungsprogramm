@@ -87,6 +87,14 @@ public class UtilityBox {
   private void displayPopup(String title, String message, int messageType) {
     JOptionPane.showMessageDialog(mainWindow, message, title, messageType);
   }
+  public boolean displayYesNoPopup(String title, String message) {
+    int yesNo = JOptionPane.showConfirmDialog(mainWindow, message, title, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+    System.out.print("Antwort: "+yesNo);
+    if (yesNo == 0) {
+      return true;
+    }
+    return false;
+  }
 
   /**
    * 
