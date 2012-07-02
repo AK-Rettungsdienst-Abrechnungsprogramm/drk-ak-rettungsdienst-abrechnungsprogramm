@@ -187,7 +187,8 @@ public class AKRDMouseAdapter extends MouseAdapter {
 					end,
 					breakTime,
 					partner,
-					mainWindow.commentField.getText());
+					mainWindow.commentField.getText(),
+					mainWindow.prepTimeBox.isSelected());
 			return;
 		}
 		
@@ -215,6 +216,7 @@ public class AKRDMouseAdapter extends MouseAdapter {
 			mainWindow.dateField.setText(shift.getDateString());
 			mainWindow.commentField.setText(shift.getComment());
 			mainWindow.shiftTypeChooser.setSelectedItem(shift.getType());
+			mainWindow.prepTimeBox.setSelected(shift.PreparationTimeSet());
 			
 			// delete the shift
 			mainWindow.shiftContainer.deleteShift(selectedRow);

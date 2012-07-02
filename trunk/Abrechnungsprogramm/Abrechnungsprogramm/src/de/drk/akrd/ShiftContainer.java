@@ -137,7 +137,8 @@ public class ShiftContainer {
 		{
 			ArrayList<String> entry = new ArrayList<String>();
 			entry.add(input[i].getDateString());
-			entry.add(UtilityBox.createTimeStringFromInt(input[i].getActualStartingTime()));
+
+			entry.add(UtilityBox.createTimeStringFromInt(input[i].getActualStartingTimeWithPrepTime()));
 			entry.add(UtilityBox.createTimeStringFromInt(input[i].getActualEndTime()));
 			entry.add(UtilityBox.createTimeStringFromInt(input[i].getActualBreakTime()));
 			entry.add(Float.toString(input[i].getTimeAsFloat()));
@@ -161,7 +162,7 @@ public class ShiftContainer {
 	 * @param comment 
 	 * @author niklas
 	 */
-	protected void  registerShift(ShiftContainer.ShiftType type, String date, int actualStart, int actualEnd, int actualBreak, String partner, String comment)
+	protected void  registerShift(ShiftContainer.ShiftType type, String date, int actualStart, int actualEnd, int actualBreak, String partner, String comment, boolean prepTime)
 	{
 		// calculate time in float
 		float startingFloat = ShiftInstance.timeToFloat(actualStart);
@@ -173,7 +174,7 @@ public class ShiftContainer {
 		
 		float shiftAsFloat = endFloat - startingFloat - breakFloat;
 		
-		ShiftInstance entry = new ShiftInstance(type, date, actualStart, actualEnd, actualBreak, partner, comment);
+		ShiftInstance entry = new ShiftInstance(type, date, actualStart, actualEnd, actualBreak, partner, comment, prepTime);
 		
 		shiftInstances.add(entry);
         Collections.sort(shiftInstances);
