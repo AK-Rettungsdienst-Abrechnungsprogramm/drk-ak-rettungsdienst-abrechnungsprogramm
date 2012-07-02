@@ -119,7 +119,7 @@ public class MainWindow extends JFrame {
       return false;
     }
   };
-  private JTable registeredShiftsTable;
+  protected JTable registeredShiftsTable;
   private final JLabel lblSchichtpartner = new JLabel("Schichtpartner:");
   protected JTextField shiftPartnerField;
   protected JTextField beginField;
@@ -131,7 +131,7 @@ public class MainWindow extends JFrame {
   private final JPanel panel = new JPanel();
   protected JCheckBox prepTimeBox;
   protected final JButton createSalaryStatementButton = new JButton();
-  ;
+  protected final JButton deleteRegisteredShiftButton = new JButton("Löschen");
 
 	private final JLabel lblAusbildung = new JLabel("Ausbildung:");
   private final JPanel panel_1 = new JPanel();
@@ -467,12 +467,120 @@ public class MainWindow extends JFrame {
     createSalaryStatementButton.addMouseListener(mouseAdapter);
 
     prepTimeBox = new JCheckBox("10 min Rüstzeit");
+    
+    deleteRegisteredShiftButton.addMouseListener(mouseAdapter);
 
     GroupLayout gl_shiftEditor = new GroupLayout(shiftEditor);
     gl_shiftEditor.setHorizontalGroup(
-            gl_shiftEditor.createParallelGroup(Alignment.LEADING).addGroup(gl_shiftEditor.createSequentialGroup().addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING).addGroup(gl_shiftEditor.createSequentialGroup().addContainerGap().addComponent(scrollPane2, GroupLayout.DEFAULT_SIZE, 865, Short.MAX_VALUE)).addGroup(gl_shiftEditor.createSequentialGroup().addGap(1).addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING).addGroup(gl_shiftEditor.createSequentialGroup().addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING).addComponent(lblSchichtart, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE).addComponent(lblDatum, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)).addPreferredGap(ComponentPlacement.RELATED).addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING, false).addComponent(shiftTypeChooser, 0, 0, Short.MAX_VALUE).addComponent(dateField))).addGroup(gl_shiftEditor.createSequentialGroup().addComponent(lblSchichtpartner).addPreferredGap(ComponentPlacement.RELATED).addComponent(shiftPartnerField, GroupLayout.PREFERRED_SIZE, 137, GroupLayout.PREFERRED_SIZE)).addGroup(gl_shiftEditor.createSequentialGroup().addPreferredGap(ComponentPlacement.RELATED).addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING).addGroup(gl_shiftEditor.createSequentialGroup().addGroup(gl_shiftEditor.createParallelGroup(Alignment.TRAILING).addGroup(gl_shiftEditor.createSequentialGroup().addComponent(lblPause).addGap(13)).addGroup(gl_shiftEditor.createSequentialGroup().addComponent(lblBeginn).addPreferredGap(ComponentPlacement.UNRELATED))).addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING, false).addComponent(breakField, 0, 0, Short.MAX_VALUE).addComponent(beginField, GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)).addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING).addGroup(Alignment.TRAILING, gl_shiftEditor.createSequentialGroup().addComponent(lblEnde).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(endField, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE).addGap(6)).addGroup(gl_shiftEditor.createSequentialGroup().addGap(18).addComponent(prepTimeBox)))).addGroup(gl_shiftEditor.createSequentialGroup().addComponent(lblKommentar).addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING).addGroup(gl_shiftEditor.createSequentialGroup().addGap(33).addComponent(submitButton)).addGroup(gl_shiftEditor.createSequentialGroup().addGap(21).addComponent(commentField, GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE))))))).addGap(17).addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)).addGroup(gl_shiftEditor.createSequentialGroup().addGap(284).addComponent(createSalaryStatementButton))).addGap(0)));
+    	gl_shiftEditor.createParallelGroup(Alignment.LEADING)
+    		.addGroup(gl_shiftEditor.createSequentialGroup()
+    			.addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING)
+    				.addGroup(gl_shiftEditor.createSequentialGroup()
+    					.addContainerGap()
+    					.addComponent(scrollPane2, GroupLayout.DEFAULT_SIZE, 781, Short.MAX_VALUE))
+    				.addGroup(gl_shiftEditor.createSequentialGroup()
+    					.addGap(1)
+    					.addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING)
+    						.addGroup(gl_shiftEditor.createSequentialGroup()
+    							.addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING)
+    								.addComponent(lblSchichtart, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)
+    								.addComponent(lblDatum, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE))
+    							.addPreferredGap(ComponentPlacement.RELATED)
+    							.addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING, false)
+    								.addComponent(shiftTypeChooser, 0, 0, Short.MAX_VALUE)
+    								.addComponent(dateField)))
+    						.addGroup(gl_shiftEditor.createSequentialGroup()
+    							.addComponent(lblSchichtpartner)
+    							.addPreferredGap(ComponentPlacement.RELATED)
+    							.addComponent(shiftPartnerField, GroupLayout.PREFERRED_SIZE, 137, GroupLayout.PREFERRED_SIZE))
+    						.addGroup(gl_shiftEditor.createSequentialGroup()
+    							.addPreferredGap(ComponentPlacement.RELATED)
+    							.addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING)
+    								.addGroup(gl_shiftEditor.createSequentialGroup()
+    									.addGroup(gl_shiftEditor.createParallelGroup(Alignment.TRAILING)
+    										.addGroup(gl_shiftEditor.createSequentialGroup()
+    											.addComponent(lblPause)
+    											.addGap(13))
+    										.addGroup(gl_shiftEditor.createSequentialGroup()
+    											.addComponent(lblBeginn)
+    											.addPreferredGap(ComponentPlacement.UNRELATED)))
+    									.addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING, false)
+    										.addComponent(breakField, 0, 0, Short.MAX_VALUE)
+    										.addComponent(beginField, GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE))
+    									.addGap(18)
+    									.addGroup(gl_shiftEditor.createParallelGroup(Alignment.TRAILING)
+    										.addGroup(gl_shiftEditor.createSequentialGroup()
+    											.addComponent(lblEnde)
+    											.addPreferredGap(ComponentPlacement.UNRELATED)
+    											.addComponent(endField, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
+    											.addGap(6))
+    										.addComponent(prepTimeBox)))
+    								.addGroup(gl_shiftEditor.createSequentialGroup()
+    									.addComponent(lblKommentar)
+    									.addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING)
+    										.addGroup(gl_shiftEditor.createSequentialGroup()
+    											.addGap(33)
+    											.addComponent(submitButton))
+    										.addGroup(gl_shiftEditor.createSequentialGroup()
+    											.addGap(21)
+    											.addComponent(commentField, GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)))))))
+    					.addGap(17)
+    					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+    				.addGroup(gl_shiftEditor.createSequentialGroup()
+    					.addGap(284)
+    					.addComponent(createSalaryStatementButton)
+    					.addPreferredGap(ComponentPlacement.RELATED, 193, Short.MAX_VALUE)
+    					.addComponent(deleteRegisteredShiftButton)
+    					.addPreferredGap(ComponentPlacement.RELATED)))
+    			.addGap(0))
+    );
     gl_shiftEditor.setVerticalGroup(
-            gl_shiftEditor.createParallelGroup(Alignment.LEADING).addGroup(gl_shiftEditor.createSequentialGroup().addContainerGap().addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING).addGroup(gl_shiftEditor.createSequentialGroup().addGroup(gl_shiftEditor.createParallelGroup(Alignment.BASELINE).addComponent(lblSchichtart).addComponent(shiftTypeChooser, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)).addPreferredGap(ComponentPlacement.RELATED).addGroup(gl_shiftEditor.createParallelGroup(Alignment.BASELINE).addComponent(lblDatum).addComponent(dateField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)).addPreferredGap(ComponentPlacement.RELATED).addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING).addComponent(lblSchichtpartner).addComponent(shiftPartnerField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)).addPreferredGap(ComponentPlacement.RELATED).addGroup(gl_shiftEditor.createParallelGroup(Alignment.TRAILING).addGroup(gl_shiftEditor.createParallelGroup(Alignment.BASELINE).addComponent(lblEnde).addComponent(endField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)).addGroup(gl_shiftEditor.createSequentialGroup().addGroup(gl_shiftEditor.createParallelGroup(Alignment.BASELINE).addComponent(beginField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addComponent(lblBeginn)).addGap(2))).addPreferredGap(ComponentPlacement.UNRELATED).addGroup(gl_shiftEditor.createParallelGroup(Alignment.BASELINE).addComponent(lblPause).addComponent(breakField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addComponent(prepTimeBox)).addPreferredGap(ComponentPlacement.UNRELATED).addGroup(gl_shiftEditor.createParallelGroup(Alignment.BASELINE).addComponent(lblKommentar).addComponent(commentField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(submitButton)).addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 203, GroupLayout.PREFERRED_SIZE)).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(scrollPane2, GroupLayout.PREFERRED_SIZE, 258, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.RELATED).addComponent(createSalaryStatementButton).addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
+    	gl_shiftEditor.createParallelGroup(Alignment.LEADING)
+    		.addGroup(gl_shiftEditor.createSequentialGroup()
+    			.addContainerGap()
+    			.addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING)
+    				.addGroup(gl_shiftEditor.createSequentialGroup()
+    					.addGroup(gl_shiftEditor.createParallelGroup(Alignment.BASELINE)
+    						.addComponent(lblSchichtart)
+    						.addComponent(shiftTypeChooser, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+    					.addPreferredGap(ComponentPlacement.RELATED)
+    					.addGroup(gl_shiftEditor.createParallelGroup(Alignment.BASELINE)
+    						.addComponent(lblDatum)
+    						.addComponent(dateField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+    					.addPreferredGap(ComponentPlacement.RELATED)
+    					.addGroup(gl_shiftEditor.createParallelGroup(Alignment.LEADING)
+    						.addComponent(lblSchichtpartner)
+    						.addComponent(shiftPartnerField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+    					.addPreferredGap(ComponentPlacement.RELATED)
+    					.addGroup(gl_shiftEditor.createParallelGroup(Alignment.TRAILING)
+    						.addGroup(gl_shiftEditor.createParallelGroup(Alignment.BASELINE)
+    							.addComponent(lblEnde)
+    							.addComponent(endField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+    						.addGroup(gl_shiftEditor.createSequentialGroup()
+    							.addGroup(gl_shiftEditor.createParallelGroup(Alignment.BASELINE)
+    								.addComponent(beginField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+    								.addComponent(lblBeginn))
+    							.addGap(2)))
+    					.addPreferredGap(ComponentPlacement.UNRELATED)
+    					.addGroup(gl_shiftEditor.createParallelGroup(Alignment.BASELINE)
+    						.addComponent(lblPause)
+    						.addComponent(breakField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+    						.addComponent(prepTimeBox))
+    					.addPreferredGap(ComponentPlacement.UNRELATED)
+    					.addGroup(gl_shiftEditor.createParallelGroup(Alignment.BASELINE)
+    						.addComponent(lblKommentar)
+    						.addComponent(commentField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+    					.addPreferredGap(ComponentPlacement.UNRELATED)
+    					.addComponent(submitButton))
+    				.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 203, GroupLayout.PREFERRED_SIZE))
+    			.addPreferredGap(ComponentPlacement.UNRELATED)
+    			.addComponent(scrollPane2, GroupLayout.PREFERRED_SIZE, 258, GroupLayout.PREFERRED_SIZE)
+    			.addPreferredGap(ComponentPlacement.RELATED)
+    			.addGroup(gl_shiftEditor.createParallelGroup(Alignment.BASELINE)
+    				.addComponent(createSalaryStatementButton)
+    				.addComponent(deleteRegisteredShiftButton))
+    			.addContainerGap(24, Short.MAX_VALUE))
+    );
     shiftTypeChooser.addItemListener(this.itemListener);
 
     shiftTable = new JTable();
