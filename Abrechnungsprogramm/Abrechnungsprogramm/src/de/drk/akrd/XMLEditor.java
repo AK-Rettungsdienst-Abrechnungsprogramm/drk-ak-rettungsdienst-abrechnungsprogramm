@@ -253,7 +253,7 @@ public class XMLEditor {
                   Integer.parseInt(currentNode.getChildText("actEndTime")),
                   Integer.parseInt(currentNode.getChildText("actBreakTime")),
                   currentNode.getChildText("partner"),
-                  currentNode.getChildText("comment")));
+                  currentNode.getChildText("comment"), true));
         }
     return returnList;
   }

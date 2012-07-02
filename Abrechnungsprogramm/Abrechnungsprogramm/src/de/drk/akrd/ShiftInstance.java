@@ -10,10 +10,12 @@ public class ShiftInstance implements Comparable<ShiftInstance> {
   private String dateString;
   private Date date;
   private int actualStartingTime;
+  private int actualStartingTimeWithPrepTime;
   private int actualEndTime;
   private int actualBreakTime;
   private String partner;
   private String comment;
+  private boolean preparationTime;
 
   /**
    * create a new ShiftInstance
@@ -26,7 +28,7 @@ public class ShiftInstance implements Comparable<ShiftInstance> {
    * @param comment comment; maximal 36 characters
    */
   public ShiftInstance(ShiftContainer.ShiftType type, String dateString, int actualStartingTime, 
-          int actualEndTime, int actualBreakTime, String partner, String comment) {
+          int actualEndTime, int actualBreakTime, String partner, String comment, boolean prepTime) {
     this.type = type;
     this.dateString = dateString;
     try {
@@ -41,9 +43,44 @@ public class ShiftInstance implements Comparable<ShiftInstance> {
     this.actualBreakTime = actualBreakTime;
     this.partner = partner;
     this.comment = comment;
+    this.preparationTime = prepTime;
+    
+    int start = actualStartingTime;
+    // if prepTime was set, calculate actualStartingTimeWithPrepTime
+	if(prepTime)
+	{
+		// subtract 10 minutes
+		int minutes = start%100;
+		if(minutes >= 10) {
+			start -= 10;
+		} else
+		{
+			int diff = 10 - minutes;
+			if (start > 100)
+			{
+				start = start - 40 - 10;
+			} else
+			{
+				start = 2400 - 40 - diff;
+			}
+		}
+	}
+	this.actualStartingTimeWithPrepTime = start;
   }
 
-  /**
+  public int getActualStartingTimeWithPrepTime() {
+	return actualStartingTimeWithPrepTime;
+}
+
+public boolean PreparationTimeSet() {
+	return preparationTime;
+}
+
+public void setPreparationTime(boolean preparationTime) {
+	this.preparationTime = preparationTime;
+}
+
+/**
    * 
    * @return the dateString string
    */
@@ -86,7 +123,7 @@ public class ShiftInstance implements Comparable<ShiftInstance> {
    * @return the time als float value
    */
   public float getTimeAsFloat() {
-    return UtilityBox.getInstance().calculateTimeAsFloat(actualStartingTime, actualEndTime, actualBreakTime);
+    return UtilityBox.getInstance().calculateTimeAsFloat(actualStartingTimeWithPrepTime, actualEndTime, actualBreakTime);
   }
 
   /**
