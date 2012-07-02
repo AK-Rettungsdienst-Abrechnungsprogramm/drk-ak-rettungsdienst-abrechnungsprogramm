@@ -194,7 +194,30 @@ public class AKRDMouseAdapter extends MouseAdapter {
 		// Delete registered Shift
 		if(source == mainWindow.deleteRegisteredShiftButton)
 		{
-			// TODO: 
+			// get the currently selected shift number (== rowNumber=)
+			int selectedRow = mainWindow.registeredShiftsTable.getSelectedRow();
+			
+			mainWindow.shiftContainer.deleteShift(selectedRow);
+		}
+		
+		// Edit registered Shift
+		if(source == mainWindow.editRegisteredShiftButton)
+		{
+			int selectedRow = mainWindow.registeredShiftsTable.getSelectedRow();
+			
+			ShiftInstance shift = mainWindow.shiftContainer.getShift(selectedRow);
+			
+			// reset the fields
+			mainWindow.beginField.setText(UtilityBox.createTimeStringFromInt(shift.getActualStartingTime()));
+			mainWindow.endField.setText(UtilityBox.createTimeStringFromInt(shift.getActualEndTime()));
+			mainWindow.breakField.setText(UtilityBox.createTimeStringFromInt(shift.getActualBreakTime()));
+			mainWindow.shiftPartnerField.setText(shift.getPartner());
+			mainWindow.dateField.setText(shift.getDateString());
+			mainWindow.commentField.setText(shift.getComment());
+			mainWindow.shiftTypeChooser.setSelectedItem(shift.getType());
+			
+			// delete the shift
+			mainWindow.shiftContainer.deleteShift(selectedRow);
 		}
 		
 		// Read DPL
@@ -290,7 +313,6 @@ public class AKRDMouseAdapter extends MouseAdapter {
           
           //PdfCreator.createAccounting(mainWindow.shiftContainer.shiftInstances.toArray(new ShiftInstance[mainWindow.shiftContainer.shiftInstances.size()]));
 		}
-		
 	}
 
 

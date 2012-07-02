@@ -8,11 +8,9 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -32,18 +30,10 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.factories.FormFactory;
 import de.drk.akrd.PersonalData.Qualification;
-import javax.swing.border.BevelBorder;
 import javax.swing.border.EtchedBorder;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.Iterator;
-import javax.swing.JSpinner;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.ScrollPaneConstants;
-import java.awt.GridLayout;
 import javax.swing.border.TitledBorder;
-import java.awt.Button;
 
 public class MainWindow extends JFrame {
 
@@ -132,6 +122,7 @@ public class MainWindow extends JFrame {
   protected JCheckBox prepTimeBox;
   protected final JButton createSalaryStatementButton = new JButton();
   protected final JButton deleteRegisteredShiftButton = new JButton("Löschen");
+  protected final JButton editRegisteredShiftButton = new JButton("Bearbeiten");
 
 	private final JLabel lblAusbildung = new JLabel("Ausbildung:");
   private final JPanel panel_1 = new JPanel();
@@ -469,6 +460,9 @@ public class MainWindow extends JFrame {
     prepTimeBox = new JCheckBox("10 min Rüstzeit");
     
     deleteRegisteredShiftButton.addMouseListener(mouseAdapter);
+    editRegisteredShiftButton.addMouseListener(mouseAdapter);
+    
+    
 
     GroupLayout gl_shiftEditor = new GroupLayout(shiftEditor);
     gl_shiftEditor.setHorizontalGroup(
@@ -529,7 +523,9 @@ public class MainWindow extends JFrame {
     				.addGroup(gl_shiftEditor.createSequentialGroup()
     					.addGap(284)
     					.addComponent(createSalaryStatementButton)
-    					.addPreferredGap(ComponentPlacement.RELATED, 193, Short.MAX_VALUE)
+    					.addPreferredGap(ComponentPlacement.RELATED, 100, Short.MAX_VALUE)
+    					.addComponent(editRegisteredShiftButton)
+    					.addPreferredGap(ComponentPlacement.UNRELATED)
     					.addComponent(deleteRegisteredShiftButton)
     					.addPreferredGap(ComponentPlacement.RELATED)))
     			.addGap(0))
@@ -578,7 +574,8 @@ public class MainWindow extends JFrame {
     			.addPreferredGap(ComponentPlacement.RELATED)
     			.addGroup(gl_shiftEditor.createParallelGroup(Alignment.BASELINE)
     				.addComponent(createSalaryStatementButton)
-    				.addComponent(deleteRegisteredShiftButton))
+    				.addComponent(deleteRegisteredShiftButton)
+    				.addComponent(editRegisteredShiftButton))
     			.addContainerGap(24, Short.MAX_VALUE))
     );
     shiftTypeChooser.addItemListener(this.itemListener);

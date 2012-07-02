@@ -193,7 +193,25 @@ public class ShiftContainer {
 		
 		mainWindow.updateRegisteredShifts();
 	}
+    /**
+     * 
+     * @param number the number of the shift that is to be deleted (corresponds to its row in the table)
+     */
+    public void deleteShift(int number)
+    {
+    	if (number >= shiftInstances.size()) return;
+
+    	shiftInstances.remove(number);
+    	mainWindow.updateRegisteredShifts();
+    }
     
+    
+    public ShiftInstance getShift(int number)
+    {
+    	if (number >= shiftInstances.size()) return null;
+    	
+    	return shiftInstances.get(number);
+    }
     
     public static ShiftType getShiftTypeFromId(String id) {
       if (id.startsWith("KTW")) {
