@@ -191,6 +191,12 @@ public class AKRDMouseAdapter extends MouseAdapter {
 			return;
 		}
 		
+		// Delete registered Shift
+		if(source == mainWindow.deleteRegisteredShiftButton)
+		{
+			// TODO: 
+		}
+		
 		// Read DPL
 		if(source == mainWindow.read_DPL)
 		{
@@ -236,30 +242,35 @@ public class AKRDMouseAdapter extends MouseAdapter {
 				return;
 			}
 			
-			int blz = 0;
-			int account = 0;
-			try
-			{
-				blz = Integer.parseInt(mainWindow.blz.getText());
-				account = Integer.parseInt(mainWindow.accountNo.getText());
-			}
-			catch(NumberFormatException exeption)
-			{
-				UtilityBox.getInstance().displayErrorPopup("Fehler", "Bitte Bankdaten korrekt eingeben!");
-				return;
-			}
-			
-			String bankName = mainWindow.bankNameField.getText();
+			// check bank data (only if bankDataKnow is not checked)
 			
 			boolean dataKnown = mainWindow.bankInfoKnown.isSelected();
 			
-			
-			if(bankName.length() == 0)
-			{
-				UtilityBox.getInstance().displayErrorPopup("Fehler", "Bitte Bankdaten korrekt eingeben!");
-				return;
+			int blz = 0;
+			int account = 0;
+			String bankName = "";
+
+			if(!dataKnown) {
+				try
+				{
+					blz = Integer.parseInt(mainWindow.blz.getText());
+					account = Integer.parseInt(mainWindow.accountNo.getText());
+				}
+				catch(NumberFormatException exeption)
+				{
+					UtilityBox.getInstance().displayErrorPopup("Fehler", "Bitte Bankdaten korrekt eingeben!");
+					return;
+				}
+				
+				bankName = mainWindow.bankNameField.getText();
+				
+				if(bankName.length() == 0)
+				{
+					UtilityBox.getInstance().displayErrorPopup("Fehler", "Bitte Bankdaten korrekt eingeben!");
+					return;
+				}
 			}
-			
+
 			String gmail = mainWindow.gMailAdressField.getText();
 			String calID = mainWindow.calendarIDFiled.getText();
 			

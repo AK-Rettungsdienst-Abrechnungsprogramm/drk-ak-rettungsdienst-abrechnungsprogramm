@@ -30,8 +30,10 @@ public class AKRDItemListener implements ItemListener {
 		
 		// Deactivation of account info section
 		if (source == mainWindow.bankInfoKnown) {
+			// Toggle the isEditable property of all bank info fields
 			mainWindow.blz.setEditable(!mainWindow.blz.isEditable());
 			mainWindow.accountNo.setEditable(!mainWindow.accountNo.isEditable());
+			mainWindow.bankNameField.setEditable(!mainWindow.bankNameField.isEditable());
 			return;
 		}
 		
