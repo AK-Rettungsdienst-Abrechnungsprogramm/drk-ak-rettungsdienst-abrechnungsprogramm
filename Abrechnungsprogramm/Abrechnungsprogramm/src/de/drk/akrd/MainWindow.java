@@ -16,6 +16,7 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JTable;
+import javax.swing.event.ChangeEvent;
 import javax.swing.table.DefaultTableModel;
 
 import de.drk.akrd.ShiftContainer.ShiftType;
@@ -34,6 +35,8 @@ import javax.swing.border.EtchedBorder;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.border.TitledBorder;
+import javax.swing.JRadioButton;
+import javax.swing.event.ChangeListener;
 
 public class MainWindow extends JFrame {
 
@@ -56,8 +59,8 @@ public class MainWindow extends JFrame {
   protected JTextField blz = new JTextField();
   protected JCheckBox bankInfoKnown = new JCheckBox();
   protected final JTextField bankNameField = new JTextField();
-  protected JTextField gMailAdressField;
-  protected JTextField calendarIDFiled;
+  protected JTextField gMailAdressField = new JTextField();
+  protected JTextField calendarIDFiled = new JTextField();
   protected JButton personalInfoApply;
   // Shift Collector Components
   // This int holds the TYPE of day that is currently selected
@@ -137,7 +140,7 @@ public class MainWindow extends JFrame {
           "Dienste in Google Kalender eintragen");
 
   // DPL Fragebogen tab
-  private JPanel dplSurvey = new JPanel();
+  private final JPanel dplSurvey = new JPanel();
   private final JPanel importExportTab = new JPanel();
   private JButton importExportFileChooseButton;
   // Import/Export tab
@@ -240,11 +243,23 @@ public class MainWindow extends JFrame {
 
     JTabbedPane tabbedPane = new JTabbedPane();
 
+    // add Actionlistener to tabbedPane
+    tabbedPane.addChangeListener(new ChangeListener() {
+
+      @Override
+      public void stateChanged(ChangeEvent e) {
+        int selectedTab = ((JTabbedPane) e.getSource()).getSelectedIndex();
+        if ((selectedTab == 0)&&(PersonalData.getInstance().isDataSet())) {
+          loadPersonalData();
+        }
+      }
+    });
+    
     // Assebmle personal Layout
 
     bankInfoKnown.addItemListener(itemListener);
 
-    tabbedPane.addTab("Pers\u00F6nliche Info", null, personalInfoTab,
+    tabbedPane.addTab("Persönliche Info", null, personalInfoTab,
             "Persönliche Daten eingeben");
 
     JPanel panel_2 = new JPanel();
@@ -301,12 +316,10 @@ public class MainWindow extends JFrame {
 
     JLabel lblNewLabel_1 = new JLabel("Google Mail Adresse:");
 
-    gMailAdressField = new JTextField();
     gMailAdressField.setColumns(10);
 
     JLabel lblCalendarid = new JLabel("Calendar-ID:");
 
-    calendarIDFiled = new JTextField();
     calendarIDFiled.setColumns(10);
 
     JLabel lblNewLabel_2 = new JLabel("");
@@ -646,9 +659,12 @@ public class MainWindow extends JFrame {
     
     
     // Add Schichtenabgabe pane
-    
+    dplSurvey.setLayout(null);
+    ShiftFormTab sft = new ShiftFormTab(dplSurvey);
     tabbedPane.addTab("DPL Fragebogen", null, dplSurvey,
             "Dienstplan Fragebogen ausfüllen");
+    
+
     // Import/export pane
 
     tabbedPane.addTab("Import / Export", null, importExportTab, null);

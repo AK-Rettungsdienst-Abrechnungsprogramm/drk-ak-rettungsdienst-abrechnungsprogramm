@@ -83,7 +83,6 @@ public class ImportExport {
     // TODO: globale variable setzen, month ist hier 0=ganzes jahr, 1=januar...
     selectedShifts = new ArrayList<>();
     ArrayList<ShiftInstance> allShifts = mainWindow.shiftContainer.shiftInstances;
-    System.out.println(allShifts.size()+" schichten ausgewählt");
     boolean wholeYear = (month == 0)? true: false;
     try {
       for (int i = 0; i < allShifts.size(); i++) {
