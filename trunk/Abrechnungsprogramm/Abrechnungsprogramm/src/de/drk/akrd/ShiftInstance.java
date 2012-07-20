@@ -28,7 +28,7 @@ public class ShiftInstance implements Comparable<ShiftInstance> {
    * @param comment comment; maximal 36 characters
    */
   public ShiftInstance(ShiftContainer.ShiftType type, String dateString, int actualStartingTime, 
-          int actualEndTime, int actualBreakTime, String partner, String comment, boolean prepTime) {
+          int actualEndTime, int actualBreakTime, boolean prepTime, String partner, String comment) {
     this.type = type;
     this.dateString = dateString;
     try {

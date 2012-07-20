@@ -81,12 +81,6 @@ public class XMLEditor {
     return false;
   }
 
-  private static String getTagValue(String tag, Element element) {
-    /*NodeList nList = element.getElementsByTagName(tag).item(0).getChildNodes();
-    Node nValue = (Node) nList.item(0);*/
-    return "";//nValue.getNodeValue();
-  }
-
   /**
    * write the data in dataInstance to a xml-file named "PersonalData.xml"
    * @param dataInstance
@@ -252,8 +246,9 @@ public class XMLEditor {
                   Integer.parseInt(currentNode.getChildText("actStartingTime")),
                   Integer.parseInt(currentNode.getChildText("actEndTime")),
                   Integer.parseInt(currentNode.getChildText("actBreakTime")),
+                  Boolean.parseBoolean(currentNode.getChildText("preperationTime")),
                   currentNode.getChildText("partner"),
-                  currentNode.getChildText("comment"), true));
+                  currentNode.getChildText("comment")));
         }
     return returnList;
   }
@@ -284,18 +279,16 @@ public class XMLEditor {
           Element currentNode = findElement(rootNode.getChild("M" + month).getChildren(), shiftDateString + shiftIdString);
           // if no node for the shift exists add new node
           if (currentNode == null) {
-            System.out.println("add new shift:" + currentShift.getType().name() + " " + currentShift.getDateString());
             Element tempElement = new Element("Shift");
             ShiftInstance tempShiftInstance = shiftList.get(i);
             addShiftToElement(tempElement, tempShiftInstance);
             document.getRootElement().getChild("M" + month).addContent(tempElement);
           } // else update existing node
           else {
-            System.out.println("update shift: " + shiftDateString + shiftIdString);
             currentNode.getChild("actStartingTime").setText(Integer.toString(currentShift.getActualStartingTime()));
             currentNode.getChild("actEndTime").setText(Integer.toString(currentShift.getActualEndTime()));
             currentNode.getChild("actBreakTime").setText(Integer.toString(currentShift.getActualBreakTime()));
-            currentNode.getChild("timeAsFloat").setText(Float.toString(currentShift.getTimeAsFloat()));
+            currentNode.getChild("preparationTime").setText(Boolean.toString(currentShift.PreparationTimeSet()));
             currentNode.getChild("partner").setText(currentShift.getPartner());
             currentNode.getChild("comment").setText(currentShift.getComment());
           }
@@ -324,6 +317,7 @@ public class XMLEditor {
     element.addContent(new Element("actStartingTime").setText(Integer.toString(shift.getActualStartingTime())));
     element.addContent(new Element("actEndTime").setText(Integer.toString(shift.getActualEndTime())));
     element.addContent(new Element("actBreakTime").setText(Integer.toString(shift.getActualBreakTime())));
+    element.addContent(new Element("preperationTime").setText(Boolean.toString(shift.PreparationTimeSet())));
     element.addContent(new Element("partner").setText(shift.getPartner()));
     element.addContent(new Element("comment").setText(shift.getComment()));
   }
