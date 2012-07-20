@@ -174,7 +174,7 @@ public class ShiftContainer {
 		
 		float shiftAsFloat = endFloat - startingFloat - breakFloat;
 		
-		ShiftInstance entry = new ShiftInstance(type, date, actualStart, actualEnd, actualBreak, partner, comment, prepTime);
+		ShiftInstance entry = new ShiftInstance(type, date, actualStart, actualEnd, actualBreak, prepTime, partner, comment);
 		
 		shiftInstances.add(entry);
         Collections.sort(shiftInstances);
