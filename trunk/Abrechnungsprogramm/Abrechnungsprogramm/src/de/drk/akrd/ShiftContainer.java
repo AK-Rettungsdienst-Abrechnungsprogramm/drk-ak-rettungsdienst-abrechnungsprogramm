@@ -230,6 +230,7 @@ public class ShiftContainer {
           case "K":
             return ShiftContainer.ShiftType.KTW;
           case "R":
+          case "I":
             return ShiftContainer.ShiftType.RTW;
           case "B":
             return ShiftContainer.ShiftType.BREISACH;

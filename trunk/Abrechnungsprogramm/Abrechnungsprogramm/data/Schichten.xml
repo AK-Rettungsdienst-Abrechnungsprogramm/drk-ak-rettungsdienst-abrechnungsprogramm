@@ -297,6 +297,15 @@
     <Tage>Mo-So</Tage>
   </Schicht>
   <Schicht>
+    <ArtUndOrt>RD Freiburg</ArtUndOrt>
+    <von>800</von>
+    <bis>2000</bis>
+    <Pause>000</Pause>
+    <Schichtname>ITW</Schichtname>
+    <RuestzeitMin>010</RuestzeitMin>
+    <Tage>Mo-Fr</Tage>
+  </Schicht>
+  <Schicht>
     <ArtUndOrt>Breisach</ArtUndOrt>
     <von>700</von>
     <bis>1800</bis>
