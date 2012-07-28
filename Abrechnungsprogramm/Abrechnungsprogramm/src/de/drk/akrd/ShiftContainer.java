@@ -20,7 +20,7 @@ public class ShiftContainer {
             switch(name())
             {
             case "RTW":
-            	return "RTW";
+            	return "RTW & ITW";
             case "KTW":
             	return "KTW";
             case "KIZA":
