@@ -70,7 +70,7 @@ public class MainWindow extends JFrame {
   private JPanel shiftEditor = new JPanel();
   protected ShiftContainer shiftContainer = new ShiftContainer(this);
   protected JComboBox<ShiftContainer.ShiftType> shiftTypeChooser = new JComboBox<>();
-  protected boolean noShiftTypeUpdate = true;
+  protected boolean noShiftTypeUpdate = false;
   private final JLabel lblDatum = new JLabel("Datum");
   private final JLabel lblSchichtart = new JLabel("Schichtart");
   protected JTextField dateField;

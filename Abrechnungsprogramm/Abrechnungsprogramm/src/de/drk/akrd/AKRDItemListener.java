@@ -45,6 +45,7 @@ public class AKRDItemListener implements ItemListener {
 			// If override flag was set don't do anything
 			if(mainWindow.noShiftTypeUpdate)
 			{
+				System.out.print("Jello");
 				mainWindow.noShiftTypeUpdate = false;
 				return;
 			}
