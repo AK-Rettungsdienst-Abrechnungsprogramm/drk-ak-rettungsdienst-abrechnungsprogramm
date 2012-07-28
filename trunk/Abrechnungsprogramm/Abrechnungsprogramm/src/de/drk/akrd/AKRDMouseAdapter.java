@@ -176,7 +176,7 @@ public class AKRDMouseAdapter extends MouseAdapter {
 				return;
 			}
 			
-			if(partner.equals(""))
+			if(partner.equals("") && mainWindow.shiftTypeChooser.getSelectedItem() != ShiftContainer.ShiftType.KVS)
 			{
 				UtilityBox.getInstance().displayErrorPopup("Fehler", "Bitte Schichtpartner angeben!");
 				return;
