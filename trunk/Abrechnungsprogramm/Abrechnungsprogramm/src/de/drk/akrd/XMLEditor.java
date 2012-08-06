@@ -159,7 +159,7 @@ public class XMLEditor {
         Element node = (Element) nodeList.get(0);
         ArrayList<String> persData = new ArrayList<>();
         loadPersonalDataFromNode(node, persData);
-        PersonalData.getInstance().setData(
+        pd.setData(
                 persData.get(0),
                 persData.get(1),
                 persData.get(2),
