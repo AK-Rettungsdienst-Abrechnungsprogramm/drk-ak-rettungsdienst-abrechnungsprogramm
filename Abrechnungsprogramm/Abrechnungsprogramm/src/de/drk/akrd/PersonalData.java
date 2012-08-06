@@ -55,9 +55,6 @@ public class PersonalData {
     if ((instance == null)) {
       instance = new PersonalData();
       boolean loadingSuccessful = XMLEditor.loadPersonalData(instance);
-      if(!loadingSuccessful) {
-        return null;
-      }
     }
     return instance;
   }
