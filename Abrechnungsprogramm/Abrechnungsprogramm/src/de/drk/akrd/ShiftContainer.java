@@ -1,5 +1,6 @@
 package de.drk.akrd;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -133,6 +134,8 @@ public class ShiftContainer {
 	{
 		ArrayList<String[]> result = new ArrayList<String[]>();
 		
+		DecimalFormat df = new DecimalFormat("#0.00");
+		
 		for(int i=0; i < input.length; i++)
 		{
 			ArrayList<String> entry = new ArrayList<String>();
@@ -141,7 +144,7 @@ public class ShiftContainer {
 			entry.add(UtilityBox.createTimeStringFromInt(input[i].getActualStartingTimeWithPrepTime()));
 			entry.add(UtilityBox.createTimeStringFromInt(input[i].getActualEndTime()));
 			entry.add(UtilityBox.createTimeStringFromInt(input[i].getActualBreakTime()));
-			entry.add(Float.toString(input[i].getTimeAsFloat()));
+			entry.add(df.format(input[i].getTimeAsFloat()));
 			entry.add(input[i].getPartner());
 			entry.add(input[i].getComment());
 			
