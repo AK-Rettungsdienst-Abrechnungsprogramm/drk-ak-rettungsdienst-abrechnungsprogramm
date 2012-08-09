@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.io.FileWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Iterator;
 import org.jdom.output.XMLOutputter;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
@@ -215,28 +216,30 @@ public class XMLEditor {
 
   /**
    * load saved shifts from File "SchichtenYYYY.xml", YYYY is the year
+   * if no such file exists an empty list is returned
    * @param year
-   * @return ArrayList<ArrayList<ShiftInstance>>
-   * the List contains 12 ArrayList<ShiftInstance> where each stands for a month
+   * @return ArrayList<ShiftInstance>
    */
-  public static ArrayList<ArrayList<ShiftInstance>> loadSavedShifts(int year) {
+  public static ArrayList<ShiftInstance> loadSavedShifts(int year) {
     SAXBuilder saxBuilder = new SAXBuilder();
     File xmlFile = new File("Schichten" + year + ".xml");
     try {
-      ArrayList<ArrayList<ShiftInstance>> outputList = new ArrayList<>();
+      ArrayList<ShiftInstance> outputList = new ArrayList<>();
       Document document = (Document) saxBuilder.build(xmlFile);
       Element rootNode = document.getRootElement();
       List monthList = rootNode.getChildren();
       for (int i = 0; i < monthList.size(); i++) {
         Element monthNode = (Element) monthList.get(i);
         ArrayList<ShiftInstance> shiftListOfMonth = loadShiftsFromNode(monthNode);
-        outputList.add(shiftListOfMonth);
+        for (Iterator<ShiftInstance> it = shiftListOfMonth.iterator(); it.hasNext();) {
+          outputList.add(it.next());
+        }
       }
       return outputList;
     } catch (JDOMException | IOException | NumberFormatException e) {
       System.out.println("Exception in XMLEditor.loadSavedShifts: " + e.getMessage());
     }
-    return new ArrayList<ArrayList<ShiftInstance>>() {
+    return new ArrayList<ShiftInstance>() {
     };
   }
 
