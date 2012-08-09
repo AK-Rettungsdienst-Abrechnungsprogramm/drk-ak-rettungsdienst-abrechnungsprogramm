@@ -87,7 +87,8 @@ public class XMLEditor {
    * @return true if succesful, false otherwise
    */
   public static boolean writePersonalData(PersonalData dataInstance) {
-    File dataFile = new File("PersonalData.xml");
+    File dataFile = new File("data/PersonalData.xml");
+    boolean fileExists = dataFile.exists();
     try (FileWriter fileWriter = new FileWriter(dataFile)) {
       String[] elementNames = new String[]{"firstName", "lastName",
         "bankaccountAndCity", "accountNumber", "blz", "qualification", "dataKnown", "emailAdress", "calendarId"};
@@ -109,7 +110,11 @@ public class XMLEditor {
       fileWriter.write("</personalData>" + System.getProperty("line.separator"));
       fileWriter.flush();
       return true;
-    } catch (IOException e) {
+    } catch (IOException | NullPointerException e) {
+      // if the file didn't exist before delete the new, empty file
+      if (!fileExists) {
+        dataFile.delete();
+      }
       UtilityBox.getInstance().displayErrorPopup("Persönliche Daten", "Fehler beim Speichern der Daten:\n"+e.getMessage());
     }
     return false;
@@ -142,7 +147,7 @@ public class XMLEditor {
    * @return true if successful, false othewise (i.e. file not found)
    */
   public static boolean loadPersonalData(PersonalData pd) {
-    File dataFile = new File("PersonalData.xml");
+    File dataFile = new File("data/PersonalData.xml");
     if (dataFile.exists()) {
       SAXBuilder saxBuilder = new SAXBuilder();
       try {
