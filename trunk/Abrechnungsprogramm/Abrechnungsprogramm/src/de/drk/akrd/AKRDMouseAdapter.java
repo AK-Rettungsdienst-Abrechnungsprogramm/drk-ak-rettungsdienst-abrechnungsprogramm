@@ -198,7 +198,10 @@ public class AKRDMouseAdapter extends MouseAdapter {
 			// get the currently selected shift number (== rowNumber=)
 			int selectedRow = mainWindow.registeredShiftsTable.getSelectedRow();
 			
+			if(selectedRow == -1) return;
 			mainWindow.shiftContainer.deleteShift(selectedRow);
+			
+			return;
 		}
 		
 		// Edit registered Shift
@@ -264,6 +267,12 @@ public class AKRDMouseAdapter extends MouseAdapter {
 			if(firstName.length() == 0 || lastName.length() == 0)
 			{
 				UtilityBox.getInstance().displayErrorPopup("Fehler", "Bitte Namen korrekt eingeben!");
+				return;
+			}
+			
+			if(quali == null)
+			{
+				UtilityBox.getInstance().displayErrorPopup("Fehler", "Bitte Ausbildung auswählen!");
 				return;
 			}
 			
