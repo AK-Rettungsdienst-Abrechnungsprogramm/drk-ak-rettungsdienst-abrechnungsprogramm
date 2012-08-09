@@ -114,7 +114,7 @@ public class PersonalData {
     if (dataKnown.equals("true")) {
       isDataKnown = true;
     }
-    PersonalData.getInstance().setData(
+    boolean success = PersonalData.getInstance().setData(
             firstName,
             lastName,
             bankNameAndCity,
@@ -123,7 +123,7 @@ public class PersonalData {
             isDataKnown,
             emailAdress,
             calendarId);
-    return true;
+    return success;
   }
 
   /**
