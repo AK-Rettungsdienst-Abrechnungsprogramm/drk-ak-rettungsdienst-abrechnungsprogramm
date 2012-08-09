@@ -40,6 +40,7 @@ public class AKRDMouseAdapter extends MouseAdapter {
 	public AKRDMouseAdapter(MainWindow mainWindow) {
 		this.mainWindow = mainWindow;
 
+		this.calendar.setLocale(java.util.Locale.GERMANY);
 		apply.addMouseListener(this);
 		closePopup.addMouseListener(this);
 	}
@@ -143,6 +144,12 @@ public class AKRDMouseAdapter extends MouseAdapter {
 			int end = 0;
 			int breakTime = 0;
 
+			// check if personal data was set
+			if(!PersonalData.getInstance().isDataSet()){
+				UtilityBox.getInstance().displayErrorPopup("Fehler", "Bitte persönliche Daten eintragen und übernehmen!\nSonst kann dein Gehalt nicht berechnet werden ;-)");
+				return;
+			}
+			
 			// if no type was selected, display error
 			if (mainWindow.shiftTypeChooser.getSelectedItem() == ShiftContainer.ShiftType.Alle)
 			{

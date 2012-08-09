@@ -265,7 +265,11 @@ public class MainWindow extends JFrame {
     JPanel panel_2 = new JPanel();
     panel_2.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 
-    personalInfoApply = new JButton("Änderungen Speichern");
+    personalInfoApply = new JButton("Änderungen Übernehmen");
+    personalInfoApply.addActionListener(new ActionListener() {
+    	public void actionPerformed(ActionEvent arg0) {
+    	}
+    });
     personalInfoApply.addMouseListener(mouseAdapter);
     GroupLayout gl_personalInfoTab = new GroupLayout(personalInfoTab);
     gl_personalInfoTab.setHorizontalGroup(gl_personalInfoTab.createParallelGroup(Alignment.LEADING).addGroup(
