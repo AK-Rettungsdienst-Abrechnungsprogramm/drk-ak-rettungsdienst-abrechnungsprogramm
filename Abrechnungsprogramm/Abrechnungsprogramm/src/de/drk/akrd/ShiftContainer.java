@@ -2,6 +2,7 @@ package de.drk.akrd;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 
 
@@ -10,7 +11,7 @@ public class ShiftContainer {
 	
 	// a pointer to the posessing mainWindow
 	private MainWindow mainWindow;
-	
+	private Calendar calendar = Calendar.getInstance();
 	private static ArrayList<Shift> shifts = new ArrayList<>();
     public enum ShiftType {Alle, RTW, KTW, KIZA, BREISACH, BABY, EVENT, KVS;
     	
@@ -181,22 +182,27 @@ public class ShiftContainer {
 		
 		shiftInstances.add(entry);
         Collections.sort(shiftInstances);
-		
+		// save new ShiftList
+        calendar.setTime(entry.getDate());
+        ShiftLoadSave.saveShifts(shiftInstances, calendar.get(Calendar.YEAR));
 		mainWindow.updateRegisteredShifts();
 		
 	}
     /**
      * add a list of shifts to the shiftInstances
      * @param shifts ArrayList<ShiftInstance>
+     * @param saveShifts write or not write a new saved-shifts-file
      * @author Jo
      */
-    protected void registerShift(ArrayList<ShiftInstance> shifts)
-	{
-        shiftInstances.addAll(shifts);
-        Collections.sort(shiftInstances);
-		
-		mainWindow.updateRegisteredShifts();
-	}
+  protected void registerShift(ArrayList<ShiftInstance> shifts, boolean saveShifts) {
+    shiftInstances.addAll(shifts);
+    Collections.sort(shiftInstances);
+    if (saveShifts) {
+      calendar.setTime(shifts.get(0).getDate());
+      ShiftLoadSave.saveShifts(shiftInstances, calendar.get(Calendar.YEAR));
+    }
+    mainWindow.updateRegisteredShifts();
+  }
     /**
      * 
      * @param number the number of the shift that is to be deleted (corresponds to its row in the table)
