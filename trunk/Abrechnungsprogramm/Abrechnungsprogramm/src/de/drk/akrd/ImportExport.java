@@ -51,7 +51,7 @@ public class ImportExport {
       ub.displayInfoPopup("Import", "Keine Schichten ausgewählt.");
       return false;
     }
-    mainWindow.shiftContainer.registerShift(selectedShifts);
+    mainWindow.shiftContainer.registerShift(selectedShifts, true);
     if (importedPersData!=null) {
       overwritePersonalData();
     }

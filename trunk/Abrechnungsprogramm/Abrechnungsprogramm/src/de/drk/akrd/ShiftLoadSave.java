@@ -4,8 +4,11 @@
  */
 package de.drk.akrd;
 
+import java.io.File;
+import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import sun.security.jca.GetInstance;
 
 /**
  *
@@ -18,26 +21,39 @@ public class ShiftLoadSave {
    * @param shifts
    * @return 
    */
-  public static boolean saveShifts(ArrayList<ShiftInstance> shifts) {
-    ArrayList<ArrayList<ShiftInstance>> yearLists = new ArrayList<>();
-    ArrayList<Integer> years = new ArrayList<>();
-    int currentYear = 0;
-    ArrayList<ShiftInstance> currentList = new ArrayList<>();
+  public static boolean saveShifts(ArrayList<ShiftInstance> shifts, int year) {
+    ArrayList<ShiftInstance> yearList = new ArrayList<>();
     for (int i = 0; i < shifts.size(); i++) {
       ShiftInstance shiftInstance = shifts.get(i);
       calendar.setTime(shiftInstance.getDate());
       int shiftYear = calendar.get(Calendar.YEAR);
-      if (shiftYear != currentYear) {
-        if (!currentList.isEmpty()) {
-          yearLists.add(currentList);
-          currentList = new ArrayList<>();
-        }
-        currentYear = shiftYear;
+      if (shiftYear == year) {
+        yearList.add(shiftInstance);
       }
-      currentList.add(shiftInstance);
     }
-    
-    System.out.print("bla\n");
+    XMLEditor.storeShifts(yearList, year);
     return true;
+  }
+  
+  public static ArrayList<ShiftInstance> loadSavedShifts() {
+    ArrayList<ShiftInstance> loadedShifts = new ArrayList<>();
+    File dir = new File("data");
+    String[] fileList = dir.list(new FilenameFilter() {
+      public boolean accept(File d, String name) {
+        return (name.startsWith("Schichten") && name.endsWith(".xml") && name.length()==17);
+      }
+    });
+    System.out.println("filelist length: "+fileList.length);
+    if (fileList != null) {
+      for (String string : fileList) {
+        System.out.println("substring: "+string.substring(9, 13));
+        int year = Integer.parseInt(string.substring(9, 13));
+        ArrayList<ShiftInstance> tempList = XMLEditor.loadSavedShifts(year);
+        for (ShiftInstance shiftInstance : tempList) {
+          loadedShifts.add(shiftInstance);
+        }
+      }
+    }
+    return loadedShifts;
   }
 }

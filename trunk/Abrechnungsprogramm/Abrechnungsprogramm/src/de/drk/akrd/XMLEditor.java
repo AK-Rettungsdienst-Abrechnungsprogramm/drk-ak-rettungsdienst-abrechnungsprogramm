@@ -222,7 +222,7 @@ public class XMLEditor {
    */
   public static ArrayList<ShiftInstance> loadSavedShifts(int year) {
     SAXBuilder saxBuilder = new SAXBuilder();
-    File xmlFile = new File("Schichten" + year + ".xml");
+    File xmlFile = new File("data/Schichten" + year + ".xml");
     try {
       ArrayList<ShiftInstance> outputList = new ArrayList<>();
       Document document = (Document) saxBuilder.build(xmlFile);
@@ -254,7 +254,7 @@ public class XMLEditor {
                   Integer.parseInt(currentNode.getChildText("actStartingTime")),
                   Integer.parseInt(currentNode.getChildText("actEndTime")),
                   Integer.parseInt(currentNode.getChildText("actBreakTime")),
-                  Boolean.parseBoolean(currentNode.getChildText("preperationTime")),
+                  Boolean.parseBoolean(currentNode.getChildText("preparationTime")),
                   currentNode.getChildText("partner"),
                   currentNode.getChildText("comment")));
         }
@@ -269,11 +269,11 @@ public class XMLEditor {
    */
   public static boolean storeShifts(ArrayList<ShiftInstance> shiftList, int year) {
     String documentName = "Schichten" + year;
-    String fileName = documentName + ".xml";
+    String fileName = "data/" + documentName + ".xml";
     try {
       SAXBuilder saxBuilder = new SAXBuilder();
       File xmlFile = new File(fileName);
-      if (!xmlFile.exists()) {
+      if (/*!xmlFile.exists()*/true) { // TODO: übergangslösung: es wird immer ein neues file angelegt
         return storeShiftsInNewFile(shiftList, documentName);
       } else {
         Document document = (Document) saxBuilder.build(xmlFile);
@@ -325,7 +325,7 @@ public class XMLEditor {
     element.addContent(new Element("actStartingTime").setText(Integer.toString(shift.getActualStartingTime())));
     element.addContent(new Element("actEndTime").setText(Integer.toString(shift.getActualEndTime())));
     element.addContent(new Element("actBreakTime").setText(Integer.toString(shift.getActualBreakTime())));
-    element.addContent(new Element("preperationTime").setText(Boolean.toString(shift.PreparationTimeSet())));
+    element.addContent(new Element("preparationTime").setText(Boolean.toString(shift.PreparationTimeSet())));
     element.addContent(new Element("partner").setText(shift.getPartner()));
     element.addContent(new Element("comment").setText(shift.getComment()));
   }
@@ -373,7 +373,7 @@ public class XMLEditor {
         document.getRootElement().getChild("M" + month).addContent(tempElement);
       }
       XMLOutputter xmlOutput = new XMLOutputter();
-      xmlOutput.output(document, new FileWriter(documentName + ".xml"));
+      xmlOutput.output(document, new FileWriter("data/" + documentName + ".xml"));
 
       return true;
     } catch (ParseException ex) {

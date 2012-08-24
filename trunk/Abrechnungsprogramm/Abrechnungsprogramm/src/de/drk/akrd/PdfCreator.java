@@ -477,7 +477,6 @@ public class PdfCreator {
           timeSumAsFloat += currentShift.getTimeAsFloat();
           salaryPerHour = euroFormat.format(salary)+ " €";
           shiftSalary = euroFormat.format(currentShift.getTimeAsFloat() * salary)+" €";
-          salarySum += currentShift.getTimeAsFloat() * salary;
           comment = currentShift.getComment();
           int commentLength = comment.length();
           if (commentLength > 10) {
@@ -492,6 +491,9 @@ public class PdfCreator {
             }
           }
         }
+        //calculate the complete salary
+        salarySum = timeSumAsFloat * salary;
+
         PdfPCell tempCell = emptyPdfPCell();
         Paragraph content = new Paragraph(date, helveticaFont9);
         tempCell.addElement(content);
@@ -582,7 +584,7 @@ public class PdfCreator {
       // 
       PdfPTable table10 = new PdfPTable(3);
       table10.setWidthPercentage(100);
-      table10.setWidths(new int[]{138, 194, 115});
+      table10.setWidths(new int[]{5, 6, 8});
       PdfPCell cell49 = new PdfPCell(new Paragraph("Eingang RDL", helveticaFont10));
       cell49.setVerticalAlignment(Rectangle.ALIGN_TOP);
       cell49.setHorizontalAlignment(Rectangle.ALIGN_LEFT);
@@ -617,13 +619,13 @@ public class PdfCreator {
       // Version/Author
       PdfPTable table11 = new PdfPTable(4);
       table11.setWidthPercentage(100);
-      table11.addCell(new PdfPCell(new Paragraph("Version 4.0", helveticaFont9)));
+      table11.addCell(new PdfPCell(new Paragraph("Version 4.1", helveticaFont9)));
       table11.addCell(new PdfPCell(new Paragraph("Erstellt:", helveticaFont9)));
       table11.addCell(new PdfPCell(new Paragraph("Freigegeben:", helveticaFont9)));
       table11.addCell(new PdfPCell(new Paragraph("Seite 1 von 1", helveticaFont9)));
-      table11.addCell(new PdfPCell(new Paragraph("Stand:", helveticaFont9)));
-      table11.addCell(new PdfPCell(new Paragraph("B.Sakschewski", helveticaFont9)));
-      table11.addCell(new PdfPCell());
+      table11.addCell(new PdfPCell(new Paragraph("Stand: 24.08.2012", helveticaFont9)));
+      table11.addCell(new PdfPCell(new Paragraph("B. Sakschewski, J. Güttler", helveticaFont9)));
+      table11.addCell(new PdfPCell(new Paragraph("Schäfer-Mai", helveticaFont9)));
       table11.addCell(new PdfPCell());
 
       // add tables to document
