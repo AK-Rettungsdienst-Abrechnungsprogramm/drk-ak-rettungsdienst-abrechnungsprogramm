@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Calendar;
-import sun.security.jca.GetInstance;
 
 /**
  *
@@ -34,7 +33,11 @@ public class ShiftLoadSave {
     XMLEditor.storeShifts(yearList, year);
     return true;
   }
-  
+  /**
+   * finds all files with saved shifts and calls the load-function from
+   * XMLEditor
+   * @return ArrayList<ShiftInstance> of all saved shifts
+   */
   public static ArrayList<ShiftInstance> loadSavedShifts() {
     ArrayList<ShiftInstance> loadedShifts = new ArrayList<>();
     File dir = new File("data");
@@ -43,10 +46,8 @@ public class ShiftLoadSave {
         return (name.startsWith("Schichten") && name.endsWith(".xml") && name.length()==17);
       }
     });
-    System.out.println("filelist length: "+fileList.length);
     if (fileList != null) {
       for (String string : fileList) {
-        System.out.println("substring: "+string.substring(9, 13));
         int year = Integer.parseInt(string.substring(9, 13));
         ArrayList<ShiftInstance> tempList = XMLEditor.loadSavedShifts(year);
         for (ShiftInstance shiftInstance : tempList) {
