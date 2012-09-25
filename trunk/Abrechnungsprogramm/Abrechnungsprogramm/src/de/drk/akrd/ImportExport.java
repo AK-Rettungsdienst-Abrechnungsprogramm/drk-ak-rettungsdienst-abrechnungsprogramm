@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package de.drk.akrd;
 
 import java.text.ParseException;
@@ -9,11 +5,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
+ * Manage the ImportExport-window defined in MainWindow
  * @author Jo
  */
 public class ImportExport {
@@ -34,6 +29,10 @@ public class ImportExport {
     }
     return INSTANCE;
   }
+  /**
+   * Write displayed (selected) shifts t an XML-file using XMLEditor Class
+   * @return true is success
+   */
   public boolean exportSelected() {
     UtilityBox ub = UtilityBox.getInstance();
     if (selectedShifts.isEmpty()) {
@@ -45,6 +44,10 @@ public class ImportExport {
     return true;
   }
 
+  /**
+   * Import displayed (selected) shifts to the global shiftlist
+   * @return true if success
+   */
   public boolean importSelected() {
     UtilityBox ub = UtilityBox.getInstance();
     if (selectedShifts.isEmpty()) {
@@ -59,6 +62,11 @@ public class ImportExport {
     return true;
   }
 
+  /**
+   * Questiondialog weather the user wants to overwrite the stored personal
+   * data with the imported data.
+   * If so, overwrites the stored data.
+   */
   private void overwritePersonalData() {
     PersonalData pd = PersonalData.getInstance();
     if(UtilityBox.getInstance().displayYesNoPopup("Import",
@@ -79,6 +87,12 @@ public class ImportExport {
     }
     
   }
+  /**
+   * Set selected shifts, calls fillList
+   * @param shiftTableModel
+   * @param month 0=full year, 1=january...
+   * @param year 
+   */
   public void setSelected(DefaultTableModel shiftTableModel, int month, int year) {
     // TODO: globale variable setzen, month ist hier 0=ganzes jahr, 1=januar...
     selectedShifts = new ArrayList<>();
@@ -90,7 +104,6 @@ public class ImportExport {
         calendar.setTime(sdf.parse(shiftInstance.getDateString()));
         if ((wholeYear || (calendar.get(Calendar.MONTH) == (month - 1))) && (calendar.get(Calendar.YEAR) == selectableYears[year])) {
           selectedShifts.add(shiftInstance);
-          System.out.println("add shift");
         }
       }
     } catch (ParseException ex) {
@@ -129,6 +142,11 @@ public class ImportExport {
     // TODO: savedialog
   }
 
+  /**
+   * FileChooser-dialog to select an XML-inputfile
+   * @param shiftTableModel
+   * @return path to the selected file
+   */
   public String selectImportFile(DefaultTableModel shiftTableModel) {
     String filePath = UtilityBox.getInstance().getFilePathFromFileCooser("xml", "XML-Dateien", System.getProperty("user.dir"));
     importedPersData = new ArrayList<>();
@@ -137,10 +155,27 @@ public class ImportExport {
     return filePath;
   }
 
+  /**
+   * Return a String[] filled with selectable years
+   * and set selectableYears-array
+   * @return String[]
+   */
   public String[] getYearStrings() {
     calendar.setTime(new Date());
-    int currentYear = calendar.get(Calendar.YEAR);
-    selectableYears = new int[]{currentYear-1, currentYear};
-    return new String[]{Integer.toString(currentYear - 1), Integer.toString(currentYear)};
+//    int currentYear = calendar.get(Calendar.YEAR);
+//    selectableYears = new int[]{currentYear-1, currentYear};
+    // TODO: alle jahre von denen schichten existieren
+    ArrayList<Integer> yearList = ShiftContainer.getSortedYearList();
+    int nYears = yearList.size();
+    selectableYears = new int[nYears];
+    for (int i = 0; i < nYears; i++) {
+      selectableYears[i] = yearList.get(i);
+    }
+    String[] yearStrings = new String[nYears];
+    for (int i = 0; i<nYears; i++){
+      Integer integer = yearList.get(i);
+      yearStrings[i] = integer.toString();
+    }
+    return yearStrings;
   }
 }

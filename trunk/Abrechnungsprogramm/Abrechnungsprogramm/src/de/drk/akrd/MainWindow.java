@@ -703,7 +703,7 @@ public class MainWindow extends JFrame {
     exportYearComboBox.setModel(new DefaultComboBoxModel(importExport.getYearStrings()));
     exportYearComboBox.setBounds(147, 19, 90, 20);
     exportYearComboBox.addActionListener(setSelectetImportExportShifts);
-    exportYearComboBox.setSelectedIndex(1);
+    exportYearComboBox.setSelectedIndex(0);
     exportPanel.add(exportYearComboBox);
     
     JButton exportButton = new JButton("Exportieren");
