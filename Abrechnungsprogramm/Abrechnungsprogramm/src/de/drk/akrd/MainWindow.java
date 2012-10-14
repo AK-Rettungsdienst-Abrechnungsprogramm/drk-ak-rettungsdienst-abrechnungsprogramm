@@ -834,7 +834,11 @@ public class MainWindow extends JFrame {
     dplTableModel.setNumRows(0);
 
     Calendar cal = Calendar.getInstance();
-
+    
+    // if parsing failed return
+    if ((shifts == null) || (shiftDates == null)) {
+      return;
+    }
     for (int i = 0; i < shifts.length; i++) {
       // Assemble date string
       String startingTime = UtilityBox.createTimeStringFromInt(shifts[i].getStartingTime());
