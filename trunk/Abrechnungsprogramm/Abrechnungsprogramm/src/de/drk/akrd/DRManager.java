@@ -78,6 +78,7 @@ public class DRManager {
       if (!endingTimeStrings[i].equals("0h00")) {
         if (shiftDatesIterator >= shiftDates.length) {
           parsingFailed("Ungültige Dateiformatierung");
+          return;
         }
         shiftDates[shiftDatesIterator] = i + 1;
         shiftDatesIterator++;
@@ -152,9 +153,9 @@ private static String getPdfFilePath() {
         returnArray = getStings(tempFile);
       }
       // delete the temporary file
-//      if (!tempFile.delete()) {
-//        System.out.println("Deletation of temp-file in DRManager.parsePDF failed.");
-//      }
+      if (!tempFile.delete()) {
+        System.out.println("Deletation of temp-file in DRManager.parsePDF failed.");
+      }
 
     } catch (IOException ex) {
       parsingFailed(ex.getMessage());
