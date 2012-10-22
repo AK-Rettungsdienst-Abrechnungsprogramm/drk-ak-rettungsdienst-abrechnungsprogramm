@@ -144,6 +144,13 @@ public class UtilityBox {
         return "Dezember";
     }
   }
+  /**
+   * returns the first 2 letters of the german dayname
+   * i.e. for the input Calendar.MONDAY the function will return "Mo".
+   * Default: ""
+   * @param dayOfWeek Calendar.dayname
+   * @return first two letters of german dayname
+   */
   public static String getDayOfWeekString(int dayOfWeek) {
     switch (dayOfWeek) {
       case Calendar.MONDAY:
