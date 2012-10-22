@@ -107,7 +107,10 @@ public class DRManager {
 //      System.out.println("Schicht " + i + ": " + shift.getId() + " am " + shiftDates[i] + "." + (month + 1) + "." + year);
 //    }
   }
-
+/**
+   * open fileChooser dialog to select a dutyrota-file
+   * @return filepath
+   */
 private static String getPdfFilePath() {
   JFileChooser fileChooser = new JFileChooser(new File(System.getProperty("user.dir")));
   fileChooser.setMultiSelectionEnabled(false);
@@ -222,6 +225,10 @@ private static String getPdfFilePath() {
     }
   }
 
+  /**
+   * display errormessage(parsing failed)
+   * @param message 
+   */
   private static void parsingFailed(String message) {
     UtilityBox.getInstance().displayErrorPopup("Fehler beim Lesen des Dienstplans", message);
   }
@@ -242,5 +249,4 @@ private static String getPdfFilePath() {
   public Shift[] getSavedShifts() {
     return savedShifts;
   }
-  
 }

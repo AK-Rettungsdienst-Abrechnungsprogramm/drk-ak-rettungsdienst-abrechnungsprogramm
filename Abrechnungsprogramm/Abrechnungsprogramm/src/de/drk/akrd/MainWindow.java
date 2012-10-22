@@ -846,7 +846,7 @@ public class MainWindow extends JFrame {
       cal.setTime(shiftDates[i]);
       String dateString = Integer.toString(cal.get(Calendar.DAY_OF_MONTH))
               + "."
-              + Integer.toString(cal.get(Calendar.MONTH))
+              + Integer.toString(cal.get(Calendar.MONTH)+1)
               + "."
               + Integer.toString(cal.get(Calendar.YEAR));
       Object[] entry = new Object[]{dateString, shifts[i].getId(),
