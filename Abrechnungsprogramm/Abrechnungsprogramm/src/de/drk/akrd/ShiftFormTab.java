@@ -1,6 +1,6 @@
 package de.drk.akrd;
 
-import java.awt.CheckboxGroup;
+import java.awt.event.ItemEvent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JButton;
@@ -8,7 +8,6 @@ import javax.swing.JTextField;
 import javax.swing.AbstractAction;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -16,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
-import java.util.Iterator;
+import java.util.Random;
 import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
@@ -24,13 +23,13 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
+import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 public class ShiftFormTab extends JFrame {
 
   //private JPanel panel;
-  private final Action cancel = new SwingAction();
+  private final Action cancel = new ResetForm();
   private final Action create = new CreateShiftForm();
   private DefaultTableModel dayTableModel = new DefaultTableModel(
           new Object[][]{}, new String[]{""}) {
@@ -43,11 +42,12 @@ public class ShiftFormTab extends JFrame {
       return false;
     }
   };
+  private final JComboBox MonthComboBox;
+  private final JComboBox YearComboBox;
   private JTextField maxShiftsField;
   private JTextField mentor3rdPosField;
   private JTextField mentor2ndPosField;
   private ArrayList<ButtonGroup> allButtonGroups = new ArrayList<>();
-  private ArrayList<ButtonGroup> monthButtonGroups = new ArrayList<>();
   private ArrayList<JLabel> allLabels = new ArrayList<>();
   private Calendar calendar = Calendar.getInstance();
   private int amountDaysPreviousMonth = 0;
@@ -55,8 +55,6 @@ public class ShiftFormTab extends JFrame {
 
   public ShiftFormTab(final JPanel panel) {
     //panel = jpanel;
-    final JComboBox MonthComboBox;
-    final JComboBox YearComboBox;
     calendar.setTime(new Date());
     int currentYear = calendar.get(Calendar.YEAR);
     int currentMonth = calendar.get(Calendar.MONTH);
@@ -70,12 +68,12 @@ public class ShiftFormTab extends JFrame {
     MonthComboBox.setModel(new DefaultComboBoxModel(new String[]{"Januar",
               "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September",
               "Oktober", "November", "Dezember"}));
-    MonthComboBox.setBounds(10, 11, 78, 20);
+    MonthComboBox.setBounds(10, 11, 90, 20);
     MonthComboBox.setSelectedIndex((currentMonth < 11) ? (currentMonth + 1) : 0);
 
     YearComboBox = new JComboBox();
     YearComboBox.setModel(new DefaultComboBoxModel(new String[]{Integer.toString(currentYear), Integer.toString(currentYear + 1)}));
-    YearComboBox.setBounds(98, 11, 85, 20);
+    YearComboBox.setBounds(110, 11, 85, 20);
     YearComboBox.setSelectedIndex((currentMonth < 11) ? 0 : 1);
 
     // create Action listener for both comboboxes
@@ -101,41 +99,39 @@ public class ShiftFormTab extends JFrame {
     maxShiftsField.setColumns(10);
 
     JLabel lblMentorenschichten = new JLabel("Mentorenschichten:");
-    lblMentorenschichten.setBounds(10, 427, 150, 14);
+    lblMentorenschichten.setBounds(400, 14, 150, 14);
     panel.add(lblMentorenschichten);
     // Mentor-shifts 3. Pos
     mentor3rdPosField = new JTextField();
-    mentor3rdPosField.setBounds(130, 421, 43, 20);
+    mentor3rdPosField.setBounds(565, 11, 43, 20);
     panel.add(mentor3rdPosField);
     mentor3rdPosField.setColumns(10);
-    JLabel lblPos = new JLabel("3. Pos.");
-    lblPos.setBounds(130, 405, 46, 14);
+    JLabel lblPos = new JLabel("3. Pos.:");
+    lblPos.setBounds(520, 14, 46, 14);
     panel.add(lblPos);
 
     // Mentor-shifts 2. Pos
     mentor2ndPosField = new JTextField();
     mentor2ndPosField.setColumns(10);
-    mentor2ndPosField.setBounds(178, 421, 43, 20);
+    mentor2ndPosField.setBounds(660, 11, 43, 20);
     panel.add(mentor2ndPosField);
-    JLabel lblPos_1 = new JLabel("2. Pos.");
-    lblPos_1.setBounds(178, 405, 46, 14);
+    JLabel lblPos_1 = new JLabel("2. Pos.:");
+    lblPos_1.setBounds(615, 14, 46, 14);
     panel.add(lblPos_1);
 
     JButton btnAusgeben = new JButton("Ausgeben");
-    btnAusgeben.setBounds(305, 452, 89, 23);
+    btnAusgeben.setBounds(450, 506, 120, 23);
+    btnAusgeben.addActionListener(create);
     panel.add(btnAusgeben);
 
     JButton btnZurcksetzen = new JButton("Zurücksetzen");
-    btnZurcksetzen.setBounds(20, 452, 104, 23);
+    btnZurcksetzen.setBounds(200, 506, 120, 23);
+    btnZurcksetzen.addActionListener(cancel);
     panel.add(btnZurcksetzen);
-
-    JButton btnAbbrechen = new JButton("Abbrechen");
-    btnAbbrechen.setBounds(209, 452, 89, 23);
-    panel.add(btnAbbrechen);
 
     // initialize radiogroups
     calendar.add(Calendar.MONTH, 1);
-    addWeeksToPanel(calendar.get(Calendar.MONTH), calendar.get(Calendar.MONTH), panel);
+    addWeeksToPanel(calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR), panel);
   }
 
   /**
@@ -148,6 +144,7 @@ public class ShiftFormTab extends JFrame {
    */
   private void addWeeksToPanel(int month, int year, JPanel panel) {
 
+    System.out.println("aufruf mit: month: " + month + "; year: " + year);
     // step 1 remove all labels and radiogroups from panel
     for (int i = 0; i < allButtonGroups.size(); i++) {
       Enumeration<AbstractButton> e = allButtonGroups.get(i).getElements();
@@ -155,6 +152,14 @@ public class ShiftFormTab extends JFrame {
         AbstractButton abstractButton = e.nextElement();
         abstractButton.setVisible(false);
         panel.remove(abstractButton);
+      }
+    }
+    for (int i = 0; i < allButtonGroups.size(); i++) {
+      ButtonGroup buttonGroup = allButtonGroups.get(i);
+      Enumeration<AbstractButton> buttons = buttonGroup.getElements();
+      while (buttons.hasMoreElements()) {
+        AbstractButton abstractButton = buttons.nextElement();
+        buttonGroup.remove(abstractButton);
       }
     }
     allButtonGroups.clear();
@@ -178,28 +183,50 @@ public class ShiftFormTab extends JFrame {
     int x = 10;
     int y = 38;
     int i = 0;
-    while ((calendar.get(Calendar.MONTH) <= month) && !((month == 11) && (calendar.get(Calendar.MONTH) == 0))) {
-      addRadioButtonGroupToPanel(calendar.getTime(), x, y, panel);
-      System.out.println("Add radiogroup:" + UtilityBox.getFormattedDateString(calendar.getTime()));
-      calendar.add(Calendar.DATE, 1);
-      y += 25;
-      i++;
-      if (i > ((-amountDaysPreviousMonth + nMonthDays) / 2)) {
+    // add checkboxgroups to panel
+    for (int j = 0; j < 6; j++) {
+      JPanel weekPanel = new JPanel();
+      String panelTitle = "KW" + calendar.get(Calendar.WEEK_OF_YEAR);
+      weekPanel.setBorder(new TitledBorder(null, panelTitle, TitledBorder.LEADING, TitledBorder.TOP, null, null));
+      weekPanel.setBounds(x, y, 350, 154);
+      weekPanel.setLayout(null);
+      int xCheckboxGroup = 15;
+      int yCheckboxGroup = 17;
+      for (int k = 0; k < 7; k++) {
+        boolean active = (calendar.get(Calendar.MONTH) == month) ? true : false;
+        addCheckboxGroupToPanel(calendar.getTime(), xCheckboxGroup, yCheckboxGroup, weekPanel, active);
+        yCheckboxGroup += 19;
+        calendar.add(Calendar.DATE, 1);
+      }
+      y += 155;
+      panel.add(weekPanel);
+      if (j == 2) {
         x = 400;
         y = 38;
-        i = -100;
       }
     }
+//    while ((calendar.get(Calendar.MONTH) <= month) && !((month == 11) && (calendar.get(Calendar.MONTH) == 0))) {
+//      addRadioButtonGroupToPanel(calendar.getTime(), x, y, panel);
+//      System.out.println("Add radiogroup:" + UtilityBox.getFormattedDateString(calendar.getTime()));
+//      calendar.add(Calendar.DATE, 1);
+//      y += 25;
+//      i++;
+//      if (i > ((-amountDaysPreviousMonth + nMonthDays) / 2)) {
+//        x = 400;
+//        y = 38;
+//        i = -100;
+//      }
+//    }
   }
 
   /**
-   * Add labeled radio button-goup at position (x,y) to the panel
+   * Add labeled checkbox-goup at position (x,y) to the panel
    * @param date date in the label
    * @param x x-position
    * @param y y-position
    * @param panel 
    */
-  private void addRadioButtonGroupToPanel(Date date, int x, int y, JPanel panel) {
+  private void addCheckboxGroupToPanel(Date date, int x, int y, JPanel panel, boolean active) {
     JLabel label;
     // create label
     calendar.setTime(date);
@@ -207,10 +234,11 @@ public class ShiftFormTab extends JFrame {
     String formattedDate = UtilityBox.getFormattedDateString(date);
     label = new JLabel(day + ", " + formattedDate);
     allLabels.add(label);
-    label.setBounds(x, y, 80, 23);
+    label.setBounds(x, y, 80, 18);
+    label.setEnabled(active);
     panel.add(label);
     // create buttongroup
-    ButtonGroup bg = returnCheckboxGroup(x + 80, y);
+    ButtonGroup bg = returnCheckboxGroup(x + 80, y, active, date);
     allButtonGroups.add(bg);
     Enumeration<AbstractButton> e = bg.getElements();
     while (e.hasMoreElements()) {
@@ -219,62 +247,42 @@ public class ShiftFormTab extends JFrame {
   }
 
   /**
-   * return a radiogroup with 5 radio buttons, arranged horizontal
+   * return a Checkbox group with 5 checkboxes, arranged horizontal
    * captions: "X", "F", "S", "T", "N"
    * @param x x-position of group
    * @param y y-position of group
    * @return ButtonGroup
    */
-  private ButtonGroup returnRadioGroup(int x, int y) {
+  private ButtonGroup returnCheckboxGroup(int x, int y, boolean active, Date date) {
     int xSize = 33;
-    JRadioButton rdbtnX = new JRadioButton("X");
-    rdbtnX.setBounds(x, y, xSize, 23);
-    rdbtnX.setVisible(true);
-    JRadioButton rdbtnF = new JRadioButton("F");
-    rdbtnF.setBounds(x + xSize, y, xSize, 23);
-    rdbtnF.setVisible(true);
-    JRadioButton rdbtnS = new JRadioButton("S");
-    rdbtnS.setBounds(x + (2 * xSize), y, xSize, 23);
-    rdbtnS.setVisible(true);
-    JRadioButton rdbtnT = new JRadioButton("T");
-    rdbtnT.setBounds(x + (3 * xSize), y, xSize, 23);
-    rdbtnT.setVisible(true);
-    JRadioButton rdbtnN = new JRadioButton("N");
-    rdbtnN.setBounds(x + (4 * xSize), y, xSize, 23);
-    rdbtnN.setVisible(true);
-
-    ButtonGroup bg = new ButtonGroup();
-    bg.add(rdbtnX);
-    bg.add(rdbtnF);
-    bg.add(rdbtnS);
-    bg.add(rdbtnT);
-    bg.add(rdbtnN);
-    return bg;
-  }
-
-  private ButtonGroup returnCheckboxGroup(int x, int y) {
-    int xSize = 33;
-
-    ExtendedJCheckBox checkBoxX = new ExtendedJCheckBox("X");
-    checkBoxX.setBounds(x, y, xSize, 23);
+    int ySize = 18;
+    ExtendedJCheckBox checkBoxX = new ExtendedJCheckBox("X", ShiftForm.TimeCode.X, date);
+    checkBoxX.setBounds(x, y, xSize, ySize);
     checkBoxX.setVisible(true);
-    checkBoxX.addMouseListener(checkBoxListener);
-    ExtendedJCheckBox checkBoxF = new ExtendedJCheckBox("F");
-    checkBoxF.setBounds(x + xSize, y, xSize, 23);
+    checkBoxX.setEnabled(active);
+    ExtendedJCheckBox checkBoxF = new ExtendedJCheckBox("F", ShiftForm.TimeCode.F, date);
+    checkBoxF.setBounds(x + xSize, y, xSize, ySize);
     checkBoxF.setVisible(true);
-    checkBoxF.addMouseListener(checkBoxListener);
-    ExtendedJCheckBox checkBoxS = new ExtendedJCheckBox("S");
-    checkBoxS.setBounds(x + (2 * xSize), y, xSize, 23);
+    checkBoxF.setEnabled(active);
+    ExtendedJCheckBox checkBoxS = new ExtendedJCheckBox("S", ShiftForm.TimeCode.S, date);
+    checkBoxS.setBounds(x + (2 * xSize), y, xSize, ySize);
     checkBoxS.setVisible(true);
-    checkBoxS.addMouseListener(checkBoxListener);
-    ExtendedJCheckBox checkBoxT = new ExtendedJCheckBox("T");
-    checkBoxT.setBounds(x + (3 * xSize), y, xSize, 23);
+    checkBoxS.setEnabled(active);
+    ExtendedJCheckBox checkBoxT = new ExtendedJCheckBox("T", ShiftForm.TimeCode.T, date);
+    checkBoxT.setBounds(x + (3 * xSize), y, xSize, ySize);
     checkBoxT.setVisible(true);
-    checkBoxT.addMouseListener(checkBoxListener);
-    ExtendedJCheckBox checkBoxN = new ExtendedJCheckBox("N");
-    checkBoxN.setBounds(x + (4 * xSize), y, xSize, 23);
+    checkBoxT.setEnabled(active);
+    ExtendedJCheckBox checkBoxN = new ExtendedJCheckBox("N", ShiftForm.TimeCode.N, date);
+    checkBoxN.setBounds(x + (4 * xSize), y, xSize, ySize);
     checkBoxN.setVisible(true);
-    checkBoxN.addMouseListener(checkBoxListener);
+    checkBoxN.setEnabled(active);
+    if (active) {
+      checkBoxX.addMouseListener(checkBoxListener);
+      checkBoxF.addMouseListener(checkBoxListener);
+      checkBoxS.addMouseListener(checkBoxListener);
+      checkBoxT.addMouseListener(checkBoxListener);
+      checkBoxN.addMouseListener(checkBoxListener);
+    }
 
     ButtonGroup bg = new ButtonGroup();
     bg.add(checkBoxX);
@@ -288,14 +296,22 @@ public class ShiftFormTab extends JFrame {
   private void setRadioFields() {
   }
 
-  private class SwingAction extends AbstractAction {
+  private class ResetForm extends AbstractAction {
 
-    public SwingAction() {
-      putValue(NAME, "SwingAction");
-      putValue(SHORT_DESCRIPTION, "Some short description");
+    public ResetForm() {
+      putValue(NAME, "Reset");
+      //putValue(SHORT_DESCRIPTION, "Some short description");
     }
 
     public void actionPerformed(ActionEvent e) {
+      for (int i = 0; i < allButtonGroups.size(); i++) {
+        ButtonGroup buttonGroup = allButtonGroups.get(i);
+        Enumeration<AbstractButton> buttons = buttonGroup.getElements();
+        while (buttons.hasMoreElements()) {
+          AbstractButton abstractButton = buttons.nextElement();
+          setExtendedJCheckboxInButtonGroupToValue(buttonGroup, (ExtendedJCheckBox) abstractButton, false);
+        }
+      }
     }
   }
 
@@ -303,11 +319,53 @@ public class ShiftFormTab extends JFrame {
 
     public CreateShiftForm() {
       putValue(NAME, "CreateShiftForm");
-      putValue(SHORT_DESCRIPTION, "Some short description");
-
+      //putValue(SHORT_DESCRIPTION, "Some short description");
     }
 
     public void actionPerformed(ActionEvent e) {
+      int month = MonthComboBox.getSelectedIndex();
+      int year = Integer.parseInt((String) YearComboBox.getSelectedItem());
+      int maxShifts = 0;
+      try {
+        maxShifts = Integer.parseInt(maxShiftsField.getText());
+      } catch (Exception ex) {
+        UtilityBox.getInstance().displayErrorPopup("Max. Schichten", "Ungültige Eingabe für \"maximale Schichten\".");
+        maxShiftsField.setText("");
+        return;
+      }
+      int mentor3 = 0;
+      try {
+        mentor3 = Integer.parseInt(mentor3rdPosField.getText());
+      } catch (Exception ex) {
+        mentor3 = 0;
+      }
+      int mentor2 = 0;
+      try {
+        mentor2 = Integer.parseInt(mentor2ndPosField.getText());
+      } catch (Exception ex) {
+        mentor2 = 0;
+      }
+      calendar.set(year, month, 1);
+      int nDaysInMonth = calendar.getMaximum(Calendar.DAY_OF_MONTH);
+      ShiftForm.TimeCode[] timeCodes = new ShiftForm.TimeCode[nDaysInMonth];
+      int iterator = 0;
+      System.out.println("start mit eintrag nr "+Math.abs(amountDaysPreviousMonth));
+      for (int i = Math.abs(amountDaysPreviousMonth); i < nDaysInMonth+Math.abs(amountDaysPreviousMonth); i++) {
+        ButtonGroup buttonGroup = allButtonGroups.get(i);
+        Enumeration<AbstractButton> buttons = buttonGroup.getElements();
+        ShiftForm.TimeCode tempTimeCode = ShiftForm.TimeCode.EMPTY;
+        while (buttons.hasMoreElements()) {
+          ExtendedJCheckBox ejcb = (ExtendedJCheckBox) buttons.nextElement();
+          if (ejcb.isChecked()) {
+            System.out.println("eintrag bei index "+i+": "+ejcb.getTimeCode().toString());
+            tempTimeCode = ejcb.getTimeCode();
+            break;
+          }
+        }
+        timeCodes[iterator] = tempTimeCode;
+        iterator++;
+      }
+      ShiftForm.getInstance().createShiftFormPdf(timeCodes, month, year, maxShifts, mentor2, mentor3);
     }
   }
 
@@ -332,16 +390,20 @@ public class ShiftFormTab extends JFrame {
         Enumeration<AbstractButton> buttons = buttonGroup.getElements();
         while (buttons.hasMoreElements()) {
           if (buttons.nextElement().equals(source)) {
-            buttonGroup.remove(source);
             boolean newSelectStatus = !source.isChecked();
-            source.setChecked(newSelectStatus);
-            source.setSelected(newSelectStatus);
-            buttonGroup.add(source);
-            source.repaint();
+            setExtendedJCheckboxInButtonGroupToValue(buttonGroup, source, newSelectStatus);
             return;
           }
         }
       }
     }
+  }
+
+  private void setExtendedJCheckboxInButtonGroupToValue(ButtonGroup buttonGroup, ExtendedJCheckBox checkbox, boolean value) {
+    buttonGroup.remove(checkbox);
+    checkbox.setChecked(value);
+    checkbox.setSelected(value);
+    buttonGroup.add(checkbox);
+    checkbox.repaint();
   }
 }
