@@ -52,6 +52,7 @@ public class ShiftFormTab extends JFrame {
   private Calendar calendar = Calendar.getInstance();
   private int amountDaysPreviousMonth = 0;
   private MouseListener checkBoxListener = new CheckboxListener();
+  private CheckboxItemListener checkboxItemListener = new CheckboxItemListener();
 
   public ShiftFormTab(final JPanel panel) {
     //panel = jpanel;
@@ -256,40 +257,54 @@ public class ShiftFormTab extends JFrame {
   private ButtonGroup returnCheckboxGroup(int x, int y, boolean active, Date date) {
     int xSize = 33;
     int ySize = 18;
-    ExtendedJCheckBox checkBoxX = new ExtendedJCheckBox("X", ShiftForm.TimeCode.X, date);
-    checkBoxX.setBounds(x, y, xSize, ySize);
-    checkBoxX.setVisible(true);
-    checkBoxX.setEnabled(active);
-    ExtendedJCheckBox checkBoxF = new ExtendedJCheckBox("F", ShiftForm.TimeCode.F, date);
-    checkBoxF.setBounds(x + xSize, y, xSize, ySize);
-    checkBoxF.setVisible(true);
-    checkBoxF.setEnabled(active);
-    ExtendedJCheckBox checkBoxS = new ExtendedJCheckBox("S", ShiftForm.TimeCode.S, date);
-    checkBoxS.setBounds(x + (2 * xSize), y, xSize, ySize);
-    checkBoxS.setVisible(true);
-    checkBoxS.setEnabled(active);
-    ExtendedJCheckBox checkBoxT = new ExtendedJCheckBox("T", ShiftForm.TimeCode.T, date);
-    checkBoxT.setBounds(x + (3 * xSize), y, xSize, ySize);
-    checkBoxT.setVisible(true);
-    checkBoxT.setEnabled(active);
-    ExtendedJCheckBox checkBoxN = new ExtendedJCheckBox("N", ShiftForm.TimeCode.N, date);
-    checkBoxN.setBounds(x + (4 * xSize), y, xSize, ySize);
-    checkBoxN.setVisible(true);
-    checkBoxN.setEnabled(active);
-    if (active) {
-      checkBoxX.addMouseListener(checkBoxListener);
-      checkBoxF.addMouseListener(checkBoxListener);
-      checkBoxS.addMouseListener(checkBoxListener);
-      checkBoxT.addMouseListener(checkBoxListener);
-      checkBoxN.addMouseListener(checkBoxListener);
-    }
-
     ButtonGroup bg = new ButtonGroup();
-    bg.add(checkBoxX);
-    bg.add(checkBoxF);
-    bg.add(checkBoxS);
-    bg.add(checkBoxT);
-    bg.add(checkBoxN);
+    String[] labels = {"X", "F", "S", "T", "N"};
+    ShiftForm.TimeCode[] timeCodes = {ShiftForm.TimeCode.X,
+      ShiftForm.TimeCode.F, ShiftForm.TimeCode.S, ShiftForm.TimeCode.T,
+      ShiftForm.TimeCode.N};
+    for (int i = 0; i < timeCodes.length; i++) {
+      ExtendedJCheckBox checkBox = new ExtendedJCheckBox(labels[i], timeCodes[i], date);
+      checkBox.setBounds((x + (i * xSize)), y, xSize, ySize);
+      checkBox.setVisible(true);
+      checkBox.setEnabled(active);
+      if (active) {
+        checkBox.addItemListener(checkboxItemListener);
+      }
+      bg.add(checkBox);
+    }
+//    ExtendedJCheckBox checkBoxX = new ExtendedJCheckBox("X", ShiftForm.TimeCode.X, date);
+//    checkBoxX.setBounds(x, y, xSize, ySize);
+//    checkBoxX.setVisible(true);
+//    checkBoxX.setEnabled(active);
+//    ExtendedJCheckBox checkBoxF = new ExtendedJCheckBox("F", ShiftForm.TimeCode.F, date);
+//    checkBoxF.setBounds(x + xSize, y, xSize, ySize);
+//    checkBoxF.setVisible(true);
+//    checkBoxF.setEnabled(active);
+//    ExtendedJCheckBox checkBoxS = new ExtendedJCheckBox("S", ShiftForm.TimeCode.S, date);
+//    checkBoxS.setBounds(x + (2 * xSize), y, xSize, ySize);
+//    checkBoxS.setVisible(true);
+//    checkBoxS.setEnabled(active);
+//    ExtendedJCheckBox checkBoxT = new ExtendedJCheckBox("T", ShiftForm.TimeCode.T, date);
+//    checkBoxT.setBounds(x + (3 * xSize), y, xSize, ySize);
+//    checkBoxT.setVisible(true);
+//    checkBoxT.setEnabled(active);
+//    ExtendedJCheckBox checkBoxN = new ExtendedJCheckBox("N", ShiftForm.TimeCode.N, date);
+//    checkBoxN.setBounds(x + (4 * xSize), y, xSize, ySize);
+//    checkBoxN.setVisible(true);
+//    checkBoxN.setEnabled(active);
+//    if (active) {
+//      checkBoxX.addMouseListener(checkBoxListener);
+//      checkBoxF.addMouseListener(checkBoxListener);
+//      checkBoxS.addMouseListener(checkBoxListener);
+//      checkBoxT.addMouseListener(checkBoxListener);
+//      checkBoxN.addMouseListener(checkBoxListener);
+//    }
+//
+//    bg.add(checkBoxX);
+//    bg.add(checkBoxF);
+//    bg.add(checkBoxS);
+//    bg.add(checkBoxT);
+//    bg.add(checkBoxN);
     return bg;
   }
 
@@ -306,10 +321,12 @@ public class ShiftFormTab extends JFrame {
     public void actionPerformed(ActionEvent e) {
       for (int i = 0; i < allButtonGroups.size(); i++) {
         ButtonGroup buttonGroup = allButtonGroups.get(i);
-        Enumeration<AbstractButton> buttons = buttonGroup.getElements();
-        while (buttons.hasMoreElements()) {
-          AbstractButton abstractButton = buttons.nextElement();
-          setExtendedJCheckboxInButtonGroupToValue(buttonGroup, (ExtendedJCheckBox) abstractButton, false);
+        for (int j = 0; j < 2; j++) {
+          Enumeration<AbstractButton> buttons = buttonGroup.getElements();
+          while (buttons.hasMoreElements()) {
+            AbstractButton abstractButton = buttons.nextElement();
+            setExtendedJCheckboxInButtonGroupToValue(buttonGroup, (ExtendedJCheckBox) abstractButton, false);
+          }
         }
       }
     }
@@ -349,15 +366,14 @@ public class ShiftFormTab extends JFrame {
       int nDaysInMonth = calendar.getMaximum(Calendar.DAY_OF_MONTH);
       ShiftForm.TimeCode[] timeCodes = new ShiftForm.TimeCode[nDaysInMonth];
       int iterator = 0;
-      System.out.println("start mit eintrag nr "+Math.abs(amountDaysPreviousMonth));
-      for (int i = Math.abs(amountDaysPreviousMonth); i < nDaysInMonth+Math.abs(amountDaysPreviousMonth); i++) {
+      System.out.println("start mit eintrag nr " + Math.abs(amountDaysPreviousMonth));
+      for (int i = Math.abs(amountDaysPreviousMonth); i < nDaysInMonth + Math.abs(amountDaysPreviousMonth); i++) {
         ButtonGroup buttonGroup = allButtonGroups.get(i);
         Enumeration<AbstractButton> buttons = buttonGroup.getElements();
         ShiftForm.TimeCode tempTimeCode = ShiftForm.TimeCode.EMPTY;
         while (buttons.hasMoreElements()) {
           ExtendedJCheckBox ejcb = (ExtendedJCheckBox) buttons.nextElement();
           if (ejcb.isChecked()) {
-            System.out.println("eintrag bei index "+i+": "+ejcb.getTimeCode().toString());
             tempTimeCode = ejcb.getTimeCode();
             break;
           }
@@ -399,6 +415,27 @@ public class ShiftFormTab extends JFrame {
     }
   }
 
+  private class CheckboxItemListener implements ItemListener {
+    public CheckboxItemListener() {
+      super();
+    }
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+      ExtendedJCheckBox source = (ExtendedJCheckBox) e.getSource();
+      for (int i = 0; i < allButtonGroups.size(); i++) {
+        ButtonGroup buttonGroup = allButtonGroups.get(i);
+        Enumeration<AbstractButton> buttons = buttonGroup.getElements();
+        while (buttons.hasMoreElements()) {
+          if (buttons.nextElement().equals(source)) {
+            boolean newSelectStatus = !source.isChecked();
+            setExtendedJCheckboxInButtonGroupToValue(buttonGroup, source, newSelectStatus);
+            return;
+          }
+        }
+      }
+    }
+    
+  }
   private void setExtendedJCheckboxInButtonGroupToValue(ButtonGroup buttonGroup, ExtendedJCheckBox checkbox, boolean value) {
     buttonGroup.remove(checkbox);
     checkbox.setChecked(value);
