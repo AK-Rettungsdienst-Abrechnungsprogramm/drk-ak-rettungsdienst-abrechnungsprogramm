@@ -231,8 +231,8 @@ public class ShiftForm {
         table1.addCell(cell4);
 
       }
-      shiftFormDocument.add(table1);
       shiftFormDocument.add(drkLogo);
+      shiftFormDocument.add(table1);
     } catch (IOException | DocumentException ex) {
       UtilityBox.getInstance().displayErrorPopup("Fehler beim Erzeugen des Fragebogen-Pdfs", ex.getMessage());
       return false;
