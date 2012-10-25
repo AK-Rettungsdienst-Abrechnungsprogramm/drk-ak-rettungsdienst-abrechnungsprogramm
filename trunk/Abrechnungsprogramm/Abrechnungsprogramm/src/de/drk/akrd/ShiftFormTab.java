@@ -144,8 +144,6 @@ public class ShiftFormTab extends JFrame {
    * @param panel 
    */
   private void addWeeksToPanel(int month, int year, JPanel panel) {
-
-    System.out.println("aufruf mit: month: " + month + "; year: " + year);
     // step 1 remove all labels and radiogroups from panel
     for (int i = 0; i < allButtonGroups.size(); i++) {
       Enumeration<AbstractButton> e = allButtonGroups.get(i).getElements();
@@ -178,7 +176,6 @@ public class ShiftFormTab extends JFrame {
     amountDaysPreviousMonth = (dayOfWeek == 1) ? -6 : (-1 * (dayOfWeek - 2));
     int nMonthDays = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
     calendar.add(Calendar.DATE, amountDaysPreviousMonth);
-    System.out.println("1." + (calendar.get(Calendar.MONTH) + 1) + "." + year + " tag der woche: " + dayOfWeek + "\n date: " + calendar.getTime().toString());
     //step 3: add new radiogroups
     // TODO: implement
     int x = 10;
@@ -366,7 +363,6 @@ public class ShiftFormTab extends JFrame {
       int nDaysInMonth = calendar.getMaximum(Calendar.DAY_OF_MONTH);
       ShiftForm.TimeCode[] timeCodes = new ShiftForm.TimeCode[nDaysInMonth];
       int iterator = 0;
-      System.out.println("start mit eintrag nr " + Math.abs(amountDaysPreviousMonth));
       for (int i = Math.abs(amountDaysPreviousMonth); i < nDaysInMonth + Math.abs(amountDaysPreviousMonth); i++) {
         ButtonGroup buttonGroup = allButtonGroups.get(i);
         Enumeration<AbstractButton> buttons = buttonGroup.getElements();
