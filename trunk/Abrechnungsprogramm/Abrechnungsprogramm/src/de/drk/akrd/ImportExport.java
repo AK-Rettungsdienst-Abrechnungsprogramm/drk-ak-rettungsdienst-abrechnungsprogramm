@@ -158,6 +158,7 @@ public class ImportExport {
   /**
    * Return a String[] filled with selectable years
    * and set selectableYears-array
+   * if no years available returns new string array with entry ""
    * @return String[]
    */
   public String[] getYearStrings() {
@@ -175,6 +176,9 @@ public class ImportExport {
     for (int i = 0; i<nYears; i++){
       Integer integer = yearList.get(i);
       yearStrings[i] = integer.toString();
+    }
+    if (nYears == 0) {
+      yearStrings = new String[]{""};
     }
     return yearStrings;
   }
