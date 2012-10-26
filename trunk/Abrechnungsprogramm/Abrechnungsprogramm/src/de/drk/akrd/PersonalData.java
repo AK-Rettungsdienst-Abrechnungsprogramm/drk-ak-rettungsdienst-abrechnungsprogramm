@@ -29,18 +29,26 @@ public class PersonalData {
     RH, RS, RA;
     @Override
     public String toString(){
-        
-        switch(name())
-        {
-        case "RH":
-        	return "Rettungshelfer";
-        case "RS":
-        	return "Rettungssanitäter";
-        case "RA":
-        	return "Rettungsassistent";
-        default:
-        	return name();
-        }
+        // TODO: for JDK7 use switch
+//        switch(name())
+//        {
+//        case "RH":
+//        	return "Rettungshelfer";
+//        case "RS":
+//        	return "Rettungssanitäter";
+//        case "RA":
+//        	return "Rettungsassistent";
+//        default:
+//        	return name();
+//        }
+      if ("RH".equals(name())) {
+        return "Rettungshelfer";
+      } else if("RS".equals(name())) {
+        return "Rettungssanitäter";
+      } else if ("RA".equals(name())) {
+        return "Rettungsassistent";
+      }
+      return name();
     }
   }
 

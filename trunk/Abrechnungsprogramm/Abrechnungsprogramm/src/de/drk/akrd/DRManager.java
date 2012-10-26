@@ -64,7 +64,7 @@ public class DRManager {
 //    System.out.println("endinTimeStrings[2]: "+contentStrings[2].toString());
     String[] endingTimeStrings = contentStrings[2].split(" ");
     int[] shiftDates = new int[shiftStrings.length];
-    ArrayList<Shift> shifts = new ArrayList<>();
+    ArrayList<Shift> shifts = new ArrayList<Shift>();
     SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
     Calendar cal = Calendar.getInstance();
     Date date = cal.getTime();
@@ -150,7 +150,9 @@ private static String getPdfFilePath() {
       PdfReader reader = new PdfReader(filename);
       PdfReaderContentParser parser = new PdfReaderContentParser(reader);
       File tempFile = new File("data/tempFile");
-      try (FileWriter fileWriter = new FileWriter(tempFile)) {
+      // TODO: for JDK7 use try-with
+      try {//(FileWriter fileWriter = new FileWriter(tempFile)) {
+        FileWriter fileWriter = new FileWriter(tempFile);
         TextExtractionStrategy strategy;
         for (int i = 1; i <= reader.getNumberOfPages(); i++) {
           strategy = parser.processContent(i, new LocationTextExtractionStrategy());
@@ -158,7 +160,10 @@ private static String getPdfFilePath() {
         }
         fileWriter.flush();
         returnArray = getStings(tempFile);
+      } catch(Exception e) {
+        
       }
+      
       // delete the temporary file
       if (!tempFile.delete()) {
         System.out.println("Deletation of temp-file in DRManager.parsePDF failed.");

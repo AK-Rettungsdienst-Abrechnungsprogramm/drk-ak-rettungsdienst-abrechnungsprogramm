@@ -20,7 +20,7 @@ public class ImportExport {
   private int[] selectableYears;
   private ArrayList<String> importedPersData = null;
   private ImportExport(MainWindow mw){
-    selectedShifts = new ArrayList<>();
+    selectedShifts = new ArrayList<ShiftInstance>();
     mainWindow = mw;
   }
   public static ImportExport GetInstance(MainWindow mw) {
@@ -95,7 +95,7 @@ public class ImportExport {
    */
   public void setSelected(DefaultTableModel shiftTableModel, int month, int year) {
     // TODO: globale variable setzen, month ist hier 0=ganzes jahr, 1=januar...
-    selectedShifts = new ArrayList<>();
+    selectedShifts = new ArrayList<ShiftInstance>();
     ArrayList<ShiftInstance> allShifts = mainWindow.shiftContainer.shiftInstances;
     boolean wholeYear = (month == 0)? true: false;
     try {
@@ -149,7 +149,7 @@ public class ImportExport {
    */
   public String selectImportFile(DefaultTableModel shiftTableModel) {
     String filePath = UtilityBox.getInstance().getFilePathFromFileCooser("xml", "XML-Dateien", System.getProperty("user.dir"));
-    importedPersData = new ArrayList<>();
+    importedPersData = new ArrayList<String>();
     selectedShifts = XMLEditor.importData(filePath, importedPersData);
     fillList(shiftTableModel, selectedShifts);
     return filePath;

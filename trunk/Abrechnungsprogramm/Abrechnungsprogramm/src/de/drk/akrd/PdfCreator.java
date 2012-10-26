@@ -43,13 +43,13 @@ public class PdfCreator {
     filePath = filePath + "/Abrechnung"+UtilityBox.getMonthString(month)+year+".pdf";
     Document accounting = new Document();
 
-    ArrayList<ShiftInstance> rd = new ArrayList<>();
-    ArrayList<ShiftInstance> ktp = new ArrayList<>();
-    ArrayList<ShiftInstance> baby = new ArrayList<>();
-    ArrayList<ShiftInstance> breisach = new ArrayList<>();
-    ArrayList<ShiftInstance> kiza = new ArrayList<>();
-    ArrayList<ShiftInstance> event = new ArrayList<>();
-    ArrayList<ShiftInstance> kvs = new ArrayList<>();
+    ArrayList<ShiftInstance> rd = new ArrayList<ShiftInstance>();
+    ArrayList<ShiftInstance> ktp = new ArrayList<ShiftInstance>();
+    ArrayList<ShiftInstance> baby = new ArrayList<ShiftInstance>();
+    ArrayList<ShiftInstance> breisach = new ArrayList<ShiftInstance>();
+    ArrayList<ShiftInstance> kiza = new ArrayList<ShiftInstance>();
+    ArrayList<ShiftInstance> event = new ArrayList<ShiftInstance>();
+    ArrayList<ShiftInstance> kvs = new ArrayList<ShiftInstance>();
 
     // add shifts to seperate shift lists
     for (int i = 0; i < shiftsToAccount.length; i++) {
@@ -89,7 +89,7 @@ public class PdfCreator {
           int numberOfPages = ((int) (allShifts[i].size() / 13)) + 1;
           int counter = 0;
           for (int j = 1; j <= numberOfPages; j++) {
-            ArrayList<ShiftInstance> tempShiftInstances = new ArrayList<>();
+            ArrayList<ShiftInstance> tempShiftInstances = new ArrayList<ShiftInstance>();
             for (int k = 0; k < 13; k++) {
               if (counter >= (allShifts[i].size())) {
                 break;
@@ -102,7 +102,8 @@ public class PdfCreator {
           }
         }
       }
-    } catch (DocumentException | IOException e) {
+      // TODO: for JDK7 use Multicatch
+    } catch (Exception e){//DocumentException | IOException e) {
       UtilityBox.getInstance().displayErrorPopup("Abrechnung", "Fehler beim Erstellen der Abrechnung:\n"+e.getMessage());
       filePath = null;
     } finally {
@@ -644,7 +645,8 @@ public class PdfCreator {
       accountingDocument.add(table8);
       accountingDocument.add(table11);
       success = true;
-    } catch (DocumentException | IOException | NullPointerException e) {
+      // TODO: for JDK7 use Multicatch
+    } catch (Exception e){//DocumentException | IOException | NullPointerException e) {
       success = false;
       UtilityBox.getInstance().displayErrorPopup("Abrechnung", 
               "Fehler beim Erstellen der Abrechnung:\n"+e.getMessage());
@@ -704,8 +706,8 @@ public class PdfCreator {
         ColumnText.showTextAligned(canvas, Element.ALIGN_LEFT,
                 new Phrase(label[i], font), (xPosition + 16), (yPosition - 8 - i * 15), 0);
       }
-
-    } catch (com.itextpdf.text.DocumentException | java.io.IOException e) {
+      // TODO: for JDK7 use Multicatch
+    } catch (Exception e){//com.itextpdf.text.DocumentException | java.io.IOException e) {
       UtilityBox.getInstance().displayErrorPopup("Abrechnung", 
               "Fehler beim Erstellen der Abrechnung: "+e.getMessage());
     }

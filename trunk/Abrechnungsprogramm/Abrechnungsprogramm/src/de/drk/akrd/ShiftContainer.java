@@ -11,7 +11,7 @@ public class ShiftContainer {
   // a pointer to the posessing mainWindow
   private MainWindow mainWindow;
   private static Calendar calendar = Calendar.getInstance();
-  private static ArrayList<Shift> shifts = new ArrayList<>();
+  private static ArrayList<Shift> shifts = new ArrayList<Shift>();
 // Holds all registered shifts.
   public static ArrayList<ShiftInstance> shiftInstances = new ArrayList<ShiftInstance>();
   public enum ShiftType {
@@ -21,24 +21,41 @@ public class ShiftContainer {
     // Override the toString method to get nicer strings for the shiftTypeChooser
     @Override
     public String toString() {
-
-      switch (name()) {
-        case "RTW":
-          return "RTW & ITW";
-        case "KTW":
-          return "KTW";
-        case "KIZA":
-          return "RD Kirchzarten";
-        case "BREISACH":
-          return "RD Breisach";
-        case "BABY":
-          return "Baby NAW";
-        case "EVENT":
-          return "Sandienst";
-        case "KVS":
-          return "KV Dienst";
-        default:
-          return name();
+      // TODO: for JDK7 use switch
+//      switch (name()) {
+//        case "RTW":
+//          return "RTW & ITW";
+//        case "KTW":
+//          return "KTW";
+//        case "KIZA":
+//          return "RD Kirchzarten";
+//        case "BREISACH":
+//          return "RD Breisach";
+//        case "BABY":
+//          return "Baby NAW";
+//        case "EVENT":
+//          return "Sandienst";
+//        case "KVS":
+//          return "KV Dienst";
+//        default:
+//          return name();
+//      }
+      if (name().equals("RTW")) {
+        return "RTW & ITW";
+      } else if (name().equals("KTW")) {
+        return "KTW";
+      } else if (name().equals("KIZA")) {
+        return "RD Kirchzarten";
+      } else if (name().equals("BREISACH")) {
+        return "RD Breisach";
+      } else if (name().equals("BABY")) {
+        return "Baby NAW";
+      } else if (name().equals("EVENT")) {
+        return "Sandienst";
+      } else if (name().equals("KVS")) {
+        return "KV Dienst";
+      } else {
+        return name();
       }
     }
   }
@@ -67,8 +84,8 @@ public class ShiftContainer {
    * @return
    */
   public Shift[] filterShifts(ShiftContainer.ShiftType type, int day) {
-    ArrayList<Shift> filteredShifts = new ArrayList<>();
-    ArrayList<Shift> resultingShifts = new ArrayList<>();
+    ArrayList<Shift> filteredShifts = new ArrayList<Shift>();
+    ArrayList<Shift> resultingShifts = new ArrayList<Shift>();
 
     // Iterate over all shifts and filter by type
 
@@ -226,25 +243,45 @@ public class ShiftContainer {
     if (id.startsWith("KTW")) {
       return ShiftContainer.ShiftType.KTW;
     }
-    switch (id.substring(0, 2)) {
-      case "KV":
-        return ShiftContainer.ShiftType.KVS;
-      case "KT":
-        return ShiftContainer.ShiftType.KIZA;
-      case "KN":
-        return ShiftContainer.ShiftType.KIZA;
-      default:
-        switch (id.substring(0, 1)) {
-          case "K":
-            return ShiftContainer.ShiftType.KTW;
-          case "R":
-          case "I":
-            return ShiftContainer.ShiftType.RTW;
-          case "B":
-            return ShiftContainer.ShiftType.BREISACH;
-          default:
-            return ShiftContainer.ShiftType.BABY;
-        }
+    // TODO: for JDK7 use switch
+//    switch (id.substring(0, 2)) {
+//      case "KV":
+//        return ShiftContainer.ShiftType.KVS;
+//      case "KT":
+//        return ShiftContainer.ShiftType.KIZA;
+//      case "KN":
+//        return ShiftContainer.ShiftType.KIZA;
+//      default:
+//        switch (id.substring(0, 1)) {
+//          case "K":
+//            return ShiftContainer.ShiftType.KTW;
+//          case "R":
+//          case "I":
+//            return ShiftContainer.ShiftType.RTW;
+//          case "B":
+//            return ShiftContainer.ShiftType.BREISACH;
+//          default:
+//            return ShiftContainer.ShiftType.BABY;
+//        }
+//    }
+    String substring = id.substring(0, 2);
+    if (substring.equals("KV")) {
+      return ShiftContainer.ShiftType.KVS;
+    } else if (substring.equals("KT")) {
+      return ShiftContainer.ShiftType.KIZA;
+    } else if (substring.equals("KN")) {
+      return ShiftContainer.ShiftType.KIZA;
+    } else {
+      substring = id.substring(0, 1);
+      if (substring.equals("K")) {
+        return ShiftContainer.ShiftType.KTW;
+      } else if (substring.equals("R") || substring.equals("I")) {
+        return ShiftContainer.ShiftType.RTW;
+      } else if (substring.equals("B")) {
+        return ShiftContainer.ShiftType.BREISACH;
+      } else {
+        return ShiftContainer.ShiftType.BABY;
+      }
     }
   }
   /**
@@ -252,7 +289,7 @@ public class ShiftContainer {
    * @return 
    */
   public static ArrayList<Integer> getSortedYearList() {
-    ArrayList<Integer> yearList = new ArrayList<>();
+    ArrayList<Integer> yearList = new ArrayList<Integer>();
     for (int i = 0; i < shiftInstances.size(); i++) {
       ShiftInstance shiftInstance = shiftInstances.get(i);
       calendar.setTime(shiftInstance.getDate());

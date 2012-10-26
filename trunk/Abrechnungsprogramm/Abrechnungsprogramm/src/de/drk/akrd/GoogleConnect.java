@@ -76,7 +76,8 @@ public class GoogleConnect extends CalendarManager {
       }
 
       UtilityBox.getInstance().displayInfoPopup("Google Kalender", "Termine wurden eingetragen.");
-    } catch (IOException | ServiceException ex) {
+      // TODO: for JDK7 use Multicatch
+    } catch (Exception ex){//IOException | ServiceException ex) {
       UtilityBox.getInstance().displayErrorPopup("Google Kalender", "Eintragen des Termins fehlgeschlagen: "+ex.getMessage());
     }
   }

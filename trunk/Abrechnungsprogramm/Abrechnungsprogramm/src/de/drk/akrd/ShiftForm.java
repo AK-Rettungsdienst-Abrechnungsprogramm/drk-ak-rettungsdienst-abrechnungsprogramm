@@ -63,7 +63,8 @@ public class ShiftForm {
       shiftFormDocument.newPage();
       pdfCreated = createPdf(shiftFormDocument, timeCodes, month, year, maxShifts, mentorShift2ndPos, mentorShift3rdPos);
       shiftFormDocument.close();
-    } catch (FileNotFoundException | DocumentException ex) {
+      // TODO: for JDK7 use Multicatch
+    } catch (Exception ex){//FileNotFoundException | DocumentException ex) {
       UtilityBox.getInstance().displayErrorPopup("Fehler beim Erzeugen des Fragebogens", ex.getMessage());
       return false;
     }
@@ -233,7 +234,8 @@ public class ShiftForm {
       }
       shiftFormDocument.add(drkLogo);
       shiftFormDocument.add(table1);
-    } catch (IOException | DocumentException ex) {
+      // TODO: for JDK7 use Multicatch
+    } catch (Exception ex){//IOException | DocumentException ex) {
       UtilityBox.getInstance().displayErrorPopup("Fehler beim Erzeugen des Fragebogen-Pdfs", ex.getMessage());
       return false;
     }
@@ -286,7 +288,8 @@ public class ShiftForm {
               + body + "&attachment=" + filePath));
       System.out.println("pfad: "+filePath);
       System.out.println("datei existiert: "+new File(filePath).exists());
-    } catch (URISyntaxException | IOException ex) {
+      // TODO: for JDK7 use Multicatch
+    } catch (Exception ex){//URISyntaxException | IOException ex) {
       UtilityBox.getInstance().displayErrorPopup("Fehler beim erstellen der Email", ex.getMessage());
       System.out.println(ex.getMessage());
       

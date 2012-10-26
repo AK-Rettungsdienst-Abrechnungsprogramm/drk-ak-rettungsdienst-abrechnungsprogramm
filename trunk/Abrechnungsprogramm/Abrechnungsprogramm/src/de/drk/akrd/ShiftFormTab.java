@@ -47,8 +47,8 @@ public class ShiftFormTab extends JFrame {
   private JTextField maxShiftsField;
   private JTextField mentor3rdPosField;
   private JTextField mentor2ndPosField;
-  private ArrayList<ButtonGroup> allButtonGroups = new ArrayList<>();
-  private ArrayList<JLabel> allLabels = new ArrayList<>();
+  private ArrayList<ButtonGroup> allButtonGroups = new ArrayList<ButtonGroup>();
+  private ArrayList<JLabel> allLabels = new ArrayList<JLabel>();
   private Calendar calendar = Calendar.getInstance();
   private int amountDaysPreviousMonth = 0;
   private MouseListener checkBoxListener = new CheckboxListener();
