@@ -54,7 +54,7 @@ public class MainWindow extends JFrame {
   protected final JTextField firstNameField = new JTextField();
   private final JLabel lblNachname = new JLabel("Nachname:");
   protected final JTextField lastNameField = new JTextField();
-  protected final JComboBox<PersonalData.Qualification> trainingsChooser = new JComboBox<>();
+  protected final JComboBox<PersonalData.Qualification> trainingsChooser = new JComboBox<Qualification>();
   protected final JTextField accountNo = new JTextField();
   protected JTextField blz = new JTextField();
   protected JCheckBox bankInfoKnown = new JCheckBox();
@@ -69,7 +69,7 @@ public class MainWindow extends JFrame {
   protected int currentlySelectedDay = -1;
   private JPanel shiftEditor = new JPanel();
   protected ShiftContainer shiftContainer = new ShiftContainer(this);
-  protected JComboBox<ShiftContainer.ShiftType> shiftTypeChooser = new JComboBox<>();
+  protected JComboBox<ShiftContainer.ShiftType> shiftTypeChooser = new JComboBox<ShiftType>();
   protected boolean noShiftTypeUpdate = false;
   private final JLabel lblDatum = new JLabel("Datum");
   private final JLabel lblSchichtart = new JLabel("Schichtart");
@@ -228,7 +228,7 @@ public class MainWindow extends JFrame {
     // // / END TEST ///
 
     // Set Shift Type Chooser from Enum
-    DefaultComboBoxModel<ShiftContainer.ShiftType> enumModel = new DefaultComboBoxModel<>(
+    DefaultComboBoxModel<ShiftContainer.ShiftType> enumModel = new DefaultComboBoxModel<ShiftType>(
             ShiftType.values());
     shiftTypeChooser.setModel(enumModel);
     setTitle("AK-RD Abrechnungsprogramm");
@@ -421,7 +421,7 @@ public class MainWindow extends JFrame {
     panel.add(lastNameField, "6, 6, 3, 1, fill, default");
 
     panel.add(lblAusbildung, "2, 8");
-    trainingsChooser.setModel(new DefaultComboBoxModel<>(Qualification.values()));
+    trainingsChooser.setModel(new DefaultComboBoxModel<Qualification>(Qualification.values()));
 
     panel.add(trainingsChooser, "6, 8, 3, 1");
     personalInfoTab.setLayout(gl_personalInfoTab);

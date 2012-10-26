@@ -21,7 +21,7 @@ public class ShiftLoadSave {
    * @return 
    */
   public static boolean saveShifts(ArrayList<ShiftInstance> shifts, int year) {
-    ArrayList<ShiftInstance> yearList = new ArrayList<>();
+    ArrayList<ShiftInstance> yearList = new ArrayList<ShiftInstance>();
     for (int i = 0; i < shifts.size(); i++) {
       ShiftInstance shiftInstance = shifts.get(i);
       calendar.setTime(shiftInstance.getDate());
@@ -39,7 +39,7 @@ public class ShiftLoadSave {
    * @return ArrayList<ShiftInstance> of all saved shifts
    */
   public static ArrayList<ShiftInstance> loadSavedShifts() {
-    ArrayList<ShiftInstance> loadedShifts = new ArrayList<>();
+    ArrayList<ShiftInstance> loadedShifts = new ArrayList<ShiftInstance>();
     File dir = new File("data");
     String[] fileList = dir.list(new FilenameFilter() {
       public boolean accept(File d, String name) {

@@ -172,7 +172,7 @@ public class CreateAccountmentFrame {
    * @param year 
    */
   private void setSelectedShifts(int month, int year) {
-    selectedShifts = new ArrayList<>();
+    selectedShifts = new ArrayList<ShiftInstance>();
     // TODO: filter
     try {
       for (int i = 0; i < allShifts.size(); i++) {

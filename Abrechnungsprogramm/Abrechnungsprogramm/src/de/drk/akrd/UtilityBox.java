@@ -385,7 +385,8 @@ public class UtilityBox {
       try {
         document = PDDocument.load(filePath);
         document.print();
-    } catch (IOException | PrinterException e) {
+        // TODO: for JDK7 use Multicatch
+    } catch (Exception e){//IOException | PrinterException e) {
       displayErrorPopup("Drucken", "Fehler während des Druckvorgangs:\n"+e.getMessage());
     } finally {
         if(document!=null){

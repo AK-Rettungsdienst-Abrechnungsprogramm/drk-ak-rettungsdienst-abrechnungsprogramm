@@ -76,7 +76,8 @@ public class XMLEditor {
         shiftList.add(new Shift(shiftId, begin, end, breakTime, days));
       }
       return true;
-    } catch (JDOMException | IOException | NumberFormatException e) {
+      // TODO: for JDK7 use Multicatch
+    } catch (Exception e) { //JDOMException | IOException | NumberFormatException e) {
       System.out.println("Exception in function XMLEditor.fillShiftList: " + e.getMessage());
     }
     return false;
@@ -90,7 +91,9 @@ public class XMLEditor {
   public static boolean writePersonalData(PersonalData dataInstance) {
     File dataFile = new File("data/PersonalData.xml");
     boolean fileExists = dataFile.exists();
-    try (FileWriter fileWriter = new FileWriter(dataFile)) {
+    // TODO: for JDK7 use try-with
+    try {//(FileWriter fileWriter = new FileWriter(dataFile)) {
+      FileWriter fileWriter = new FileWriter(dataFile);
       String[] elementNames = new String[]{"firstName", "lastName",
         "bankaccountAndCity", "accountNumber", "blz", "qualification", "dataKnown", "emailAdress", "calendarId"};
       String[] elemetArray = new String[]{dataInstance.getFirstName(),
@@ -111,7 +114,8 @@ public class XMLEditor {
       fileWriter.write("</personalData>" + System.getProperty("line.separator"));
       fileWriter.flush();
       return true;
-    } catch (IOException | NullPointerException e) {
+      // TODO: for JDK7 use Multicatch
+    } catch (Exception e){//IOException | NullPointerException e) {
       // if the file didn't exist before delete the new, empty file
       if (!fileExists) {
         dataFile.delete();
@@ -163,7 +167,7 @@ public class XMLEditor {
           return false;
         }
         Element node = (Element) nodeList.get(0);
-        ArrayList<String> persData = new ArrayList<>();
+        ArrayList<String> persData = new ArrayList<String>();
         loadPersonalDataFromNode(node, persData);
         pd.setData(
                 persData.get(0),
@@ -176,7 +180,8 @@ public class XMLEditor {
                 persData.get(7),
                 persData.get(8));
         return true;
-      } catch (JDOMException | IOException | NumberFormatException e) {
+        // TODO: for JDK7 use Multicatch
+      } catch (Exception e){//JDOMException | IOException | NumberFormatException e) {
         System.out.println("Exception in XMLEditor.loadPersonalData: " + e.getMessage());
         return false;
       }
@@ -224,7 +229,7 @@ public class XMLEditor {
     SAXBuilder saxBuilder = new SAXBuilder();
     File xmlFile = new File("data/Schichten" + year + ".xml");
     try {
-      ArrayList<ShiftInstance> outputList = new ArrayList<>();
+      ArrayList<ShiftInstance> outputList = new ArrayList<ShiftInstance>();
       Document document = (Document) saxBuilder.build(xmlFile);
       Element rootNode = document.getRootElement();
       List monthList = rootNode.getChildren();
@@ -236,7 +241,8 @@ public class XMLEditor {
         }
       }
       return outputList;
-    } catch (JDOMException | IOException | NumberFormatException e) {
+      // TODO: for JDK7 use Multicatch
+    } catch (Exception e){//JDOMException | IOException | NumberFormatException e) {
       System.out.println("Exception in XMLEditor.loadSavedShifts: " + e.getMessage());
     }
     return new ArrayList<ShiftInstance>() {
@@ -244,7 +250,7 @@ public class XMLEditor {
   }
 
   private static ArrayList<ShiftInstance> loadShiftsFromNode(Element node) {
-    ArrayList<ShiftInstance> returnList = new ArrayList<>();
+    ArrayList<ShiftInstance> returnList = new ArrayList<ShiftInstance>();
     List shiftNodes = node.getChildren();
         for (int j = 0; j < shiftNodes.size(); j++) {
           Element currentNode = (Element) shiftNodes.get(j);
@@ -306,7 +312,8 @@ public class XMLEditor {
         return true;
       }
     } catch (ParseException ex) {
-    } catch (JDOMException | IOException e) {
+      // TODO: for JDK7 use Multicatch
+    } catch (Exception e){//JDOMException | IOException e) {
     }
     return false;
   }
@@ -417,7 +424,7 @@ public class XMLEditor {
   }
 
   public static ArrayList<ShiftInstance> importData(String filePath, ArrayList<String> persData) {
-    ArrayList<ShiftInstance> returnList = new ArrayList<>();
+    ArrayList<ShiftInstance> returnList = new ArrayList<ShiftInstance>();
     if (filePath == null) {
       return null;
     }
@@ -437,7 +444,8 @@ public class XMLEditor {
       // load shifts
       returnList = loadShiftsFromNode((Element)shiftList.get(0));
       return returnList;
-    } catch (JDOMException | IOException | NumberFormatException e) {
+      // TODO: for JDK7 use Multicatch
+    } catch (Exception e){//JDOMException | IOException | NumberFormatException e) {
       UtilityBox.getInstance().displayErrorPopup("Import", "Fehler beim Importieren der Daten:\n"+e.getMessage());
       return null;
     }
