@@ -19,9 +19,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
-import org.bouncycastle.util.test.Test;
 
 /**
  *
@@ -58,6 +56,12 @@ public class DRManager {
     int month;
     int year;
     String[] shiftStrings = contentStrings[1].split(" ");
+//    System.out.println("contentstrings größe: "+ contentStrings.length);
+//    System.out.println("endinTimeStrings[0]: "+contentStrings[0].toString());
+//    System.out.println("endinTimeStrings[1]: "+contentStrings[1].toString());
+//    System.out.println("endinTimeStrings[2]== null?: "+(contentStrings[2]==null)+";  size: "+contentStrings[2].length());
+//    
+//    System.out.println("endinTimeStrings[2]: "+contentStrings[2].toString());
     String[] endingTimeStrings = contentStrings[2].split(" ");
     int[] shiftDates = new int[shiftStrings.length];
     ArrayList<Shift> shifts = new ArrayList<>();
@@ -192,12 +196,14 @@ private static String getPdfFilePath() {
       while (line != null) {
         if (line.contains(lastName+", "+firstName)) {
           personFound = true;
-        } else if (personFound && line.contains("Dienstplan")) {
+        } else if (personFound && line.contains("Dienstplan") && !shiftsSaved) {
           line = bufferedReader.readLine();
+//          System.out.println("dienstplanline:" + line);
           returnArray[1] = line;
           shiftsSaved = true;
-        } else if (shiftsSaved && line.contains("Arbeitsp.")) {
+        } else if (shiftsSaved && line.contains("Arbeitsz.")) {
           line = bufferedReader.readLine();
+//          System.out.println("endtime line: " +line);
           returnArray[2] = line;
           break;
         }
