@@ -674,6 +674,16 @@ public class MainWindow extends JFrame {
 
     tabbedPane.addTab("Import / Export", null, importExportTab, null);
     importExportTab.setLayout(null);
+    // change listener to update selectable years for the export
+    tabbedPane.addChangeListener(new ChangeListener() {
+
+      @Override
+      public void stateChanged(ChangeEvent e) {
+        if (((JTabbedPane)e.getSource()).getSelectedComponent() == importExportTab) {
+          exportYearComboBox.setModel(new DefaultComboBoxModel(importExport.getYearStrings()));
+        }
+      }
+    });
     
     importExportDisplayTable.getTableHeader().setReorderingAllowed(false);
     importExportDisplayTable.getTableHeader().setResizingAllowed(false);
@@ -749,6 +759,8 @@ public class MainWindow extends JFrame {
         boolean suc = importExport.importSelected();
         if(suc) {
           importExportShiftPane.setBorder(new TitledBorder(null, "ausgewählte Schichten", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+          // update selectable years
+          exportYearComboBox.setModel(new DefaultComboBoxModel(importExport.getYearStrings()));
         }
       }
     });
