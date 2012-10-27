@@ -127,11 +127,13 @@ public class AKRDMouseAdapter extends MouseAdapter {
 			
 			
 			// Set values to fields
+            ShiftType shiftType = shift.getType();
 			mainWindow.beginField.setText(begin);
 			mainWindow.endField.setText(end);
 			mainWindow.breakField.setText(breakTime);
 			mainWindow.noShiftTypeUpdate = true;
-			mainWindow.shiftTypeChooser.setSelectedItem(shift.getType());
+			mainWindow.shiftTypeChooser.setSelectedItem(shiftType);
+            mainWindow.prepTimeBox.setSelected(UtilityBox.hasPreparationTime(shiftType));
 
 			return;
 		}

@@ -508,5 +508,16 @@ public class UtilityBox {
     }
     return filePath;
   }
+  /**
+   * returns true if type is a shift with preparation time
+   * @param type
+   * @return 
+   */
+  public static boolean hasPreparationTime(ShiftContainer.ShiftType type) {
+    if (type == ShiftContainer.ShiftType.RTW || type == ShiftContainer.ShiftType.KTW || type == ShiftContainer.ShiftType.BREISACH || type == ShiftContainer.ShiftType.KIZA) {
+      return true;
+    }
+    return false;
+  }
   
 }

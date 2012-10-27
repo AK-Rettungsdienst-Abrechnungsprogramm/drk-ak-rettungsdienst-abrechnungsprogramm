@@ -49,14 +49,8 @@ public class AKRDItemListener implements ItemListener {
 				return;
 			}
 			ShiftContainer.ShiftType type = (ShiftContainer.ShiftType)mainWindow.shiftTypeChooser.getSelectedItem();
-			
-			if(type == ShiftContainer.ShiftType.RTW || type == ShiftContainer.ShiftType.KTW || type == ShiftContainer.ShiftType.BREISACH || type == ShiftContainer.ShiftType.KIZA)
-			{
-				mainWindow.prepTimeBox.setSelected(true);
-			}else
-			{
-				mainWindow.prepTimeBox.setSelected(false);
-			}
+			mainWindow.prepTimeBox.setSelected(UtilityBox.hasPreparationTime(type));
+
             mainWindow.updateShiftContainer();
 			return;
 			
