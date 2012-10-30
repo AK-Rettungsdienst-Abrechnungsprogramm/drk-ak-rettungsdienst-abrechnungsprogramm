@@ -15,13 +15,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
-import java.util.Random;
 import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
@@ -49,6 +47,7 @@ public class ShiftFormTab extends JFrame {
   private JTextField mentor2ndPosField;
   private ArrayList<ButtonGroup> allButtonGroups = new ArrayList<ButtonGroup>();
   private ArrayList<JLabel> allLabels = new ArrayList<JLabel>();
+  private ArrayList<JPanel> weekPanels = new ArrayList<JPanel>();
   private Calendar calendar = Calendar.getInstance();
   private int amountDaysPreviousMonth = 0;
   private MouseListener checkBoxListener = new CheckboxListener();
@@ -164,11 +163,16 @@ public class ShiftFormTab extends JFrame {
     allButtonGroups.clear();
     for (int i = 0; i < allLabels.size(); i++) {
       JLabel l = allLabels.get(i);
-      l.setVisible(false);
+      //l.setVisible(false);
       panel.remove(l);
     }
     allLabels.clear();
-
+    for (int i = 0; i < weekPanels.size(); i++) {
+      JPanel paneli = weekPanels.get(i);
+      paneli.removeAll();
+      panel.remove(paneli);
+    }
+    weekPanels.clear();
     // step 2: calculate shown dates
     calendar.set(year, month, 1);
     int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
@@ -202,7 +206,9 @@ public class ShiftFormTab extends JFrame {
         x = 400;
         y = 38;
       }
+      weekPanels.add(weekPanel);
     }
+    panel.repaint();
 //    while ((calendar.get(Calendar.MONTH) <= month) && !((month == 11) && (calendar.get(Calendar.MONTH) == 0))) {
 //      addRadioButtonGroupToPanel(calendar.getTime(), x, y, panel);
 //      System.out.println("Add radiogroup:" + UtilityBox.getFormattedDateString(calendar.getTime()));
