@@ -193,44 +193,48 @@ public class UtilityBox {
   }
 
   /**
-   * calculates the salary for a given shiftInstance in depandence of the 
+   * calculates the salary for a given shiftInstance in dependence of the 
    * Qualification
    * @param shift
-   * @return salary as float
+   * @return salary as float (0 if an exception occurs, meaning no personal data is known)
    */
-  public float calculateSalary(ShiftInstance shift) {
-    float salary;
-    switch (shift.getType()) {
-      case KTW:
-      case RTW:
-        switch (PersonalData.getInstance().getQualification()) {
-          case RH:
-            salary = 7.8f;
-            break;
-          case RS:
-            salary = 8.8f;
-            break;
-          default:
-            salary = 9.9f;
-        }
-        break;
-      case KVS:
-        salary = 9f;
-        break;
-      default:
-        switch (PersonalData.getInstance().getQualification()) {
-          case RH:
-            salary = 5.9f;
-            break;
-          case RS:
-            salary = 6.7f;
-            break;
-          default:
-            salary = 7.6f;
-        }
-    }
-    return salary;
-  }
+	public float calculateSalary(ShiftInstance shift) {
+		float salary;
+		try {
+			switch (shift.getType()) {
+			case KTW:
+			case RTW:
+				switch (PersonalData.getInstance().getQualification()) {
+				case RH:
+					salary = 7.8f;
+					break;
+				case RS:
+					salary = 8.8f;
+					break;
+				default:
+					salary = 9.9f;
+				}
+				break;
+			case KVS:
+				salary = 9f;
+				break;
+			default:
+				switch (PersonalData.getInstance().getQualification()) {
+				case RH:
+					salary = 5.9f;
+					break;
+				case RS:
+					salary = 6.7f;
+					break;
+				default:
+					salary = 7.6f;
+				}
+			}
+		} catch (Exception e) {
+			return 0;
+		}
+		return salary;
+	}
   public String calculateTimeInHours(int start, int end, int breakTime) {
     int time = calculateTime(start, end, breakTime);
     int hours = ((int) (time / 100));
