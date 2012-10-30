@@ -238,11 +238,11 @@ public class ShiftFormTab extends JFrame {
     String formattedDate = UtilityBox.getFormattedDateString(date);
     label = new JLabel(day + ", " + formattedDate);
     allLabels.add(label);
-    label.setBounds(x, y, 80, 18);
+    label.setBounds(x, y, 95, 18);
     label.setEnabled(active);
     panel.add(label);
     // create buttongroup
-    ButtonGroup bg = returnCheckboxGroup(x + 80, y, active, date);
+    ButtonGroup bg = returnCheckboxGroup(x + 100, y, active, date);
     allButtonGroups.add(bg);
     Enumeration<AbstractButton> e = bg.getElements();
     while (e.hasMoreElements()) {
@@ -258,7 +258,7 @@ public class ShiftFormTab extends JFrame {
    * @return ButtonGroup
    */
   private ButtonGroup returnCheckboxGroup(int x, int y, boolean active, Date date) {
-    int xSize = 33;
+    int xSize = 38;
     int ySize = 18;
     ButtonGroup bg = new ButtonGroup();
     String[] labels = {"X", "F", "S", "T", "N"};
@@ -309,9 +309,6 @@ public class ShiftFormTab extends JFrame {
 //    bg.add(checkBoxT);
 //    bg.add(checkBoxN);
     return bg;
-  }
-
-  private void setRadioFields() {
   }
 
   private class ResetForm extends AbstractAction {
@@ -423,6 +420,7 @@ public class ShiftFormTab extends JFrame {
     }
     @Override
     public void itemStateChanged(ItemEvent e) {
+      System.out.println("itemEvent");
       ExtendedJCheckBox source = (ExtendedJCheckBox) e.getSource();
       for (int i = 0; i < allButtonGroups.size(); i++) {
         ButtonGroup buttonGroup = allButtonGroups.get(i);
@@ -442,6 +440,7 @@ public class ShiftFormTab extends JFrame {
     buttonGroup.remove(checkbox);
     checkbox.setChecked(value);
     checkbox.setSelected(value);
+    System.out.println("set checkbox to: "+value+": success: "+(value==checkbox.isChecked())+" "+(value==checkbox.isSelected()));
     buttonGroup.add(checkbox);
     checkbox.repaint();
   }
