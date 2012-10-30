@@ -681,6 +681,7 @@ public class MainWindow extends JFrame {
       public void stateChanged(ChangeEvent e) {
         if (((JTabbedPane)e.getSource()).getSelectedComponent() == importExportTab) {
           exportYearComboBox.setModel(new DefaultComboBoxModel(importExport.getYearStrings()));
+          importExport.setSelected(importExportDisplayTableModel, exportMonthComboBox.getSelectedIndex(), exportYearComboBox.getSelectedIndex());
         }
       }
     });
