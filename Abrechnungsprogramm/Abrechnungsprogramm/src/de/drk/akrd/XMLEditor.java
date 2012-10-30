@@ -413,9 +413,11 @@ public class XMLEditor {
       }
       XMLOutputter xmlOutput = new XMLOutputter();
       String fileName = UtilityBox.getInstance().saveDialog(".xml", "SchichtenIrgendwann", "XML-Dateien");
-      xmlOutput.output(document, new FileWriter(fileName));
-
-      return true;
+      if (fileName != null) {
+        xmlOutput.output(document, new FileWriter(fileName));
+        return true;
+      }
+      return false;
     } catch (IOException io) {
       UtilityBox.getInstance().displayErrorPopup("Export", "Fehler beim "
               + "Exportieren der Daten:\n" + io.getMessage());

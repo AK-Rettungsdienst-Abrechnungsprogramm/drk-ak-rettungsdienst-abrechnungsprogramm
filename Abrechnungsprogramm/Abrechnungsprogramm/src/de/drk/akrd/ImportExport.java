@@ -39,9 +39,11 @@ public class ImportExport {
       ub.displayInfoPopup("Import", "Keine Schichten ausgewählt.");
       return false;
     }
-    XMLEditor.exportData(selectedShifts);
-    UtilityBox.getInstance().displayInfoPopup("Export", "Die angezeigten Schichten wurden exportiert.");
-    return true;
+    boolean success = XMLEditor.exportData(selectedShifts);
+    if (success) {
+      UtilityBox.getInstance().displayInfoPopup("Export", "Die angezeigten Schichten wurden exportiert.");
+    }
+    return success;
   }
 
   /**
@@ -118,6 +120,9 @@ public class ImportExport {
    */
   private void fillList(DefaultTableModel shiftTableModel, ArrayList<ShiftInstance> shifts) {
     shiftTableModel.setRowCount(0);
+    if (shifts == null) {
+      return;
+    }
     for (int i = 0; i < shifts.size(); i++) {
       try {
         ShiftInstance shiftInstance = shifts.get(i);
