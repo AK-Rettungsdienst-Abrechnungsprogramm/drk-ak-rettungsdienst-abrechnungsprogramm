@@ -514,7 +514,9 @@ public class UtilityBox {
    * @return 
    */
   public static boolean hasPreparationTime(ShiftContainer.ShiftType type) {
-    if (type == ShiftContainer.ShiftType.RTW || type == ShiftContainer.ShiftType.KTW || type == ShiftContainer.ShiftType.BREISACH || type == ShiftContainer.ShiftType.KIZA) {
+    if (type == ShiftContainer.ShiftType.RTW || type == ShiftContainer.ShiftType.KTW 
+    	|| type == ShiftContainer.ShiftType.BREISACH || type == ShiftContainer.ShiftType.KIZA
+    	|| type == ShiftContainer.ShiftType.BABY) {
       return true;
     }
     return false;
