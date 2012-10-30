@@ -8,6 +8,7 @@ import javax.swing.JTextField;
 import javax.swing.AbstractAction;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentListener;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -50,7 +51,7 @@ public class ShiftFormTab extends JFrame {
   private ArrayList<JPanel> weekPanels = new ArrayList<JPanel>();
   private Calendar calendar = Calendar.getInstance();
   private int amountDaysPreviousMonth = 0;
-  private MouseListener checkBoxListener = new CheckboxListener();
+  //private MouseListener checkBoxListener = new CheckboxListener();
   private CheckboxItemListener checkboxItemListener = new CheckboxItemListener();
 
   public ShiftFormTab(final JPanel panel) {
@@ -271,7 +272,8 @@ public class ShiftFormTab extends JFrame {
       checkBox.setVisible(true);
       checkBox.setEnabled(active);
       if (active) {
-        checkBox.addItemListener(checkboxItemListener);
+        //checkBox.addItemListener(checkboxItemListener);
+        checkBox.addActionListener(new CheckboxActionListener());
       }
       bg.add(checkBox);
     }
@@ -318,6 +320,7 @@ public class ShiftFormTab extends JFrame {
       //putValue(SHORT_DESCRIPTION, "Some short description");
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
       for (int i = 0; i < allButtonGroups.size(); i++) {
         ButtonGroup buttonGroup = allButtonGroups.get(i);
@@ -339,6 +342,7 @@ public class ShiftFormTab extends JFrame {
       //putValue(SHORT_DESCRIPTION, "Some short description");
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
       int month = MonthComboBox.getSelectedIndex();
       int year = Integer.parseInt((String) YearComboBox.getSelectedItem());
@@ -346,9 +350,10 @@ public class ShiftFormTab extends JFrame {
       try {
         maxShifts = Integer.parseInt(maxShiftsField.getText());
       } catch (Exception ex) {
-        UtilityBox.getInstance().displayErrorPopup("Max. Schichten", "Ungültige Eingabe für \"maximale Schichten\".");
-        maxShiftsField.setText("");
-        return;
+//        UtilityBox.getInstance().displayErrorPopup("Max. Schichten", "Ungültige Eingabe für \"maximale Schichten\".");
+//        maxShiftsField.setText("");
+//        return;
+        maxShifts = 0;
       }
       int mentor3 = 0;
       try {
@@ -384,40 +389,40 @@ public class ShiftFormTab extends JFrame {
     }
   }
 
-  class CheckboxListener implements MouseListener {
-
-    public void mouseExited(MouseEvent e) {
-    }
-
-    public void mouseEntered(MouseEvent e) {
-    }
-
-    public void mouseReleased(MouseEvent e) {
-    }
-
-    public void mousePressed(MouseEvent e) {
-    }
-
-    public void mouseClicked(MouseEvent e) {
-      ExtendedJCheckBox source = (ExtendedJCheckBox) e.getSource();
-      for (int i = 0; i < allButtonGroups.size(); i++) {
-        ButtonGroup buttonGroup = allButtonGroups.get(i);
-        Enumeration<AbstractButton> buttons = buttonGroup.getElements();
-        while (buttons.hasMoreElements()) {
-          if (buttons.nextElement().equals(source)) {
-            boolean newSelectStatus = !source.isChecked();
-            setExtendedJCheckboxInButtonGroupToValue(buttonGroup, source, newSelectStatus);
-            return;
-          }
-        }
-      }
-    }
-  }
-
+//  class CheckboxListener implements MouseListener {
+//
+//    public void mouseExited(MouseEvent e) {
+//    }
+//
+//    public void mouseEntered(MouseEvent e) {
+//    }
+//
+//    public void mouseReleased(MouseEvent e) {
+//    }
+//
+//    public void mousePressed(MouseEvent e) {
+//    }
+//
+//    public void mouseClicked(MouseEvent e) {
+//      ExtendedJCheckBox source = (ExtendedJCheckBox) e.getSource();
+//      for (int i = 0; i < allButtonGroups.size(); i++) {
+//        ButtonGroup buttonGroup = allButtonGroups.get(i);
+//        Enumeration<AbstractButton> buttons = buttonGroup.getElements();
+//        while (buttons.hasMoreElements()) {
+//          if (buttons.nextElement().equals(source)) {
+//            boolean newSelectStatus = !source.isChecked();
+//            setExtendedJCheckboxInButtonGroupToValue(buttonGroup, source, newSelectStatus);
+//            return;
+//          }
+//        }
+//      }
+//    }
+//  }
   private class CheckboxItemListener implements ItemListener {
-    public CheckboxItemListener() {
-      super();
-    }
+//    public CheckboxItemListener() {
+//      super();
+//    }
+
     @Override
     public void itemStateChanged(ItemEvent e) {
       System.out.println("itemEvent");
@@ -434,14 +439,37 @@ public class ShiftFormTab extends JFrame {
         }
       }
     }
-    
   }
+
   private void setExtendedJCheckboxInButtonGroupToValue(ButtonGroup buttonGroup, ExtendedJCheckBox checkbox, boolean value) {
     buttonGroup.remove(checkbox);
     checkbox.setChecked(value);
     checkbox.setSelected(value);
-    System.out.println("set checkbox to: "+value+": success: "+(value==checkbox.isChecked())+" "+(value==checkbox.isSelected()));
+    System.out.println("set checkbox to: " + value + ": success: " + (value == checkbox.isChecked()) + " " + (value == checkbox.isSelected()));
     buttonGroup.add(checkbox);
     checkbox.repaint();
+  }
+
+  private class CheckboxActionListener implements ActionListener {
+//    public CheckboxItemListener() {
+//      super();
+//    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      System.out.println("itemEvent");
+      ExtendedJCheckBox source = (ExtendedJCheckBox) e.getSource();
+      for (int i = 0; i < allButtonGroups.size(); i++) {
+        ButtonGroup buttonGroup = allButtonGroups.get(i);
+        Enumeration<AbstractButton> buttons = buttonGroup.getElements();
+        while (buttons.hasMoreElements()) {
+          if (buttons.nextElement().equals(source)) {
+            boolean newSelectStatus = !source.isChecked();
+            setExtendedJCheckboxInButtonGroupToValue(buttonGroup, source, newSelectStatus);
+            return;
+          }
+        }
+      }
+    }
   }
 }
