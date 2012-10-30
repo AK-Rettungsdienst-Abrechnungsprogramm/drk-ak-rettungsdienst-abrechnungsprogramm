@@ -222,7 +222,14 @@ public class ShiftContainer {
       return;
     }
 
+    // get instance to delete (to get the year)
+    ShiftInstance deletedInstance = shiftInstances.get(number);
     shiftInstances.remove(number);
+    
+    // rewrite XML file
+    calendar.setTime(deletedInstance.getDate());
+    ShiftLoadSave.saveShifts(shiftInstances, calendar.get(Calendar.YEAR));
+    
     mainWindow.updateRegisteredShifts();
   }
 
