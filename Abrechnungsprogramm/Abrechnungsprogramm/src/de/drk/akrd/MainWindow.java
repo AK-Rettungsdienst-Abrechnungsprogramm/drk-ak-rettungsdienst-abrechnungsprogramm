@@ -798,7 +798,7 @@ public class MainWindow extends JFrame {
 
   public void updateRegisteredShifts() {
 
-    float completeSalary = 0f;
+    float completeSalary = -1;
 
     Object[][] data = ShiftContainer.shiftInstancesToTableData((ShiftInstance[]) shiftContainer.shiftInstances.toArray(new ShiftInstance[shiftContainer.shiftInstances.size()]));
     registeredShiftsTableModel.setNumRows(0);
@@ -817,6 +817,8 @@ public class MainWindow extends JFrame {
     {
     	UtilityBox.getInstance().displayErrorPopup("Fehler", "Es wurden keine gültigen Personendaten gefunden und der Lohn konnte nicht berechnet werden. Bitte trage diese neu ein!");
     }
+    // if complete salary is now still -1 no shifts are present and it can become 0
+    if (completeSalary == -1) completeSalary = 0;
     Object[] lastLine = new Object[]{"", "", "", "", "", "", "Gesamt",
       String.format("%.2f", completeSalary) + "€"};
     registeredShiftsTableModel.addRow(lastLine);
