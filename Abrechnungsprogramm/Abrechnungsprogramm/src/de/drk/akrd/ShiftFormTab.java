@@ -242,7 +242,7 @@ public class ShiftFormTab extends JFrame {
     label.setEnabled(active);
     panel.add(label);
     // create buttongroup
-    ButtonGroup bg = returnCheckboxGroup(x + 100, y, active, date);
+    ButtonGroup bg = returnCheckboxGroup(x + 115, y, active, date);
     allButtonGroups.add(bg);
     Enumeration<AbstractButton> e = bg.getElements();
     while (e.hasMoreElements()) {
@@ -258,7 +258,7 @@ public class ShiftFormTab extends JFrame {
    * @return ButtonGroup
    */
   private ButtonGroup returnCheckboxGroup(int x, int y, boolean active, Date date) {
-    int xSize = 38;
+    int xSize = 39;
     int ySize = 18;
     ButtonGroup bg = new ButtonGroup();
     String[] labels = {"X", "F", "S", "T", "N"};
