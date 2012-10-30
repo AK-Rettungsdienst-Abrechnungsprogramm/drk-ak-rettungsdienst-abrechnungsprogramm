@@ -54,7 +54,7 @@ public class MainWindow extends JFrame {
   protected final JTextField firstNameField = new JTextField();
   private final JLabel lblNachname = new JLabel("Nachname:");
   protected final JTextField lastNameField = new JTextField();
-  protected final JComboBox<PersonalData.Qualification> trainingsChooser = new JComboBox<Qualification>();
+  public final JComboBox<PersonalData.Qualification> trainingsChooser = new JComboBox<Qualification>();
   protected final JTextField accountNo = new JTextField();
   protected JTextField blz = new JTextField();
   protected JCheckBox bankInfoKnown = new JCheckBox();
@@ -422,8 +422,8 @@ public class MainWindow extends JFrame {
 
     panel.add(lblAusbildung, "2, 8");
     trainingsChooser.setModel(new DefaultComboBoxModel<Qualification>(Qualification.values()));
-
     panel.add(trainingsChooser, "6, 8, 3, 1");
+    
     personalInfoTab.setLayout(gl_personalInfoTab);
     
 
@@ -811,6 +811,11 @@ public class MainWindow extends JFrame {
       completeSalary += salary;
       list.add(String.format("%.2f", salary) + "€");
       registeredShiftsTableModel.addRow(list.toArray());
+    }
+    // if complete salary is 0 display error message
+    if(completeSalary == 0)
+    {
+    	UtilityBox.getInstance().displayErrorPopup("Fehler", "Es wurden keine gültigen Personendaten gefunden und der Lohn konnte nicht berechnet werden. Bitte trage diese neu ein!");
     }
     Object[] lastLine = new Object[]{"", "", "", "", "", "", "Gesamt",
       String.format("%.2f", completeSalary) + "€"};
