@@ -66,7 +66,7 @@ public class ShiftContainer {
   }
 
   public void loadShifts(String shiftfilePath) {
-    XMLEditor.fillShiftList("data/Schichten.xml", shifts);
+    XMLEditor.fillShiftList("data" + System.getProperty("file.separator") + "Schichten.xml", shifts);
   }
 
   public Shift[] getShifts() {

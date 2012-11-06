@@ -19,7 +19,6 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.jdom.Document;
 import java.util.List;
-import org.jdom.JDOMException;
 
 /**
  *
@@ -89,7 +88,7 @@ public class XMLEditor {
    * @return true if succesful, false otherwise
    */
   public static boolean writePersonalData(PersonalData dataInstance) {
-    File dataFile = new File("data/PersonalData.xml");
+    File dataFile = new File("data" + System.getProperty("file.separator") + "PersonalData.xml");
     boolean fileExists = dataFile.exists();
     // TODO: for JDK7 use try-with
     try {//(FileWriter fileWriter = new FileWriter(dataFile)) {
@@ -152,7 +151,7 @@ public class XMLEditor {
    * @return true if successful, false othewise (i.e. file not found)
    */
   public static boolean loadPersonalData(PersonalData pd) {
-    File dataFile = new File("data/PersonalData.xml");
+    File dataFile = new File("data" + System.getProperty("file.separator") + "PersonalData.xml");
     if (dataFile.exists()) {
       SAXBuilder saxBuilder = new SAXBuilder();
       try {
@@ -227,7 +226,7 @@ public class XMLEditor {
    */
   public static ArrayList<ShiftInstance> loadSavedShifts(int year) {
     SAXBuilder saxBuilder = new SAXBuilder();
-    File xmlFile = new File("data/Schichten" + year + ".xml");
+    File xmlFile = new File("data" + System.getProperty("file.separator") + "Schichten" + year + ".xml");
     try {
       ArrayList<ShiftInstance> outputList = new ArrayList<ShiftInstance>();
       Document document = (Document) saxBuilder.build(xmlFile);
@@ -275,7 +274,7 @@ public class XMLEditor {
    */
   public static boolean storeShifts(ArrayList<ShiftInstance> shiftList, int year) {
     String documentName = "Schichten" + year;
-    String fileName = "data/" + documentName + ".xml";
+    String fileName = "data" + System.getProperty("file.seperator") + documentName + ".xml";
     try {
       SAXBuilder saxBuilder = new SAXBuilder();
       File xmlFile = new File(fileName);
