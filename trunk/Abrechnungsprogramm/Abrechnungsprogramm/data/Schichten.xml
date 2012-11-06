@@ -348,7 +348,7 @@
     <Pause>000</Pause>
     <Schichtname>YT</Schichtname>
     <RuestzeitMin>010</RuestzeitMin>
-    <Tage>Mo-Fr</Tage>
+    <Tage>Mo-So</Tage>
   </Schicht>
   <Schicht>
     <ArtUndOrt>Baby-NAW</ArtUndOrt>
@@ -357,7 +357,7 @@
     <Pause>000</Pause>
     <Schichtname>YN</Schichtname>
     <RuestzeitMin>010</RuestzeitMin>
-    <Tage>Mo-Fr</Tage>
+    <Tage>Mo-So</Tage>
   </Schicht>
   <Schicht>
     <ArtUndOrt>KVS</ArtUndOrt>
@@ -366,7 +366,7 @@
     <Pause>000</Pause>
     <Schichtname>KVS1</Schichtname>
     <RuestzeitMin>000</RuestzeitMin>
-    <Tage>Mo-Fr</Tage>
+    <Tage>Mo-So</Tage>
   </Schicht>
   <Schicht>
     <ArtUndOrt>KVS</ArtUndOrt>
@@ -375,7 +375,7 @@
     <Pause>000</Pause>
     <Schichtname>KVS2</Schichtname>
     <RuestzeitMin>000</RuestzeitMin>
-    <Tage>Mo-Fr</Tage>
+    <Tage>Mo-So</Tage>
   </Schicht>
   <Schicht>
     <ArtUndOrt>KVS</ArtUndOrt>
@@ -384,7 +384,7 @@
     <Pause>000</Pause>
     <Schichtname>KVS3</Schichtname>
     <RuestzeitMin>000</RuestzeitMin>
-    <Tage>Mo-Fr</Tage>
+    <Tage>Mo-So</Tage>
   </Schicht>
   <Schicht>
     <ArtUndOrt>KVS</ArtUndOrt>
@@ -393,7 +393,7 @@
     <Pause>000</Pause>
     <Schichtname>KVS4</Schichtname>
     <RuestzeitMin>000</RuestzeitMin>
-    <Tage>Mo-Fr</Tage>
+    <Tage>Mo-So</Tage>
   </Schicht>
   <Schicht>
     <ArtUndOrt>KVS</ArtUndOrt>
@@ -402,7 +402,7 @@
     <Pause>000</Pause>
     <Schichtname>KVS5</Schichtname>
     <RuestzeitMin>000</RuestzeitMin>
-    <Tage>Mo-Fr</Tage>
+    <Tage>Mo-So</Tage>
   </Schicht>
   <Schicht>
     <ArtUndOrt>KVS</ArtUndOrt>
@@ -411,7 +411,7 @@
     <Pause>000</Pause>
     <Schichtname>KVS6</Schichtname>
     <RuestzeitMin>000</RuestzeitMin>
-    <Tage>Mo-Fr</Tage>
+    <Tage>Mo-So</Tage>
   </Schicht>
   <Schicht>
     <ArtUndOrt>KVS</ArtUndOrt>
@@ -420,7 +420,7 @@
     <Pause>000</Pause>
     <Schichtname>KVS7</Schichtname>
     <RuestzeitMin>000</RuestzeitMin>
-    <Tage>Mo-Fr</Tage>
+    <Tage>Mo-So</Tage>
   </Schicht>
   <Schicht>
     <ArtUndOrt>KVS</ArtUndOrt>
@@ -429,7 +429,7 @@
     <Pause>000</Pause>
     <Schichtname>KVS8</Schichtname>
     <RuestzeitMin>000</RuestzeitMin>
-    <Tage>Mo-Fr</Tage>
+    <Tage>Mo-So</Tage>
   </Schicht>
   <Schicht>
     <ArtUndOrt>KVS</ArtUndOrt>
@@ -438,6 +438,6 @@
     <Pause>000</Pause>
     <Schichtname>KVS9</Schichtname>
     <RuestzeitMin>000</RuestzeitMin>
-    <Tage>Mo-Fr</Tage>
+    <Tage>Mo-So</Tage>
   </Schicht>
 </Dienste>
