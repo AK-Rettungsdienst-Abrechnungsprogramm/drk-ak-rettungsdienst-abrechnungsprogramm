@@ -1,5 +1,6 @@
 package de.drk.akrd;
 
+import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -67,6 +68,9 @@ public class ShiftContainer {
 
   public void loadShifts(String shiftfilePath) {
     XMLEditor.fillShiftList("data" + System.getProperty("file.separator") + "Schichten.xml", shifts);
+//    System.out.println("benutzer pfad: data" + System.getProperty("file.separator") + "Schichten.xml\n");
+//    System.out.println("java.class.path: "+System.getProperty("java.class.path")+"\n");
+//    System.out.println("über File: "+(new File("").getAbsolutePath()));
   }
 
   public Shift[] getShifts() {

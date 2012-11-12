@@ -18,6 +18,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
@@ -31,9 +33,12 @@ public class DRManager {
   private static String failMessage = null;
   private static Shift[] savedShifts = null;
   private static Date[] savedShiftDates = null;
-  private DRManager(){}
+
+  private DRManager() {
+  }
+
   public static DRManager GetInstance() {
-    if (INSTANCE==null) {
+    if (INSTANCE == null) {
       INSTANCE = new DRManager();
     }
     return INSTANCE;
@@ -47,8 +52,8 @@ public class DRManager {
     String[] contentStrings = parsePdf(filePath);
     if (contentStrings == null) {
       String message = failMessage;
-      if(message == null) {
-        message = "Die Datei kann nicht ausgelesen Werden";
+      if (message == null) {
+        message = "Die Datei kann nicht ausgelesen werden";
       }
       parsingFailed(message);
       return;
@@ -56,12 +61,6 @@ public class DRManager {
     int month;
     int year;
     String[] shiftStrings = contentStrings[1].split(" ");
-//    System.out.println("contentstrings größe: "+ contentStrings.length);
-//    System.out.println("endinTimeStrings[0]: "+contentStrings[0].toString());
-//    System.out.println("endinTimeStrings[1]: "+contentStrings[1].toString());
-//    System.out.println("endinTimeStrings[2]== null?: "+(contentStrings[2]==null)+";  size: "+contentStrings[2].length());
-//    
-//    System.out.println("endinTimeStrings[2]: "+contentStrings[2].toString());
     String[] endingTimeStrings = contentStrings[2].split(" ");
     int[] shiftDates = new int[shiftStrings.length];
     ArrayList<Shift> shifts = new ArrayList<Shift>();
@@ -71,7 +70,7 @@ public class DRManager {
     try {
       date = sdf.parse(contentStrings[0]);
     } catch (ParseException ex) {
-      parsingFailed("Datum kann nicht ausgelesen werden:\n"+ex.getMessage());
+      parsingFailed("Datum kann nicht ausgelesen werden:\n" + ex.getMessage());
       return;
     }
     cal.setTime(date);
@@ -111,14 +110,15 @@ public class DRManager {
 //      System.out.println("Schicht " + i + ": " + shift.getId() + " am " + shiftDates[i] + "." + (month + 1) + "." + year);
 //    }
   }
-/**
+
+  /**
    * open fileChooser dialog to select a dutyrota-file
    * @return filepath
    */
-private static String getPdfFilePath() {
-  JFileChooser fileChooser = new JFileChooser(new File(System.getProperty("user.dir")));
-  fileChooser.setMultiSelectionEnabled(false);
-  fileChooser.setFileFilter(new FileFilter() {
+  private static String getPdfFilePath() {
+    JFileChooser fileChooser = new JFileChooser(new File(System.getProperty("user.dir")));
+    fileChooser.setMultiSelectionEnabled(false);
+    fileChooser.setFileFilter(new FileFilter() {
 
       @Override
       public boolean accept(File f) {
@@ -130,12 +130,13 @@ private static String getPdfFilePath() {
         return "Pdf-Dateien";
       }
     });
-  int state = fileChooser.showOpenDialog(null);
-  if (state == JFileChooser.APPROVE_OPTION) {
-    return fileChooser.getSelectedFile().getPath();
+    int state = fileChooser.showOpenDialog(null);
+    if (state == JFileChooser.APPROVE_OPTION) {
+      return fileChooser.getSelectedFile().getPath();
+    }
+    return null;
   }
-  return null;
-}
+
   /**
    * 
    * @param filename filename of the duty rota-file (pdf)
@@ -149,7 +150,7 @@ private static String getPdfFilePath() {
     try {
       PdfReader reader = new PdfReader(filename);
       PdfReaderContentParser parser = new PdfReaderContentParser(reader);
-      File tempFile = new File("data/tempFile");
+      File tempFile = new File("data" + System.getProperty("file.separator") + "tempFile");
       // TODO: for JDK7 use try-with
       try {//(FileWriter fileWriter = new FileWriter(tempFile)) {
         FileWriter fileWriter = new FileWriter(tempFile);
@@ -160,14 +161,13 @@ private static String getPdfFilePath() {
         }
         fileWriter.flush();
         returnArray = getStings(tempFile);
-      } catch(Exception e) {
-        
+      } catch (Exception e) {
       }
-      
+
       // delete the temporary file
-      if (!tempFile.delete()) {
-        System.out.println("Deletation of temp-file in DRManager.parsePDF failed.");
-      }
+//      if (!tempFile.delete()) {
+//        System.out.println("Deletation of temp-file in DRManager.parsePDF failed.");
+//      }
 
     } catch (IOException ex) {
       parsingFailed(ex.getMessage());
@@ -198,22 +198,64 @@ private static String getPdfFilePath() {
       boolean shiftsSaved = false;
       String firstName = PersonalData.getInstance().getFirstName();
       String lastName = PersonalData.getInstance().getLastName();
+      // find person
       while (line != null) {
-        if (line.contains(lastName+", "+firstName)) {
+        if (line.contains(lastName + ", " + firstName)) {
           personFound = true;
-        } else if (personFound && line.contains("Dienstplan") && !shiftsSaved) {
-          line = bufferedReader.readLine();
-//          System.out.println("dienstplanline:" + line);
-          returnArray[1] = line;
-          shiftsSaved = true;
-        } else if (shiftsSaved && line.contains("Arbeitsz.")) {
-          line = bufferedReader.readLine();
-//          System.out.println("endtime line: " +line);
-          returnArray[2] = line;
           break;
         }
         line = bufferedReader.readLine();
       }
+      if (personFound) {
+        // find shift names
+        while (line != null) {
+          if (line.contains("Dienstplan")) {
+            line = bufferedReader.readLine();
+//          System.out.println("dienstplanline:" + line);
+            returnArray[1] = line;
+            shiftsSaved = true;
+            break;
+          }
+          line = bufferedReader.readLine();
+        }
+        // find working time strings
+        Calendar cal = Calendar.getInstance();
+        try {
+          cal.setTime(UtilityBox.SIMPLE_DATE_FORMAT.parse(returnArray[0]));
+        } catch (ParseException ex) {
+          // TODO: handle exception
+          System.out.println("Parse Date failed.");
+        }
+        int nDaysInMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+        while (line != null) {          
+          // split line and check for working time strings
+          String[] lineStrings = line.split(" ");
+          if ((lineStrings.length == nDaysInMonth) && (lineStrings[0].subSequence(1, 2).equals("h"))) {
+            returnArray[2] = line;
+            break;
+          }
+          line = bufferedReader.readLine();
+        }
+      }
+      
+      
+
+//      while (line != null) {
+//        if (line.contains(lastName + ", " + firstName)) {
+//          personFound = true;
+//        } else if (personFound && line.contains("Dienstplan") && !shiftsSaved) {
+//          line = bufferedReader.readLine();
+////          System.out.println("dienstplanline:" + line);
+//          returnArray[1] = line;
+//          shiftsSaved = true;
+//        } else if (shiftsSaved && line.contains("Arbeitsz.")) {
+//          line = bufferedReader.readLine();
+////          System.out.println("endtime line: " +line);
+//          returnArray[2] = line;
+//          break;
+//        }
+//        line = bufferedReader.readLine();
+//      }
 
 
     } catch (IOException ex) {
@@ -228,10 +270,9 @@ private static String getPdfFilePath() {
     }
     if (personFound) {
       return returnArray;
-    }
-    else {
-      failMessage = "Person '"+PersonalData.getInstance().getFirstName()+" "+
-              PersonalData.getInstance().getLastName()+"' nicht gefunden.";
+    } else {
+      failMessage = "Person '" + PersonalData.getInstance().getFirstName() + " "
+              + PersonalData.getInstance().getLastName() + "' nicht gefunden.";
       return null;
     }
   }
