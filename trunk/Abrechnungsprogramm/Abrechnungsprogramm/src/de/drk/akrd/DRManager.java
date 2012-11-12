@@ -18,8 +18,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
@@ -165,9 +163,9 @@ public class DRManager {
       }
 
       // delete the temporary file
-//      if (!tempFile.delete()) {
-//        System.out.println("Deletation of temp-file in DRManager.parsePDF failed.");
-//      }
+      if (!tempFile.delete()) {
+        System.out.println("Deletation of temp-file in DRManager.parsePDF failed.");
+      }
 
     } catch (IOException ex) {
       parsingFailed(ex.getMessage());
