@@ -422,7 +422,6 @@ public class ShiftFormTab extends JFrame {
 
     @Override
     public void itemStateChanged(ItemEvent e) {
-      System.out.println("itemEvent");
       ExtendedJCheckBox source = (ExtendedJCheckBox) e.getSource();
       for (int i = 0; i < allButtonGroups.size(); i++) {
         ButtonGroup buttonGroup = allButtonGroups.get(i);
@@ -442,7 +441,6 @@ public class ShiftFormTab extends JFrame {
     buttonGroup.remove(checkbox);
     checkbox.setChecked(value);
     checkbox.setSelected(value);
-    System.out.println("set checkbox to: " + value + ": success: " + (value == checkbox.isChecked()) + " " + (value == checkbox.isSelected()));
     buttonGroup.add(checkbox);
     checkbox.repaint();
   }
@@ -454,7 +452,6 @@ public class ShiftFormTab extends JFrame {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-      System.out.println("itemEvent");
       ExtendedJCheckBox source = (ExtendedJCheckBox) e.getSource();
       for (int i = 0; i < allButtonGroups.size(); i++) {
         ButtonGroup buttonGroup = allButtonGroups.get(i);

@@ -373,7 +373,7 @@ public class UtilityBox {
     for (int i = 0; i < holidayDates.length; i++) {
       Date date = holidayDates[i];
       calendar.setTime(date);
-      System.out.println("feiertag "+(i+1)+": "+calendar.get(Calendar.DAY_OF_MONTH)+"."+(calendar.get(Calendar.MONTH)+1)+"."+calendar.get(Calendar.YEAR));
+      //System.out.println("feiertag "+(i+1)+": "+calendar.get(Calendar.DAY_OF_MONTH)+"."+(calendar.get(Calendar.MONTH)+1)+"."+calendar.get(Calendar.YEAR));
     }
     return holidayDates;
   }

@@ -7,8 +7,6 @@ package de.drk.akrd;
 import com.google.gdata.client.*;
 import com.google.gdata.data.*;
 import com.google.gdata.data.extensions.*;
-import com.google.gdata.util.*;
-import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
 import javax.swing.JOptionPane;

@@ -119,7 +119,7 @@ public class ICalendar extends CalendarManager {
     if (!filePath.endsWith(fileEnding)) {
       filePath += fileEnding;
     }
-    System.out.println("filepath: " + filePath);
+    //System.out.println("filepath: " + filePath);
     return filePath;
   }
 }
