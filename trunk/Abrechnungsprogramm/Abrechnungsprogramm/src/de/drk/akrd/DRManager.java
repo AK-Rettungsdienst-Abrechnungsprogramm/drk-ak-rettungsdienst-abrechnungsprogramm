@@ -44,7 +44,7 @@ public class DRManager {
 
   public void parseDutyRota() {
     String filePath = getPdfFilePath();
-    if (!(new File(filePath).exists())) {
+    if ((filePath == null) || (!(new File(filePath).exists()))) {
       return;
     }
     String[] contentStrings = parsePdf(filePath);
@@ -150,8 +150,9 @@ public class DRManager {
       PdfReaderContentParser parser = new PdfReaderContentParser(reader);
       File tempFile = new File("data" + System.getProperty("file.separator") + "tempFile");
       // TODO: for JDK7 use try-with
+      FileWriter fileWriter = null;
       try {//(FileWriter fileWriter = new FileWriter(tempFile)) {
-        FileWriter fileWriter = new FileWriter(tempFile);
+        fileWriter = new FileWriter(tempFile);
         TextExtractionStrategy strategy;
         for (int i = 1; i <= reader.getNumberOfPages(); i++) {
           strategy = parser.processContent(i, new LocationTextExtractionStrategy());
@@ -159,14 +160,15 @@ public class DRManager {
         }
         fileWriter.flush();
         returnArray = getStings(tempFile);
+        fileWriter.close();
       } catch (Exception e) {
+        fileWriter.close();
       }
 
       // delete the temporary file
       if (!tempFile.delete()) {
         System.out.println("Deletation of temp-file in DRManager.parsePDF failed.");
       }
-
     } catch (IOException ex) {
       parsingFailed(ex.getMessage());
       return null;
@@ -225,7 +227,7 @@ public class DRManager {
           System.out.println("Parse Date failed.");
         }
         int nDaysInMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-        while (line != null) {          
+        while (line != null) {
           // split line and check for working time strings
           String[] lineStrings = line.split(" ");
           if ((lineStrings.length == nDaysInMonth) && (lineStrings[0].subSequence(1, 2).equals("h"))) {
@@ -235,27 +237,6 @@ public class DRManager {
           line = bufferedReader.readLine();
         }
       }
-      
-      
-
-//      while (line != null) {
-//        if (line.contains(lastName + ", " + firstName)) {
-//          personFound = true;
-//        } else if (personFound && line.contains("Dienstplan") && !shiftsSaved) {
-//          line = bufferedReader.readLine();
-////          System.out.println("dienstplanline:" + line);
-//          returnArray[1] = line;
-//          shiftsSaved = true;
-//        } else if (shiftsSaved && line.contains("Arbeitsz.")) {
-//          line = bufferedReader.readLine();
-////          System.out.println("endtime line: " +line);
-//          returnArray[2] = line;
-//          break;
-//        }
-//        line = bufferedReader.readLine();
-//      }
-
-
     } catch (IOException ex) {
       returnArray = null;
       parsingFailed(ex.getMessage());
