@@ -1,7 +1,14 @@
 package de.drk.akrd;
 
+import java.awt.Component;
+import java.awt.Graphics;
 import java.awt.event.ItemListener;
 
+import java.awt.image.ImageObserver;
+import java.awt.image.ImageProducer;
+import java.net.MalformedURLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
@@ -30,19 +37,24 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.factories.FormFactory;
+import com.toedter.components.JTitlePanel;
 import de.drk.akrd.PersonalData.Qualification;
+import java.awt.Color;
+import java.awt.GridBagLayout;
+import java.awt.Image;
+import java.awt.Label;
+import java.awt.Toolkit;
 import javax.swing.border.EtchedBorder;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.net.URL;
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
 import javax.swing.border.TitledBorder;
-import javax.swing.JRadioButton;
 import javax.swing.event.ChangeListener;
 
 public class MainWindow extends JFrame {
 
-  /**
-   * 
-   */
   private static final long serialVersionUID = 1L;
   // Listeners and Adapters
   private AKRDMouseAdapter mouseAdapter = new AKRDMouseAdapter(this);
@@ -773,6 +785,18 @@ public class MainWindow extends JFrame {
   public static void main(String[] args) {
 
     MainWindow f = new MainWindow();
+    f.setVisible(false);
+    // set Frame-icon
+    Image drkIcon = Toolkit.getDefaultToolkit().getImage(f.getClass().getResource("icon.jpg"));
+    Image ico=null;
+    try {
+      ico = Toolkit.getDefaultToolkit().getImage(new URL("http://www.drk-heidelberg.de/mediathek_extern/drklogos/DRK-Logo_rund_RGB.jpg"));
+    } catch (MalformedURLException ex) {
+      Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    System.out.println(f.getClass().getResource("icon.ico"));
+    JLabel label = new JLabel(new ImageIcon(ico));
+    f.setIconImage(drkIcon);
     f.setVisible(true);
     f.loadPersonalData();
 

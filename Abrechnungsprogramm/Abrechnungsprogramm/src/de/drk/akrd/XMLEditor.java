@@ -4,16 +4,21 @@
  */
 package de.drk.akrd;
 
+import com.sun.xml.internal.bind.v2.TODO;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.text.ParseException;
 //import org.w3c.dom.Document;
 //import org.w3c.dom.Element;
 import java.io.File;
 import java.util.ArrayList;
 import java.io.FileWriter;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jdom.output.XMLOutputter;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
@@ -28,6 +33,8 @@ public class XMLEditor {
 
   private static SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
   private static Calendar calendar = Calendar.getInstance();
+  public static final float SHIFT_FILE_VERSION = 1.0f;
+  public static final float PERSONAL_DATA_FILE_VERSION = 1.0f;
 
   public XMLEditor() {
   }
@@ -44,6 +51,14 @@ public class XMLEditor {
     try {
       Document document = (Document) saxBuilder.build(xmlFile);
       Element documentElement = document.getRootElement();
+      // check file Version
+      {
+        String documentVersionString = documentElement.getAttributeValue("version");
+        float documentVersion = Float.parseFloat(documentVersionString);
+        if (documentVersion < SHIFT_FILE_VERSION) {
+          oldShiftFile();
+        }
+      }
       List nodeList = documentElement.getChildren("Schicht");
       for (int i = 0; i < nodeList.size(); i++) {
         Element node = (Element) nodeList.get(i);
@@ -53,6 +68,7 @@ public class XMLEditor {
         int breakTime = Integer.parseInt(node.getChildText("Pause"));
 
         // Identify days
+        // TODO: method to handle single days
         String daysString = node.getChildText("Tage");
         int days = -1;
         if (daysString.equals("Mo-Fr")) {
@@ -82,6 +98,26 @@ public class XMLEditor {
     return false;
   }
 
+  private static void oldShiftFile() {
+    boolean downloadNew = UtilityBox.getInstance().displayYesNoPopup(
+            "Schichten.xml", "Die Liste der Schichten ist veraltet.\nNeuste"
+            + "Version herunterladen?");
+    if (downloadNew) {
+      try {
+        Update.downloadFile("http://drk-ak-rettungsdienst-abrechnungsprogramm.googlecode.com/files/Schichten.xml");
+        UtilityBox.getInstance().displayInfoPopup("Schichten.xml", "Die Schichtliste wurde aktualisiert.");
+      } catch (Exception ex) {
+        try {
+          // TODO: display URL as Link
+          URL url = new URL("http://drk-ak-rettungsdienst-abrechnungsprogramm.googlecode.com/files/Schichten.xml");
+          UtilityBox.getInstance().displayErrorPopup("Download", "Fehler beim Download. Die Datei kann unter\n"+url+"\nheruntergeladen werden.");
+        } catch (MalformedURLException ex1) {
+          Logger.getLogger(XMLEditor.class.getName()).log(Level.SEVERE, null, ex1);
+        }
+      }
+    }
+  }
+
   /**
    * write the data in dataInstance to a xml-file named "PersonalData.xml"
    * @param dataInstance
@@ -103,7 +139,7 @@ public class XMLEditor {
         Boolean.toString(dataInstance.isDataKnown()),
         dataInstance.getEmailAdress(),
         dataInstance.getCalendarId()};
-      fileWriter.write("<personalData>" + System.getProperty("line.separator"));
+      fileWriter.write("<personalData version=\"1.0\">" + System.getProperty("line.separator"));
       fileWriter.write("  <dataset>" + System.getProperty("line.separator"));
       for (int i = 0; i < elementNames.length; i++) {
         fileWriter.write("    <" + elementNames[i] + ">" + elemetArray[i] + "</"
@@ -114,12 +150,12 @@ public class XMLEditor {
       fileWriter.flush();
       return true;
       // TODO: for JDK7 use Multicatch
-    } catch (Exception e){//IOException | NullPointerException e) {
+    } catch (Exception e) {//IOException | NullPointerException e) {
       // if the file didn't exist before delete the new, empty file
       if (!fileExists) {
         dataFile.delete();
       }
-      UtilityBox.getInstance().displayErrorPopup("Persönliche Daten", "Fehler beim Speichern der Daten:\n"+e.getMessage());
+      UtilityBox.getInstance().displayErrorPopup("Persönliche Daten", "Fehler beim Speichern der Daten:\n" + e.getMessage());
     }
     return false;
   }
@@ -159,7 +195,7 @@ public class XMLEditor {
         Element documentElement = document.getRootElement();
         List nodeList = documentElement.getChildren("dataset");
         if ((nodeList == null) || (nodeList.isEmpty())) {
-          UtilityBox.getInstance().displayErrorPopup("Persönliche Daten", 
+          UtilityBox.getInstance().displayErrorPopup("Persönliche Daten",
                   "Persönliche Daten konnten nicht geladen werden.\n"
                   + "(Fehlerhafte Datei?)\nErneutes Eintragen/Speichern der "
                   + "Daten wird das Problem beheben.");
@@ -180,7 +216,7 @@ public class XMLEditor {
                 persData.get(8));
         return true;
         // TODO: for JDK7 use Multicatch
-      } catch (Exception e){//JDOMException | IOException | NumberFormatException e) {
+      } catch (Exception e) {//JDOMException | IOException | NumberFormatException e) {
         System.out.println("Exception in XMLEditor.loadPersonalData: " + e.getMessage());
         return false;
       }
@@ -206,7 +242,7 @@ public class XMLEditor {
     if (node.getChildText("dataKnown").equals("true")) {
       dataKnown = true;
     }
-    
+
     persDataList.add(node.getChildText("firstName"));
     persDataList.add(node.getChildText("lastName"));
     persDataList.add(node.getChildText("bankaccountAndCity"));
@@ -241,7 +277,7 @@ public class XMLEditor {
       }
       return outputList;
       // TODO: for JDK7 use Multicatch
-    } catch (Exception e){//JDOMException | IOException | NumberFormatException e) {
+    } catch (Exception e) {//JDOMException | IOException | NumberFormatException e) {
       System.out.println("Exception in XMLEditor.loadSavedShifts: " + e.getMessage());
     }
     return new ArrayList<ShiftInstance>() {
@@ -251,20 +287,21 @@ public class XMLEditor {
   private static ArrayList<ShiftInstance> loadShiftsFromNode(Element node) {
     ArrayList<ShiftInstance> returnList = new ArrayList<ShiftInstance>();
     List shiftNodes = node.getChildren();
-        for (int j = 0; j < shiftNodes.size(); j++) {
-          Element currentNode = (Element) shiftNodes.get(j);
-          returnList.add(new ShiftInstance(
-                  ShiftContainer.getShiftTypeFromId(currentNode.getChildText("id")),
-                  currentNode.getChildText("date"),
-                  Integer.parseInt(currentNode.getChildText("actStartingTime")),
-                  Integer.parseInt(currentNode.getChildText("actEndTime")),
-                  Integer.parseInt(currentNode.getChildText("actBreakTime")),
-                  Boolean.parseBoolean(currentNode.getChildText("preparationTime")),
-                  currentNode.getChildText("partner"),
-                  currentNode.getChildText("comment")));
-        }
+    for (int j = 0; j < shiftNodes.size(); j++) {
+      Element currentNode = (Element) shiftNodes.get(j);
+      returnList.add(new ShiftInstance(
+              ShiftContainer.getShiftTypeFromId(currentNode.getChildText("id")),
+              currentNode.getChildText("date"),
+              Integer.parseInt(currentNode.getChildText("actStartingTime")),
+              Integer.parseInt(currentNode.getChildText("actEndTime")),
+              Integer.parseInt(currentNode.getChildText("actBreakTime")),
+              Boolean.parseBoolean(currentNode.getChildText("preparationTime")),
+              currentNode.getChildText("partner"),
+              currentNode.getChildText("comment")));
+    }
     return returnList;
   }
+
   /**
    * store a list of shiftInstances to a xml-file.
    * if the shift already exist it will be updated
@@ -312,7 +349,7 @@ public class XMLEditor {
       }
     } catch (ParseException ex) {
       // TODO: for JDK7 use Multicatch
-    } catch (Exception e){//JDOMException | IOException e) {
+    } catch (Exception e) {//JDOMException | IOException e) {
     }
     return false;
   }
@@ -363,7 +400,7 @@ public class XMLEditor {
    */
   private static boolean storeShiftsInNewFile(ArrayList<ShiftInstance> shiftList, String documentName) {
     try {
-      Element documentElement = new Element(documentName);
+      Element documentElement = new Element(documentName + "version=\"1.0\"");
       Document document = new Document(documentElement);
       document.setRootElement(documentElement);
       for (int month = 0; month < 12; month++) {
@@ -436,18 +473,18 @@ public class XMLEditor {
       Element rootNode = document.getRootElement();
       List personalDataList = rootNode.getChildren("personalData");
       List shiftList = rootNode.getChildren("shifts");
-      if (personalDataList == null||shiftList==null||personalDataList.size() != 1|| shiftList.size() != 1) {
+      if (personalDataList == null || shiftList == null || personalDataList.size() != 1 || shiftList.size() != 1) {
         UtilityBox.getInstance().displayErrorPopup("Import", "Keine gültige Import-Datei.");
         return null;
       }
       // load the personal Data
-      loadPersonalDataFromNode((Element)personalDataList.get(0), persData);
+      loadPersonalDataFromNode((Element) personalDataList.get(0), persData);
       // load shifts
-      returnList = loadShiftsFromNode((Element)shiftList.get(0));
+      returnList = loadShiftsFromNode((Element) shiftList.get(0));
       return returnList;
       // TODO: for JDK7 use Multicatch
-    } catch (Exception e){//JDOMException | IOException | NumberFormatException e) {
-      UtilityBox.getInstance().displayErrorPopup("Import", "Fehler beim Importieren der Daten:\n"+e.getMessage());
+    } catch (Exception e) {//JDOMException | IOException | NumberFormatException e) {
+      UtilityBox.getInstance().displayErrorPopup("Import", "Fehler beim Importieren der Daten:\n" + e.getMessage());
       return null;
     }
   }
