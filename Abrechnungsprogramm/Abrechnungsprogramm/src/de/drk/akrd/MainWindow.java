@@ -788,14 +788,6 @@ public class MainWindow extends JFrame {
     f.setVisible(false);
     // set Frame-icon
     Image drkIcon = Toolkit.getDefaultToolkit().getImage(f.getClass().getResource("icon.jpg"));
-    Image ico=null;
-    try {
-      ico = Toolkit.getDefaultToolkit().getImage(new URL("http://www.drk-heidelberg.de/mediathek_extern/drklogos/DRK-Logo_rund_RGB.jpg"));
-    } catch (MalformedURLException ex) {
-      Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-    }
-    System.out.println(f.getClass().getResource("icon.ico"));
-    JLabel label = new JLabel(new ImageIcon(ico));
     f.setIconImage(drkIcon);
     f.setVisible(true);
     f.loadPersonalData();

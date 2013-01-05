@@ -22,7 +22,7 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
 /**
- *
+ * Parse the monthly duty rota to extract the user-specific shifts
  * @author Jo
  */
 public class DRManager {
