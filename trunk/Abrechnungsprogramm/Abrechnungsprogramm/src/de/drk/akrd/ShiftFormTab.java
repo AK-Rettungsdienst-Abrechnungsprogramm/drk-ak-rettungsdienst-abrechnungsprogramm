@@ -22,6 +22,10 @@ import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
+/**
+ * UI to fill the Shiftform
+ * @author Jo
+ */
 public class ShiftFormTab extends JFrame {
 
   //private JPanel panel;
@@ -52,6 +56,7 @@ public class ShiftFormTab extends JFrame {
   private CheckboxItemListener checkboxItemListener = new CheckboxItemListener();
 
   public ShiftFormTab(final JPanel panel) {
+    int xFirstLine = 8;
     //panel = jpanel;
     calendar.setTime(new Date());
     int currentYear = calendar.get(Calendar.YEAR);
@@ -66,12 +71,12 @@ public class ShiftFormTab extends JFrame {
     MonthComboBox.setModel(new DefaultComboBoxModel(new String[]{"Januar",
               "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September",
               "Oktober", "November", "Dezember"}));
-    MonthComboBox.setBounds(10, 11, 90, 20);
+    MonthComboBox.setBounds(10, xFirstLine-3, 90, 20);
     MonthComboBox.setSelectedIndex((currentMonth < 11) ? (currentMonth + 1) : 0);
 
     YearComboBox = new JComboBox();
     YearComboBox.setModel(new DefaultComboBoxModel(new String[]{Integer.toString(currentYear), Integer.toString(currentYear + 1)}));
-    YearComboBox.setBounds(110, 11, 85, 20);
+    YearComboBox.setBounds(110, xFirstLine-3, 85, 20);
     YearComboBox.setSelectedIndex((currentMonth < 11) ? 0 : 1);
 
     // create Action listener for both comboboxes
@@ -88,34 +93,40 @@ public class ShiftFormTab extends JFrame {
     panel.add(YearComboBox);
 
     JLabel maxShiftsLabel = new JLabel("Max. Dienste");
-    maxShiftsLabel.setBounds(209, 14, 80, 14);
+    maxShiftsLabel.setBounds(209, xFirstLine, 80, 14);
     panel.add(maxShiftsLabel);
 
     maxShiftsField = new JTextField();
-    maxShiftsField.setBounds(290, 11, 86, 20);
+    maxShiftsField.setBounds(290, xFirstLine-3, 86, 20);
     panel.add(maxShiftsField);
     maxShiftsField.setColumns(10);
 
     JLabel lblMentorenschichten = new JLabel("Mentorenschichten:");
-    lblMentorenschichten.setBounds(400, 14, 150, 14);
+    lblMentorenschichten.setBounds(400, xFirstLine, 150, 14);
     panel.add(lblMentorenschichten);
     // Mentor-shifts 3. Pos
     mentor3rdPosField = new JTextField();
-    mentor3rdPosField.setBounds(565, 11, 43, 20);
+    mentor3rdPosField.setBounds(565, xFirstLine-3, 43, 20);
     panel.add(mentor3rdPosField);
     mentor3rdPosField.setColumns(10);
     JLabel lblPos = new JLabel("3. Pos.:");
-    lblPos.setBounds(520, 14, 46, 14);
+    lblPos.setBounds(520, xFirstLine, 46, 14);
     panel.add(lblPos);
 
     // Mentor-shifts 2. Pos
     mentor2ndPosField = new JTextField();
     mentor2ndPosField.setColumns(10);
-    mentor2ndPosField.setBounds(660, 11, 43, 20);
+    mentor2ndPosField.setBounds(660, xFirstLine-3, 43, 20);
     panel.add(mentor2ndPosField);
     JLabel lblPos_1 = new JLabel("2. Pos.:");
-    lblPos_1.setBounds(615, 14, 46, 14);
+    lblPos_1.setBounds(615, xFirstLine, 46, 14);
     panel.add(lblPos_1);
+    
+    // add caption
+    JLabel caption = new JLabel("X: ganzer Tag    /    F: Frühdienst   /    S: "
+            + "Spätdienst    /    T: Tag (Früh&Spät)    /    N: Nachtdienst");
+    caption.setBounds(120, 488, 550, 14);
+    panel.add(caption);
 
     JButton btnAusgeben = new JButton("Ausgeben");
     btnAusgeben.setBounds(450, 506, 120, 23);
@@ -181,7 +192,7 @@ public class ShiftFormTab extends JFrame {
     //step 3: add new radiogroups
     // TODO: implement
     int x = 10;
-    int y = 38;
+    int y = 27;
     int i = 0;
     // add checkboxgroups to panel
     for (int j = 0; j < 6; j++) {
@@ -198,11 +209,11 @@ public class ShiftFormTab extends JFrame {
         yCheckboxGroup += 19;
         calendar.add(Calendar.DATE, 1);
       }
-      y += 155;
+      y += 153;
       panel.add(weekPanel);
       if (j == 2) {
         x = 400;
-        y = 38;
+        y = 27;
       }
       weekPanels.add(weekPanel);
     }
