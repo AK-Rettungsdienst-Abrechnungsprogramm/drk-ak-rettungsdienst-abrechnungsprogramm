@@ -26,8 +26,8 @@ public class ShiftLoadSave {
         yearList.add(shiftInstance);
       }
     }
-    XMLEditor.storeShifts(yearList, year);
-    return true;
+    boolean success = XMLEditor.storeShifts(yearList, year);
+    return success;
   }
   /**
    * finds all files with saved shifts and calls the load-function from

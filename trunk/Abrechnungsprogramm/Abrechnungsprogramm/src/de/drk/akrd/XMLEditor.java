@@ -4,7 +4,6 @@
  */
 package de.drk.akrd;
 
-import com.sun.xml.internal.bind.v2.TODO;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.text.ParseException;
@@ -26,7 +25,7 @@ import org.jdom.Document;
 import java.util.List;
 
 /**
- *
+ * read and write xml-files
  * @author Jo
  */
 public class XMLEditor {
@@ -56,7 +55,12 @@ public class XMLEditor {
         String documentVersionString = documentElement.getAttributeValue("version");
         float documentVersion = Float.parseFloat(documentVersionString);
         if (documentVersion < SHIFT_FILE_VERSION) {
-          oldShiftFile();
+          boolean downloadNew = UtilityBox.getInstance().displayYesNoPopup(
+            "Schichten.xml", "Die Liste der Schichten ist veraltet.\nNeuste"
+            + "Version herunterladen?");
+          if(downloadNew){
+            downloadNewShiftFile();
+          }
         }
       }
       List nodeList = documentElement.getChildren("Schicht");
@@ -98,11 +102,10 @@ public class XMLEditor {
     return false;
   }
 
-  private static void oldShiftFile() {
-    boolean downloadNew = UtilityBox.getInstance().displayYesNoPopup(
-            "Schichten.xml", "Die Liste der Schichten ist veraltet.\nNeuste"
-            + "Version herunterladen?");
-    if (downloadNew) {
+  /**
+   * download actual shiftlist
+   */
+  private static void downloadNewShiftFile() {
       try {
         Update.downloadFile("http://drk-ak-rettungsdienst-abrechnungsprogramm.googlecode.com/files/Schichten.xml");
         UtilityBox.getInstance().displayInfoPopup("Schichten.xml", "Die Schichtliste wurde aktualisiert.");
@@ -115,7 +118,6 @@ public class XMLEditor {
           Logger.getLogger(XMLEditor.class.getName()).log(Level.SEVERE, null, ex1);
         }
       }
-    }
   }
 
   /**
@@ -124,6 +126,9 @@ public class XMLEditor {
    * @return true if succesful, false otherwise
    */
   public static boolean writePersonalData(PersonalData dataInstance) {
+    if (MainWindow.WACHENVERSION) {
+      return true;
+    }
     File dataFile = new File("data" + System.getProperty("file.separator") + "PersonalData.xml");
     boolean fileExists = dataFile.exists();
     // TODO: for JDK7 use try-with
@@ -310,14 +315,20 @@ public class XMLEditor {
    * @return true if successful, false otherwise
    */
   public static boolean storeShifts(ArrayList<ShiftInstance> shiftList, int year) {
+    if (MainWindow.WACHENVERSION) {
+      return true;
+    }
     String documentName = "Schichten" + year;
-    String fileName = "data" + System.getProperty("file.seperator") + documentName + ".xml";
+    String fileName = "data" + System.getProperty("file.separator") + documentName + ".xml";
+    System.out.println("filname: "+fileName);
     try {
       SAXBuilder saxBuilder = new SAXBuilder();
+      System.out.println("checkpoint2");
       File xmlFile = new File(fileName);
+      System.out.println("checkpoint3");
       if (/*!xmlFile.exists()*/true) { // TODO: übergangslösung: es wird immer ein neues file angelegt
         return storeShiftsInNewFile(shiftList, documentName);
-      } else {
+      }/* else {
         Document document = (Document) saxBuilder.build(xmlFile);
         Element rootNode = document.getRootElement();
         for (int i = 0; i < shiftList.size(); i++) {
@@ -346,14 +357,53 @@ public class XMLEditor {
         XMLOutputter xmlOutput = new XMLOutputter();
         xmlOutput.output(document, new FileWriter(xmlFile));
         return true;
-      }
-    } catch (ParseException ex) {
+      }*/
       // TODO: for JDK7 use Multicatch
-    } catch (Exception e) {//JDOMException | IOException e) {
+    } catch (Exception e) {//JDOMException | IOException | ParseException e) {
+      System.out.println("Exception in XMLEditor.storeShifts: "+e.getMessage());
     }
+    System.out.println("checkpoint1");
     return false;
   }
 
+    /**
+   * create or overwrite(!) an xml-file named documentName.xml
+   * @param shiftList
+   * @param documentName
+   * @return true if successful, false otherwise
+   */
+  private static boolean storeShiftsInNewFile(ArrayList<ShiftInstance> shiftList, String documentName) {
+    try {
+      System.out.println("documentname in new file: "+documentName);
+      Element documentElement = new Element(documentName);//, "version");// + " version=\"1.0\"");
+      documentElement.setAttribute("version", "1.0");
+//      documentElement.getAttribute("version").setValue("1.0");
+      Document document = new Document(documentElement);
+      document.setRootElement(documentElement);
+      for (int month = 0; month < 12; month++) {
+        Element monthElement = new Element("M" + month);
+        document.getRootElement().addContent(monthElement);
+      }
+      for (int i = 0; i < shiftList.size(); i++) {
+        Element tempElement = new Element("Shift");
+        ShiftInstance tempShiftInstance = shiftList.get(i);
+        addShiftToElement(tempElement, tempShiftInstance);
+        calendar.setTime(sdf.parse(tempShiftInstance.getDateString()));
+        int month = calendar.get(Calendar.MONTH);
+        document.getRootElement().getChild("M" + month).addContent(tempElement);
+      }
+      XMLOutputter xmlOutput = new XMLOutputter();
+      xmlOutput.output(document, new FileWriter("data"+System.getProperty("file.separator") + documentName + ".xml"));
+
+      return true;
+    } catch (ParseException ex) {
+      System.out.println(ex.getMessage());
+    } catch (IOException io) {
+      System.out.println(io.getMessage());
+    }
+    return false;
+  }
+  
   /**
    * add shift data to the element
    * @param element
@@ -390,40 +440,6 @@ public class XMLEditor {
       }
     }
     return null;
-  }
-
-  /**
-   * create or overwrite(!) an xml-file named documentName.xml
-   * @param shiftList
-   * @param documentName
-   * @return true if successful, false otherwise
-   */
-  private static boolean storeShiftsInNewFile(ArrayList<ShiftInstance> shiftList, String documentName) {
-    try {
-      Element documentElement = new Element(documentName + "version=\"1.0\"");
-      Document document = new Document(documentElement);
-      document.setRootElement(documentElement);
-      for (int month = 0; month < 12; month++) {
-        Element monthElement = new Element("M" + month);
-        document.getRootElement().addContent(monthElement);
-      }
-      for (int i = 0; i < shiftList.size(); i++) {
-        Element tempElement = new Element("Shift");
-        ShiftInstance tempShiftInstance = shiftList.get(i);
-        addShiftToElement(tempElement, tempShiftInstance);
-        calendar.setTime(sdf.parse(tempShiftInstance.getDateString()));
-        int month = calendar.get(Calendar.MONTH);
-        document.getRootElement().getChild("M" + month).addContent(tempElement);
-      }
-      XMLOutputter xmlOutput = new XMLOutputter();
-      xmlOutput.output(document, new FileWriter("data/" + documentName + ".xml"));
-
-      return true;
-    } catch (ParseException ex) {
-    } catch (IOException io) {
-      System.out.println(io.getMessage());
-    }
-    return false;
   }
 
   public static boolean exportData(ArrayList<ShiftInstance> shiftList) {

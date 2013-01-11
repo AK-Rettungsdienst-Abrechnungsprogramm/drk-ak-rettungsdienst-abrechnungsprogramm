@@ -10,7 +10,7 @@ package de.drk.akrd;
 //import sun.security.jca.GetInstance;
 
 /**
- *
+ * 
  * @author Jo
  */
 public class PersonalData {

@@ -67,7 +67,6 @@ public class CreateAccountmentFrame {
     btnAusgeben.addActionListener(new ActionListener() {
 
       public void actionPerformed(ActionEvent arg0) {
-        // TODO: Abrechnung speichern und evtl drucken
         String filePath = PdfCreator.createAccounting(selectedShifts.toArray(new ShiftInstance[selectedShifts.size()]), selectedMonth, selectedYear);
         if (printCheckbox.isSelected() && (filePath != null)) {
           UtilityBox.getInstance().printFile(filePath);

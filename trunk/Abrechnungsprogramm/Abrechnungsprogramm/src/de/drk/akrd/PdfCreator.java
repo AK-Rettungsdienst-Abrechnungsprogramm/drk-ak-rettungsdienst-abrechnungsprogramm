@@ -109,7 +109,7 @@ public class PdfCreator {
     } finally {
       try {
         accounting.close();
-        if (success) UtilityBox.getInstance().displayInfoPopup("Abrechnung", "Abrechnung unter "+filePath+" gespeichert.");
+        if (success && !MainWindow.WACHENVERSION) UtilityBox.getInstance().displayInfoPopup("Abrechnung", "Abrechnung unter "+filePath+" gespeichert.");
       } catch (Exception e) {
         System.out.println("Dokument nicht geschlossen: "+e.getMessage());
         filePath = null;
