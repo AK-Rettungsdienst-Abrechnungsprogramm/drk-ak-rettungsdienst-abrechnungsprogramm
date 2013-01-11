@@ -384,27 +384,30 @@ public class UtilityBox {
   }
   
   public boolean printFile(String filePath) {
-      File file = new File(filePath);
-      if (!file.exists()) {
-        displayErrorPopup("Drucken", "Zu druckende Datei nicht gefunden");
-        return false;
-      }
-      PDDocument document = null;
-      try {
-        document = PDDocument.load(filePath);
-        document.print();
-        // TODO: for JDK7 use Multicatch
-    } catch (Exception e){//IOException | PrinterException e) {
-      displayErrorPopup("Drucken", "Fehler während des Druckvorgangs:\n"+e.getMessage());
+    File file = new File(filePath);
+    if (!file.exists()) {
+      displayErrorPopup("Drucken", "Zu druckende Datei nicht gefunden");
+      return false;
+    }
+    PDDocument document = null;
+    try {
+      document = PDDocument.load(filePath);
+      document.print();
+      // TODO: for JDK7 use Multicatch
+    } catch (Exception e) {//IOException | PrinterException e) {
+      displayErrorPopup("Drucken", "Fehler während des Druckvorgangs:\n" + e.getMessage());
     } finally {
-        if(document!=null){
+      if (document != null) {
         try {
           document.close();
         } catch (IOException ex) {
-          displayErrorPopup("Drucken", "Dokument konnte nicht geschlossen werden:\n"+ex.getMessage());
-        }
+          displayErrorPopup("Drucken", "Dokument konnte nicht geschlossen werden:\n" + ex.getMessage());
         }
       }
+    }
+    if (MainWindow.WACHENVERSION) {
+      file.delete();
+    }
     return false;
   }
 

@@ -1,14 +1,7 @@
 package de.drk.akrd;
 
-import java.awt.Component;
-import java.awt.Graphics;
 import java.awt.event.ItemListener;
 
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
-import java.net.MalformedURLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
@@ -37,23 +30,17 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.factories.FormFactory;
-import com.toedter.components.JTitlePanel;
 import de.drk.akrd.PersonalData.Qualification;
-import java.awt.Color;
-import java.awt.GridBagLayout;
 import java.awt.Image;
-import java.awt.Label;
 import java.awt.Toolkit;
 import javax.swing.border.EtchedBorder;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.net.URL;
-import javax.imageio.ImageIO;
-import javax.swing.Icon;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeListener;
 
 public class MainWindow extends JFrame {
+  public static final boolean WACHENVERSION = false;
 
   private static final long serialVersionUID = 1L;
   // Listeners and Adapters
