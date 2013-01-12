@@ -32,7 +32,7 @@ public class XMLEditor {
 
   private static SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
   private static Calendar calendar = Calendar.getInstance();
-  public static final float SHIFT_FILE_VERSION = 1.0f;
+  public static final float SHIFT_FILE_VERSION = 1.1f;
   public static final float PERSONAL_DATA_FILE_VERSION = 1.0f;
 
   public XMLEditor() {

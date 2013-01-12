@@ -1,4 +1,4 @@
-<Dienste version="1.0">
+<Dienste version="1.1">
   <Schicht>
     <ArtUndOrt>KTP Freiburg</ArtUndOrt>
     <von>600</von>
@@ -39,7 +39,7 @@
     <ArtUndOrt>KTP Freiburg</ArtUndOrt>
     <von>800</von>
     <bis>1700</bis>
-    <Pause>030</Pause>
+    <Pause>045</Pause>
     <Schichtname>K05</Schichtname>
     <RuestzeitMin>010</RuestzeitMin>
     <Tage>Mo-Fr</Tage>
@@ -93,7 +93,7 @@
     <ArtUndOrt>KTP Freiburg</ArtUndOrt>
     <von>1000</von>
     <bis>1900</bis>
-    <Pause>030</Pause>
+    <Pause>045</Pause>
     <Schichtname>K11</Schichtname>
     <RuestzeitMin>010</RuestzeitMin>
     <Tage>Mo-Fr</Tage>
@@ -138,7 +138,7 @@
     <ArtUndOrt>KTP Freiburg</ArtUndOrt>
     <von>2200</von>
     <bis>700</bis>
-    <Pause>030</Pause>
+    <Pause>045</Pause>
     <Schichtname>K16</Schichtname>
     <RuestzeitMin>010</RuestzeitMin>
     <Tage>Mo-Fr</Tage>
@@ -293,6 +293,33 @@
     <bis>630</bis>
     <Pause>000</Pause>
     <Schichtname>R2N</Schichtname>
+    <RuestzeitMin>010</RuestzeitMin>
+    <Tage>Mo-So</Tage>
+  </Schicht>
+    <Schicht>
+    <ArtUndOrt>RD Freiburg</ArtUndOrt>
+    <von>600</von>
+    <bis>1300</bis>
+    <Pause>000</Pause>
+    <Schichtname>R3F</Schichtname>
+    <RuestzeitMin>010</RuestzeitMin>
+    <Tage>Mo-So</Tage>
+  </Schicht>
+  <Schicht>
+    <ArtUndOrt>RD Freiburg</ArtUndOrt>
+    <von>1300</von>
+    <bis>2100</bis>
+    <Pause>000</Pause>
+    <Schichtname>R3S</Schichtname>
+    <RuestzeitMin>010</RuestzeitMin>
+    <Tage>Mo-So</Tage>
+  </Schicht>
+  <Schicht>
+    <ArtUndOrt>RD Freiburg</ArtUndOrt>
+    <von>2100</von>
+    <bis>600</bis>
+    <Pause>000</Pause>
+    <Schichtname>R3N</Schichtname>
     <RuestzeitMin>010</RuestzeitMin>
     <Tage>Mo-So</Tage>
   </Schicht>
