@@ -41,6 +41,7 @@ import javax.swing.event.ChangeListener;
 
 public class MainWindow extends JFrame {
   public static final boolean WACHENVERSION = false;
+  public static final float PROGRAM_VERSION = 0.8f;
 
   private static final long serialVersionUID = 1L;
   // Listeners and Adapters
@@ -159,7 +160,10 @@ public class MainWindow extends JFrame {
       }
     };
   private final JTable importExportDisplayTable = new JTable(importExportDisplayTableModel);
-  private final JScrollPane importExportShiftPane = new JScrollPane(importExportDisplayTable); 
+  private final JScrollPane importExportShiftPane = new JScrollPane(importExportDisplayTable);
+  // panel for the info/update-tab
+  private final JPanel infoUpdatePanel = new JPanel();
+  
   public MainWindow() {
 
     // Instanciate UtilityBox
@@ -667,7 +671,6 @@ public class MainWindow extends JFrame {
     ShiftFormTab sft = new ShiftFormTab(dplSurvey);
     tabbedPane.addTab("DPL Fragebogen", null, dplSurvey,
             "Dienstplan Fragebogen ausfüllen");
-    
 
     // Import/export pane
 
@@ -767,6 +770,10 @@ public class MainWindow extends JFrame {
     importPanel.add(importButton);
     importExport.setSelected(importExportDisplayTableModel, 0, exportYearComboBox.getSelectedIndex());
 
+    // add info / update-tab
+    infoUpdatePanel.setLayout(null);
+    InfoUpdateTab infoUpdateTab = new InfoUpdateTab(infoUpdatePanel);
+    tabbedPane.addTab("Info / Update", null, infoUpdatePanel);
   }
 
   public static void main(String[] args) {

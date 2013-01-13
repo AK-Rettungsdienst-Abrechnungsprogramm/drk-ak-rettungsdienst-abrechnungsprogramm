@@ -5,19 +5,13 @@
 package de.drk.akrd;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.text.ParseException;
-//import org.w3c.dom.Document;
-//import org.w3c.dom.Element;
 import java.io.File;
 import java.util.ArrayList;
 import java.io.FileWriter;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Iterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.jdom.output.XMLOutputter;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
@@ -59,7 +53,7 @@ public class XMLEditor {
             "Schichten.xml", "Die Liste der Schichten ist veraltet.\nNeuste"
             + "Version herunterladen?");
           if(downloadNew){
-            downloadNewShiftFile();
+            Update.downloadNewShiftFile();
           }
         }
       }
@@ -100,24 +94,6 @@ public class XMLEditor {
       System.out.println("Exception in function XMLEditor.fillShiftList: " + e.getMessage());
     }
     return false;
-  }
-
-  /**
-   * download actual shiftlist
-   */
-  private static void downloadNewShiftFile() {
-      try {
-        Update.downloadFile("http://drk-ak-rettungsdienst-abrechnungsprogramm.googlecode.com/files/Schichten.xml");
-        UtilityBox.getInstance().displayInfoPopup("Schichten.xml", "Die Schichtliste wurde aktualisiert.");
-      } catch (Exception ex) {
-        try {
-          // TODO: display URL as Link
-          URL url = new URL("http://drk-ak-rettungsdienst-abrechnungsprogramm.googlecode.com/files/Schichten.xml");
-          UtilityBox.getInstance().displayErrorPopup("Download", "Fehler beim Download. Die Datei kann unter\n"+url+"\nheruntergeladen werden.");
-        } catch (MalformedURLException ex1) {
-          Logger.getLogger(XMLEditor.class.getName()).log(Level.SEVERE, null, ex1);
-        }
-      }
   }
 
   /**
