@@ -22,7 +22,7 @@ public class ShiftContainer {
   public static ArrayList<ShiftInstance> shiftInstances = new ArrayList<ShiftInstance>();
   public enum ShiftType {
 
-    Alle, RTW, KTW, KIZA, BREISACH, BABY, EVENT, KVS, HINTERGRUND;
+    Alle, RTW, KTW, KIZA, BREISACH, BABY, EVENT, KVS, HINTERGRUND, ELW;
 
     // Override the toString method to get nicer strings for the shiftTypeChooser
     @Override

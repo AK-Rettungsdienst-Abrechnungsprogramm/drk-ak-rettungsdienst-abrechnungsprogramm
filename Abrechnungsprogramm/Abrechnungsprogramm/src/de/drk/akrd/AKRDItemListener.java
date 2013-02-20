@@ -52,6 +52,12 @@ public class AKRDItemListener implements ItemListener {
 			mainWindow.prepTimeBox.setSelected(UtilityBox.hasPreparationTime(type));
 
             mainWindow.updateShiftContainer();
+            
+            // if ELW was selected, fill comment field
+            if(type == ShiftContainer.ShiftType.ELW) {
+            	mainWindow.commentField.setText("ELW Einsatz");
+            }
+            
 			return;
 			
 		}
