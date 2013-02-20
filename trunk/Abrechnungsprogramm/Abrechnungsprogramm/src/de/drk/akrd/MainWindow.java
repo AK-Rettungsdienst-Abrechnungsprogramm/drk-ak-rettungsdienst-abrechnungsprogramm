@@ -805,30 +805,32 @@ public class MainWindow extends JFrame {
     }
 
   }
-
+  /**
+   * Refreshes the table displaying the registered shifts
+   */
   public void updateRegisteredShifts() {
 
-    float completeSalary = -1;
+    float completeSalary = 0;
 
-    Object[][] data = ShiftContainer.shiftInstancesToTableData((ShiftInstance[]) shiftContainer.shiftInstances.toArray(new ShiftInstance[shiftContainer.shiftInstances.size()]));
+    // get all registered shifts and convert them to table data
+    Object[][] data = ShiftContainer.shiftInstancesToTableData((ShiftInstance[]) ShiftContainer.shiftInstances.toArray(new ShiftInstance[ShiftContainer.shiftInstances.size()]));
+    // reset the table model
     registeredShiftsTableModel.setNumRows(0);
+    // iterate over all shifts
     for (int i = 0; i < data.length; i++) {
       ArrayList<Object> list = new ArrayList<Object>();
       Collections.addAll(list, data[i]);
-      // TODO: nicht 8.8f benutzen, sondern anpassen
-      ShiftInstance currentShift = shiftContainer.shiftInstances.get(i);
+      // get the original shift item
+      ShiftInstance currentShift = ShiftContainer.shiftInstances.get(i);
+      // calculate the salary for this shift and add to complete salary
       float salary = UtilityBox.getInstance().calculateSalary(currentShift) * currentShift.getTimeAsFloat();
       completeSalary += salary;
+      // add the shifts salary to list entry
       list.add(String.format("%.2f", salary) + "€");
+      // add this shift to table model
       registeredShiftsTableModel.addRow(list.toArray());
     }
-    // if complete salary is 0 display error message
-    if(completeSalary == 0)
-    {
-    	UtilityBox.getInstance().displayErrorPopup("Fehler", "Es wurden keine gültigen Personendaten gefunden und der Lohn konnte nicht berechnet werden. Bitte trage diese neu ein!");
-    }
-    // if complete salary is now still -1 no shifts are present and it can become 0
-    if (completeSalary == -1) completeSalary = 0;
+    // create last line which displays the overall salary
     Object[] lastLine = new Object[]{"", "", "", "", "", "", "Gesamt",
       String.format("%.2f", completeSalary) + "€"};
     registeredShiftsTableModel.addRow(lastLine);
