@@ -276,6 +276,7 @@ public class XMLEditor {
               Integer.parseInt(currentNode.getChildText("actStartingTime")),
               Integer.parseInt(currentNode.getChildText("actEndTime")),
               Integer.parseInt(currentNode.getChildText("actBreakTime")),
+              Integer.parseInt(currentNode.getChildText("commuteExpenses")),
               Boolean.parseBoolean(currentNode.getChildText("preparationTime")),
               currentNode.getChildText("partner"),
               currentNode.getChildText("comment")));
@@ -394,6 +395,7 @@ public class XMLEditor {
     element.addContent(new Element("actStartingTime").setText(Integer.toString(shift.getActualStartingTime())));
     element.addContent(new Element("actEndTime").setText(Integer.toString(shift.getActualEndTime())));
     element.addContent(new Element("actBreakTime").setText(Integer.toString(shift.getActualBreakTime())));
+    element.addContent(new Element("commuteExpenses").setText(Integer.toString(shift.getCommuteExpenses())));
     element.addContent(new Element("preparationTime").setText(Boolean.toString(shift.PreparationTimeSet())));
     element.addContent(new Element("partner").setText(shift.getPartner()));
     element.addContent(new Element("comment").setText(shift.getComment()));

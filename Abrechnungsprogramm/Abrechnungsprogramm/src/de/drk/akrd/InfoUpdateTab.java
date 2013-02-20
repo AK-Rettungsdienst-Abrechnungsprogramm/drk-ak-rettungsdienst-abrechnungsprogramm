@@ -47,7 +47,7 @@ public class InfoUpdateTab{
     // create and add update-button
     JButton updateButton = new JButton("Schicht-Update");
     updateButton.setFont(new Font(updateButton.getFont().getName(),
-            updateButton.getFont().getStyle(), updateButton.getFont().getSize()+3));
+            updateButton.getFont().getStyle(), updateButton.getFont().getSize()));
     updateButton.setMaximumSize(new Dimension(150, 50));
     ActionListener updateButtonActionListener = new ActionListener() {
 

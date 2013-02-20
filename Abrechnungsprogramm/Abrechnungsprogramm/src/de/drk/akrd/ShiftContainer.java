@@ -90,12 +90,12 @@ public class ShiftContainer {
   public void loadShifts(String shiftfilePath) {
     XMLEditor.fillShiftList("data" + System.getProperty("file.separator") + "Schichten.xml", shifts);
    
-    UtilityBox.getInstance().displayInfoPopup("benutzer pfad: data",  System.getProperty("user.home") + "Schichten.xml\n");
-
-    	UtilityBox.getInstance().displayInfoPopup("get Resource", new File(ClassLoader.getSystemClassLoader().getResource(".").getPath()).getAbsolutePath());
-
-    
-    UtilityBox.getInstance().displayInfoPopup("über Class", MainWindow.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+//    UtilityBox.getInstance().displayInfoPopup("benutzer pfad: data",  System.getProperty("user.home") + "Schichten.xml\n");
+//
+//    	UtilityBox.getInstance().displayInfoPopup("get Resource", new File(ClassLoader.getSystemClassLoader().getResource(".").getPath()).getAbsolutePath());
+//
+//    
+//    UtilityBox.getInstance().displayInfoPopup("über Class", MainWindow.class.getProtectionDomain().getCodeSource().getLocation().getPath());
     
   }
 
@@ -184,7 +184,7 @@ public class ShiftContainer {
       entry.add(df.format(input[i].getTimeAsFloat()));
       entry.add(input[i].getPartner());
       entry.add(input[i].getComment());
-
+      entry.add(Integer.toString(input[i].getCommuteExpenses()) + " €");
       result.add((String[]) entry.toArray(new String[entry.size()]));
     }
 
@@ -215,8 +215,14 @@ public class ShiftContainer {
     }
 
     float shiftAsFloat = endFloat - startingFloat - breakFloat;
+    
+    // calculate commute expenses
+    int commuteExpenses = 0;
+    if (type == ShiftType.KIZA || type == ShiftType.BREISACH) {
+    	commuteExpenses = 12;
+    }
 
-    ShiftInstance entry = new ShiftInstance(type, date, actualStart, actualEnd, actualBreak, prepTime, partner, comment);
+    ShiftInstance entry = new ShiftInstance(type, date, actualStart, actualEnd, actualBreak, commuteExpenses, prepTime, partner, comment);
 
     shiftInstances.add(entry);
     Collections.sort(shiftInstances);
