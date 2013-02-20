@@ -823,7 +823,7 @@ public class MainWindow extends JFrame {
       // get the original shift item
       ShiftInstance currentShift = ShiftContainer.shiftInstances.get(i);
       // calculate the salary for this shift and add to complete salary
-      float salary = UtilityBox.getInstance().calculateSalary(currentShift) * currentShift.getTimeAsFloat();
+      float salary = UtilityBox.getInstance().calculateSalaryPerHour(currentShift) * currentShift.getTimeAsFloat();
       completeSalary += salary;
       // add the shifts salary to list entry
       list.add(String.format("%.2f", salary) + "€");

@@ -179,14 +179,20 @@ public class AKRDMouseAdapter extends MouseAdapter {
 				return;
 			}
 			try {
-				breakTime = Integer.parseInt(mainWindow.breakField.getText().replaceAll("[^\\d]",""));
+				// If the break time field is empty, assume no break
+				if (mainWindow.breakField.getText().length() == 0) {
+					breakTime = 0;
+				} else {
+					breakTime = Integer.parseInt(mainWindow.breakField.getText().replaceAll("[^\\d]",""));
+				}
 			} catch (NumberFormatException exception) {
 				UtilityBox.getInstance().displayErrorPopup("Fehler", "Ungültige Pausenzeit!");
 				return;
 			}
 			
 			if(partner.equals("") && mainWindow.shiftTypeChooser.getSelectedItem() != ShiftContainer.ShiftType.KVS
-					&& mainWindow.shiftTypeChooser.getSelectedItem() != ShiftContainer.ShiftType.BABY)
+					&& mainWindow.shiftTypeChooser.getSelectedItem() != ShiftContainer.ShiftType.BABY
+					&& mainWindow.shiftTypeChooser.getSelectedItem() != ShiftContainer.ShiftType.ELW)
 			{
 				UtilityBox.getInstance().displayErrorPopup("Fehler", "Bitte Schichtpartner angeben!");
 				return;

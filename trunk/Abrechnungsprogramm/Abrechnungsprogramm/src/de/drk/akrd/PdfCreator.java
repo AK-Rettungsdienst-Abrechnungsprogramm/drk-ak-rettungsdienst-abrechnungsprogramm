@@ -433,7 +433,7 @@ public class PdfCreator {
       table7.addCell(cell40);
       table7.addCell(cell41);
 
-      float salary = UtilityBox.getInstance().calculateSalary(shifts.get(0));
+      float salary = UtilityBox.getInstance().calculateSalaryPerHour(shifts.get(0));
       for (int i = 0; i <= 12; i++) {
         ShiftInstance currentShift = null;
         String weekDay = "";

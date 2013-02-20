@@ -202,10 +202,14 @@ public class UtilityBox {
    * @param shift
    * @return salary as float (0 if an exception occurs, meaning no personal data is known)
    */
-	public float calculateSalary(ShiftInstance shift) {
+	public float calculateSalaryPerHour(ShiftInstance shift) {
 		float salary;
 		try {
 			switch (shift.getType()) {
+			// ELW is paid RS salary regardless of qualification
+			case ELW:
+				salary = 8.8f;
+				break;
 			case KTW:
 			case RTW:
 				switch (PersonalData.getInstance().getQualification()) {
@@ -237,9 +241,6 @@ public class UtilityBox {
 		} catch (Exception e) {
 			return 0;
 		}
-		
-		// add commuting expenses
-		salary += shift.getCommuteExpenses();
 		
 		return salary;
 	}
