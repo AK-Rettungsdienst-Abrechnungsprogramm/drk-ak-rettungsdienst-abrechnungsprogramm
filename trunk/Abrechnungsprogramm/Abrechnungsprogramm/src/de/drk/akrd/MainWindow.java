@@ -101,7 +101,7 @@ public class MainWindow extends JFrame {
   };
   protected DefaultTableModel registeredShiftsTableModel = new DefaultTableModel(
           new Object[][]{}, new String[]{"Datum", "Beginn", "Ende",
-            "Pause", "Dezimal", "Schichtpartner", "Kommentar",
+            "Pause", "Dezimal", "Schichtpartner", "Kommentar","Fahrtkosten",
             "Verdienst"}) {
 
     private static final long serialVersionUID = 1L;
@@ -235,7 +235,7 @@ public class MainWindow extends JFrame {
             ShiftType.values());
     shiftTypeChooser.setModel(enumModel);
     setTitle("AK-RD Abrechnungsprogramm");
-    setSize(800, 600); // default size is 0,0
+    setSize(900, 700); // default size is 0,0
     setLocation(10, 200); // default is 0,0 (top left corner)
     addWindowListener(new WindowClosingAdapter(true));
 
@@ -831,7 +831,7 @@ public class MainWindow extends JFrame {
       registeredShiftsTableModel.addRow(list.toArray());
     }
     // create last line which displays the overall salary
-    Object[] lastLine = new Object[]{"", "", "", "", "", "", "Gesamt",
+    Object[] lastLine = new Object[]{"", "", "", "", "", "", "", "Gesamt",
       String.format("%.2f", completeSalary) + "€"};
     registeredShiftsTableModel.addRow(lastLine);
 

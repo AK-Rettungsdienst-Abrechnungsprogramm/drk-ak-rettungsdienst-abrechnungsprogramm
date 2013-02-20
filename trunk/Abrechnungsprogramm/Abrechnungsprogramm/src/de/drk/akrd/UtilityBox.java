@@ -237,6 +237,10 @@ public class UtilityBox {
 		} catch (Exception e) {
 			return 0;
 		}
+		
+		// add commuting expenses
+		salary += shift.getCommuteExpenses();
+		
 		return salary;
 	}
   public String calculateTimeInHours(int start, int end, int breakTime) {

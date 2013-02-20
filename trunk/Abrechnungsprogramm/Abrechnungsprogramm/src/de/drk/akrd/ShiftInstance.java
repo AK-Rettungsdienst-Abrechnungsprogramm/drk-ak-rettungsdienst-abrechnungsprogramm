@@ -13,6 +13,8 @@ public class ShiftInstance implements Comparable<ShiftInstance> {
   private int actualStartingTimeWithPrepTime;
   private int actualEndTime;
   private int actualBreakTime;
+  // additional commute expenses (e.g. 12 € for KiZa and Breisach)
+  private int commuteExpenses;
   private String partner;
   private String comment;
   private boolean preparationTime;
@@ -28,7 +30,7 @@ public class ShiftInstance implements Comparable<ShiftInstance> {
    * @param comment comment; maximal 36 characters
    */
   public ShiftInstance(ShiftContainer.ShiftType type, String dateString, int actualStartingTime, 
-          int actualEndTime, int actualBreakTime, boolean prepTime, String partner, String comment) {
+          int actualEndTime, int actualBreakTime, int commuteExpenses, boolean prepTime, String partner, String comment) {
     this.type = type;
     this.dateString = dateString;
     try {
@@ -41,6 +43,7 @@ public class ShiftInstance implements Comparable<ShiftInstance> {
     this.actualStartingTime = actualStartingTime;
     this.actualEndTime = actualEndTime;
     this.actualBreakTime = actualBreakTime;
+    this.commuteExpenses = commuteExpenses;
     this.partner = partner;
     this.comment = comment;
     this.preparationTime = prepTime;
@@ -68,7 +71,15 @@ public class ShiftInstance implements Comparable<ShiftInstance> {
 	this.actualStartingTimeWithPrepTime = start;
   }
 
-  public int getActualStartingTimeWithPrepTime() {
+  public int getCommuteExpenses() {
+	return commuteExpenses;
+}
+
+public void setCommuteExpenses(int commuteExpenses) {
+	this.commuteExpenses = commuteExpenses;
+}
+
+public int getActualStartingTimeWithPrepTime() {
 	return actualStartingTimeWithPrepTime;
 }
 
