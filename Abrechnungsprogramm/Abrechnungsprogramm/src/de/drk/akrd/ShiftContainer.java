@@ -1,6 +1,11 @@
 package de.drk.akrd;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLDecoder;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -17,7 +22,7 @@ public class ShiftContainer {
   public static ArrayList<ShiftInstance> shiftInstances = new ArrayList<ShiftInstance>();
   public enum ShiftType {
 
-    Alle, RTW, KTW, KIZA, BREISACH, BABY, EVENT, KVS;
+    Alle, RTW, KTW, KIZA, BREISACH, BABY, EVENT, KVS, HINTERGRUND;
 
     // Override the toString method to get nicer strings for the shiftTypeChooser
     @Override
@@ -55,6 +60,8 @@ public class ShiftContainer {
         return "Sandienst";
       } else if (name().equals("KVS")) {
         return "KV Dienst";
+      } else if (name().equals("HINTERGRUND")) {
+    	return "Hintergrund";
       } else {
         return name();
       }
@@ -66,11 +73,30 @@ public class ShiftContainer {
     this.mainWindow = mainWindow;
   }
 
+  String getPathToJarfileDir(Object classToUse) {
+	  String url = classToUse.getClass().getResource("/" + classToUse.getClass().getName().replaceAll("\\.", "/") + ".class").toString();
+	  url = url.substring(4).replaceFirst("/[^/]+\\.jar!.*$", "/");
+	  try {
+	      File dir = new File(new URL(url).toURI());
+	      url = dir.getAbsolutePath();
+	  } catch (MalformedURLException mue) {
+	      url = null;
+	  } catch (URISyntaxException ue) {
+	      url = null;
+	  }
+	  return url;
+	}
+  
   public void loadShifts(String shiftfilePath) {
     XMLEditor.fillShiftList("data" + System.getProperty("file.separator") + "Schichten.xml", shifts);
-//    System.out.println("benutzer pfad: data" + System.getProperty("file.separator") + "Schichten.xml\n");
-//    System.out.println("java.class.path: "+System.getProperty("java.class.path")+"\n");
-//    System.out.println("über File: "+(new File("").getAbsolutePath()));
+   
+    UtilityBox.getInstance().displayInfoPopup("benutzer pfad: data",  System.getProperty("user.home") + "Schichten.xml\n");
+
+    	UtilityBox.getInstance().displayInfoPopup("get Resource", new File(ClassLoader.getSystemClassLoader().getResource(".").getPath()).getAbsolutePath());
+
+    
+    UtilityBox.getInstance().displayInfoPopup("über Class", MainWindow.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+    
   }
 
   public Shift[] getShifts() {
