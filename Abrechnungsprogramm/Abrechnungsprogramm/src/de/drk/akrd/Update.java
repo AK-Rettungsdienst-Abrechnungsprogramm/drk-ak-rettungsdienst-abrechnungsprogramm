@@ -41,6 +41,12 @@ public class Update {
     InputStream is = (InputStream) uc.getInputStream();
     ProgressMonitorInputStream pmis = new ProgressMonitorInputStream(null, "Downloading...", is);
     pmis.getProgressMonitor().setMaximum(uc.getContentLength());
+    // check if data dir exists and if not create it
+    File dataDir = new File("data");
+    if (!dataDir.exists()) {
+    	dataDir.mkdir();
+    }
+
     File outputFile = new File("data" + File.separatorChar + "Schichten.xml");
     FileOutputStream out = new FileOutputStream(outputFile);
 

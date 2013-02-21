@@ -54,6 +54,7 @@ public class InfoUpdateTab{
       @Override
       public void actionPerformed(ActionEvent e) {
         Update.downloadNewShiftFile();
+        UtilityBox.getInstance().requestShiftListReload();
       }
     };
     updateButton.addActionListener(updateButtonActionListener);
