@@ -49,7 +49,7 @@ public class CreateAccountmentFrame {
   private int selectedMonth = 0;
 
   public CreateAccountmentFrame(ArrayList<ShiftInstance> shifts) {
-    createAccountmentFrame.setSize(515, 360);
+    createAccountmentFrame.setSize(600, 400);
     createAccountmentFrame.getContentPane().setLayout(null);
     createAccountmentFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     calendar.setTimeInMillis(System.currentTimeMillis());
@@ -60,7 +60,7 @@ public class CreateAccountmentFrame {
         createAccountmentFrame.dispose();
       }
     });
-    btnAbbrechen.setBounds(390, 10, 100, 30);
+    btnAbbrechen.setBounds(460, 320, 120, 30);
     createAccountmentFrame.getContentPane().add(btnAbbrechen);
 
     JButton btnAusgeben = new JButton("Ausgeben");
@@ -73,14 +73,14 @@ public class CreateAccountmentFrame {
         }
       }
     });
-    btnAusgeben.setBounds(280, 10, 100, 30);
+    btnAusgeben.setBounds(330, 320, 120, 30);
     createAccountmentFrame.getContentPane().add(btnAusgeben);
 
     yearComboBox = new JComboBox();
     calendar.setTime(new Date());
     selectedYear = calendar.get(Calendar.YEAR);
     yearComboBox.setModel(new DefaultComboBoxModel(new String[]{Integer.toString(selectedYear - 1), Integer.toString(selectedYear)}));
-    yearComboBox.setBounds(100, 10, 66, 30);
+    yearComboBox.setBounds(140, 10, 100, 30);
     yearComboBox.setSelectedIndex(1);
     yearComboBox.addActionListener(new ActionListener() {
 
@@ -94,7 +94,7 @@ public class CreateAccountmentFrame {
     monthComboBox = new JComboBox();
     selectedMonth = calendar.get(Calendar.MONTH);
     monthComboBox.setModel(new DefaultComboBoxModel(new String[]{"Januar", "Februar", "M\u00E4rz", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"}));
-    monthComboBox.setBounds(10, 10, 80, 30);
+    monthComboBox.setBounds(10, 10, 120, 30);
     monthComboBox.setSelectedIndex(selectedMonth);
     monthComboBox.addActionListener(new ActionListener() {
 
@@ -111,13 +111,13 @@ public class CreateAccountmentFrame {
     displayTable.getTableHeader().setReorderingAllowed(false);
     displayTable.getTableHeader().setResizingAllowed(false);
     displayPane = new JScrollPane(displayTable);
-    displayPane.setBounds(10, 48, 480, 263);
+    displayPane.setBounds(10, 48, 580, 263);
     //displayPane.setAutoscrolls(true);
     displayTableModel.addRow(new String[]{"do", "datum?", "1-3", "ktw"});
     createAccountmentFrame.getContentPane().add(displayPane);
 
     printCheckbox = new JCheckBox("Drucken");
-    printCheckbox.setBounds(180, 15, 80, 23);
+    printCheckbox.setBounds(250, 15, 100, 23);
     printCheckbox.setSelected(true);
     createAccountmentFrame.getContentPane().add(printCheckbox);
     allShifts = shifts;
