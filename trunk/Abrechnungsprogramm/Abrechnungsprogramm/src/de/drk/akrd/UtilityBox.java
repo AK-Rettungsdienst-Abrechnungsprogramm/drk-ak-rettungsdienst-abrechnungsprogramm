@@ -538,4 +538,8 @@ public class UtilityBox {
     return false;
   }
   
+  // Used to trigger a reload of the shifts file 
+  public void requestShiftListReload() {
+	  mainWindow.shiftContainer.loadShifts("Schichten.xml");
+  }
 }
