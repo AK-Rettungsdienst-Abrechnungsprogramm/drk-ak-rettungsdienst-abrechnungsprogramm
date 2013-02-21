@@ -80,7 +80,7 @@ public class ShiftFormTab extends JFrame {
 
     YearComboBox = new JComboBox();
     YearComboBox.setModel(new DefaultComboBoxModel(new String[]{Integer.toString(currentYear), Integer.toString(currentYear + 1)}));
-    YearComboBox.setBounds(110, xFirstLine-3, 85, 20);
+    YearComboBox.setBounds(140, xFirstLine-3, 85, 20);
     YearComboBox.setSelectedIndex((currentMonth < 11) ? 0 : 1);
 
     // create Action listener for both comboboxes
@@ -97,48 +97,48 @@ public class ShiftFormTab extends JFrame {
     panel.add(YearComboBox);
 
     JLabel maxShiftsLabel = new JLabel("Max. Dienste");
-    maxShiftsLabel.setBounds(209, xFirstLine, 80, 14);
+    maxShiftsLabel.setBounds(240, xFirstLine, 100, 14);
     panel.add(maxShiftsLabel);
 
     maxShiftsField = new JTextField();
-    maxShiftsField.setBounds(290, xFirstLine-3, 86, 20);
+    maxShiftsField.setBounds(340, xFirstLine-3, 60, 20);
     panel.add(maxShiftsField);
     maxShiftsField.setColumns(10);
 
     JLabel lblMentorenschichten = new JLabel("Mentorenschichten:");
-    lblMentorenschichten.setBounds(400, xFirstLine, 150, 14);
+    lblMentorenschichten.setBounds(430, xFirstLine, 150, 14);
     panel.add(lblMentorenschichten);
     // Mentor-shifts 3. Pos
     mentor3rdPosField = new JTextField();
-    mentor3rdPosField.setBounds(565, xFirstLine-3, 43, 20);
+    mentor3rdPosField.setBounds(790, xFirstLine-3, 43, 20);
     panel.add(mentor3rdPosField);
     mentor3rdPosField.setColumns(10);
     JLabel lblPos = new JLabel("3. Pos.:");
-    lblPos.setBounds(520, xFirstLine, 46, 14);
+    lblPos.setBounds(730, xFirstLine, 60, 14);
     panel.add(lblPos);
 
     // Mentor-shifts 2. Pos
     mentor2ndPosField = new JTextField();
     mentor2ndPosField.setColumns(10);
-    mentor2ndPosField.setBounds(660, xFirstLine-3, 43, 20);
+    mentor2ndPosField.setBounds(650, xFirstLine-3, 43, 20);
     panel.add(mentor2ndPosField);
     JLabel lblPos_1 = new JLabel("2. Pos.:");
-    lblPos_1.setBounds(615, xFirstLine, 46, 14);
+    lblPos_1.setBounds(590, xFirstLine, 60, 14);
     panel.add(lblPos_1);
     
     // add caption
     JLabel caption = new JLabel("X: ganzer Tag    /    F: Frühdienst   /    S: "
             + "Spätdienst    /    T: Tag (Früh&Spät)    /    N: Nachtdienst");
-    caption.setBounds(120, 488, 550, 14);
+    caption.setBounds(80, 488, 700, 25);
     panel.add(caption);
 
     JButton btnAusgeben = new JButton("Ausgeben");
-    btnAusgeben.setBounds(450, 506, 120, 23);
+    btnAusgeben.setBounds(450, 520, 120, 23);
     btnAusgeben.addActionListener(create);
     panel.add(btnAusgeben);
 
     JButton btnZurcksetzen = new JButton("Zurücksetzen");
-    btnZurcksetzen.setBounds(200, 506, 120, 23);
+    btnZurcksetzen.setBounds(200, 520, 140, 23);
     btnZurcksetzen.addActionListener(cancel);
     panel.add(btnZurcksetzen);
 
@@ -203,7 +203,7 @@ public class ShiftFormTab extends JFrame {
       JPanel weekPanel = new JPanel();
       String panelTitle = "KW" + calendar.get(Calendar.WEEK_OF_YEAR);
       weekPanel.setBorder(new TitledBorder(null, panelTitle, TitledBorder.LEADING, TitledBorder.TOP, null, null));
-      weekPanel.setBounds(x, y, 350, 154);
+      weekPanel.setBounds(x, y, 420, 154);
       weekPanel.setLayout(null);
       int xCheckboxGroup = 15;
       int yCheckboxGroup = 17;
@@ -216,7 +216,7 @@ public class ShiftFormTab extends JFrame {
       y += 153;
       panel.add(weekPanel);
       if (j == 2) {
-        x = 400;
+        x = 450;
         y = 27;
       }
       weekPanels.add(weekPanel);
@@ -251,11 +251,11 @@ public class ShiftFormTab extends JFrame {
     String formattedDate = UtilityBox.getFormattedDateString(date);
     label = new JLabel(day + ", " + formattedDate);
     allLabels.add(label);
-    label.setBounds(x, y, 95, 18);
+    label.setBounds(x, y, 110, 18);
     label.setEnabled(active);
     panel.add(label);
     // create buttongroup
-    ButtonGroup bg = returnCheckboxGroup(x + 115, y, active, date);
+    ButtonGroup bg = returnCheckboxGroup(x + 125, y, active, date);
     allButtonGroups.add(bg);
     Enumeration<AbstractButton> e = bg.getElements();
     while (e.hasMoreElements()) {
@@ -271,7 +271,7 @@ public class ShiftFormTab extends JFrame {
    * @return ButtonGroup
    */
   private ButtonGroup returnCheckboxGroup(int x, int y, boolean active, Date date) {
-    int xSize = 39;
+    int xSize = 45;
     int ySize = 18;
     ButtonGroup bg = new ButtonGroup();
     String[] labels = {"X", "F", "S", "T", "N"};
