@@ -28,7 +28,11 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ShiftFormTab extends JFrame {
 
-  //private JPanel panel;
+  /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+//private JPanel panel;
   private final Action cancel = new ResetForm();
   private final Action create = new CreateShiftForm();
   private DefaultTableModel dayTableModel = new DefaultTableModel(
@@ -71,7 +75,7 @@ public class ShiftFormTab extends JFrame {
     MonthComboBox.setModel(new DefaultComboBoxModel(new String[]{"Januar",
               "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September",
               "Oktober", "November", "Dezember"}));
-    MonthComboBox.setBounds(10, xFirstLine-3, 90, 20);
+    MonthComboBox.setBounds(10, xFirstLine-3, 120, 20);
     MonthComboBox.setSelectedIndex((currentMonth < 11) ? (currentMonth + 1) : 0);
 
     YearComboBox = new JComboBox();
