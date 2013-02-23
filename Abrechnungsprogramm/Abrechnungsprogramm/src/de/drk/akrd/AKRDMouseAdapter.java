@@ -72,7 +72,16 @@ public class AKRDMouseAdapter extends MouseAdapter {
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(selectedDate);
 
-			dateString.append(Integer.toString(cal.get(Calendar.DAY_OF_MONTH)));
+			// pad day string with 0 if < 10
+			int day = cal.get(Calendar.DAY_OF_MONTH);
+			String daystring;
+			if (day < 10) {
+				daystring = "0" + Integer.toString(day);
+			} else {
+				daystring = Integer.toString(day);
+			}
+			
+			dateString.append(daystring);
 			dateString.append(".");
 			int month = cal.get(Calendar.MONTH) + 1;
 			if (month < 10)
