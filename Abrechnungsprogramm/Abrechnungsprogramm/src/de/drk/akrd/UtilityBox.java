@@ -542,4 +542,12 @@ public class UtilityBox {
   public void requestShiftListReload() {
 	  mainWindow.shiftContainer.loadShifts("Schichten.xml");
   }
+  // returns the x position of the main window
+  int getWindowPosX() {
+	return this.mainWindow.getLocation().x;
+  }
+  // returns the y position of the main window
+  int getWindowPosY() {
+		return this.mainWindow.getLocation().y;
+  }
 }

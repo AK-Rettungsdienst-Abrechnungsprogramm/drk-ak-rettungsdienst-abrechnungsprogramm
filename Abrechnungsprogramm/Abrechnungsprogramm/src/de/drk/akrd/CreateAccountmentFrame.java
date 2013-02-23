@@ -49,7 +49,10 @@ public class CreateAccountmentFrame {
   private int selectedMonth = 0;
 
   public CreateAccountmentFrame(ArrayList<ShiftInstance> shifts) {
-    createAccountmentFrame.setSize(600, 400);
+	// position relative to main window
+	int x = UtilityBox.getInstance().getWindowPosX();
+	int y = UtilityBox.getInstance().getWindowPosY();
+    createAccountmentFrame.setBounds(x + 20, y + 20, 600, 400);
     createAccountmentFrame.getContentPane().setLayout(null);
     createAccountmentFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     calendar.setTimeInMillis(System.currentTimeMillis());
