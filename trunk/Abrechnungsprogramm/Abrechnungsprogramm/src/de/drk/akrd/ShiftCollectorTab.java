@@ -112,7 +112,7 @@ public class ShiftCollectorTab extends JPanel {
     JComboBox<String> yearChooser = new JComboBox<String>();
     JComboBox<String> monthChooser = new JComboBox<String>();
 
-    public ShiftCollectorTab(MouseAdapter mouseAdapter, ItemListener itemListener, ShiftContainer shiftContainer) throws HeadlessException {
+    public ShiftCollectorTab(ShiftContainer shiftContainer) throws HeadlessException {
     	super();
     	
     	// set UI elements up
@@ -169,8 +169,6 @@ public class ShiftCollectorTab extends JPanel {
 	    	}
 	    });
 	    
-	    
-	    shiftTypeChooser.addItemListener(itemListener);
 	    shiftTypeChooser.addItemListener(new ItemListener() {
 	    	public void itemStateChanged(ItemEvent e) {
 	    		// If this is the deselect event don't do anything
