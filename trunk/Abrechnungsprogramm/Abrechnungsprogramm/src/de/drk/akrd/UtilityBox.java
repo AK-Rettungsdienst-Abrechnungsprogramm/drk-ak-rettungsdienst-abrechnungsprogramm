@@ -11,6 +11,8 @@ import com.itextpdf.text.pdf.PdfFormField;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.RadioCheckField;
 import com.itextpdf.text.BaseColor;
+
+import java.awt.Font;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -26,17 +28,26 @@ public class UtilityBox {
 
   private static UtilityBox instance = null;
   private MainWindow mainWindow = null;
+  private ShiftContainer shiftContainer = null;
   private Calendar calendar = null;
   public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
   private Date[] holidays = null;
+  
+  // the default font used throughout the program 
+  Font defaultFont = new Font("Dialog", Font.BOLD, 12);
 
   public UtilityBox(MainWindow mainWindow) {
     instance = this;
     this.mainWindow = mainWindow;
+    this.shiftContainer = mainWindow.shiftContainer;
     calendar = Calendar.getInstance();
   }
 
-  public static void instanciate(MainWindow mainWindow) {
+  public ShiftContainer getShiftContainer() {
+	return shiftContainer;
+}
+
+public static void instanciate(MainWindow mainWindow) {
     if (instance != null) {
       return;
     }
@@ -549,5 +560,9 @@ public class UtilityBox {
   // returns the y position of the main window
   int getWindowPosY() {
 		return this.mainWindow.getLocation().y;
+  }
+  
+  Font getDefaultFont(){
+	  return defaultFont;
   }
 }

@@ -37,31 +37,6 @@ public class AKRDItemListener implements ItemListener {
 			return;
 		}
 		
-		// Resets the shifts list, depending on the selected type
-		if(source == mainWindow.shiftTypeChooser)
-		{
-			// If this is the deselect event don't do anything
-			if(e.getStateChange() == ItemEvent.DESELECTED) return;
-			// If override flag was set don't do anything
-			if(mainWindow.noShiftTypeUpdate)
-			{
-				mainWindow.noShiftTypeUpdate = false;
-				return;
-			}
-			ShiftContainer.ShiftType type = (ShiftContainer.ShiftType)mainWindow.shiftTypeChooser.getSelectedItem();
-			mainWindow.prepTimeBox.setSelected(UtilityBox.hasPreparationTime(type));
-
-            mainWindow.updateShiftContainer();
-            
-            // if ELW was selected, fill comment field
-            if(type == ShiftContainer.ShiftType.ELW) {
-            	mainWindow.commentField.setText("ELW Einsatz");
-            }
-            
-			return;
-			
-		}
-		
 	}
 
 }
