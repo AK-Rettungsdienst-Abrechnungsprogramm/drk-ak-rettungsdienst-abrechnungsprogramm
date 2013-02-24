@@ -48,6 +48,7 @@ public class XMLEditor {
       {
         String documentVersionString = documentElement.getAttributeValue("version");
         float documentVersion = Float.parseFloat(documentVersionString);
+        MainWindow.SHIFT_FILE_VERSION = documentVersion;
         if (documentVersion < SHIFT_FILE_VERSION) {
           boolean downloadNew = UtilityBox.getInstance().displayYesNoPopup(
             "Schichten.xml", "Die Liste der Schichten ist veraltet.\nNeuste"
