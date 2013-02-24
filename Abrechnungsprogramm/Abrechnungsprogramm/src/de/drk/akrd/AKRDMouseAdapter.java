@@ -86,69 +86,6 @@ public class AKRDMouseAdapter extends MouseAdapter {
 				gc.createGoogleCalendarEntry(DRManager.GetInstance().getSavedShifts(), DRManager.GetInstance().getSavedShiftDates());
 			}
 		}
-		
-		// Apply personal info
-		if(source == mainWindow.personalInfoApply)
-		{
-			String firstName = mainWindow.firstNameField.getText();
-			String lastName = mainWindow.lastNameField.getText();
-			
-			PersonalData.Qualification quali = (PersonalData.Qualification)mainWindow.trainingsChooser.getSelectedItem();
-			
-			if(firstName.length() == 0 || lastName.length() == 0)
-			{
-				UtilityBox.getInstance().displayErrorPopup("Fehler", "Bitte Namen korrekt eingeben!");
-				return;
-			}
-			
-			if(quali == null)
-			{
-				UtilityBox.getInstance().displayErrorPopup("Fehler", "Bitte Ausbildung auswählen!");
-				return;
-			}
-			
-			// check bank data (only if bankDataKnow is not checked)
-			
-			boolean dataKnown = mainWindow.bankInfoKnown.isSelected();
-			
-			int blz = 0;
-			int account = 0;
-			String bankName = "";
-
-			if(!dataKnown) {
-				try
-				{
-					blz = Integer.parseInt(mainWindow.blz.getText());
-					account = Integer.parseInt(mainWindow.accountNo.getText());
-				}
-				catch(NumberFormatException exeption)
-				{
-					UtilityBox.getInstance().displayErrorPopup("Fehler", "Bitte Bankdaten korrekt eingeben!");
-					return;
-				}
-				
-				bankName = mainWindow.bankNameField.getText();
-				
-				if(bankName.length() == 0)
-				{
-					UtilityBox.getInstance().displayErrorPopup("Fehler", "Bitte Bankdaten korrekt eingeben!");
-					return;
-				}
-			}
-
-			String gmail = mainWindow.gMailAdressField.getText();
-			String calID = mainWindow.calendarIDFiled.getText();
-			
-			PersonalData pd = PersonalData.getInstance();
-			
-			boolean success = pd.setData(firstName, lastName, bankName, account, blz, quali, dataKnown, gmail, calID);
-            if (success) {
-                UtilityBox.getInstance().displayInfoPopup("Persönliche Daten", "Daten gespeichert.");
-//                mainWindow.updateRegisteredShifts();
-            }
-			return;
-			
-		}
 	}
 
 

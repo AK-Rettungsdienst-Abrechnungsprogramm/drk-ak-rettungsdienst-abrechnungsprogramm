@@ -1,17 +1,13 @@
 package de.drk.akrd;
 
-import java.awt.event.ItemListener;
-
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -23,14 +19,8 @@ import javax.swing.JButton;
 import java.util.Calendar;
 import java.util.Date;
 
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import com.jgoodies.forms.factories.FormFactory;
-import de.drk.akrd.PersonalData.Qualification;
 import java.awt.Image;
 import java.awt.Toolkit;
-import javax.swing.border.EtchedBorder;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.border.TitledBorder;
@@ -43,22 +33,6 @@ public class MainWindow extends JFrame {
   private static final long serialVersionUID = 1L;
   // Listeners and Adapters
   private AKRDMouseAdapter mouseAdapter = new AKRDMouseAdapter(this);
-  private ItemListener itemListener = new AKRDItemListener(this);
-  // Personal Info Components
-  private JPanel personalInfoTab = new JPanel();
-  // Name Fields
-  private final JLabel lblName = new JLabel("Vorname:");
-  protected final JTextField firstNameField = new JTextField();
-  private final JLabel lblNachname = new JLabel("Nachname:");
-  protected final JTextField lastNameField = new JTextField();
-  public final JComboBox<PersonalData.Qualification> trainingsChooser = new JComboBox<Qualification>();
-  protected final JTextField accountNo = new JTextField();
-  protected JTextField blz = new JTextField();
-  protected JCheckBox bankInfoKnown = new JCheckBox();
-  protected final JTextField bankNameField = new JTextField();
-  protected JTextField gMailAdressField = new JTextField();
-  protected JTextField calendarIDFiled = new JTextField();
-  protected JButton personalInfoApply;
 
   protected ShiftContainer shiftContainer = new ShiftContainer(this);
   
@@ -88,18 +62,11 @@ public class MainWindow extends JFrame {
       return false;
     }
   };
-  private final JPanel panel = new JPanel();
-
-
-	private final JLabel lblAusbildung = new JLabel("Ausbildung:");
-  private final JPanel panel_1 = new JPanel();
-  private final JLabel lblBlz = new JLabel("BLZ");
-  private final JLabel lblKontonummer = new JLabel("Kontonummer:");
+  
   // DPL Tab
   protected JButton read_DPL;
   protected JButton iCalButton;
   private JTable dplTable;
-  private final JLabel lblNameDerBank = new JLabel("Name der Bank:");
   protected final JButton googleCalButton = new JButton(
           "Dienste in Google Kalender eintragen");
 
@@ -133,11 +100,6 @@ public class MainWindow extends JFrame {
     // Instanciate UtilityBox
     UtilityBox.instanciate(this);
 
-    bankNameField.setColumns(10);
-    lastNameField.setColumns(10);
-    accountNo.setColumns(10);
-    blz.setColumns(10);
-
     // Setup ShiftContainer
     shiftContainer.loadShifts("Schichten.xml");
     shiftContainer.registerShift(ShiftLoadSave.loadSavedShifts(), false);
@@ -155,191 +117,12 @@ public class MainWindow extends JFrame {
 
     JTabbedPane tabbedPane = new JTabbedPane();
 
-    // add Actionlistener to tabbedPane
-    tabbedPane.addChangeListener(new ChangeListener() {
-
-      @Override
-      public void stateChanged(ChangeEvent e) {
-        int selectedTab = ((JTabbedPane) e.getSource()).getSelectedIndex();
-        if ((selectedTab == 0)&&(PersonalData.getInstance().isDataSet())) {
-          loadPersonalData();
-        }
-      }
-    });
+    PersonalInfoTab personalDataTab = new PersonalInfoTab();
     
-    // Assebmle personal Layout
-
-    bankInfoKnown.addItemListener(itemListener);
-
-    tabbedPane.addTab("Persönliche Info", null, personalInfoTab,
-            "Persönliche Daten eingeben");
-
-    JPanel panel_2 = new JPanel();
-    panel_2.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-
-    personalInfoApply = new JButton("Änderungen Übernehmen");
-    personalInfoApply.addActionListener(new ActionListener() {
-    	public void actionPerformed(ActionEvent arg0) {
-    	}
-    });
-    personalInfoApply.addMouseListener(mouseAdapter);
-    GroupLayout gl_personalInfoTab = new GroupLayout(personalInfoTab);
-    gl_personalInfoTab.setHorizontalGroup(gl_personalInfoTab.createParallelGroup(Alignment.LEADING).addGroup(
-            gl_personalInfoTab.createSequentialGroup().addGroup(
-            gl_personalInfoTab.createParallelGroup(
-            Alignment.LEADING).addGroup(
-            gl_personalInfoTab.createSequentialGroup().addContainerGap().addGroup(
-            gl_personalInfoTab.createParallelGroup(
-            Alignment.LEADING).addComponent(
-            panel_2,
-            GroupLayout.PREFERRED_SIZE,
-            768,
-            GroupLayout.PREFERRED_SIZE).addGroup(
-            gl_personalInfoTab.createSequentialGroup().addComponent(
-            panel,
-            GroupLayout.PREFERRED_SIZE,
-            411,
-            GroupLayout.PREFERRED_SIZE).addPreferredGap(
-            ComponentPlacement.RELATED).addComponent(
-            panel_1,
-            GroupLayout.PREFERRED_SIZE,
-            352,
-            GroupLayout.PREFERRED_SIZE)))).addGroup(
-            gl_personalInfoTab.createSequentialGroup().addGap(292).addComponent(
-            personalInfoApply))).addContainerGap(
-            GroupLayout.DEFAULT_SIZE,
-            Short.MAX_VALUE)));
-    gl_personalInfoTab.setVerticalGroup(gl_personalInfoTab.createParallelGroup(Alignment.LEADING).addGroup(
-            gl_personalInfoTab.createSequentialGroup().addContainerGap().addGroup(
-            gl_personalInfoTab.createParallelGroup(
-            Alignment.LEADING).addComponent(
-            panel_1,
-            GroupLayout.PREFERRED_SIZE,
-            116,
-            GroupLayout.PREFERRED_SIZE).addComponent(
-            panel,
-            GroupLayout.PREFERRED_SIZE,
-            115,
-            GroupLayout.PREFERRED_SIZE)).addPreferredGap(
-            ComponentPlacement.UNRELATED).addComponent(panel_2,
-            GroupLayout.PREFERRED_SIZE,
-            102, GroupLayout.PREFERRED_SIZE).addPreferredGap(
-            ComponentPlacement.UNRELATED).addComponent(personalInfoApply).addContainerGap(260, Short.MAX_VALUE)));
-    panel_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-
-    JLabel lblNewLabel = new JLabel(
-            "<html>Diese Angaben brauchst du nur, wenn du den Dienstplan automatisch in deinen Google Kalender<br>importieren willst.</html>");
-
-    JLabel lblNewLabel_1 = new JLabel("Google Mail Adresse:");
-
-    gMailAdressField.setColumns(10);
-
-    JLabel lblCalendarid = new JLabel("Calendar-ID:");
-
-    calendarIDFiled.setColumns(10);
-
-    JLabel lblNewLabel_2 = new JLabel("");
-    lblNewLabel_2.setToolTipText("Die Kalender ID findest du unter Kalender-Einstellungen bei \"Kalenderadresse\"");
-    lblNewLabel_2.setIcon(new ImageIcon(
-            MainWindow.class.getResource("/com/sun/java/swing/plaf/motif/icons/Question.gif")));
-    GroupLayout gl_panel_2 = new GroupLayout(panel_2);
-    gl_panel_2.setHorizontalGroup(gl_panel_2.createParallelGroup(Alignment.LEADING).addGroup(
-            gl_panel_2.createSequentialGroup().addContainerGap().addGroup(
-            gl_panel_2.createParallelGroup(
-            Alignment.LEADING).addComponent(
-            lblNewLabel,
-            GroupLayout.DEFAULT_SIZE,
-            740,
-            Short.MAX_VALUE).addGroup(
-            gl_panel_2.createSequentialGroup().addComponent(
-            lblNewLabel_1).addPreferredGap(
-            ComponentPlacement.UNRELATED).addComponent(
-            gMailAdressField,
-            GroupLayout.PREFERRED_SIZE,
-            198,
-            GroupLayout.PREFERRED_SIZE).addPreferredGap(
-            ComponentPlacement.UNRELATED).addComponent(
-            lblCalendarid).addPreferredGap(
-            ComponentPlacement.RELATED).addComponent(
-            lblNewLabel_2).addGap(10).addComponent(
-            calendarIDFiled,
-            GroupLayout.PREFERRED_SIZE,
-            217,
-            GroupLayout.PREFERRED_SIZE))).addContainerGap()));
-    gl_panel_2.setVerticalGroup(gl_panel_2.createParallelGroup(Alignment.LEADING).addGroup(
-            gl_panel_2.createSequentialGroup().addContainerGap().addComponent(lblNewLabel).addGap(13).addGroup(
-            gl_panel_2.createParallelGroup(
-            Alignment.TRAILING).addGroup(
-            gl_panel_2.createParallelGroup(
-            Alignment.LEADING).addGroup(
-            gl_panel_2.createParallelGroup(
-            Alignment.BASELINE).addComponent(
-            lblNewLabel_1).addComponent(
-            gMailAdressField,
-            GroupLayout.PREFERRED_SIZE,
-            GroupLayout.DEFAULT_SIZE,
-            GroupLayout.PREFERRED_SIZE)).addGroup(
-            gl_panel_2.createParallelGroup(
-            Alignment.BASELINE).addComponent(
-            lblCalendarid).addComponent(
-            calendarIDFiled,
-            GroupLayout.PREFERRED_SIZE,
-            GroupLayout.DEFAULT_SIZE,
-            GroupLayout.PREFERRED_SIZE))).addComponent(
-            lblNewLabel_2)).addContainerGap(19, Short.MAX_VALUE)));
-    panel_2.setLayout(gl_panel_2);
-    panel_1.setLayout(new FormLayout(new ColumnSpec[]{
-              FormFactory.RELATED_GAP_COLSPEC, FormFactory.DEFAULT_COLSPEC,
-              FormFactory.RELATED_GAP_COLSPEC,
-              ColumnSpec.decode("default:grow"),}, new RowSpec[]{
-              FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
-              FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
-              FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
-              FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,}));
-    bankInfoKnown.setText("Bankdaten bekannt");
-
-    panel_1.add(bankInfoKnown, "2, 2");
-
-    panel_1.add(lblBlz, "2, 4, right, default");
-
-    panel_1.add(blz, "4, 4, fill, default");
-
-    panel_1.add(lblKontonummer, "2, 6, right, default");
-
-    panel_1.add(accountNo, "4, 6, fill, default");
-
-    panel_1.add(lblNameDerBank, "2, 8, right, default");
-
-    panel_1.add(bankNameField, "4, 8, fill, default");
-    panel.setLayout(new FormLayout(new ColumnSpec[]{
-              FormFactory.RELATED_GAP_COLSPEC, FormFactory.DEFAULT_COLSPEC,
-              FormFactory.RELATED_GAP_COLSPEC, FormFactory.DEFAULT_COLSPEC,
-              FormFactory.RELATED_GAP_COLSPEC, FormFactory.DEFAULT_COLSPEC,
-              FormFactory.RELATED_GAP_COLSPEC,
-              ColumnSpec.decode("default:grow"),}, new RowSpec[]{
-              FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
-              FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
-              FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
-              FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,}));
-
-    panel.add(lblName, "2, 4");
-    firstNameField.setColumns(10);
-
-    panel.add(firstNameField, "6, 4, 3, 1, fill, default");
-
-    panel.add(lblNachname, "2, 6");
-
-    panel.add(lastNameField, "6, 6, 3, 1, fill, default");
-
-    panel.add(lblAusbildung, "2, 8");
-    trainingsChooser.setModel(new DefaultComboBoxModel<Qualification>(Qualification.values()));
-    panel.add(trainingsChooser, "6, 8, 3, 1");
-    
-    personalInfoTab.setLayout(gl_personalInfoTab);
-    
+    tabbedPane.addTab("Persönliche Daten", null, personalDataTab, "Persönliche Daten eingeben");    
 
     // Shift Collector
-    ShiftCollectorTab sc = new ShiftCollectorTab(mouseAdapter, itemListener, shiftContainer);
+    ShiftCollectorTab sc = new ShiftCollectorTab(shiftContainer);
     tabbedPane.addTab("Schichten", null, sc, "Schichten eingeben und bearbeiten");
 
 
@@ -511,32 +294,9 @@ public class MainWindow extends JFrame {
     Image drkIcon = Toolkit.getDefaultToolkit().getImage(f.getClass().getResource("icon.jpg"));
     f.setIconImage(drkIcon);
     f.setVisible(true);
-    f.loadPersonalData();
-
+    f.setResizable(false);
   }
 
-
-  public void loadPersonalData() {
-    // Try to load personal data and fill the fields
-    PersonalData pd = null;
-    try {
-      pd = PersonalData.getInstance();
-    } catch (Exception e) {
-      UtilityBox.getInstance().displayErrorPopup("Fehler",
-              "Fehler beim Laden der persönlichen Daten");
-    }
-    if (pd != null) {
-      firstNameField.setText(pd.getFirstName());
-      trainingsChooser.setSelectedItem(pd.getQualification());
-      blz.setText(Integer.toString(pd.getBlz()));
-      accountNo.setText(Integer.toString(pd.getAccountNumber()));
-      bankInfoKnown.setSelected(pd.isDataKnown());
-      lastNameField.setText(pd.getLastName());
-      gMailAdressField.setText(pd.getEmailAdress());
-      calendarIDFiled.setText(pd.getCalendarId());
-      bankNameField.setText(pd.getBankNameAndCity());
-    }
-  }
 
   protected void updateShiftsFromDPL() {
     Shift[] shifts = DRManager.GetInstance().getSavedShifts();
