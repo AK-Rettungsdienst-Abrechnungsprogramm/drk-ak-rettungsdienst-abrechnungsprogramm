@@ -7,6 +7,9 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -84,6 +87,8 @@ public class ShiftCollectorTab extends JPanel {
 	JLabel lblDate = new JLabel("Datum:");
 	JLabel lblPartner = new JLabel("Schichtpartner:");
 	JLabel lblComment = new JLabel("Kommentar:");
+	JLabel lblMonthSelection = new JLabel("Anzeigen:");
+	boolean initialized = false;
 
 	// Text fields
 	JTextField shiftPartnerField = new JTextField();
@@ -102,6 +107,10 @@ public class ShiftCollectorTab extends JPanel {
     JCheckBox prepTimeBox = new JCheckBox();
     
     JComboBox<ShiftType> shiftTypeChooser = new JComboBox<ShiftType>();
+    
+    // ComboBoxes for the selection of shifts to display
+    JComboBox<String> yearChooser = new JComboBox<String>();
+    JComboBox<String> monthChooser = new JComboBox<String>();
 
     public ShiftCollectorTab(MouseAdapter mouseAdapter, ItemListener itemListener, ShiftContainer shiftContainer) throws HeadlessException {
     	super();
@@ -204,15 +213,62 @@ public class ShiftCollectorTab extends JPanel {
 	    shiftCataloguePane.setViewportView(shiftCatalogueTable);
 	    shiftInstancePane.setViewportView(shiftInstanceTable);
 	    
+	    // set the time range selectors  
+	    setYearComboBox();
+	    setMonthComboBox();
+	    yearChooser.addItemListener(new ItemListener() {
+	    	public void itemStateChanged(ItemEvent e) {
+	    		displaySelectionStateChangeCallback(e);
+	    	}
+	    });
+	    monthChooser.addItemListener(new ItemListener() {
+	    	public void itemStateChanged(ItemEvent e) {
+	    		displaySelectionStateChangeCallback(e);
+	    	}
+	    });
+	    
 	    // Place UI Elements in Panel
 	    layoutUiElements();
 	    
 	    updateRegisteredShifts();
-
+	    initialized = true;
 	}
 
-    private void createSalaryStatementCallback() {
-        new CreateAccountmentFrame(UtilityBox.getInstance().getShiftContainer().shiftInstances);
+    private void displaySelectionStateChangeCallback(ItemEvent e) {
+		// do nothing if this is the DESELECT event
+		if (e.getStateChange() == ItemEvent.DESELECTED || ! initialized)  return;
+		updateRegisteredShifts(true);
+	}
+
+	private void setYearComboBox() {
+	    ArrayList<Integer> yearsToDisplay = UtilityBox.getInstance().getShiftContainer().getSortedYearList();
+	    Integer currentYear = Calendar.getInstance().get(Calendar.YEAR);
+	    // if the current year is not in the display list add it
+	    if (!yearsToDisplay.contains(currentYear))
+	    	yearsToDisplay.add(currentYear);
+	    DefaultComboBoxModel<String> yearModel = new DefaultComboBoxModel<String>();
+	    yearModel.addElement("Alle");
+	    for(Integer i : yearsToDisplay) 
+	    	yearModel.addElement(i.toString());
+	    yearChooser.setModel(yearModel);		
+	    yearChooser.setSelectedItem(currentYear.toString());
+	}
+    
+    private void setMonthComboBox() {
+    	String[] months = new String[] {"Alle", "Januar", "Februar", "März", "April", "Mai", "Juni", "Juli",
+    									"August", "September", "Oktober", "November", "Dezember"};
+    	DefaultComboBoxModel<String> monthModel = new DefaultComboBoxModel<String>(months);
+    	monthChooser.setModel(monthModel);
+    	// set the current month as selected
+    	monthChooser.setSelectedIndex(Calendar.getInstance().get(Calendar.MONTH) + 1);
+    }
+
+	private void createSalaryStatementCallback() {
+		String y = (String) yearChooser.getSelectedItem();
+		int year = (y == "Alle")? -1 : Integer.parseInt(y);
+		int month = monthChooser.getSelectedIndex() - 1;
+		
+        new CreateAccountmentFrame(year, month);
 		
 	}
 
@@ -354,6 +410,7 @@ public class ShiftCollectorTab extends JPanel {
 		// height for all text fields
 		int textFieldHeight = fm.getHeight() + 5;
 		int timeFieldWidth = 80;
+		int comboBoxHeight = 20;
 		
 		this.setLayout(null);
 		
@@ -366,7 +423,7 @@ public class ShiftCollectorTab extends JPanel {
 		lblShiftType.setFont(font);
 		
 		this.add(shiftTypeChooser);
-		shiftTypeChooser.setBounds(90 + formX, formY, 150, 20);
+		shiftTypeChooser.setBounds(90 + formX, formY, 150, comboBoxHeight);
 		
 		// Line 2
 		
@@ -427,6 +484,17 @@ public class ShiftCollectorTab extends JPanel {
 		
 		this.add(submitButton);
 		submitButton.setBounds(formX + 100, formY + lineSpacing * 6, SwingUtilities.computeStringWidth(fm, submitButton.getText()) + 40, buttonHeight);
+		
+		// shifts to display selection
+		this.add(lblMonthSelection);
+		lblMonthSelection.setBounds(10, 250, SwingUtilities.computeStringWidth(fm, lblMonthSelection.getText()), labelHeight);
+		lblMonthSelection.setFont(font);
+		
+		this.add(monthChooser);
+		monthChooser.setBounds(100, 250, 100, comboBoxHeight);
+		
+		this.add(yearChooser);
+		yearChooser.setBounds(220, 250, 80, comboBoxHeight);
 		
 		
 		// Shift Catalogue
@@ -538,7 +606,21 @@ public class ShiftCollectorTab extends JPanel {
 				  partner,
 				  commentField.getText(),
 				  prepTimeBox.isSelected());
+		  
+		  // set the year and month combo boxes to display the month the shift just registered was in
+		  DateFormat f = new SimpleDateFormat("dd.MM.yyyy");
+		  Calendar cal = Calendar.getInstance();
+		  try {
+			  cal.setTime(f.parse(date));
+		  } catch (ParseException e) {
+			  // TODO Auto-generated catch block
+			  e.printStackTrace();
+		  }
+
 		  updateRegisteredShifts();
+		  
+		  yearChooser.setSelectedItem(Integer.toString(cal.get(Calendar.YEAR)));
+		  monthChooser.setSelectedIndex(cal.get(Calendar.MONTH) + 1);
 		  
 		  // Finally clear the fields
 		  commentField.setText("");
@@ -551,13 +633,29 @@ public class ShiftCollectorTab extends JPanel {
 	   * Refreshes the table displaying the registered shifts
 	   */
 	  public void updateRegisteredShifts() {
+		  updateRegisteredShifts(false);
+	  }
+	  public void updateRegisteredShifts(boolean noYearMonthBoxUpdate) {
 
 	    float completeSalary = 0;
+	    
+	    // get the values from the time to display selectors
+	    int month = monthChooser.getSelectedIndex();
+	    String year = (String) yearChooser.getSelectedItem();
 
 	    ShiftContainer sc = UtilityBox.getInstance().getShiftContainer();
 	    
+	    // get the shifts to display
+	    // if the selected month is 0 this means all months are to be displayed, so it needs 
+	    // to be -1 for the function to understand it
+	    month--;
+	    if (year == "Alle") year = "-1";
+	    ArrayList<ShiftInstance> temp = sc.getShiftInsances(Integer.parseInt(year), month);
+	    
+	    ShiftInstance[] instancesToDisplay = (ShiftInstance[]) temp.toArray(new ShiftInstance[temp.size()]);
+	    
 	    // get all registered shifts and convert them to table data
-	    Object[][] data = ShiftContainer.shiftInstancesToTableData((ShiftInstance[]) sc.shiftInstances.toArray(new ShiftInstance[sc.shiftInstances.size()]));
+	    Object[][] data = ShiftContainer.shiftInstancesToTableData(instancesToDisplay);
 	    // reset the table model
 	    shiftInstanceTableModel.setNumRows(0);
 	    // iterate over all shifts
@@ -578,7 +676,8 @@ public class ShiftCollectorTab extends JPanel {
 	    Object[] lastLine = new Object[]{"", "", "", "", "", "", "", "Gesamt",
 	      String.format("%.2f", completeSalary) + "€"};
 	    shiftInstanceTableModel.addRow(lastLine);
-
+	    
+	    if (! noYearMonthBoxUpdate) setYearComboBox();
 	  }
 
 }
