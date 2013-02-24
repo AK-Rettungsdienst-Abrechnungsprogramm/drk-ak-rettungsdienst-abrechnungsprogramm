@@ -66,7 +66,7 @@ public class ShiftCollectorTab extends JPanel {
 	JTable shiftInstanceTable = new JTable();
 	DefaultTableModel shiftInstanceTableModel = new DefaultTableModel(
 		          new Object[][]{}, new String[]{"Datum", "Beginn", "Ende",
-		                  "Pause", "Dezimal", "Schichtpartner", "Kommentar","Fahrtkosten",
+		                  "Pause", "Dezimal", "Schichtpartner", "Art", "Kommentar","Fahrtkosten",
 		                  "Verdienst"}) {
 
 		          private static final long serialVersionUID = 1L;
@@ -210,6 +210,11 @@ public class ShiftCollectorTab extends JPanel {
 	    }
 	    shiftCatalogueTable.setModel(shiftCatalogueTableModel);
 	    shiftInstanceTable.setModel(shiftInstanceTableModel);
+	    int timeColumnWidth = 30;
+	    shiftInstanceTable.getColumnModel().getColumn(1).setPreferredWidth(timeColumnWidth);
+	    shiftInstanceTable.getColumnModel().getColumn(2).setPreferredWidth(timeColumnWidth);
+	    shiftInstanceTable.getColumnModel().getColumn(3).setPreferredWidth(timeColumnWidth);
+	    shiftInstanceTable.getColumnModel().getColumn(4).setPreferredWidth(timeColumnWidth);
 	    shiftCataloguePane.setViewportView(shiftCatalogueTable);
 	    shiftInstancePane.setViewportView(shiftInstanceTable);
 	    
