@@ -10,6 +10,11 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -27,6 +32,7 @@ public class InfoUpdateTab{
 
     //panel.setLayout(new BorderLayout());
     panel.setLayout(new GridLayout(4,0));
+    String shiftFileVersion = Float.toString(MainWindow.SHIFT_FILE_VERSION);
     String programInfo = "<html><br><h1>AK-RD Abrechnungsprogramm</h1>"
             + "Version "+Float.toString(MainWindow.PROGRAM_VERSION)+"<br><br>"
             + "&copy; Johannes Güttler, Niklas Meinzer 2013<br>"
@@ -34,7 +40,8 @@ public class InfoUpdateTab{
             + "<br><br><br><br></html>";
     String updateInfo = "<html><CENTER><h1>Schicht-Update</h1></CENTER>"
             + "Mit Klick auf den Update-Button wird die neuste Version der "
-            + "Schicht-Liste heruntergeladen.<br></html>";
+            + "Schicht-Liste heruntergeladen.<br>"
+            + "Aktuelle Version: "+shiftFileVersion+"<br></html>";
     JLabel programInfoLabel = new JLabel(programInfo);
     programInfoLabel.setHorizontalAlignment(SwingConstants.CENTER);
     //7panel.add(programInfoLabel, BorderLayout.PAGE_START);
