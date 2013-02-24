@@ -173,7 +173,7 @@ public class ImportExport {
 //    int currentYear = calendar.get(Calendar.YEAR);
 //    selectableYears = new int[]{currentYear-1, currentYear};
     // TODO: alle jahre von denen schichten existieren
-    ArrayList<Integer> yearList = ShiftContainer.getSortedYearList();
+    ArrayList<Integer> yearList = UtilityBox.getInstance().getShiftContainer().getSortedYearList();
     int nYears = yearList.size();
     selectableYears = new int[nYears];
     for (int i = 0; i < nYears; i++) {

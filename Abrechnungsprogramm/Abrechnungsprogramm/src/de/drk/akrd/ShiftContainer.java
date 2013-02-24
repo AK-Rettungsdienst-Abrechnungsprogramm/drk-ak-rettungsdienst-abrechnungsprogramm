@@ -19,7 +19,7 @@ public class ShiftContainer {
   private static Calendar calendar = Calendar.getInstance();
   private static ArrayList<Shift> shifts = new ArrayList<Shift>();
 // Holds all registered shifts.
-  public static ArrayList<ShiftInstance> shiftInstances = new ArrayList<ShiftInstance>();
+  public ArrayList<ShiftInstance> shiftInstances = new ArrayList<ShiftInstance>();
   public enum ShiftType {
 
     Alle, RTW, KTW, KIZA, BREISACH, BABY, EVENT, KVS, HINTERGRUND, ELW;
@@ -229,7 +229,7 @@ public class ShiftContainer {
     // save new ShiftList
     calendar.setTime(entry.getDate());
     ShiftLoadSave.saveShifts(shiftInstances, calendar.get(Calendar.YEAR));
-    mainWindow.updateRegisteredShifts();
+
 
   }
 
@@ -246,7 +246,6 @@ public class ShiftContainer {
       calendar.setTime(shifts.get(0).getDate());
       ShiftLoadSave.saveShifts(shiftInstances, calendar.get(Calendar.YEAR));
     }
-    mainWindow.updateRegisteredShifts();
   }
 
   /**
@@ -265,8 +264,6 @@ public class ShiftContainer {
     // rewrite XML file
     calendar.setTime(deletedInstance.getDate());
     ShiftLoadSave.saveShifts(shiftInstances, calendar.get(Calendar.YEAR));
-    
-    mainWindow.updateRegisteredShifts();
   }
 
   public ShiftInstance getShift(int number) {
@@ -322,16 +319,17 @@ public class ShiftContainer {
         return ShiftContainer.ShiftType.RTW;
       } else if (substring.equals("B")) {
         return ShiftContainer.ShiftType.BREISACH;
-      } else {
+      } else if (substring.equals("E")){
+    	  return ShiftContainer.ShiftType.ELW;
+      } else
         return ShiftContainer.ShiftType.BABY;
       }
     }
-  }
   /**
    * Return a sorted list of all years appearing in the shiftlist
    * @return 
    */
-  public static ArrayList<Integer> getSortedYearList() {
+  public ArrayList<Integer> getSortedYearList() {
     ArrayList<Integer> yearList = new ArrayList<Integer>();
     for (int i = 0; i < shiftInstances.size(); i++) {
       ShiftInstance shiftInstance = shiftInstances.get(i);
