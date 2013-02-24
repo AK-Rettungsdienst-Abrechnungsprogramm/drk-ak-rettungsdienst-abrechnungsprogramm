@@ -343,4 +343,24 @@ public class ShiftContainer {
     Collections.reverse(yearList);
     return yearList;
   }
+  /**
+   * Returns the shift insances and is able to filter to a specific month
+   * @param year: the year the selected month is in or -1 if all
+   * @param month: the selected month january = 0 .. or -1 if all
+   * @return
+   */
+  public ArrayList<ShiftInstance> getShiftInsances(int year, int month) {
+	  ArrayList<ShiftInstance> result = new ArrayList<ShiftInstance>();
+	  // iterate over all instances and filter out
+	  Calendar cal = Calendar.getInstance();
+	  for (ShiftInstance i : shiftInstances) {
+		  cal.setTime(i.getDate());
+		  if (year == -1 || cal.get(Calendar.YEAR) == year) {
+			  if (year == -1 || month == -1 || cal.get(Calendar.MONTH) == month) {
+				  result.add(i);
+			  }
+		  }
+	  }
+	  return result;
+  }
 }

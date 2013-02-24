@@ -24,10 +24,9 @@ import javax.swing.JScrollPane;
 public class CreateAccountmentFrame {
 
   private JFrame createAccountmentFrame = new JFrame("Abrechnung erstellen");
-  private static ArrayList<ShiftInstance> allShifts = null;
   private ArrayList<ShiftInstance> selectedShifts = null;
-  private JComboBox yearComboBox;
-  private JComboBox monthComboBox;
+  private JComboBox<String> yearComboBox = new JComboBox<String>();
+  private JComboBox<String> monthComboBox = new JComboBox<String>();;
   private JCheckBox printCheckbox;
   private JScrollPane displayPane;
   private JTable displayTable;
@@ -48,10 +47,14 @@ public class CreateAccountmentFrame {
   private int selectedYear = 0;
   private int selectedMonth = 0;
 
-  public CreateAccountmentFrame(ArrayList<ShiftInstance> shifts) {
+  public CreateAccountmentFrame(int year, int month) {
 	// position relative to main window
 	int x = UtilityBox.getInstance().getWindowPosX();
 	int y = UtilityBox.getInstance().getWindowPosY();
+	
+	selectedYear = year;
+	selectedMonth = month;
+
     createAccountmentFrame.setBounds(x + 20, y + 20, 600, 400);
     createAccountmentFrame.getContentPane().setLayout(null);
     createAccountmentFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -79,10 +82,9 @@ public class CreateAccountmentFrame {
     btnAusgeben.setBounds(330, 320, 120, 30);
     createAccountmentFrame.getContentPane().add(btnAusgeben);
 
-    yearComboBox = new JComboBox();
     calendar.setTime(new Date());
-    selectedYear = calendar.get(Calendar.YEAR);
-    yearComboBox.setModel(new DefaultComboBoxModel(new String[]{Integer.toString(selectedYear - 1), Integer.toString(selectedYear)}));
+    if (selectedYear == -1 || selectedMonth == -1) selectedYear = calendar.get(Calendar.YEAR);
+    yearComboBox.setModel(new DefaultComboBoxModel<String>(new String[]{Integer.toString(selectedYear - 1), Integer.toString(selectedYear)}));
     yearComboBox.setBounds(140, 10, 100, 30);
     yearComboBox.setSelectedIndex(1);
     yearComboBox.addActionListener(new ActionListener() {
@@ -94,9 +96,8 @@ public class CreateAccountmentFrame {
     });
     createAccountmentFrame.getContentPane().add(yearComboBox);
 
-    monthComboBox = new JComboBox();
-    selectedMonth = calendar.get(Calendar.MONTH);
-    monthComboBox.setModel(new DefaultComboBoxModel(new String[]{"Januar", "Februar", "M\u00E4rz", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"}));
+    if (selectedYear == -1 || selectedMonth == -1) selectedMonth = calendar.get(Calendar.MONTH);
+    monthComboBox.setModel(new DefaultComboBoxModel<String>(new String[]{"Januar", "Februar", "M\u00E4rz", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"}));
     monthComboBox.setBounds(10, 10, 120, 30);
     monthComboBox.setSelectedIndex(selectedMonth);
     monthComboBox.addActionListener(new ActionListener() {
@@ -123,7 +124,7 @@ public class CreateAccountmentFrame {
     printCheckbox.setBounds(250, 15, 100, 23);
     printCheckbox.setSelected(true);
     createAccountmentFrame.getContentPane().add(printCheckbox);
-    allShifts = shifts;
+
     createAccountmentFrame.setVisible(true);
     // fill the displayTable
     setSelectedShifts(selectedMonth, selectedYear);
@@ -156,17 +157,6 @@ public class CreateAccountmentFrame {
   }
 
   /**
-   * 
-   * @param shiftInstance
-   * @return 
-   */
-  private String getShiftString(ShiftInstance shiftInstance) {
-    // TODO: string bauen
-    String returnString = shiftInstance.getDateString() + "\f" + shiftInstance.getType().toString();
-    return returnString;
-  }
-
-  /**
    * Set global value selectedShifts to a filtered List, containing all shifts
    * from allShifts that match month and year.
    * calls fillList(selectedShifts)
@@ -174,22 +164,7 @@ public class CreateAccountmentFrame {
    * @param year 
    */
   private void setSelectedShifts(int month, int year) {
-    selectedShifts = new ArrayList<ShiftInstance>();
-    // TODO: filter
-    try {
-      for (int i = 0; i < allShifts.size(); i++) {
-
-        ShiftInstance shiftInstance = allShifts.get(i);
-        calendar.setTime(sdf.parse(shiftInstance.getDateString()));
-        if ((calendar.get(Calendar.MONTH) == month) && (calendar.get(Calendar.YEAR) == year)) {
-          selectedShifts.add(shiftInstance);
-
-        }
-      }
-    } catch (ParseException ex) {
-      UtilityBox.getInstance().displayErrorPopup("Schichtfilter", "Schichtdaten"
-              + " konnten nicht ausgelesen werden:\n" + ex.getMessage());
-    }
+    selectedShifts = UtilityBox.getInstance().getShiftContainer().getShiftInsances(year, month);
     fillList(selectedShifts);
   }
 }

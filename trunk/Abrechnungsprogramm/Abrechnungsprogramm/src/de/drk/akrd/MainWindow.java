@@ -19,7 +19,6 @@ import javax.swing.JTable;
 import javax.swing.event.ChangeEvent;
 import javax.swing.table.DefaultTableModel;
 
-import de.drk.akrd.ShiftContainer.ShiftType;
 import javax.swing.JButton;
 import java.util.Calendar;
 import java.util.Date;
@@ -89,20 +88,8 @@ public class MainWindow extends JFrame {
       return false;
     }
   };
-  protected JTable registeredShiftsTable;
-  private final JLabel lblSchichtpartner = new JLabel("Schichtpartner:");
-  protected JTextField shiftPartnerField;
-  protected JTextField beginField;
-  protected JTextField endField;
-  protected JTextField breakField;
-  protected JButton submitButton;
-  private final JLabel lblKommentar = new JLabel("Kommentar");
-  protected JTextField commentField = new JTextField();
   private final JPanel panel = new JPanel();
-  protected JCheckBox prepTimeBox;
-  protected final JButton createSalaryStatementButton = new JButton();
-  protected final JButton deleteRegisteredShiftButton = new JButton("Löschen");
-  protected final JButton editRegisteredShiftButton = new JButton("Bearbeiten");
+
 
 	private final JLabel lblAusbildung = new JLabel("Ausbildung:");
   private final JPanel panel_1 = new JPanel();
@@ -150,7 +137,6 @@ public class MainWindow extends JFrame {
     lastNameField.setColumns(10);
     accountNo.setColumns(10);
     blz.setColumns(10);
-    commentField.setColumns(10);
 
     // Setup ShiftContainer
     shiftContainer.loadShifts("Schichten.xml");
