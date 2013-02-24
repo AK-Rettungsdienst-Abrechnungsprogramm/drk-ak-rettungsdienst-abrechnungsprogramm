@@ -164,12 +164,15 @@ public class PersonalInfoTab extends JPanel {
 		nameAndTraining.setLayout(null);
 		nameAndTraining.add(lblFirstName);
 		lblFirstName.setBounds(0, 0, SwingUtilities.computeStringWidth(fm, lblFirstName.getText()), labelHeight);
+		lblFirstName.setFont(font);
 		
 		nameAndTraining.add(lblSecondName);
 		lblSecondName.setBounds(0, lineSpacing, SwingUtilities.computeStringWidth(fm, lblSecondName.getText()), labelHeight);
+		lblSecondName.setFont(font);
 		
 		nameAndTraining.add(lblTraining);
 		lblTraining.setBounds(0, lineSpacing * 2, SwingUtilities.computeStringWidth(fm, lblTraining.getText()), labelHeight);
+		lblTraining.setFont(font);
 		
 		int nameFieldX = 100;
 		int nameFieldWidth = 250;
@@ -195,12 +198,15 @@ public class PersonalInfoTab extends JPanel {
 		
 		bankForm.add(lblBLZ);
 		lblBLZ.setBounds(bankTextOffsetX, bankTextOffsetY + lineSpacing, SwingUtilities.computeStringWidth(fm, lblBLZ.getText()), labelHeight);
+		lblBLZ.setFont(font);
 		
 		bankForm.add(lblAccountNo);
 		lblAccountNo.setBounds(bankTextOffsetX, bankTextOffsetY + lineSpacing *2, SwingUtilities.computeStringWidth(fm, lblAccountNo.getText()), labelHeight);
+		lblAccountNo.setFont(font);
 		
 		bankForm.add(lblBankName);
 		lblBankName.setBounds(bankTextOffsetX, bankTextOffsetY + lineSpacing * 3, SwingUtilities.computeStringWidth(fm, lblBankName.getText()), labelHeight);
+		lblBankName.setFont(font);
 		
 		int bankTextFieldX = 200 + bankTextOffsetX;
 		
@@ -222,17 +228,20 @@ public class PersonalInfoTab extends JPanel {
 		googleCal.setLayout(null);
 		googleCal.add(lblGoogleHeader);
 		lblGoogleHeader.setBounds(30, 0, 800, 50);
+		lblGoogleHeader.setFont(font);
 		
 		int googleY = 70;
 		
 		googleCal.add(lblMail);
 		lblMail.setBounds(30, googleY, SwingUtilities.computeStringWidth(fm, lblMail.getText()), labelHeight);
+		lblMail.setFont(font);
 		
 		googleCal.add(mailField);
 		mailField.setBounds(200, googleY, 200, textFieldHeight);
 		
 		googleCal.add(lblCalendar);
 		lblCalendar.setBounds(450, googleY, SwingUtilities.computeStringWidth(fm, lblCalendar.getText()), labelHeight);
+		lblCalendar.setFont(font);
 		
 		googleCal.add(calIdField);
 		calIdField.setBounds(550, googleY, 200, textFieldHeight);

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Locale;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -124,6 +125,8 @@ public class ShiftCollectorTab extends JPanel {
 	    	});
 	    dateField.setEditable(false);
 	    dateField.setColumns(10);
+	    
+	    calendar.setLocale(Locale.GERMANY);
 
 	    shiftInstanceTable.getTableHeader().setReorderingAllowed(false);
 	    shiftInstanceTable.getTableHeader().setResizingAllowed(false);
@@ -441,6 +444,7 @@ public class ShiftCollectorTab extends JPanel {
 		
 		this.add(lblPartner);
 		lblPartner.setBounds(formX, formY + lineSpacing * 2, SwingUtilities.computeStringWidth(fm, lblPartner.getText()), labelHeight);
+		lblPartner.setFont(font);
 		
 		this.add(shiftPartnerField);
 		shiftPartnerField.setBounds(SwingUtilities.computeStringWidth(fm, lblPartner.getText()) + 10 + formX, formY  + lineSpacing * 2,
@@ -494,10 +498,10 @@ public class ShiftCollectorTab extends JPanel {
 		lblMonthSelection.setFont(font);
 		
 		this.add(monthChooser);
-		monthChooser.setBounds(100, 250, 100, comboBoxHeight);
+		monthChooser.setBounds(100, 250, 120, comboBoxHeight);
 		
 		this.add(yearChooser);
-		yearChooser.setBounds(220, 250, 80, comboBoxHeight);
+		yearChooser.setBounds(240, 250, 100, comboBoxHeight);
 		
 		
 		// Shift Catalogue
