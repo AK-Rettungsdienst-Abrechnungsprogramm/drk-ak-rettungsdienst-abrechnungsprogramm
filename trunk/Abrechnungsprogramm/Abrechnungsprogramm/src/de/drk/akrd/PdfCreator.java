@@ -387,7 +387,7 @@ public class PdfCreator {
       // set the shift table
       PdfPTable table7 = new PdfPTable(11);
       table7.setWidthPercentage(100);
-      table7.setWidths(new float[]{1.96f, 0.98f, 1.96f, 1.96f, 2.94f, 1.96f, 1.96f, 1.96f, 1.96f, 1.4f, 2.1f});
+      table7.setWidths(new float[]{1.96f, 0.9f, 1.8f, 1.8f, 2.9f, 1.96f, 1.96f, 1.85f, 1.85f, 1.4f, 2.2f});
       // headlines
       PdfPCell cell32 = new PdfPCell(new Paragraph("Datum", helveticaFont9Bold));
       cell32.setFixedHeight(50f);
