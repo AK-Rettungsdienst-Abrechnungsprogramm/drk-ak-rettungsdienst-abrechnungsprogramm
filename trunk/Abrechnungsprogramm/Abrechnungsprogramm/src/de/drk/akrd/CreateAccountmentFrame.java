@@ -143,7 +143,7 @@ public class CreateAccountmentFrame {
         calendar.setTime(sdf.parse(dateString));
         String dayOfWeek = UtilityBox.getDayOfWeekString(calendar.get(Calendar.DAY_OF_WEEK));
         String fromToString =
-                UtilityBox.createTimeStringFromInt(shiftInstance.getActualStartingTime())
+                UtilityBox.createTimeStringFromInt(shiftInstance.getActualStartingTimeWithPrepTime())
                 + " - " + UtilityBox.createTimeStringFromInt(shiftInstance.getActualEndTime());
         String[] rowData = new String[]{dayOfWeek + ", " + dateString,
           fromToString, shiftInstance.getType().toString(),

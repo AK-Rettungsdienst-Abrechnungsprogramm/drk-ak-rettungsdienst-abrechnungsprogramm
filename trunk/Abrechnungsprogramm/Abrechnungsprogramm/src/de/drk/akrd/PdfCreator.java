@@ -474,7 +474,7 @@ public class PdfCreator {
             System.out.println("Exception in PdfCreator.createAccounting "
                     + "(parsing date failed): "+ex.getMessage());
           }
-          int startTime = currentShift.getActualStartingTime();
+          int startTime = currentShift.getActualStartingTimeWithPrepTime();
           int endTime = currentShift.getActualEndTime();
           int breakTime = currentShift.getActualBreakTime();
           startTimeAsString = UtilityBox.createTimeStringFromInt(startTime);
