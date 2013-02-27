@@ -285,8 +285,9 @@ public static void instanciate(MainWindow mainWindow) {
     int time = calculateTime(start, end, breakTime);
     int hours = ((int) (time / 100));
     int minutes = (time % 100);
-    
-    return ((float)(hours+(minutes/60f)));
+//    System.out.println("start: "+start+" end: "+end+" pause: "+breakTime+" time: "+time+" hours: "+hours+""
+//            + " minutes: "+minutes+" result: "+((float)(hours+(minutes/60.0))));
+    return ((float)(hours+(minutes/60.0)));
   }
   private int calculateTime(int start, int end, int breakTime) {
     int time = 0;

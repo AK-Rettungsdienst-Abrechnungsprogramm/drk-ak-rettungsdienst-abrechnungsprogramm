@@ -12,6 +12,7 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import org.jdom.Parent;
 
 /**
  *
@@ -98,7 +99,12 @@ public class PdfCreator {
               counter++;
             }
             accounting.newPage();
-            success = createSingleAccounting(accounting, pdfWriter, tempShiftInstances, i*10+j);
+            ArrayList<ShiftInstance> tempShiftInstancesReverse = new ArrayList<ShiftInstance>();
+            for (int k = 0; k < tempShiftInstances.size(); k++) {
+              ShiftInstance shiftInstance = tempShiftInstances.get(tempShiftInstances.size()-k-1);
+              tempShiftInstancesReverse.add(shiftInstance);
+            }
+            success = createSingleAccounting(accounting, pdfWriter, tempShiftInstancesReverse, i*10+j);
           }
         }
       }
@@ -133,6 +139,7 @@ public class PdfCreator {
       Font helveticaFont9 = FontFactory.getFont(FontFactory.HELVETICA, 9);
       Font helveticaFont10 = FontFactory.getFont(FontFactory.HELVETICA, 10);
       Font helveticaFont9Bold = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 9);
+      Font helveticaFont10Bold = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 10);
       Font helveticaFont11Bold = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 11);
       Font helveticaFont18Bold = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18);
       PdfPTable table1 = new PdfPTable(3);
@@ -412,10 +419,10 @@ public class PdfCreator {
       PdfPCell cell38 = new PdfPCell(new Paragraph("Anzahl geleisteter Stunden (Dezimal)", helveticaFont9Bold));
       cell38.setVerticalAlignment(Rectangle.ALIGN_MIDDLE);
       cell38.setHorizontalAlignment(Rectangle.ALIGN_CENTER);
-      PdfPCell cell39 = new PdfPCell(new Paragraph("€ pro\nStunde", helveticaFont9Bold));
+      PdfPCell cell39 = new PdfPCell(new Paragraph("Lohn pro\nStunde", helveticaFont9Bold));
       cell39.setVerticalAlignment(Rectangle.ALIGN_MIDDLE);
       cell39.setHorizontalAlignment(Rectangle.ALIGN_CENTER);
-      PdfPCell cell40 = new PdfPCell(new Paragraph("€ gesamt", helveticaFont9Bold));
+      PdfPCell cell40 = new PdfPCell(new Paragraph("Lohn\ngesamt", helveticaFont9Bold));
       cell40.setVerticalAlignment(Rectangle.ALIGN_MIDDLE);
       cell40.setHorizontalAlignment(Rectangle.ALIGN_CENTER);
       PdfPCell cell401 = new PdfPCell(new Paragraph("Fahrt-\nkosten", helveticaFont9Bold));
@@ -550,34 +557,38 @@ public class PdfCreator {
       }
       // end of shift table
       //calculate the complete salary
-      salarySum = timeSumAsFloat * salary + completeCommuteExpenses;
+      salarySum = timeSumAsFloat * salary;
       PdfPCell cell42 = emptyPdfPCell();
       cell42.setBorderWidth(2);
       cell42.setColspan(6);
-      cell42.addElement(new Paragraph("Summe der geleisteten Stunden / Auszahlungsbetrag incl. Fahrtkosten:", helveticaFont11Bold));
+      cell42.addElement(new Paragraph("Summe der geleisteten Stunden / Auszahlungsbetrag incl. Fahrtkosten:", helveticaFont9Bold));
       cell42.setVerticalAlignment(Rectangle.ALIGN_MIDDLE);
       cell42.setPaddingBottom(6);
-      PdfPCell cell43 = new PdfPCell(new Paragraph(euroFormat.format(timeSumAsFloat), helveticaFont11Bold));
+      PdfPCell cell43 = new PdfPCell(new Paragraph(euroFormat.format(timeSumAsFloat), helveticaFont9Bold));
       cell43.setBorderWidthBottom(2);
       cell43.setBorderWidthTop(2);
       cell43.setBorderWidthLeft(2);
-      PdfPCell cell44 = new PdfPCell(new Paragraph(euroFormat.format(salary)+" €", helveticaFont11Bold));
+      PdfPCell cell44 = new PdfPCell(new Paragraph(euroFormat.format(salary)+" €", helveticaFont9Bold));
       cell44.setBorderWidthBottom(2);
       cell44.setBorderWidthTop(2);
-      PdfPCell cell45 = new PdfPCell(new Paragraph(euroFormat.format(salarySum)+ " €", helveticaFont11Bold));
-      cell45.setColspan(3);
+      PdfPCell cell45 = new PdfPCell(new Paragraph(euroFormat.format(salarySum)+ " €", helveticaFont9Bold));
+      cell45.setColspan(1);
       cell45.setBorderWidthBottom(2);
       cell45.setBorderWidthTop(2);
-     /* PdfPCell cell46 = emptyPdfPCell();
+      PdfPCell cell46 = new PdfPCell(new Paragraph(euroFormat.format(completeCommuteExpenses)+ " €", helveticaFont9Bold));
       cell46.setBorderWidthBottom(2);
       cell46.setBorderWidthTop(2);
-      cell46.setBorderWidthRight(2);*/
+      PdfPCell cell461 = emptyPdfPCell();
+      cell461.setBorderWidthBottom(2);
+      cell461.setBorderWidthTop(2);
+      cell461.setBorderWidthRight(2);
 
       table7.addCell(cell42);
       table7.addCell(cell43);
       table7.addCell(cell44);
       table7.addCell(cell45);
-      //table7.addCell(cell46);
+      table7.addCell(cell46);
+      table7.addCell(cell461);
 
       // another empty line
       PdfPTable table8 = new PdfPTable(1);
@@ -639,10 +650,10 @@ public class PdfCreator {
       table11.addCell(new PdfPCell(new Paragraph("Erstellt:", helveticaFont9)));
       table11.addCell(new PdfPCell(new Paragraph("Freigegeben:", helveticaFont9)));
       table11.addCell(new PdfPCell(new Paragraph("Seite 1 von 1", helveticaFont9)));
-      table11.addCell(new PdfPCell(new Paragraph("Stand: 24.08.2012", helveticaFont9)));
+      table11.addCell(new PdfPCell(new Paragraph("Stand: 26.02.2013", helveticaFont9)));
       table11.addCell(new PdfPCell(new Paragraph("B. Sakschewski, J. Güttler", helveticaFont9)));
-      table11.addCell(new PdfPCell(new Paragraph("Schäfer-Mai", helveticaFont9)));
-      table11.addCell(new PdfPCell());
+      table11.addCell(new PdfPCell(new Paragraph("Wolfgang Schäfer-Mai", helveticaFont9)));
+      table11.addCell(new PdfPCell(new Paragraph("Gültig ab 01.02.2013", helveticaFont9)));
 
       // add tables to document
       accountingDocument.add(table1);

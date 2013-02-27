@@ -281,7 +281,7 @@ public class ShiftContainer {
    * @return ShiftContainer.ShiftType
    */
   public static ShiftType getShiftTypeFromId(String id) {
-    if (id.startsWith("KTW")) {
+    if (id.length() > 2 && id.substring(0, 3).equals("KTW")) {
       return ShiftContainer.ShiftType.KTW;
     }
     // TODO: for JDK7 use switch
@@ -308,6 +308,8 @@ public class ShiftContainer {
     String substring = id.substring(0, 2);
     if (substring.equals("KV")) {
       return ShiftContainer.ShiftType.KVS;
+    } else if (substring.equals("KI")) {
+      return ShiftContainer.ShiftType.KIZA;
     } else if (substring.equals("KT")) {
       return ShiftContainer.ShiftType.KIZA;
     } else if (substring.equals("KN")) {
@@ -323,7 +325,7 @@ public class ShiftContainer {
       } else if (substring.equals("E")){
     	  return ShiftContainer.ShiftType.ELW;
       } else
-        return ShiftContainer.ShiftType.BABY;
+        return ShiftContainer.ShiftType.KTW;
       }
     }
   /**
