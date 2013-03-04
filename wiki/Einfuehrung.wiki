@@ -2,7 +2,11 @@
 
 Wir freuen uns euch endlich das neue Abrechnungsprogramm zur Verfügung zu stellen. Auf diesen Seiten wollen wir euch mit der Installation und Bedienung vertraut machen. 
 
-Wir haben uns bemüht das neue Programm dem alten so ähnlich wie möglich zu gestalten, um die Umstellung einfach zu machen. Sollten Fragen auftauchen, werden wir diese auf der [FAQ] Seite beantworten.
+Wir haben uns bemüht das neue Programm dem alten so ähnlich wie möglich zu gestalten, um die Umstellung einfach zu machen. 
+
+Sollten Schwierigkeiten oder Fragen auftauchen, könnt ihr uns unter software@ak-rd.de. Häufig gestellte Fragen werden wir auf der [FAQ] Seite beantworten.
+
+
 
 == Warum überhaupt ein neues Programm? ==
 Diese Frage wurde uns seit der Vorstellung beim AK Wochenende häufig gestellt. Die beiden Hauptgründe sind: 
