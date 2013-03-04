@@ -1,0 +1,10 @@
+= Einführung =
+
+Wir freuen uns euch endlich das neue Abrechnungsprogramm zur Verfügung zu stellen. Auf diesen Seiten wollen wir euch mit der Installation und Bedienung vertraut machen. 
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
