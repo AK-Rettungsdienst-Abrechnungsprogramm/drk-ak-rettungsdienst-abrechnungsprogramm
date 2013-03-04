@@ -2,6 +2,12 @@
 
 Wir freuen uns euch endlich das neue Abrechnungsprogramm zur Verfügung zu stellen. Auf diesen Seiten wollen wir euch mit der Installation und Bedienung vertraut machen. 
 
-Wir haben uns bemüht das neue Programm dem alten so ähnlich wie möglich zu gestalten, um die Umstellung einfach zu machen.
+Wir haben uns bemüht das neue Programm dem alten so ähnlich wie möglich zu gestalten, um die Umstellung einfach zu machen. Sollten Fragen auftauchen, werden wir diese auf der [FAQ] Seite beantworten.
 
 == Warum überhaupt ein neues Programm? ==
+Diese Frage wurde uns seit der Vorstellung beim AK Wochenende häufig gestellt. Die beiden Hauptgründe sind: 
+ * Der Autor des alten Abrechnungsprogramms hat den AK verlassen und steht somit für Aktualisierungen nicht mehr zur Verfügung.
+ * Das alte Programm benötigt das kostenpflichtige Programm Microsoft Excel und kann somit nicht von Jedem überall genutzt werden.
+
+Das neue Abrechnungsprogramm wurde in Java entwickelt und ist somit plattormunabhängig, d.h. es läuft auf jedem Betriebssystem für dass es eine Java Umgebung gibt.
+Insbesondere wird es während der Entwicklung getestet auf Windows, MacOS und Linux.
