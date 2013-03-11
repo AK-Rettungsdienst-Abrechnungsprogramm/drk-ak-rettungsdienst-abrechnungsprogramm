@@ -39,7 +39,7 @@ public class ShiftCollectorTab extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	// the weekday currently selected
-	int currentlySelectedDay = 1;
+	int currentlySelectedDay = -1;
 	
 	// UI Elements
 	
