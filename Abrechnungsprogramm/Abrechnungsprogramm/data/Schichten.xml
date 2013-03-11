@@ -1,6 +1,6 @@
-<Dienste version="1.1">
+<Dienste version="1.2">
   <Schicht>
-    <ArtUndOrt>KTP Freiburg</ArtUndOrt>
+    <ArtUndOrt>KTW</ArtUndOrt>
     <von>600</von>
     <bis>1400</bis>
     <Pause>030</Pause>
@@ -9,7 +9,7 @@
     <Tage>Mo-Fr</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>KTP Freiburg</ArtUndOrt>
+    <ArtUndOrt>KTW</ArtUndOrt>
     <von>615</von>
     <bis>1445</bis>
     <Pause>030</Pause>
@@ -18,7 +18,7 @@
     <Tage>Mo-Fr</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>KTP Freiburg</ArtUndOrt>
+    <ArtUndOrt>KTW</ArtUndOrt>
     <von>630</von>
     <bis>1500</bis>
     <Pause>030</Pause>
@@ -27,7 +27,7 @@
     <Tage>Mo-Fr</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>KTP Freiburg</ArtUndOrt>
+    <ArtUndOrt>KTW</ArtUndOrt>
     <von>800</von>
     <bis>1400</bis>
     <Pause>000</Pause>
@@ -36,7 +36,7 @@
     <Tage>Mo-Fr</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>KTP Freiburg</ArtUndOrt>
+    <ArtUndOrt>KTW</ArtUndOrt>
     <von>800</von>
     <bis>1700</bis>
     <Pause>045</Pause>
@@ -45,7 +45,7 @@
     <Tage>Mo-Fr</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>KTP Freiburg</ArtUndOrt>
+    <ArtUndOrt>KTW</ArtUndOrt>
     <von>830</von>
     <bis>1700</bis>
     <Pause>030</Pause>
@@ -54,7 +54,7 @@
     <Tage>Mo-Fr</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>KTP Freiburg</ArtUndOrt>
+    <ArtUndOrt>KTW</ArtUndOrt>
     <von>900</von>
     <bis>1700</bis>
     <Pause>030</Pause>
@@ -63,7 +63,7 @@
     <Tage>Mo-Fr</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>KTP Freiburg</ArtUndOrt>
+    <ArtUndOrt>KTW</ArtUndOrt>
     <von>930</von>
     <bis>1800</bis>
     <Pause>030</Pause>
@@ -72,7 +72,7 @@
     <Tage>Mo-Fr</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>KTP Freiburg</ArtUndOrt>
+    <ArtUndOrt>KTW</ArtUndOrt>
     <von>930</von>
     <bis>1900</bis>
     <Pause>045</Pause>
@@ -81,7 +81,7 @@
     <Tage>Mo-Fr</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>KTP Freiburg</ArtUndOrt>
+    <ArtUndOrt>KTW</ArtUndOrt>
     <von>1000</von>
     <bis>1600</bis>
     <Pause>000</Pause>
@@ -90,7 +90,7 @@
     <Tage>Mo-Fr</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>KTP Freiburg</ArtUndOrt>
+    <ArtUndOrt>KTW</ArtUndOrt>
     <von>1000</von>
     <bis>1900</bis>
     <Pause>045</Pause>
@@ -99,7 +99,7 @@
     <Tage>Mo-Fr</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>KTP Freiburg</ArtUndOrt>
+    <ArtUndOrt>KTW</ArtUndOrt>
     <von>1000</von>
     <bis>1930</bis>
     <Pause>045</Pause>
@@ -108,7 +108,7 @@
     <Tage>Mo-Fr</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>KTP Freiburg</ArtUndOrt>
+    <ArtUndOrt>KTW</ArtUndOrt>
     <von>1030</von>
     <bis>2000</bis>
     <Pause>045</Pause>
@@ -117,7 +117,7 @@
     <Tage>Mo-Fr</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>KTP Freiburg</ArtUndOrt>
+    <ArtUndOrt>KTW</ArtUndOrt>
     <von>1230</von>
     <bis>2100</bis>
     <Pause>030</Pause>
@@ -126,7 +126,7 @@
     <Tage>Mo-Fr</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>KTP Freiburg</ArtUndOrt>
+    <ArtUndOrt>KTW</ArtUndOrt>
     <von>1600</von>
     <bis>000</bis>
     <Pause>030</Pause>
@@ -135,7 +135,7 @@
     <Tage>Mo-Fr</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>KTP Freiburg</ArtUndOrt>
+    <ArtUndOrt>KTW</ArtUndOrt>
     <von>2200</von>
     <bis>700</bis>
     <Pause>045</Pause>
@@ -144,7 +144,7 @@
     <Tage>Mo-Fr</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>KTP Freiburg</ArtUndOrt>
+    <ArtUndOrt>KTW</ArtUndOrt>
     <von>1700</von>
     <bis>100</bis>
     <Pause>030</Pause>
@@ -153,7 +153,7 @@
     <Tage>Mo-Fr</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>KTP Freiburg</ArtUndOrt>
+    <ArtUndOrt>KTW</ArtUndOrt>
     <von>600</von>
     <bis>1430</bis>
     <Pause>030</Pause>
@@ -162,7 +162,7 @@
     <Tage>Sa</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>KTP Freiburg</ArtUndOrt>
+    <ArtUndOrt>KTW</ArtUndOrt>
     <von>630</von>
     <bis>1430</bis>
     <Pause>030</Pause>
@@ -171,7 +171,7 @@
     <Tage>Sa</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>KTP Freiburg</ArtUndOrt>
+    <ArtUndOrt>KTW</ArtUndOrt>
     <von>700</von>
     <bis>1300</bis>
     <Pause>000</Pause>
@@ -180,7 +180,7 @@
     <Tage>Sa</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>KTP Freiburg</ArtUndOrt>
+    <ArtUndOrt>KTW</ArtUndOrt>
     <von>1000</von>
     <bis>1930</bis>
     <Pause>045</Pause>
@@ -189,7 +189,7 @@
     <Tage>Sa</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>KTP Freiburg</ArtUndOrt>
+    <ArtUndOrt>KTW</ArtUndOrt>
     <von>1600</von>
     <bis>100</bis>
     <Pause>045</Pause>
@@ -198,7 +198,7 @@
     <Tage>Sa</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>KTP Freiburg</ArtUndOrt>
+    <ArtUndOrt>KTW</ArtUndOrt>
     <von>1700</von>
     <bis>200</bis>
     <Pause>045</Pause>
@@ -207,7 +207,7 @@
     <Tage>Sa</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>KTP Freiburg</ArtUndOrt>
+    <ArtUndOrt>KTW</ArtUndOrt>
     <von>700</von>
     <bis>1530</bis>
     <Pause>030</Pause>
@@ -216,7 +216,7 @@
     <Tage>So</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>KTP Freiburg</ArtUndOrt>
+    <ArtUndOrt>KTW</ArtUndOrt>
     <von>1100</von>
     <bis>2000</bis>
     <Pause>045</Pause>
@@ -225,7 +225,7 @@
     <Tage>So</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>KTP Freiburg</ArtUndOrt>
+    <ArtUndOrt>KTW</ArtUndOrt>
     <von>1600</von>
     <bis>2200</bis>
     <Pause>000</Pause>
@@ -234,7 +234,7 @@
     <Tage>So</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>KTP Freiburg</ArtUndOrt>
+    <ArtUndOrt>KTW</ArtUndOrt>
     <von>1600</von>
     <bis>000</bis>
     <Pause>030</Pause>
@@ -243,7 +243,7 @@
     <Tage>So</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>RD Freiburg</ArtUndOrt>
+    <ArtUndOrt>RTW</ArtUndOrt>
     <von>600</von>
     <bis>1300</bis>
     <Pause>000</Pause>
@@ -252,7 +252,7 @@
     <Tage>Mo-So</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>RD Freiburg</ArtUndOrt>
+    <ArtUndOrt>RTW</ArtUndOrt>
     <von>1300</von>
     <bis>2100</bis>
     <Pause>000</Pause>
@@ -261,7 +261,7 @@
     <Tage>Mo-So</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>RD Freiburg</ArtUndOrt>
+    <ArtUndOrt>RTW</ArtUndOrt>
     <von>2100</von>
     <bis>600</bis>
     <Pause>000</Pause>
@@ -270,7 +270,7 @@
     <Tage>Mo-So</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>RD Freiburg</ArtUndOrt>
+    <ArtUndOrt>RTW</ArtUndOrt>
     <von>630</von>
     <bis>1330</bis>
     <Pause>000</Pause>
@@ -279,7 +279,7 @@
     <Tage>Mo-So</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>RD Freiburg</ArtUndOrt>
+    <ArtUndOrt>RTW</ArtUndOrt>
     <von>1330</von>
     <bis>2130</bis>
     <Pause>000</Pause>
@@ -288,7 +288,7 @@
     <Tage>Mo-So</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>RD Freiburg</ArtUndOrt>
+    <ArtUndOrt>RTW</ArtUndOrt>
     <von>2130</von>
     <bis>630</bis>
     <Pause>000</Pause>
@@ -297,7 +297,7 @@
     <Tage>Mo-So</Tage>
   </Schicht>
     <Schicht>
-    <ArtUndOrt>RD Freiburg</ArtUndOrt>
+    <ArtUndOrt>RTW</ArtUndOrt>
     <von>600</von>
     <bis>1300</bis>
     <Pause>000</Pause>
@@ -306,7 +306,7 @@
     <Tage>Mo-So</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>RD Freiburg</ArtUndOrt>
+    <ArtUndOrt>RTW</ArtUndOrt>
     <von>1300</von>
     <bis>2100</bis>
     <Pause>000</Pause>
@@ -315,7 +315,7 @@
     <Tage>Mo-So</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>RD Freiburg</ArtUndOrt>
+    <ArtUndOrt>RTW</ArtUndOrt>
     <von>2100</von>
     <bis>600</bis>
     <Pause>000</Pause>
@@ -324,7 +324,7 @@
     <Tage>Mo-So</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>RD Freiburg</ArtUndOrt>
+    <ArtUndOrt>RTW</ArtUndOrt>
     <von>800</von>
     <bis>2000</bis>
     <Pause>000</Pause>
@@ -333,7 +333,7 @@
     <Tage>Mo-Fr</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>Breisach</ArtUndOrt>
+    <ArtUndOrt>BREISACH</ArtUndOrt>
     <von>700</von>
     <bis>1800</bis>
     <Pause>000</Pause>
@@ -342,7 +342,7 @@
     <Tage>Mo-So</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>Breisach</ArtUndOrt>
+    <ArtUndOrt>BREISACH</ArtUndOrt>
     <von>1800</von>
     <bis>700</bis>
     <Pause>000</Pause>
@@ -351,7 +351,7 @@
     <Tage>Mo-So</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>Kirchzarten</ArtUndOrt>
+    <ArtUndOrt>KIZA</ArtUndOrt>
     <von>700</von>
     <bis>1800</bis>
     <Pause>000</Pause>
@@ -360,7 +360,7 @@
     <Tage>Mo-So</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>Kirchzarten</ArtUndOrt>
+    <ArtUndOrt>KIZA</ArtUndOrt>
     <von>1800</von>
     <bis>700</bis>
     <Pause>000</Pause>
@@ -369,7 +369,7 @@
     <Tage>Mo-So</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>Baby-NAW</ArtUndOrt>
+    <ArtUndOrt>BABY</ArtUndOrt>
     <von>700</von>
     <bis>1700</bis>
     <Pause>000</Pause>
@@ -378,7 +378,7 @@
     <Tage>Mo-So</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>Baby-NAW</ArtUndOrt>
+    <ArtUndOrt>BABY</ArtUndOrt>
     <von>1700</von>
     <bis>700</bis>
     <Pause>000</Pause>

@@ -221,6 +221,9 @@ public static void instanciate(MainWindow mainWindow) {
 			case ELW:
 				salary = 8.8f;
 				break;
+			case CONCERT_HALL:
+				salary = 9.5f;
+				break;
 			case KTW:
 			case RTW:
 				switch (PersonalData.getInstance().getQualification()) {
@@ -237,6 +240,7 @@ public static void instanciate(MainWindow mainWindow) {
 			case KVS:
 				salary = 9f;
 				break;
+			//KIZA, BREISACH, EVENT and SC
 			default:
 				switch (PersonalData.getInstance().getQualification()) {
 				case RH:
