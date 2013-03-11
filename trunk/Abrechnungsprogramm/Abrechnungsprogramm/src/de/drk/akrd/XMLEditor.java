@@ -62,6 +62,7 @@ public class XMLEditor {
       for (int i = 0; i < nodeList.size(); i++) {
         Element node = (Element) nodeList.get(i);
         String shiftId = node.getChildText("Schichtname");
+        String type = node.getChildText("ArtUndOrt");
         int begin = Integer.parseInt(node.getChildText("von"));
         int end = Integer.parseInt(node.getChildText("bis"));
         int breakTime = Integer.parseInt(node.getChildText("Pause"));
@@ -87,7 +88,7 @@ public class XMLEditor {
           System.err.println("Caused by shift: " + node.getChildText("Schichtname"));
         }
 
-        shiftList.add(new Shift(shiftId, begin, end, breakTime, days));
+        shiftList.add(new Shift(shiftId, begin, end, breakTime, days, type));
       }
       return true;
       // TODO: for JDK7 use Multicatch

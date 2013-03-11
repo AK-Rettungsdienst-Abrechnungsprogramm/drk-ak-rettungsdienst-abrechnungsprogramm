@@ -23,14 +23,14 @@ public void setDays(int days) {
 
 private boolean external; // external shift? (i.e. Breisach and Kirchzarten)
 
-  public Shift(String id, int startingTime, int endTime, int breakTime, int days) {
+  public Shift(String id, int startingTime, int endTime, int breakTime, int days, String type) {
     super();
     this.id = id;
     this.startingTime = startingTime;
     this.endTime = endTime;
     this.breakTime = breakTime;
     this.days = days;
-    this.type = ShiftContainer.getShiftTypeFromId(id);
+    this.type = ShiftContainer.getShiftTypeFromId(type);
   }
 
   /**

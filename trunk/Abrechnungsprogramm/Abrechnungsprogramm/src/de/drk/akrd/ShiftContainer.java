@@ -10,6 +10,8 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 // Contains all shifts and takes care of loading and managing
 public class ShiftContainer {
@@ -20,9 +22,12 @@ public class ShiftContainer {
   private static ArrayList<Shift> shifts = new ArrayList<Shift>();
 // Holds all registered shifts.
   public ArrayList<ShiftInstance> shiftInstances = new ArrayList<ShiftInstance>();
+  
+  
+  private static Map<String, ShiftContainer.ShiftType> _shiftTypeStringToEnum;
   public enum ShiftType {
 
-    Alle, RTW, KTW, KIZA, BREISACH, BABY, EVENT, KVS, HINTERGRUND, ELW;
+    Alle, RTW, KTW, KIZA, BREISACH, BABY, EVENT, KVS, HINTERGRUND, ELW, SC, CONCERT_HALL;
 
     // Override the toString method to get nicer strings for the shiftTypeChooser
     @Override
@@ -62,6 +67,10 @@ public class ShiftContainer {
         return "KV Dienst";
       } else if (name().equals("HINTERGRUND")) {
     	return "Hintergrund";
+      } else if (name().equals("CONCERT_HALL")) {
+    	  return "Konzerthaus";
+      } else if (name().equals("SC")){
+    	  return "SC Sandienst";
       } else {
         return name();
       }
@@ -281,52 +290,19 @@ public class ShiftContainer {
    * @return ShiftContainer.ShiftType
    */
   public static ShiftType getShiftTypeFromId(String id) {
-    if (id.length() > 2 && id.substring(0, 3).equals("KTW")) {
-      return ShiftContainer.ShiftType.KTW;
-    }
-    // TODO: for JDK7 use switch
-//    switch (id.substring(0, 2)) {
-//      case "KV":
-//        return ShiftContainer.ShiftType.KVS;
-//      case "KT":
-//        return ShiftContainer.ShiftType.KIZA;
-//      case "KN":
-//        return ShiftContainer.ShiftType.KIZA;
-//      default:
-//        switch (id.substring(0, 1)) {
-//          case "K":
-//            return ShiftContainer.ShiftType.KTW;
-//          case "R":
-//          case "I":
-//            return ShiftContainer.ShiftType.RTW;
-//          case "B":
-//            return ShiftContainer.ShiftType.BREISACH;
-//          default:
-//            return ShiftContainer.ShiftType.BABY;
-//        }
-//    }
-    String substring = id.substring(0, 2);
-    if (substring.equals("KV")) {
-      return ShiftContainer.ShiftType.KVS;
-    } else if (substring.equals("KI")) {
-      return ShiftContainer.ShiftType.KIZA;
-    } else if (substring.equals("KT")) {
-      return ShiftContainer.ShiftType.KIZA;
-    } else if (substring.equals("KN")) {
-      return ShiftContainer.ShiftType.KIZA;
-    } else {
-      substring = id.substring(0, 1);
-      if (substring.equals("K")) {
-        return ShiftContainer.ShiftType.KTW;
-      } else if (substring.equals("R") || substring.equals("I")) {
-        return ShiftContainer.ShiftType.RTW;
-      } else if (substring.equals("B")) {
-        return ShiftContainer.ShiftType.BREISACH;
-      } else if (substring.equals("E")){
-    	  return ShiftContainer.ShiftType.ELW;
-      } else
-        return ShiftContainer.ShiftType.KTW;
-      }
+	  // if the hash map is not yet populated, do it now
+	  if (_shiftTypeStringToEnum == null) {
+		  _shiftTypeStringToEnum = new HashMap<String, ShiftContainer.ShiftType>();
+		  for (ShiftType shiftType : ShiftType.values()) {
+			  _shiftTypeStringToEnum.put(shiftType.name(), shiftType);
+		  }
+	  }
+	  if (! _shiftTypeStringToEnum.containsKey(id)){
+		  // TODO: this should rather yield an error
+		  System.err.println("Unknown shift type:" + id);
+		  return ShiftContainer.ShiftType.KTW;
+	  }
+	  else return _shiftTypeStringToEnum.get(id);
     }
   /**
    * Return a sorted list of all years appearing in the shiftlist
