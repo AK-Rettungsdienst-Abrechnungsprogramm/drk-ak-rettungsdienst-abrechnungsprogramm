@@ -444,7 +444,7 @@ public class PdfCreator {
       table7.addCell(cell401);
       table7.addCell(cell41);
 
-      float salary = UtilityBox.getInstance().calculateSalaryPerHour(shifts.get(0));
+      float salary = UtilityBox.getInstance().calculateSalaryPerHour(shifts.get(0), PersonalData.getInstance().getQualification());
       int completeCommuteExpenses = 0;
       for (int i = 0; i <= 12; i++) {
         ShiftInstance currentShift = null;

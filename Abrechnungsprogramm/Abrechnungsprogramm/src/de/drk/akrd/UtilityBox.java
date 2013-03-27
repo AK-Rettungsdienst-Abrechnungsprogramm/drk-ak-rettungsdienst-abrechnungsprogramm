@@ -12,6 +12,8 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.RadioCheckField;
 import com.itextpdf.text.BaseColor;
 
+import de.drk.akrd.PersonalData.Qualification;
+
 import java.awt.Font;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -211,9 +213,10 @@ public static void instanciate(MainWindow mainWindow) {
    * calculates the salary for a given shiftInstance in dependence of the 
    * Qualification
    * @param shift
+   * @param qualification
    * @return salary as float (0 if an exception occurs, meaning no personal data is known)
    */
-	public float calculateSalaryPerHour(ShiftInstance shift) {
+	public static float calculateSalaryPerHour(ShiftInstance shift, Qualification qualification) {
 		float salary;
 		try {
 			switch (shift.getType()) {
@@ -226,7 +229,7 @@ public static void instanciate(MainWindow mainWindow) {
 				break;
 			case KTW:
 			case RTW:
-				switch (PersonalData.getInstance().getQualification()) {
+				switch (qualification) {
 				case RH:
 					salary = 7.8f;
 					break;
@@ -242,7 +245,7 @@ public static void instanciate(MainWindow mainWindow) {
 				break;
 			//KIZA, BREISACH, EVENT and SC
 			default:
-				switch (PersonalData.getInstance().getQualification()) {
+				switch (qualification) {
 				case RH:
 					salary = 5.9f;
 					break;
@@ -258,6 +261,22 @@ public static void instanciate(MainWindow mainWindow) {
 		}
 		
 		return salary;
+	}
+	/** Takes a shift instance and a qualification and returns the salary for the complete shift
+	 * 
+	 * @param shift
+	 * @param quali
+	 * @return
+	 */
+	public static float calculateSalary(ShiftInstance shift, Qualification quali) {
+	  // calculate salary per hour
+	  float hourlySalary = calculateSalaryPerHour(shift, quali);
+	  // salary without commute expenses
+	  float salary = hourlySalary * shift.getTimeAsFloat();
+	  // add comute expenses
+	  salary += shift.getCommuteExpenses();
+	 
+	  return salary;
 	}
   public String calculateTimeInHours(int start, int end, int breakTime) {
     int time = calculateTime(start, end, breakTime);
@@ -285,19 +304,27 @@ public static void instanciate(MainWindow mainWindow) {
             +calculateTimeAsFloat(start, end, breakTime) + " Ergebnis(fkt): "
             + calculateTime(start, end, breakTime)+" Erwartet: "+expected);
   }
-  public float calculateTimeAsFloat(int start, int end, int breakTime) {
-    int time = calculateTime(start, end, breakTime);
+  
+  /** Takes starting time, end time and breaktime and returns the time not on break
+   *  as a float (e.g. two hours 45 minutes -> 2.75)
+   * 
+   * @param start Starting time as an int representing a 24h time (e.g. 02:45 -> 245)
+   * @param end same for end
+   * @param breaktime 
+   * @return
+   */
+  public static float calculateTimeAsFloat(int start, int end, int breaktime) {
+    int time = calculateTime(start, end, breaktime);
     int hours = ((int) (time / 100));
     int minutes = (time % 100);
-//    System.out.println("start: "+start+" end: "+end+" pause: "+breakTime+" time: "+time+" hours: "+hours+""
-//            + " minutes: "+minutes+" result: "+((float)(hours+(minutes/60.0))));
     return ((float)(hours+(minutes/60.0)));
   }
-  private int calculateTime(int start, int end, int breakTime) {
+
+  private static int calculateTime(int start, int end, int breakTime) {
     int time = 0;
     int startMinutes = (((int) (start / 100)) * 60) + (start % 100);
-    int breakTimeMinutes = (((int) (breakTime / 100)) * 60) + (breakTime % 100);
     int endMinutes = (((int) (end / 100)) * 60) + (end % 100);
+    int breakTimeMinutes = (((int) (breakTime / 100)) * 60) + (breakTime % 100);
     if (start > end) {
       int firstDayTotalMinutes = 1440 - startMinutes;
       time = firstDayTotalMinutes + endMinutes - breakTimeMinutes;
