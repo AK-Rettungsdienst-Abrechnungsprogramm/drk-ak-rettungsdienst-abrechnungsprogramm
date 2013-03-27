@@ -672,7 +672,7 @@ public class ShiftCollectorTab extends JPanel {
 	      // get the original shift item
 	      ShiftInstance currentShift = sc.shiftInstances.get(i);
 	      // calculate the salary for this shift and add to complete salary
-	      float salary = UtilityBox.getInstance().calculateSalaryPerHour(currentShift) * currentShift.getTimeAsFloat();
+	      float salary = UtilityBox.calculateSalary(currentShift, PersonalData.getInstance().getQualification());
 	      completeSalary += salary;
 	      // add the shifts salary to list entry
 	      list.add(String.format("%.2f", salary) + "€");
@@ -680,7 +680,7 @@ public class ShiftCollectorTab extends JPanel {
 	      shiftInstanceTableModel.addRow(list.toArray());
 	    }
 	    // create last line which displays the overall salary
-	    Object[] lastLine = new Object[]{"", "", "", "", "", "", "", "Gesamt",
+	    Object[] lastLine = new Object[]{"", "", "", "", "", "", "", "", "Gesamt",
 	      String.format("%.2f", completeSalary) + "€"};
 	    shiftInstanceTableModel.addRow(lastLine);
 	    
