@@ -50,6 +50,8 @@ public class PdfCreator {
     ArrayList<ShiftInstance> breisach = new ArrayList<ShiftInstance>();
     ArrayList<ShiftInstance> kiza = new ArrayList<ShiftInstance>();
     ArrayList<ShiftInstance> event = new ArrayList<ShiftInstance>();
+    ArrayList<ShiftInstance> sc = new ArrayList<ShiftInstance>();
+    ArrayList<ShiftInstance> concert_hall = new ArrayList<ShiftInstance>();
     ArrayList<ShiftInstance> kvs = new ArrayList<ShiftInstance>();
 
     // add shifts to seperate shift lists
@@ -63,6 +65,12 @@ public class PdfCreator {
           break;
         case EVENT:
           event.add(shiftsToAccount[i]);
+          break;
+        case SC:
+          sc.add(shiftsToAccount[i]);
+          break;
+        case CONCERT_HALL:
+          concert_hall.add(shiftsToAccount[i]);
           break;
         case KVS:
           kvs.add(shiftsToAccount[i]);
@@ -80,7 +88,9 @@ public class PdfCreator {
           break;
       }
     }
-    ArrayList<ShiftInstance>[] allShifts = (ArrayList<ShiftInstance>[])(new ArrayList[]{rd, ktp, baby, breisach, kiza, event, kvs});
+    ArrayList<ShiftInstance>[] allShifts = (ArrayList<ShiftInstance>[])(
+            new ArrayList[]{rd, ktp, baby, breisach, kiza, event, sc,
+              concert_hall, kvs});
     try {
       accounting.setPageSize(PageSize.A4);
       PdfWriter pdfWriter = PdfWriter.getInstance(accounting, new FileOutputStream(filePath));
@@ -135,6 +145,7 @@ public class PdfCreator {
       Font helveticaFont5 = FontFactory.getFont(FontFactory.HELVETICA, 5);
       Font helveticaFont6 = FontFactory.getFont(FontFactory.HELVETICA, 6);
       Font helveticaFont7 = FontFactory.getFont(FontFactory.HELVETICA, 7);
+      Font helveticaFont7Bold = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 7);
       Font helveticaFont8 = FontFactory.getFont(FontFactory.HELVETICA, 8);
       Font helveticaFont9 = FontFactory.getFont(FontFactory.HELVETICA, 9);
       Font helveticaFont10 = FontFactory.getFont(FontFactory.HELVETICA, 10);
@@ -187,7 +198,7 @@ public class PdfCreator {
       PdfPCell cell6 = new PdfPCell(new Paragraph("RD Aussenwache /\nBaby-NAW", helveticaFont9Bold));
       cell6.setVerticalAlignment(Element.ALIGN_MIDDLE);
       cell6.setUseBorderPadding(true);
-      PdfPCell cell7 = new PdfPCell(new Paragraph("Veranstaltungs-\nbetreuung", helveticaFont9Bold));
+      PdfPCell cell7 = new PdfPCell(new Paragraph("Sanitätsdienste", helveticaFont9Bold));
       cell7.setVerticalAlignment(Element.ALIGN_MIDDLE);
       cell7.setUseBorderPadding(true);
       PdfPCell cell8 = new PdfPCell(new Paragraph("KVS Freiburg", helveticaFont9Bold));
@@ -204,7 +215,7 @@ public class PdfCreator {
       cell14.setFixedHeight(18f);
       PdfPCell cell15 = new PdfPCell(new Paragraph("KoSt.: 962100", helveticaFont9Bold));
       PdfPCell cell16 = new PdfPCell(new Paragraph("KoSt.: 9640 - X", helveticaFont9Bold));
-      PdfPCell cell17 = new PdfPCell(new Paragraph("KoSt.: 365301", helveticaFont9Bold));
+      PdfPCell cell17 = new PdfPCell(new Paragraph("KoSt.: 3653 - X", helveticaFont9Bold));
       PdfPCell cell18 = new PdfPCell(new Paragraph("KoSt.: 973100", helveticaFont9Bold));
 
       table3.addCell(cell4);
@@ -230,7 +241,7 @@ public class PdfCreator {
       KoSt[1] = KoSt[0];
       KoSt[2] = new String[]{"Baby-NAW - 01", "Breisach - 03",
         "Kirchzarten - 10", "RH (5,90 €/h)", "RS (6,70 €/h)", "RA (7,60 €/h)"};
-      KoSt[3] = new String[]{"RH (5,90 €/h)",
+      KoSt[3] = new String[]{"Veranstaltung - 01","SC-Freiburg - 02","Konzerthaus - 03","RH (5,90 €/h)",
         "RS (6,70 €/h)", "RA (7,60 €/h)"};
       KoSt[4] = new String[]{"RH - RA (9,00 €/h"};
       boolean[] boolArray = new boolean[]{false, false, false, false, false, false};
@@ -248,6 +259,7 @@ public class PdfCreator {
         default:
           checkboxSetter = 0;
       }
+      System.out.println("test1");
       int accountType;
       String costUnit;
       switch (shifts.get(0).getType()) {
@@ -261,7 +273,15 @@ public class PdfCreator {
           break;
         case EVENT:
           accountType = 3;
-          costUnit = "365301";
+          costUnit = "3653";
+          break;
+        case SC:
+          accountType = 3;
+          costUnit = "3653";
+          break;
+        case CONCERT_HALL:
+          accountType = 3;
+          costUnit = "3653";
           break;
         case KVS:
           accountType = 4;
@@ -272,6 +292,7 @@ public class PdfCreator {
           accountType = 2;
           costUnit = "9640";
       }
+      System.out.println("test2");
       int xPosition = 50;
       for (int i = 0; i < KoSt.length; i++) {
         if (accountType == i) {
@@ -290,10 +311,28 @@ public class PdfCreator {
                 costUnit = costUnit+"10 (RD Kirchzarten)";
             }
             boolArray[checkboxSetter + 3] = true;
+          } else if (i==3) {
+            switch (shifts.get(0).getType()) {
+              case SC:
+                boolArray[1] = true;
+                boolArray[checkboxSetter + 3] = true;
+                costUnit = costUnit+"02 (SC-Freiburg)";
+                break;
+              case EVENT:
+                boolArray[0] = true;
+                boolArray[checkboxSetter + 3] = true;
+                costUnit = costUnit+"01 (Veranstaltung)";
+                break;
+              default:                                    // CONCERT_HALL
+                boolArray[2] = true;
+                costUnit = costUnit+"03 (Konzerthaus, 9,50 €/h)";
+                break;
+            }
           } else {
             boolArray[checkboxSetter] = true;
           }
         }
+        System.out.println("tadaa");
         createCheckbox(writer, accountingDocument, helveticaFont9, KoSt[i], xPosition, 740, boolArray, pageNr);
         boolArray = new boolean[]{false, false, false, false, false, false};
         xPosition += 105;
@@ -425,10 +464,10 @@ public class PdfCreator {
       PdfPCell cell40 = new PdfPCell(new Paragraph("Lohn\ngesamt", helveticaFont9Bold));
       cell40.setVerticalAlignment(Rectangle.ALIGN_MIDDLE);
       cell40.setHorizontalAlignment(Rectangle.ALIGN_CENTER);
-      PdfPCell cell401 = new PdfPCell(new Paragraph("Fahrt-\nkosten", helveticaFont9Bold));
+      PdfPCell cell401 = new PdfPCell(new Paragraph("Fahrt-\nkosten\n5803", helveticaFont9Bold));
       cell401.setVerticalAlignment(Rectangle.ALIGN_MIDDLE);
       cell401.setHorizontalAlignment(Rectangle.ALIGN_CENTER);
-      PdfPCell cell41 = new PdfPCell(new Paragraph("Unterschrift f.d. Richtigk.", helveticaFont9Bold));
+      PdfPCell cell41 = new PdfPCell(new Paragraph("Kommentar", helveticaFont9Bold));
       cell41.setVerticalAlignment(Rectangle.ALIGN_MIDDLE);
       cell41.setHorizontalAlignment(Rectangle.ALIGN_CENTER);
 
@@ -561,7 +600,7 @@ public class PdfCreator {
       PdfPCell cell42 = emptyPdfPCell();
       cell42.setBorderWidth(2);
       cell42.setColspan(6);
-      cell42.addElement(new Paragraph("Summe der geleisteten Stunden / Auszahlungsbetrag incl. Fahrtkosten:", helveticaFont9Bold));
+      cell42.addElement(new Paragraph("Summe der geleisteten Stunden / Auszahlungsbetrag / Fahrtkosten:", helveticaFont7Bold));
       cell42.setVerticalAlignment(Rectangle.ALIGN_MIDDLE);
       cell42.setPaddingBottom(6);
       PdfPCell cell43 = new PdfPCell(new Paragraph(euroFormat.format(timeSumAsFloat), helveticaFont9Bold));
@@ -650,10 +689,10 @@ public class PdfCreator {
       table11.addCell(new PdfPCell(new Paragraph("Erstellt:", helveticaFont9)));
       table11.addCell(new PdfPCell(new Paragraph("Freigegeben:", helveticaFont9)));
       table11.addCell(new PdfPCell(new Paragraph("Seite 1 von 1", helveticaFont9)));
-      table11.addCell(new PdfPCell(new Paragraph("Stand: 26.02.2013", helveticaFont9)));
+      table11.addCell(new PdfPCell(new Paragraph("Stand: 12.03.2013", helveticaFont9)));
       table11.addCell(new PdfPCell(new Paragraph("B. Sakschewski, J. Güttler", helveticaFont9)));
       table11.addCell(new PdfPCell(new Paragraph("Wolfgang Schäfer-Mai", helveticaFont9)));
-      table11.addCell(new PdfPCell(new Paragraph("Gültig ab 01.02.2013", helveticaFont9)));
+      table11.addCell(new PdfPCell(new Paragraph("Gültig ab 01.04.2013", helveticaFont9)));
 
       // add tables to document
       accountingDocument.add(table1);
