@@ -63,6 +63,9 @@ public class PdfCreator {
         case RTW:
           rd.add(shiftsToAccount[i]);
           break;
+        case HINTERGRUND:
+          rd.add(shiftsToAccount[i]);
+          break;
         case EVENT:
           event.add(shiftsToAccount[i]);
           break;
@@ -259,11 +262,11 @@ public class PdfCreator {
         default:
           checkboxSetter = 0;
       }
-      System.out.println("test1");
       int accountType;
       String costUnit;
       switch (shifts.get(0).getType()) {
         case RTW:
+        case HINTERGRUND:
           accountType = 0;
           costUnit = "964001";
           break;
@@ -292,7 +295,6 @@ public class PdfCreator {
           accountType = 2;
           costUnit = "9640";
       }
-      System.out.println("test2");
       int xPosition = 50;
       for (int i = 0; i < KoSt.length; i++) {
         if (accountType == i) {
@@ -332,7 +334,6 @@ public class PdfCreator {
             boolArray[checkboxSetter] = true;
           }
         }
-        System.out.println("tadaa");
         createCheckbox(writer, accountingDocument, helveticaFont9, KoSt[i], xPosition, 740, boolArray, pageNr);
         boolArray = new boolean[]{false, false, false, false, false, false};
         xPosition += 105;
