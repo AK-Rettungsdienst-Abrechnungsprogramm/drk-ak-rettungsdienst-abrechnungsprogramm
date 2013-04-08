@@ -191,6 +191,10 @@ public class ShiftCollectorTab extends JPanel {
 	    		if(type == ShiftContainer.ShiftType.ELW) {
 	    			commentField.setText("ELW Einsatz");
 	    		}
+	    		// if Hintergrund was selected also....
+	    		if(type == ShiftContainer.ShiftType.HINTERGRUND) {
+	    		  commentField.setText("RTW Hintergrund");
+	    		}
 
 	    		return;
 
