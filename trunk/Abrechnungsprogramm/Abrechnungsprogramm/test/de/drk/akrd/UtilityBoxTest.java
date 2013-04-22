@@ -28,7 +28,7 @@ public class UtilityBoxTest {
 
 	@Test
 	public void testCalculateSalaryPerHour() {
-		ShiftInstance si = new ShiftInstance(ShiftContainer.ShiftType.KTW, "01.01.2013", 800, 900, 0, 0, false, "testpartner", "");
+		ShiftInstance si = new ShiftInstance(-1, ShiftContainer.ShiftType.KTW, "01.01.2013", 800, 900, 0, 0, false, "testpartner", "");
 		
 		assertEquals(8.8f, UtilityBox.calculateSalaryPerHour(si, PersonalData.Qualification.RS), 0.001f);
 		assertEquals(7.8f, UtilityBox.calculateSalaryPerHour(si, PersonalData.Qualification.RH), 0.001f);
@@ -37,32 +37,32 @@ public class UtilityBoxTest {
 	
 	@Test
   public void testCalculateSalary() {
-	   ShiftInstance si = new ShiftInstance(ShiftContainer.ShiftType.KTW, "01.01.2013", 800, 900, 0, 0, false, "testpartner", "");
+	   ShiftInstance si = new ShiftInstance(-1, ShiftContainer.ShiftType.KTW, "01.01.2013", 800, 900, 0, 0, false, "testpartner", "");
 	   
 	   assertEquals(8.8f, UtilityBox.calculateSalary(si, PersonalData.Qualification.RS), 0.0001f);
 	   
 	   //KTW
-	   si = new ShiftInstance(ShiftContainer.ShiftType.KTW, "01.01.2013", 800, 1800, 0, 0, false, "testpartner", "");
+	   si = new ShiftInstance(-1, ShiftContainer.ShiftType.KTW, "01.01.2013", 800, 1800, 0, 0, false, "testpartner", "");
 	   assertEquals(88.0f, UtilityBox.calculateSalary(si, PersonalData.Qualification.RS), 0.0001f);
 	   
-	   si = new ShiftInstance(ShiftContainer.ShiftType.KTW, "01.01.2013", 800, 1800, 30, 0, true, "testpartner", "");
+	   si = new ShiftInstance(-1, ShiftContainer.ShiftType.KTW, "01.01.2013", 800, 1800, 30, 0, true, "testpartner", "");
      assertEquals(85.0666f, UtilityBox.calculateSalary(si, PersonalData.Qualification.RS), 0.0001f);
 	   
      // KIZA
-	   si = new ShiftInstance(ShiftContainer.ShiftType.KIZA, "01.01.2013", 800, 1800, 0, 12, false, "testpartner", "");
+	   si = new ShiftInstance(-1, ShiftContainer.ShiftType.KIZA, "01.01.2013", 800, 1800, 0, 12, false, "testpartner", "");
      assertEquals(88.0f, UtilityBox.calculateSalary(si, PersonalData.Qualification.RA), 0.0001f);
      
-     si = new ShiftInstance(ShiftContainer.ShiftType.KIZA, "01.01.2013", 2000, 600, 0, 12, false, "testpartner", "");
+     si = new ShiftInstance(-1, ShiftContainer.ShiftType.KIZA, "01.01.2013", 2000, 600, 0, 12, false, "testpartner", "");
      assertEquals(88.0f, UtilityBox.calculateSalary(si, PersonalData.Qualification.RA), 0.0001f);
 
      // CONCERT HALL
-     si = new ShiftInstance(ShiftContainer.ShiftType.CONCERT_HALL, "01.01.2013", 2000, 2300, 0, 0, false, "testpartner", "");
+     si = new ShiftInstance(-1, ShiftContainer.ShiftType.CONCERT_HALL, "01.01.2013", 2000, 2300, 0, 0, false, "testpartner", "");
      assertEquals(28.5f, UtilityBox.calculateSalary(si, PersonalData.Qualification.RA), 0.0001f);
      assertEquals(28.5f, UtilityBox.calculateSalary(si, PersonalData.Qualification.RH), 0.0001f);
      assertEquals(28.5f, UtilityBox.calculateSalary(si, PersonalData.Qualification.RS), 0.0001f);
      
      // ELW
-     si = new ShiftInstance(ShiftContainer.ShiftType.ELW, "01.01.2013", 2000, 200, 0, 0, false, "testpartner", "");
+     si = new ShiftInstance(-1, ShiftContainer.ShiftType.ELW, "01.01.2013", 2000, 200, 0, 0, false, "testpartner", "");
      assertEquals(52.8f, UtilityBox.calculateSalary(si, PersonalData.Qualification.RA), 0.0001f);
      assertEquals(52.8f, UtilityBox.calculateSalary(si, PersonalData.Qualification.RH), 0.0001f);
      assertEquals(52.8f, UtilityBox.calculateSalary(si, PersonalData.Qualification.RS), 0.0001f);

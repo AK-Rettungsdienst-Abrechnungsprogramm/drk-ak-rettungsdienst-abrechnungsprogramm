@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 // Contains all shifts and takes care of loading and managing
-public class ShiftContainer {
+public class ShiftContainer  {
 
   // a pointer to the posessing mainWindow
   private MainWindow mainWindow;
@@ -23,6 +23,10 @@ public class ShiftContainer {
 // Holds all registered shifts.
   public ArrayList<ShiftInstance> shiftInstances = new ArrayList<ShiftInstance>();
   
+  
+  // the id of the next shift instance that will be registered
+  // is incremented after each shift instance is registered
+  private int shiftIdCounter;
   
   private static Map<String, ShiftContainer.ShiftType> _shiftTypeStringToEnum;
   public enum ShiftType {
@@ -80,6 +84,7 @@ public class ShiftContainer {
 
   public ShiftContainer(MainWindow mainWindow) {
     this.mainWindow = mainWindow;
+    this.shiftIdCounter = 0;
   }
 
   String getPathToJarfileDir(Object classToUse) {
@@ -232,15 +237,15 @@ public class ShiftContainer {
     	commuteExpenses = 12;
     }
 
-    ShiftInstance entry = new ShiftInstance(type, date, actualStart, actualEnd, actualBreak, commuteExpenses, prepTime, partner, comment);
+    ShiftInstance entry = new ShiftInstance(shiftIdCounter, type, date, actualStart, actualEnd, actualBreak, commuteExpenses, prepTime, partner, comment);
+    // increment id counter
+    shiftIdCounter++;
 
     shiftInstances.add(entry);
     Collections.sort(shiftInstances);
     // save new ShiftList
     calendar.setTime(entry.getDate());
     ShiftLoadSave.saveShifts(shiftInstances, calendar.get(Calendar.YEAR));
-
-
   }
 
   /**
@@ -249,8 +254,14 @@ public class ShiftContainer {
    * @param saveShifts write or not write a new saved-shifts-file
    * @author Jo
    */
-  protected void registerShift(ArrayList<ShiftInstance> shifts, boolean saveShifts) {
-    shiftInstances.addAll(shifts);
+  protected void registerShifts(ArrayList<ShiftInstance> shifts, boolean saveShifts) {
+    // iterate over all shifts, give them an id and add them to the list
+    for(int i = 0; i < shifts.size(); i++) {
+      shifts.get(i).setId(shiftIdCounter);
+      shiftIdCounter++;
+      shiftInstances.add(shifts.get(i));
+    }
+
     Collections.sort(shiftInstances);
     if (saveShifts) {
       calendar.setTime(shifts.get(0).getDate());
@@ -260,15 +271,24 @@ public class ShiftContainer {
 
   /**
    * 
-   * @param number the number of the shift that is to be deleted (corresponds to its row in the table)
+   * @param id the unique id of the shift that is to be deleted
    */
-  public void deleteShift(int number) {
-    if (number >= shiftInstances.size()) {
-      return;
-    }
+  public void deleteShift(int id) {
 
     // get instance to delete (to get the year)
-    ShiftInstance deletedInstance = shiftInstances.get(number);
+    ShiftInstance deletedInstance = null;
+    // the array index of the deleted shift
+    int number = -1;
+    for (int i = 0; i < shiftInstances.size(); i++) {
+      if (shiftInstances.get(i).getId() == id) {
+        deletedInstance = shiftInstances.get(i);
+        number = i;
+        break;
+      }
+    }
+    // if no matching instance was found return 
+    if (deletedInstance == null) return;
+    
     shiftInstances.remove(number);
     
     // rewrite XML file

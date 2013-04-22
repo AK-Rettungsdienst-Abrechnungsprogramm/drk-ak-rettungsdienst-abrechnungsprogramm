@@ -272,7 +272,7 @@ public class XMLEditor {
     List shiftNodes = node.getChildren();
     for (int j = 0; j < shiftNodes.size(); j++) {
       Element currentNode = (Element) shiftNodes.get(j);
-      returnList.add(new ShiftInstance(
+      returnList.add(new ShiftInstance( -1,
               ShiftContainer.getShiftTypeFromId(currentNode.getChildText("id")),
               currentNode.getChildText("date"),
               Integer.parseInt(currentNode.getChildText("actStartingTime")),
