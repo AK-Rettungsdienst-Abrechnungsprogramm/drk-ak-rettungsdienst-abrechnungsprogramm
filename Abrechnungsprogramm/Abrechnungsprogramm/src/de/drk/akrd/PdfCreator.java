@@ -12,7 +12,7 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import org.jdom.Parent;
+
 
 /**
  *
@@ -191,20 +191,20 @@ public class PdfCreator {
       // set headlines for checkboxes
       PdfPTable table3 = new PdfPTable(5);
       table3.setWidthPercentage(100);
-      PdfPCell cell4 = new PdfPCell(new Paragraph("RD Freiburg", helveticaFont9Bold));
+      PdfPCell cell4 = new PdfPCell(new Paragraph("  RD Freiburg", helveticaFont9Bold));
       cell4.setVerticalAlignment(Element.ALIGN_MIDDLE);
       cell4.setMinimumHeight(26f);
       cell4.setUseBorderPadding(true);
-      PdfPCell cell5 = new PdfPCell(new Paragraph("KTP Freiburg", helveticaFont9Bold));
+      PdfPCell cell5 = new PdfPCell(new Paragraph("  KTP Freiburg", helveticaFont9Bold));
       cell5.setVerticalAlignment(Element.ALIGN_MIDDLE);
       cell5.setUseBorderPadding(true);
-      PdfPCell cell6 = new PdfPCell(new Paragraph("RD Aussenwache /\nBaby-NAW", helveticaFont9Bold));
+      PdfPCell cell6 = new PdfPCell(new Paragraph("  RD Aussenwache", helveticaFont9Bold));
       cell6.setVerticalAlignment(Element.ALIGN_MIDDLE);
       cell6.setUseBorderPadding(true);
-      PdfPCell cell7 = new PdfPCell(new Paragraph("Sanitätsdienste", helveticaFont9Bold));
+      PdfPCell cell7 = new PdfPCell(new Paragraph("  Sanitätsdienste", helveticaFont9Bold));
       cell7.setVerticalAlignment(Element.ALIGN_MIDDLE);
       cell7.setUseBorderPadding(true);
-      PdfPCell cell8 = new PdfPCell(new Paragraph("KVS Freiburg", helveticaFont9Bold));
+      PdfPCell cell8 = new PdfPCell(new Paragraph("  KVS Freiburg", helveticaFont9Bold));
       cell8.setVerticalAlignment(Element.ALIGN_MIDDLE);
       cell8.setUseBorderPadding(true);
       // set checkboxcells
@@ -242,11 +242,11 @@ public class PdfCreator {
       KoSt[0] = new String[]{"RH (7,80 €/h)", "RS (8,80 €/h)",
         "RA (9,90 €/h)"};
       KoSt[1] = KoSt[0];
-      KoSt[2] = new String[]{"Baby-NAW - 01", "Breisach - 03",
+      KoSt[2] = new String[]{/*"Baby-NAW - 01", */"Breisach - 03",
         "Kirchzarten - 10", "RH (5,90 €/h)", "RS (6,70 €/h)", "RA (7,60 €/h)"};
       KoSt[3] = new String[]{"Veranstaltung - 01","SC-Freiburg - 02","Konzerthaus - 03","RH (5,90 €/h)",
         "RS (6,70 €/h)", "RA (7,60 €/h)"};
-      KoSt[4] = new String[]{"RH - RA (9,00 €/h"};
+      KoSt[4] = new String[]{"RH - RA (9,00 €/h)"};
       boolean[] boolArray = new boolean[]{false, false, false, false, false, false};
       int checkboxSetter;
       switch (PersonalData.getInstance().getQualification()) {
@@ -291,29 +291,29 @@ public class PdfCreator {
           checkboxSetter = 0;
           costUnit = "973100";
           break;
-        default:
+        default:                // Außenwache
           accountType = 2;
           costUnit = "9640";
       }
-      int xPosition = 50;
+      int xPosition = 46;
       for (int i = 0; i < KoSt.length; i++) {
         if (accountType == i) {
-          if (i == 2) {
+          if (i == 2) {       // Außenwache
             switch (shifts.get(0).getType()) {
-              case BABY:
+              case BABY: // TODO: remove when type BABY is removed
                 boolArray[0] = true;
                 costUnit = costUnit+"01 (Baby-NAW)";
                 break;
               case BREISACH:
-                boolArray[1] = true;
+                boolArray[0] = true;
                 costUnit = costUnit+"03 (RD Breisach)";
                 break;
               default:
-                boolArray[2] = true;
+                boolArray[1] = true;
                 costUnit = costUnit+"10 (RD Kirchzarten)";
             }
-            boolArray[checkboxSetter + 3] = true;
-          } else if (i==3) {
+            boolArray[checkboxSetter + 2] = true;
+          } else if (i==3) {        // Sandienst etc.
             switch (shifts.get(0).getType()) {
               case SC:
                 boolArray[1] = true;
