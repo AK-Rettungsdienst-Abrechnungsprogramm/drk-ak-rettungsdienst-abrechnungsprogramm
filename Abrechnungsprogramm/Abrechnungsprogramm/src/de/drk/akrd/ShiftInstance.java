@@ -5,9 +5,16 @@ import java.text.ParseException;
 import java.util.Date;
 
 public class ShiftInstance implements Comparable<ShiftInstance> {
-
+  // the unique id of the shift instance
+  // each shift instance has a unique id during the time the program runs 
+  // (they are not stored)
+  // the id is used to identify shifts when the user wants to edit or delete them
+  private int id;
+  // the type of the shit i.e. KTW, RTW....
   private ShiftContainer.ShiftType type;
+  // the date of the shift as a string
   private String dateString;
+  // the date of the shift
   private Date date;
   private int actualStartingTime;
   private int actualStartingTimeWithPrepTime;
@@ -29,8 +36,9 @@ public class ShiftInstance implements Comparable<ShiftInstance> {
    * @param partner shift-partner; maximal 18 characters
    * @param comment comment; maximal 36 characters
    */
-  public ShiftInstance(ShiftContainer.ShiftType type, String dateString, int actualStartingTime, 
+  public ShiftInstance(int id, ShiftContainer.ShiftType type, String dateString, int actualStartingTime, 
           int actualEndTime, int actualBreakTime, int commuteExpenses, boolean prepTime, String partner, String comment) {
+    this.id = id;
     this.type = type;
     this.dateString = dateString;
     try {
@@ -69,6 +77,14 @@ public class ShiftInstance implements Comparable<ShiftInstance> {
 		}
 	}
 	this.actualStartingTimeWithPrepTime = start;
+  }
+
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
   }
 
   public int getCommuteExpenses() {
@@ -134,7 +150,7 @@ public void setPreparationTime(boolean preparationTime) {
    * @return the time als float value
    */
   public float getTimeAsFloat() {
-    return UtilityBox.getInstance().calculateTimeAsFloat(actualStartingTimeWithPrepTime, actualEndTime, actualBreakTime);
+    return UtilityBox.calculateTimeAsFloat(actualStartingTimeWithPrepTime, actualEndTime, actualBreakTime);
   }
 
   /**

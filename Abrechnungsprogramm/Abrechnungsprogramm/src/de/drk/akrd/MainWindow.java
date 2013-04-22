@@ -103,7 +103,7 @@ public class MainWindow extends JFrame {
 
     // Setup ShiftContainer
     shiftContainer.loadShifts("Schichten.xml");
-    shiftContainer.registerShift(ShiftLoadSave.loadSavedShifts(), false);
+    shiftContainer.registerShifts(ShiftLoadSave.loadSavedShifts(), false);
 
     setTitle("AK-RD Abrechnungsprogramm");
     setSize(900, 700); // default size is 0,0

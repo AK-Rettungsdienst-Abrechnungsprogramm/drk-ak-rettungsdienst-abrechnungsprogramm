@@ -12,7 +12,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
 
@@ -65,19 +64,20 @@ public class ShiftCollectorTab extends JPanel {
 	// Scroll pane and table containing the registered shifts
 	JScrollPane shiftInstancePane = new JScrollPane();
 	JTable shiftInstanceTable = new JTable();
-	DefaultTableModel shiftInstanceTableModel = new DefaultTableModel(
-		          new Object[][]{}, new String[]{"Datum", "Beginn", "Ende",
-		                  "Pause", "Dezimal", "Schichtpartner", "Art", "Kommentar","Fahrtkosten",
-		                  "Verdienst"}) {
-
-		          private static final long serialVersionUID = 1L;
-
-		          @Override
-		          public boolean isCellEditable(int row, int column) {
-		            // all cells false
-		            return false;
-		          }
-		        };
+	ShiftInstanceTableModel shiftInstanceTableModel = new ShiftInstanceTableModel();
+//	DefaultTableModel shiftInstanceTableModel = new DefaultTableModel(
+//		          new Object[][]{}, new String[]{"Datum", "Beginn", "Ende",
+//		                  "Pause", "Dezimal", "Schichtpartner", "Art", "Kommentar","Fahrtkosten",
+//		                  "Verdienst"}) {
+//
+//		          private static final long serialVersionUID = 1L;
+//
+//		          @Override
+//		          public boolean isCellEditable(int row, int column) {
+//		            // all cells false
+//		            return false;
+//		          }
+//		        };
 	
 	
 	// Labels
@@ -129,7 +129,7 @@ public class ShiftCollectorTab extends JPanel {
 	    calendar.setLocale(Locale.GERMANY);
 
 	    shiftInstanceTable.getTableHeader().setReorderingAllowed(false);
-	    shiftInstanceTable.getTableHeader().setResizingAllowed(false);
+	    shiftInstanceTable.getTableHeader().setResizingAllowed(true);
 
 	    shiftPartnerField.setColumns(10);
 
@@ -283,18 +283,22 @@ public class ShiftCollectorTab extends JPanel {
 	}
 
 	private void deleteShiftButtonCallback() {
-		// get the currently selected shift number (== rowNumber)
+		// get the currently selected shift
 		int selectedRow = shiftInstanceTable.getSelectedRow();
 		
-		if(selectedRow == -1) return;
-		UtilityBox.getInstance().getShiftContainer().deleteShift(selectedRow);
+		ShiftInstance selectedInstance = shiftInstanceTableModel.getItem(selectedRow);
+		
+		if (selectedInstance == null) return;
+
+		UtilityBox.getInstance().getShiftContainer().deleteShift(selectedInstance.getId());
 		updateRegisteredShifts();
 	}
 
 	private void editShiftButtonCallback() {
-    	int selectedRow = shiftInstanceTable.getSelectedRow();
+	  // get the selected row
+    int selectedRow = shiftInstanceTable.getSelectedRow();
 		
-		ShiftInstance shift = UtilityBox.getInstance().getShiftContainer().getShift(selectedRow);
+		ShiftInstance shift = shiftInstanceTableModel.getItem(selectedRow);
 		
 		// reset the fields
 		beginField.setText(UtilityBox.createTimeStringFromInt(shift.getActualStartingTime()));
@@ -307,7 +311,7 @@ public class ShiftCollectorTab extends JPanel {
 		prepTimeBox.setSelected(shift.PreparationTimeSet());
 		
 		// delete the shift
-		UtilityBox.getInstance().getShiftContainer().deleteShift(selectedRow);
+		UtilityBox.getInstance().getShiftContainer().deleteShift(shift.getId());
 		updateRegisteredShifts();
 	}
 
@@ -647,47 +651,26 @@ public class ShiftCollectorTab extends JPanel {
 		  updateRegisteredShifts(false);
 	  }
 	  public void updateRegisteredShifts(boolean noYearMonthBoxUpdate) {
-
-	    float completeSalary = 0;
 	    
 	    // get the values from the time to display selectors
 	    int month = monthChooser.getSelectedIndex();
 	    String year = (String) yearChooser.getSelectedItem();
-
-	    ShiftContainer sc = UtilityBox.getInstance().getShiftContainer();
 	    
 	    // get the shifts to display
 	    // if the selected month is 0 this means all months are to be displayed, so it needs 
 	    // to be -1 for the function to understand it
 	    month--;
 	    if (year == "Alle") year = "-1";
-	    ArrayList<ShiftInstance> temp = sc.getShiftInsances(Integer.parseInt(year), month);
-	    
-	    ShiftInstance[] instancesToDisplay = (ShiftInstance[]) temp.toArray(new ShiftInstance[temp.size()]);
-	    
+
 	    // get all registered shifts and convert them to table data
-	    Object[][] data = ShiftContainer.shiftInstancesToTableData(instancesToDisplay);
+	    ArrayList<ShiftInstance> data = UtilityBox.getInstance().getShiftContainer().getShiftInsances(Integer.parseInt(year), month);
 	    // reset the table model
-	    shiftInstanceTableModel.setNumRows(0);
+	    shiftInstanceTableModel.clear();
 	    // iterate over all shifts
-	    for (int i = 0; i < data.length; i++) {
-	      ArrayList<Object> list = new ArrayList<Object>();
-	      Collections.addAll(list, data[i]);
-	      // get the original shift item
-	      ShiftInstance currentShift = sc.shiftInstances.get(i);
-	      // calculate the salary for this shift and add to complete salary
-	      float salary = UtilityBox.calculateSalary(currentShift, PersonalData.getInstance().getQualification());
-	      completeSalary += salary;
-	      // add the shifts salary to list entry
-	      list.add(String.format("%.2f", salary) + "€");
-	      // add this shift to table model
-	      shiftInstanceTableModel.addRow(list.toArray());
+	    for (int i = 0; i < data.size(); i++) {
+	     shiftInstanceTableModel.add(data.get(i));
 	    }
-	    // create last line which displays the overall salary
-	    Object[] lastLine = new Object[]{"", "", "", "", "", "", "", "", "Gesamt",
-	      String.format("%.2f", completeSalary) + "€"};
-	    shiftInstanceTableModel.addRow(lastLine);
-	    
+
 	    if (! noYearMonthBoxUpdate) setYearComboBox();
 	  }
 
