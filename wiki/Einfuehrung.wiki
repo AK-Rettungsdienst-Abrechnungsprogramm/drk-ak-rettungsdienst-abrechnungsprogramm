@@ -11,7 +11,7 @@ Sollten Schwierigkeiten oder Fragen auftauchen, könnt ihr uns unter software@ak
 == Warum überhaupt ein neues Programm? ==
 Diese Frage wurde uns seit der Vorstellung beim AK Wochenende häufig gestellt. Die beiden Hauptgründe sind: 
  * Der Autor des alten Abrechnungsprogramms hat den AK verlassen und steht somit für Aktualisierungen nicht mehr zur Verfügung.
- * Das alte Programm benötigt das kostenpflichtige Programm Microsoft Excel und kann somit nicht von Jedem überall genutzt werden.
+ * Das alte Programm benötigt das kostenpflichtige Programm Microsoft Excel und kann somit nicht von Jedem überall genutzt werden. Außerdem funktioniert es nicht mit allen Versionen.
 
 Das neue Abrechnungsprogramm wurde in Java entwickelt und ist somit plattormunabhängig, d.h. es läuft auf jedem Betriebssystem für dass es eine Java Umgebung gibt.
 Insbesondere wird es während der Entwicklung getestet auf Windows, MacOS und Linux. 
