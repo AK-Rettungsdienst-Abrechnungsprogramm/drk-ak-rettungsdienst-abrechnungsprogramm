@@ -16,5 +16,8 @@ Diese Frage wurde uns seit der Vorstellung beim AK Wochenende häufig gestellt. 
 Das neue Abrechnungsprogramm wurde in Java entwickelt und ist somit plattormunabhängig, d.h. es läuft auf jedem Betriebssystem für dass es eine Java Umgebung gibt.
 Insbesondere wird es während der Entwicklung getestet auf Windows, MacOS und Linux. 
 
-= Installation =
+=Kurzanleitung=
+== Installation ==
 Für jedes der oben genannten Betriebssysteme haben wir auf der Downloads Seite ein ZIP-Archiv bereitgestellt. Entpackt dieses an einen beliebigen Ort und startet dann das Programm durch Doppelklick auf _Abrechnungsprogramm.exe_ unter Windows oder _start.sh_ unter MacOS und Linux. Das wars auch schon.
+
+= Was ist neu? =
