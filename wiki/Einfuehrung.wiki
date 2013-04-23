@@ -20,4 +20,5 @@ Insbesondere wird es während der Entwicklung getestet auf Windows, MacOS und Li
 == Installation ==
 Für jedes der oben genannten Betriebssysteme haben wir auf der Downloads Seite ein ZIP-Archiv bereitgestellt. Entpackt dieses an einen beliebigen Ort und startet dann das Programm durch Doppelklick auf _Abrechnungsprogramm.exe_ unter Windows oder _start.sh_ unter MacOS und Linux. Das wars auch schon.
 
-= Was ist neu? =
+== Was bleibt beim alten? ==
+Eigentlich alles alles! Insbesondere beim nutzen der Wachenversion werden weiterhin zuerst die Stammdaten unter "Persönliche Daten" eingetragen und dann die Schichten im "Schichten" Tab gesammelt und die Abrechnung erstellt.
