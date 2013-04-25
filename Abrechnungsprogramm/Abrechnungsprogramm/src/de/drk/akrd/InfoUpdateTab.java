@@ -26,15 +26,16 @@ import javax.swing.SwingConstants;
  * show programinfo and update-button
  * @author Jo
  */
-public class InfoUpdateTab{
+public class InfoUpdateTab extends JPanel{
   
-  public InfoUpdateTab(JPanel panel){
+  public InfoUpdateTab(){
 
     //panel.setLayout(new BorderLayout());
-    panel.setLayout(new GridLayout(4,0));
+    this.setLayout(new GridLayout(4,0));
     String shiftFileVersion = Float.toString(MainWindow.SHIFT_FILE_VERSION);
     String programInfo = "<html><br><h1>AK-RD Abrechnungsprogramm</h1>"
-            + "Version "+Float.toString(MainWindow.PROGRAM_VERSION)+"<br><br>"
+            + "Version "+Float.toString(MainWindow.PROGRAM_VERSION)
+            +"<br><br>"
             + "&copy; Johannes Güttler, Niklas Meinzer 2013<br>"
             + "Email: <a href='mailto:Software@ak-rd.de'>Software@ak-rd.de</a>"
             + "<br><br><br><br></html>";
@@ -45,12 +46,12 @@ public class InfoUpdateTab{
     JLabel programInfoLabel = new JLabel(programInfo);
     programInfoLabel.setHorizontalAlignment(SwingConstants.CENTER);
     //7panel.add(programInfoLabel, BorderLayout.PAGE_START);
-    panel.add(programInfoLabel);
+    this.add(programInfoLabel);
     JSeparator separator = new JSeparator(SwingConstants.HORIZONTAL);
-    panel.add(separator);
+    this.add(separator);
     JLabel updateInfoLabel = new JLabel(updateInfo);
     updateInfoLabel.setHorizontalAlignment(SwingConstants.CENTER);
-    panel.add(updateInfoLabel);
+    this.add(updateInfoLabel);
     // create and add update-button
     JButton updateButton = new JButton("Schicht-Update");
     updateButton.setFont(new Font(updateButton.getFont().getName(),
@@ -69,7 +70,7 @@ public class InfoUpdateTab{
     JPanel buttonPanel = new JPanel();
     buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
     buttonPanel.add(updateButton);
-    panel.add(buttonPanel);
+    this.add(buttonPanel);
   }
   
 }

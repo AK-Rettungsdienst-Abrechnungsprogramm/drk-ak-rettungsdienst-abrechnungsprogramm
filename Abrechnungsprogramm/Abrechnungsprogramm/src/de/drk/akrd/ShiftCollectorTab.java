@@ -65,20 +65,6 @@ public class ShiftCollectorTab extends JPanel {
 	JScrollPane shiftInstancePane = new JScrollPane();
 	JTable shiftInstanceTable = new JTable();
 	ShiftInstanceTableModel shiftInstanceTableModel = new ShiftInstanceTableModel();
-//	DefaultTableModel shiftInstanceTableModel = new DefaultTableModel(
-//		          new Object[][]{}, new String[]{"Datum", "Beginn", "Ende",
-//		                  "Pause", "Dezimal", "Schichtpartner", "Art", "Kommentar","Fahrtkosten",
-//		                  "Verdienst"}) {
-//
-//		          private static final long serialVersionUID = 1L;
-//
-//		          @Override
-//		          public boolean isCellEditable(int row, int column) {
-//		            // all cells false
-//		            return false;
-//		          }
-//		        };
-	
 	
 	// Labels
 	JLabel lblBegin = new JLabel("Beginn:");
