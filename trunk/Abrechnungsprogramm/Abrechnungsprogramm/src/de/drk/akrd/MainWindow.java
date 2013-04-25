@@ -19,6 +19,7 @@ import javax.swing.JButton;
 import java.util.Calendar;
 import java.util.Date;
 
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
@@ -37,6 +38,9 @@ public class MainWindow extends JFrame {
 
   protected ShiftContainer shiftContainer = new ShiftContainer(this);
   
+  
+  protected JLabel statusBar = new JLabel("Rufe aktuelle Version aus dem Internet ab...");
+
   
   protected DefaultTableModel dplTableModel = new DefaultTableModel(
           new Object[][]{}, new String[]{"Datum", "Schichtkürzel",
@@ -93,20 +97,19 @@ public class MainWindow extends JFrame {
     };
   private final JTable importExportDisplayTable = new JTable(importExportDisplayTableModel);
   private final JScrollPane importExportShiftPane = new JScrollPane(importExportDisplayTable);
-  // panel for the info/update-tab
-  private final JPanel infoUpdatePanel = new JPanel();
   
   public MainWindow() {
 
     // Instanciate UtilityBox
     UtilityBox.instanciate(this);
-
+    
     // Setup ShiftContainer
     shiftContainer.loadShifts("Schichten.xml");
     shiftContainer.registerShifts(ShiftLoadSave.loadSavedShifts(), false);
 
     setTitle("AK-RD Abrechnungsprogramm");
-    setSize(900, 700); // default size is 0,0
+    getContentPane().setPreferredSize(new Dimension (900, 700)); // default size is 0,0
+    pack();
     setLocation(10, 200);
     addWindowListener(new WindowClosingAdapter(true));
 
@@ -128,8 +131,13 @@ public class MainWindow extends JFrame {
 
 
     // basePanel.add(tabbedPane);
+    getContentPane().setLayout(null);
+    tabbedPane.setBounds(0, 0, 900, 685);
     getContentPane().add(tabbedPane);
-
+    statusBar.setBounds(0, 685,900, 15);
+    
+    getContentPane().add(statusBar);
+    
     JPanel DPL_Tab = new JPanel();
     tabbedPane.addTab("Dienstplan auslesen", null, DPL_Tab, null);
 
@@ -282,9 +290,8 @@ public class MainWindow extends JFrame {
     importExport.setSelected(importExportDisplayTableModel, 0, exportYearComboBox.getSelectedIndex());
 
     // add info / update-tab
-    infoUpdatePanel.setLayout(null);
-    InfoUpdateTab infoUpdateTab = new InfoUpdateTab(infoUpdatePanel);
-    tabbedPane.addTab("Info / Update", null, infoUpdatePanel);
+    InfoUpdateTab infoUpdateTab = new InfoUpdateTab();
+    tabbedPane.addTab("Info / Update", null, infoUpdateTab);
   }
 
   public static void main(String[] args) {

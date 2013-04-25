@@ -2,10 +2,12 @@ package de.drk.akrd;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ProgressMonitorInputStream;
@@ -57,5 +59,21 @@ public class Update {
     pmis.close();
     out.flush();
     out.close();
+  }
+  
+  // tries to get the newest version number that is available at code.google.com
+  public static float getLatestVersion() {
+    float result = -1f;
+    try {
+      URL url = new URL("http://drk-ak-rettungsdienst-abrechnungsprogramm.googlecode.com/files/version");
+//      URL url = new URL("http://drk-ak-rettungsdienst-abrechnungsprogramm.googlecode.com/files/newerVersion");
+      Scanner scanner = new Scanner(url.openStream());
+      result = scanner.nextFloat();
+    } catch (MalformedURLException e) {
+      return -1;
+    } catch (IOException e) {
+      return -1;
+    }
+    return result;
   }
 }

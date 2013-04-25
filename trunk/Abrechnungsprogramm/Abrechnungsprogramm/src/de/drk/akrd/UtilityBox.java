@@ -14,6 +14,7 @@ import com.itextpdf.text.BaseColor;
 
 import de.drk.akrd.PersonalData.Qualification;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -35,6 +36,8 @@ public class UtilityBox {
   public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
   private Date[] holidays = null;
   
+  private float newestAvailableVersion = -2f;
+  
   // the default font used throughout the program 
   Font defaultFont = new Font("Dialog", Font.BOLD, 12);
 
@@ -43,6 +46,39 @@ public class UtilityBox {
     this.mainWindow = mainWindow;
     this.shiftContainer = mainWindow.shiftContainer;
     calendar = Calendar.getInstance();
+    
+    // get newest available version
+    Thread versionChecker = new Thread() {
+      public void run() {
+        float version = Update.getLatestVersion();
+        UtilityBox.getInstance().setNewestVersion(version);
+        // query sucessfull + no newer version
+        if (version <= MainWindow.PROGRAM_VERSION && version > 0) {
+          setStatusBarText("Das Programm ist auf dem neusten Stand!", new Color(0, 100, 0));
+          return;
+        }
+        // query sicessfull & newer version available
+        if (version > MainWindow.PROGRAM_VERSION)
+        {
+          setStatusBarText("Es ist eine neue Version (" + Float.toString(version) +
+              ") verfügbar. Bitte lade diese herunter!", new Color(180, 0, 0));
+          return;   
+        }
+        // query not sucessfull
+        if (version < 0) {
+          setStatusBarText("Konnte die aktuelle Version nicht feststellen. Evtl. besteht keine Verbindung zum Internet.", 
+              new Color(200, 150, 0));
+          return;
+        }
+        
+       }
+    };
+    
+    versionChecker.start();
+  }
+
+  protected void setNewestVersion(float latestVersion) {
+    newestAvailableVersion = latestVersion;
   }
 
   public ShiftContainer getShiftContainer() {
@@ -596,5 +632,15 @@ public static void instanciate(MainWindow mainWindow) {
   
   Font getDefaultFont(){
 	  return defaultFont;
+  }
+  
+  // get the newest available version
+  float getNewestVersion() {
+   return newestAvailableVersion;
+  }
+  
+  public void setStatusBarText(String text, Color color) {
+    mainWindow.statusBar.setForeground(color);
+    mainWindow.statusBar.setText(text);
   }
 }
