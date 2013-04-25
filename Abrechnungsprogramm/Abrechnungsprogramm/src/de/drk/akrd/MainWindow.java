@@ -108,7 +108,7 @@ public class MainWindow extends JFrame {
     shiftContainer.registerShifts(ShiftLoadSave.loadSavedShifts(), false);
 
     setTitle("AK-RD Abrechnungsprogramm");
-    getContentPane().setPreferredSize(new Dimension (900, 700)); // default size is 0,0
+    getContentPane().setPreferredSize(new Dimension (900, 600)); // default size is 0,0
     pack();
     setLocation(10, 200);
     addWindowListener(new WindowClosingAdapter(true));
@@ -132,9 +132,9 @@ public class MainWindow extends JFrame {
 
     // basePanel.add(tabbedPane);
     getContentPane().setLayout(null);
-    tabbedPane.setBounds(0, 0, 900, 685);
+    tabbedPane.setBounds(0, 0, 900, 585);
     getContentPane().add(tabbedPane);
-    statusBar.setBounds(0, 685,900, 15);
+    statusBar.setBounds(0, 585,900, 15);
     
     getContentPane().add(statusBar);
     
@@ -302,7 +302,7 @@ public class MainWindow extends JFrame {
     Image drkIcon = Toolkit.getDefaultToolkit().getImage(f.getClass().getResource("icon.jpg"));
     f.setIconImage(drkIcon);
     f.setVisible(true);
-    f.setResizable(false);
+    f.setResizable(true);
   }
 
 
