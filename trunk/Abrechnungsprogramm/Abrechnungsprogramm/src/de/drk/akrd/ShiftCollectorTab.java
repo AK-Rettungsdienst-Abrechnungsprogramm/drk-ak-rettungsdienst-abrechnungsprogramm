@@ -504,10 +504,10 @@ public class ShiftCollectorTab extends JPanel {
 		
 		// Shift Instances
 		this.add(shiftInstancePane);
-		shiftInstancePane.setBounds(10, 280, 870, 300);
+		shiftInstancePane.setBounds(10, 280, 870, 220);
 		
 		// lower buttons
-		int lowerButtonY = 590;
+		int lowerButtonY = 510;
 		
 		this.add(createSalaryStatementButton);
 		createSalaryStatementButton.setBounds(150, lowerButtonY, SwingUtilities.computeStringWidth(fm, createSalaryStatementButton.getText()) + 40, buttonHeight);
