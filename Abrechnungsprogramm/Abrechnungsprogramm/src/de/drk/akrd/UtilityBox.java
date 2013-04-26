@@ -50,22 +50,30 @@ public class UtilityBox {
     // get newest available version
     Thread versionChecker = new Thread() {
       public void run() {
-        float version = Update.getLatestVersion();
-        UtilityBox.getInstance().setNewestVersion(version);
+        // get latest Program version
+        float programVersion = Update.getLatestProgramVersion();
+        UtilityBox.getInstance().setNewestVersion(programVersion);
         // query sucessfull + no newer version
-        if (version <= MainWindow.PROGRAM_VERSION && version > 0) {
+        if (programVersion <= MainWindow.PROGRAM_VERSION && programVersion > 0) {
+          // check shift file version
+          float newestShiftFileVersion = Update.getLatestShiftFileVersion();
+          System.out.println(newestShiftFileVersion);
+          if (newestShiftFileVersion > MainWindow.SHIFT_FILE_VERSION) {
+            setStatusBarText("Es ist eine neue Version der Schichten Datei verfügbar. Bitte unter Info/Update herunterladen!", new Color(180, 0, 0));
+            return;   
+          }
           setStatusBarText("Das Programm ist auf dem neusten Stand!", new Color(0, 100, 0));
           return;
         }
         // query sicessfull & newer version available
-        if (version > MainWindow.PROGRAM_VERSION)
+        if (programVersion > MainWindow.PROGRAM_VERSION)
         {
-          setStatusBarText("Es ist eine neue Version (" + Float.toString(version) +
+          setStatusBarText("Es ist eine neue Version (" + Float.toString(programVersion) +
               ") verfügbar. Bitte lade diese herunter!", new Color(180, 0, 0));
           return;   
         }
         // query not sucessfull
-        if (version < 0) {
+        if (programVersion < 0) {
           setStatusBarText("Konnte die aktuelle Version nicht feststellen. Evtl. besteht keine Verbindung zum Internet.", 
               new Color(200, 150, 0));
           return;

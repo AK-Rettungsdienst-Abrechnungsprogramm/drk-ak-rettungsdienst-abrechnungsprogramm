@@ -62,11 +62,26 @@ public class Update {
   }
   
   // tries to get the newest version number that is available at code.google.com
-  public static float getLatestVersion() {
+  public static float getLatestProgramVersion() {
     float result = -1f;
     try {
-      URL url = new URL("http://drk-ak-rettungsdienst-abrechnungsprogramm.googlecode.com/files/version");
-//      URL url = new URL("http://drk-ak-rettungsdienst-abrechnungsprogramm.googlecode.com/files/newerVersion");
+       URL url = new URL("https://drk-ak-rettungsdienst-abrechnungsprogramm.googlecode.com/svn/trunk/Abrechnungsprogramm/Abrechnungsprogramm/versionIndicators/programVersion");
+      //URL url = new URL("https://drk-ak-rettungsdienst-abrechnungsprogramm.googlecode.com/svn/trunk/Abrechnungsprogramm/Abrechnungsprogramm/versionIndicators/newerProgramVersion");
+      Scanner scanner = new Scanner(url.openStream());
+      result = scanner.nextFloat();
+    } catch (MalformedURLException e) {
+      return -1;
+    } catch (IOException e) {
+      return -1;
+    }
+    return result;
+  }
+
+  public static float getLatestShiftFileVersion() {
+    float result = -1f;
+    try {
+//      URL url = new URL("https://drk-ak-rettungsdienst-abrechnungsprogramm.googlecode.com/svn/trunk/Abrechnungsprogramm/Abrechnungsprogramm/versionIndicators/programVersion");
+      URL url = new URL("https://drk-ak-rettungsdienst-abrechnungsprogramm.googlecode.com/svn/trunk/Abrechnungsprogramm/Abrechnungsprogramm/versionIndicators/shiftFileVersion");
       Scanner scanner = new Scanner(url.openStream());
       result = scanner.nextFloat();
     } catch (MalformedURLException e) {
