@@ -2,7 +2,6 @@ package de.drk.akrd;
 
 import java.awt.Dimension;
 import java.awt.event.ItemEvent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JTextField;
@@ -21,11 +20,7 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.border.TitledBorder;
-import javax.swing.table.DefaultTableModel;
-
-import com.itextpdf.text.xml.simpleparser.NewLineHandler;
 
 /**
  * UI to fill the Shiftform
@@ -156,6 +151,7 @@ public class ShiftFormTab extends JPanel {
     weekContainer.setPreferredSize(new Dimension(900,1000));
     weekContainer.setLayout(null);
     scrollPane.setViewportView(weekContainer);
+    scrollPane.getVerticalScrollBar().setUnitIncrement(16);
     this.add(scrollPane);
     addWeeksToPanel(calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR), weekContainer);
     scrollPane.validate();
