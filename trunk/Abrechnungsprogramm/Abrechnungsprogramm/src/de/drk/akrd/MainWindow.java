@@ -76,7 +76,7 @@ public class MainWindow extends JFrame {
           "Dienste in Google Kalender eintragen");
 
   // DPL Fragebogen tab
-  private final JPanel dplSurvey = new JPanel();
+
   private final JPanel importExportTab = new JPanel();
   private JButton importExportFileChooseButton;
   // Import/Export tab
@@ -190,9 +190,8 @@ public class MainWindow extends JFrame {
     
     
     // Add Schichtenabgabe pane
-    dplSurvey.setLayout(null);
-    ShiftFormTab sft = new ShiftFormTab(dplSurvey);
-    tabbedPane.addTab("DPL Fragebogen", null, dplSurvey,
+    ShiftFormTab sft = new ShiftFormTab();
+    tabbedPane.addTab("DPL Fragebogen", null, sft,
             "Dienstplan Fragebogen ausfüllen");
 
     // Import/export pane
