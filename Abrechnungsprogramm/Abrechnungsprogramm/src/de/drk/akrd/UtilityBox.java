@@ -47,6 +47,10 @@ public class UtilityBox {
     this.shiftContainer = mainWindow.shiftContainer;
     calendar = Calendar.getInstance();
     
+    checkVersion();
+  }
+
+  public void checkVersion() {
     // get newest available version
     Thread versionChecker = new Thread() {
       public void run() {
@@ -57,7 +61,7 @@ public class UtilityBox {
         if (programVersion <= MainWindow.PROGRAM_VERSION && programVersion > 0) {
           // check shift file version
           float newestShiftFileVersion = Update.getLatestShiftFileVersion();
-          System.out.println(newestShiftFileVersion);
+
           if (newestShiftFileVersion > MainWindow.SHIFT_FILE_VERSION) {
             setStatusBarText("Es ist eine neue Version der Schichten Datei verfügbar. Bitte unter Info/Update herunterladen!", new Color(180, 0, 0));
             return;   
@@ -628,6 +632,7 @@ public static void instanciate(MainWindow mainWindow) {
   // Used to trigger a reload of the shifts file 
   public void requestShiftListReload() {
 	  mainWindow.shiftContainer.loadShifts("Schichten.xml");
+	  checkVersion();
   }
   // returns the x position of the main window
   int getWindowPosX() {
