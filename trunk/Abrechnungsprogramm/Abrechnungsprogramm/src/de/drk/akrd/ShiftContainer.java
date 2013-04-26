@@ -31,7 +31,7 @@ public class ShiftContainer  {
   private static Map<String, ShiftContainer.ShiftType> _shiftTypeStringToEnum;
   public enum ShiftType {
 
-    Alle, RTW, KTW, KIZA, BREISACH, BABY, EVENT, KVS, HINTERGRUND, ELW, SC, CONCERT_HALL;
+    Alle, RTW, KTW, KIZA, BREISACH, EVENT, KVS, HINTERGRUND, ELW, SC, CONCERT_HALL;
 
     // Override the toString method to get nicer strings for the shiftTypeChooser
     @Override
@@ -63,8 +63,6 @@ public class ShiftContainer  {
         return "RD Kirchzarten";
       } else if (name().equals("BREISACH")) {
         return "RD Breisach";
-      } else if (name().equals("BABY")) {
-        return "Baby NAW";
       } else if (name().equals("EVENT")) {
         return "Sandienst";
       } else if (name().equals("KVS")) {

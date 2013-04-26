@@ -78,9 +78,6 @@ public class PdfCreator {
         case KVS:
           kvs.add(shiftsToAccount[i]);
           break;
-        case BABY:
-          baby.add(shiftsToAccount[i]);
-          break;
         case BREISACH:
           breisach.add(shiftsToAccount[i]);
           break;
@@ -300,10 +297,6 @@ public class PdfCreator {
         if (accountType == i) {
           if (i == 2) {       // Außenwache
             switch (shifts.get(0).getType()) {
-              case BABY: // TODO: remove when type BABY is removed
-                boolArray[0] = true;
-                costUnit = costUnit+"01 (Baby-NAW)";
-                break;
               case BREISACH:
                 boolArray[0] = true;
                 costUnit = costUnit+"03 (RD Breisach)";

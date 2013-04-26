@@ -592,7 +592,6 @@ public class ShiftCollectorTab extends JPanel {
 		  }
 
 		  if(partner.equals("") && shiftTypeChooser.getSelectedItem() != ShiftContainer.ShiftType.KVS
-				  && shiftTypeChooser.getSelectedItem() != ShiftContainer.ShiftType.BABY
 				  && shiftTypeChooser.getSelectedItem() != ShiftContainer.ShiftType.ELW)
 		  {
 			  UtilityBox.getInstance().displayErrorPopup("Fehler", "Bitte Schichtpartner angeben!");
