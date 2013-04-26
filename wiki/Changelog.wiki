@@ -1,0 +1,12 @@
+#summary One-sentence summary of this page.
+
+= Changelog =
+
+Hier könnt ihr nachlesen, was in den jeweiligen Versionen neu ist und wann sie rausgekommen sind.
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
