@@ -28,30 +28,27 @@ import javax.swing.SwingConstants;
  */
 public class InfoUpdateTab extends JPanel{
   
+  private JLabel updateInfo = new JLabel();
+  
   public InfoUpdateTab(){
 
     //panel.setLayout(new BorderLayout());
     this.setLayout(new GridLayout(4,0));
-    String shiftFileVersion = Float.toString(MainWindow.SHIFT_FILE_VERSION);
+    updateInfoLabel(MainWindow.SHIFT_FILE_VERSION);
     String programInfo = "<html><br><h1>AK-RD Abrechnungsprogramm</h1>"
             + "Version "+Float.toString(MainWindow.PROGRAM_VERSION)
             +"<br><br>"
             + "&copy; Johannes Güttler, Niklas Meinzer 2013<br>"
             + "Email: <a href='mailto:Software@ak-rd.de'>Software@ak-rd.de</a>"
             + "<br><br><br><br></html>";
-    String updateInfo = "<html><CENTER><h1>Schicht-Update</h1></CENTER>"
-            + "Mit Klick auf den Update-Button wird die neuste Version der "
-            + "Schicht-Liste heruntergeladen.<br>"
-            + "Aktuelle Version: "+shiftFileVersion+"<br></html>";
     JLabel programInfoLabel = new JLabel(programInfo);
     programInfoLabel.setHorizontalAlignment(SwingConstants.CENTER);
     //7panel.add(programInfoLabel, BorderLayout.PAGE_START);
     this.add(programInfoLabel);
     JSeparator separator = new JSeparator(SwingConstants.HORIZONTAL);
     this.add(separator);
-    JLabel updateInfoLabel = new JLabel(updateInfo);
-    updateInfoLabel.setHorizontalAlignment(SwingConstants.CENTER);
-    this.add(updateInfoLabel);
+    updateInfo.setHorizontalAlignment(SwingConstants.CENTER);
+    this.add(updateInfo);
     // create and add update-button
     JButton updateButton = new JButton("Schicht-Update");
     updateButton.setFont(new Font(updateButton.getFont().getName(),
@@ -63,6 +60,7 @@ public class InfoUpdateTab extends JPanel{
       public void actionPerformed(ActionEvent e) {
         Update.downloadNewShiftFile();
         UtilityBox.getInstance().requestShiftListReload();
+        updateInfoLabel(MainWindow.SHIFT_FILE_VERSION);
       }
     };
     updateButton.addActionListener(updateButtonActionListener);
@@ -71,6 +69,15 @@ public class InfoUpdateTab extends JPanel{
     buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
     buttonPanel.add(updateButton);
     this.add(buttonPanel);
+  }
+  
+  // resets the update info label with the current version
+  private void updateInfoLabel(float version) {
+    String updateInfoString = "<html><CENTER><h1>Schicht-Update</h1></CENTER>"
+        + "Mit Klick auf den Update-Button wird die neuste Version der "
+        + "Schicht-Liste heruntergeladen.<br>"
+        + "Aktuelle Version: "+version+"<br></html>";
+    updateInfo.setText(updateInfoString);
   }
   
 }

@@ -20,8 +20,9 @@ public class Update {
 
   /**
    * download actual shiftlist
+   * @return 
    */
-  public static void downloadNewShiftFile() {
+  public static float downloadNewShiftFile() {
       try {
         Update.downloadFile("https://drk-ak-rettungsdienst-abrechnungsprogramm.googlecode.com/svn/trunk/Abrechnungsprogramm/Abrechnungsprogramm/data/Schichten.xml");
         UtilityBox.getInstance().displayInfoPopup("Schichten.xml", "Die Schichtliste wurde aktualisiert.");
@@ -34,6 +35,8 @@ public class Update {
           Logger.getLogger(XMLEditor.class.getName()).log(Level.SEVERE, null, ex1);
         }
       }
+      
+      return 0f;
   }
 
   public static void downloadFile(String http) throws Exception {
