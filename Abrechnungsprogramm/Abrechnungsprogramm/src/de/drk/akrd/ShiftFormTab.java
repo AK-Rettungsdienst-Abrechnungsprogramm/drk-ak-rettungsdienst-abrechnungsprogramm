@@ -184,6 +184,7 @@ public class ShiftFormTab extends JPanel {
       }
     }
     allButtonGroups.clear();
+    allCommentFields.clear();
     for (int i = 0; i < allLabels.size(); i++) {
       JLabel l = allLabels.get(i);
       //l.setVisible(false);
@@ -266,13 +267,13 @@ public class ShiftFormTab extends JPanel {
     Enumeration<AbstractButton> e = bg.getElements();
     while (e.hasMoreElements()) {
       panel.add(e.nextElement());
-      JTextField commentField = new JTextField(100);
-      commentField.setColumns(10);
-      commentField.setBounds(x + 450, y, 300, 17);
-      commentField.setEnabled(active);
-      allCommentFields.add(commentField);
-      panel.add(commentField);
     }
+    JTextField commentField = new JTextField(100);
+    commentField.setColumns(10);
+    commentField.setBounds(x + 450, y, 300, 17);
+    commentField.setEnabled(active);
+    allCommentFields.add(commentField);
+    panel.add(commentField);
   }
 
   /**

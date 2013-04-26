@@ -175,10 +175,10 @@ public class ShiftForm {
               comment = comment.substring(0, 40);
             }
           }
-          table1.addCell(getNewCell(1, Element.ALIGN_CENTER, helveticaFont11, weekday));
-          table1.addCell(getNewCell(1, Element.ALIGN_CENTER, helveticaFont11, date));
-          table1.addCell(getNewCell(1, Element.ALIGN_CENTER, helveticaFont11, timeCodeString));
-          table1.addCell(getNewCell(4, Element.ALIGN_CENTER, helveticaFont11, comment));
+          table1.addCell(getNewCell(1, Element.ALIGN_MIDDLE, helveticaFont11, weekday));
+          table1.addCell(getNewCell(1, Element.ALIGN_MIDDLE, helveticaFont11, date));
+          table1.addCell(getNewCell(1, Element.ALIGN_MIDDLE, helveticaFont11, timeCodeString));
+          table1.addCell(getNewCell(4, Element.ALIGN_LEFT, helveticaFont11, comment));
           calendar.add(Calendar.DATE, 1);
         }
       }
@@ -189,8 +189,8 @@ public class ShiftForm {
         cell2.setRowspan(2);
         cell2.setFixedHeight(20);
         table1.addCell(cell2);
-        table1.addCell(getNewCell(2, Element.ALIGN_RIGHT, helveticaFont10, "Kürzel: ", Rectangle.NO_BORDER));
-        table1.addCell(getNewCell(5, Element.ALIGN_LEFT, helveticaFont10, "X: ganzer Tag / F: Frühdienst / S: Spätdienst / T: Tag (Früh&Spät) / N: Nachtdienst", Rectangle.NO_BORDER));
+        table1.addCell(getNewCell(1, Element.ALIGN_RIGHT, helveticaFont10, "Kürzel: ", Rectangle.NO_BORDER));
+        table1.addCell(getNewCell(6, Element.ALIGN_LEFT, helveticaFont10, "X: ganzer Tag / F: Frühdienst / S: Spätdienst / T: Tag (Früh&Spät) / N: Nachtdienst / G: Geteilt (Früh&Nacht) / K: Komplex (Spät&Nacht)", Rectangle.NO_BORDER));
         PdfPCell cell = getEmptyCell(7, Rectangle.NO_BORDER);
         cell.setFixedHeight(10);
         table1.addCell(cell);
@@ -248,12 +248,12 @@ public class ShiftForm {
    * @param text
    * @return new PdfPCell
    */
-  private PdfPCell getNewCell(int colspan, int horizontalAlignment, Font font, String text) {
+  private PdfPCell getNewCell(int colspan, int verticalAlignment, Font font, String text) {
     PdfPCell returnCell = new PdfPCell(new Paragraph(text, font));
     returnCell.setMinimumHeight(minimumCellHeight);
     returnCell.setColspan(colspan);
-    returnCell.setHorizontalAlignment(horizontalAlignment);
-    returnCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+    returnCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+    returnCell.setVerticalAlignment(verticalAlignment);
     return returnCell;
   }
 
