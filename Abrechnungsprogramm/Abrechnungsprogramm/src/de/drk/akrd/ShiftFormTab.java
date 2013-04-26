@@ -1,5 +1,6 @@
 package de.drk.akrd;
 
+import java.awt.Dimension;
 import java.awt.event.ItemEvent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -19,35 +20,28 @@ import javax.swing.ButtonGroup;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
+
+import com.itextpdf.text.xml.simpleparser.NewLineHandler;
 
 /**
  * UI to fill the Shiftform
  * @author Jo
  */
-public class ShiftFormTab extends JFrame {
+public class ShiftFormTab extends JPanel {
 
   /**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-//private JPanel panel;
   private final Action cancel = new ResetForm();
   private final Action create = new CreateShiftForm();
-  private DefaultTableModel dayTableModel = new DefaultTableModel(
-          new Object[][]{}, new String[]{""}) {
 
-    private static final long serialVersionUID = 1L;
-
-    @Override
-    public boolean isCellEditable(int row, int column) {
-      // all cells false
-      return false;
-    }
-  };
-  private final JComboBox MonthComboBox;
-  private final JComboBox YearComboBox;
+  private final JComboBox<String> MonthComboBox;
+  private final JComboBox<String> YearComboBox;
   private JTextField maxShiftsField;
   private JTextField mentor3rdPosField;
   private JTextField mentor2ndPosField;
@@ -60,7 +54,11 @@ public class ShiftFormTab extends JFrame {
   //private MouseListener checkBoxListener = new CheckboxListener();
   private CheckboxItemListener checkboxItemListener = new CheckboxItemListener();
 
-  public ShiftFormTab(final JPanel panel) {
+  // The scroll pane that holds the weeks
+  private JScrollPane scrollPane = new JScrollPane();
+  private JPanel weekContainer = new JPanel();
+
+  public ShiftFormTab() {
     int xFirstLine = 8;
     //panel = jpanel;
     calendar.setTime(new Date());
@@ -72,81 +70,95 @@ public class ShiftFormTab extends JFrame {
     JButton createButton = new JButton("Erstellen");
     createButton.setAction(create);
 
-    MonthComboBox = new JComboBox();
-    MonthComboBox.setModel(new DefaultComboBoxModel(new String[]{"Januar",
+    MonthComboBox = new JComboBox<String>();
+    MonthComboBox.setModel(new DefaultComboBoxModel<String>(new String[]{"Januar",
               "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September",
               "Oktober", "November", "Dezember"}));
     MonthComboBox.setBounds(10, xFirstLine-3, 120, 20);
     MonthComboBox.setSelectedIndex((currentMonth < 11) ? (currentMonth + 1) : 0);
 
-    YearComboBox = new JComboBox();
-    YearComboBox.setModel(new DefaultComboBoxModel(new String[]{Integer.toString(currentYear), Integer.toString(currentYear + 1)}));
+    YearComboBox = new JComboBox<String>();
+    YearComboBox.setModel(new DefaultComboBoxModel<String>(new String[]{Integer.toString(currentYear), Integer.toString(currentYear + 1)}));
     YearComboBox.setBounds(140, xFirstLine-3, 85, 20);
     YearComboBox.setSelectedIndex((currentMonth < 11) ? 0 : 1);
 
+    
+    
     // create Action listener for both comboboxes
     ActionListener comboBoxActionListener = new ActionListener() {
 
       @Override
       public void actionPerformed(ActionEvent e) {
-        addWeeksToPanel(MonthComboBox.getSelectedIndex(), Integer.parseInt((String) YearComboBox.getSelectedItem()), panel);
+        monthChangedCallback();
       }
     };
     MonthComboBox.addActionListener(comboBoxActionListener);
     YearComboBox.addActionListener(comboBoxActionListener);
-    panel.add(MonthComboBox);
-    panel.add(YearComboBox);
+    this.add(MonthComboBox);
+    this.add(YearComboBox);
 
     JLabel maxShiftsLabel = new JLabel("Max. Dienste");
     maxShiftsLabel.setBounds(240, xFirstLine, 100, 14);
-    panel.add(maxShiftsLabel);
+    this.add(maxShiftsLabel);
 
     maxShiftsField = new JTextField();
     maxShiftsField.setBounds(340, xFirstLine-3, 60, 20);
-    panel.add(maxShiftsField);
+    this.add(maxShiftsField);
     maxShiftsField.setColumns(10);
 
     JLabel lblMentorenschichten = new JLabel("Mentorenschichten:");
     lblMentorenschichten.setBounds(430, xFirstLine, 150, 14);
-    panel.add(lblMentorenschichten);
+    this.add(lblMentorenschichten);
     // Mentor-shifts 3. Pos
     mentor3rdPosField = new JTextField();
     mentor3rdPosField.setBounds(790, xFirstLine-3, 43, 20);
-    panel.add(mentor3rdPosField);
+    this.add(mentor3rdPosField);
     mentor3rdPosField.setColumns(10);
     JLabel lblPos = new JLabel("3. Pos.:");
     lblPos.setBounds(730, xFirstLine, 60, 14);
-    panel.add(lblPos);
+    this.add(lblPos);
 
     // Mentor-shifts 2. Pos
     mentor2ndPosField = new JTextField();
     mentor2ndPosField.setColumns(10);
     mentor2ndPosField.setBounds(650, xFirstLine-3, 43, 20);
-    panel.add(mentor2ndPosField);
+    this.add(mentor2ndPosField);
     JLabel lblPos_1 = new JLabel("2. Pos.:");
     lblPos_1.setBounds(590, xFirstLine, 60, 14);
-    panel.add(lblPos_1);
+    this.add(lblPos_1);
     
     // add caption
     JLabel caption = new JLabel("X: ganzer Tag   /   F: Frühdienst  /   S: "
             + "Spätdienst   /   T: Tag (Früh&Spät)   /   N: Nachtdienst   "
             + "/   G: Geteilt (Früh&Nacht)   /   K: Komplex (Spät&Nacht)");
     caption.setBounds(30, 488, 850, 25);
-    panel.add(caption);
+    this.add(caption);
 
     JButton btnAusgeben = new JButton("Ausgeben");
     btnAusgeben.setBounds(450, 520, 120, 23);
     btnAusgeben.addActionListener(create);
-    panel.add(btnAusgeben);
+    this.add(btnAusgeben);
 
     JButton btnZurcksetzen = new JButton("Zurücksetzen");
     btnZurcksetzen.setBounds(200, 520, 140, 23);
     btnZurcksetzen.addActionListener(cancel);
-    panel.add(btnZurcksetzen);
+    this.add(btnZurcksetzen);
 
     // initialize radiogroups
     calendar.add(Calendar.MONTH, 1);
-    addWeeksToPanel(calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR), panel);
+    
+    this.setLayout(null);
+    
+    
+//    scrollPane.setLayout(null);
+    scrollPane.setBounds(10,30,880,460);
+    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+    weekContainer.setPreferredSize(new Dimension(900,1000));
+    weekContainer.setLayout(null);
+    scrollPane.setViewportView(weekContainer);
+    this.add(scrollPane);
+    addWeeksToPanel(calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR), weekContainer);
+    scrollPane.validate();
   }
 
   /**
@@ -155,16 +167,16 @@ public class ShiftFormTab extends JFrame {
    * step 3: add new radiogroups
    * @param month 0-11
    * @param currentYear
-   * @param panel 
+   * @param text 
    */
-  private void addWeeksToPanel(int month, int year, JPanel panel) {
+  private void addWeeksToPanel(int month, int year, JPanel text) {
     // step 1 remove all labels and radiogroups from panel
     for (int i = 0; i < allButtonGroups.size(); i++) {
       Enumeration<AbstractButton> e = allButtonGroups.get(i).getElements();
       while (e.hasMoreElements()) {
         AbstractButton abstractButton = e.nextElement();
         abstractButton.setVisible(false);
-        panel.remove(abstractButton);
+        text.remove(abstractButton);
       }
     }
     for (int i = 0; i < allButtonGroups.size(); i++) {
@@ -179,13 +191,13 @@ public class ShiftFormTab extends JFrame {
     for (int i = 0; i < allLabels.size(); i++) {
       JLabel l = allLabels.get(i);
       //l.setVisible(false);
-      panel.remove(l);
+      text.remove(l);
     }
     allLabels.clear();
     for (int i = 0; i < weekPanels.size(); i++) {
       JPanel paneli = weekPanels.get(i);
       paneli.removeAll();
-      panel.remove(paneli);
+      text.remove(paneli);
     }
     weekPanels.clear();
     // step 2: calculate shown dates
@@ -197,14 +209,14 @@ public class ShiftFormTab extends JFrame {
     calendar.add(Calendar.DATE, amountDaysPreviousMonth);
     //step 3: add new radiogroups
     int x = 10;
-    int y = 27;
+    int y = 10;
     int i = 0;
     // add checkboxgroups to panel
     for (int j = 0; j < 6; j++) {
       JPanel weekPanel = new JPanel();
       String panelTitle = "KW" + calendar.get(Calendar.WEEK_OF_YEAR);
       weekPanel.setBorder(new TitledBorder(null, panelTitle, TitledBorder.LEADING, TitledBorder.TOP, null, null));
-      weekPanel.setBounds(x, y, 420, 154);
+      weekPanel.setBounds(x, y, 800, 154);
       weekPanel.setLayout(null);
       int xCheckboxGroup = 15;
       int yCheckboxGroup = 17;
@@ -215,14 +227,11 @@ public class ShiftFormTab extends JFrame {
         calendar.add(Calendar.DATE, 1);
       }
       y += 153;
-      panel.add(weekPanel);
-      if (j == 2) {
-        x = 450;
-        y = 27;
-      }
+      text.add(weekPanel);
+
       weekPanels.add(weekPanel);
     }
-    panel.repaint();
+    text.repaint();
 //    while ((calendar.get(Calendar.MONTH) <= month) && !((month == 11) && (calendar.get(Calendar.MONTH) == 0))) {
 //      addRadioButtonGroupToPanel(calendar.getTime(), x, y, panel);
 //      System.out.println("Add radiogroup:" + UtilityBox.getFormattedDateString(calendar.getTime()));
@@ -488,5 +497,10 @@ public class ShiftFormTab extends JFrame {
         }
       }
     }
+  }
+  
+  // this callback is invoked when the selected month changed
+  private void monthChangedCallback() {
+    addWeeksToPanel(MonthComboBox.getSelectedIndex(), Integer.parseInt((String) YearComboBox.getSelectedItem()), weekContainer);
   }
 }
