@@ -306,7 +306,7 @@ public class MainWindow extends JFrame {
     Image drkIcon = Toolkit.getDefaultToolkit().getImage(f.getClass().getResource("icon.jpg"));
     f.setIconImage(drkIcon);
     f.setVisible(true);
-    f.setResizable(true);
+    f.setResizable(false);
   }
 
 
