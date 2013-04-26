@@ -52,6 +52,7 @@ public class ShiftFormTab extends JFrame {
   private JTextField mentor3rdPosField;
   private JTextField mentor2ndPosField;
   private ArrayList<ButtonGroup> allButtonGroups = new ArrayList<ButtonGroup>();
+  private ArrayList<JTextField> allCommentFields = new ArrayList<JTextField>();
   private ArrayList<JLabel> allLabels = new ArrayList<JLabel>();
   private ArrayList<JPanel> weekPanels = new ArrayList<JPanel>();
   private Calendar calendar = Calendar.getInstance();
@@ -127,9 +128,10 @@ public class ShiftFormTab extends JFrame {
     panel.add(lblPos_1);
     
     // add caption
-    JLabel caption = new JLabel("X: ganzer Tag    /    F: Frühdienst   /    S: "
-            + "Spätdienst    /    T: Tag (Früh&Spät)    /    N: Nachtdienst");
-    caption.setBounds(80, 488, 700, 25);
+    JLabel caption = new JLabel("X: ganzer Tag   /   F: Frühdienst  /   S: "
+            + "Spätdienst   /   T: Tag (Früh&Spät)   /   N: Nachtdienst   "
+            + "/   G: Geteilt (Früh&Nacht)   /   K: Komplex (Spät&Nacht)");
+    caption.setBounds(30, 488, 850, 25);
     panel.add(caption);
 
     JButton btnAusgeben = new JButton("Ausgeben");
@@ -194,7 +196,6 @@ public class ShiftFormTab extends JFrame {
     int nMonthDays = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
     calendar.add(Calendar.DATE, amountDaysPreviousMonth);
     //step 3: add new radiogroups
-    // TODO: implement
     int x = 10;
     int y = 27;
     int i = 0;
@@ -260,6 +261,9 @@ public class ShiftFormTab extends JFrame {
     Enumeration<AbstractButton> e = bg.getElements();
     while (e.hasMoreElements()) {
       panel.add(e.nextElement());
+      JTextField commentField = new JTextField(100);
+      allCommentFields.add(commentField);
+      panel.add(commentField);
     }
   }
 
@@ -274,10 +278,10 @@ public class ShiftFormTab extends JFrame {
     int xSize = 45;
     int ySize = 18;
     ButtonGroup bg = new ButtonGroup();
-    String[] labels = {"X", "F", "S", "T", "N"};
+    String[] labels = {"X", "F", "S", "T", "N", "G", "K"};
     ShiftForm.TimeCode[] timeCodes = {ShiftForm.TimeCode.X,
       ShiftForm.TimeCode.F, ShiftForm.TimeCode.S, ShiftForm.TimeCode.T,
-      ShiftForm.TimeCode.N};
+      ShiftForm.TimeCode.N, ShiftForm.TimeCode.G, ShiftForm.TimeCode.K};
     for (int i = 0; i < timeCodes.length; i++) {
       ExtendedJCheckBox checkBox = new ExtendedJCheckBox(labels[i], timeCodes[i], date);
       checkBox.setBounds((x + (i * xSize)), y, xSize, ySize);
@@ -382,8 +386,10 @@ public class ShiftFormTab extends JFrame {
       calendar.set(year, month, 1);
       int nDaysInMonth = calendar.getMaximum(Calendar.DAY_OF_MONTH);
       ShiftForm.TimeCode[] timeCodes = new ShiftForm.TimeCode[nDaysInMonth];
+      String[] comments = new String[nDaysInMonth];
       int iterator = 0;
       for (int i = Math.abs(amountDaysPreviousMonth); i < nDaysInMonth + Math.abs(amountDaysPreviousMonth); i++) {
+        // read checked time code fpr each day
         ButtonGroup buttonGroup = allButtonGroups.get(i);
         Enumeration<AbstractButton> buttons = buttonGroup.getElements();
         ShiftForm.TimeCode tempTimeCode = ShiftForm.TimeCode.EMPTY;
@@ -395,9 +401,11 @@ public class ShiftFormTab extends JFrame {
           }
         }
         timeCodes[iterator] = tempTimeCode;
+        // read comment
+        comments[iterator] = allCommentFields.get(i).getText();
         iterator++;
       }
-      ShiftForm.getInstance().createShiftFormPdf(timeCodes, month, year, maxShifts, mentor2, mentor3);
+      ShiftForm.getInstance().createShiftFormPdf(timeCodes, comments, month, year, maxShifts, mentor2, mentor3);
     }
   }
 
