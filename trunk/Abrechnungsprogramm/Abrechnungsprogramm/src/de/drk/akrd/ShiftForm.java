@@ -30,7 +30,7 @@ public class ShiftForm {
 
   public enum TimeCode {
 
-    EMPTY, X, F, S, T, N
+    EMPTY, X, F, S, T, N, G, K
   }
 
   private ShiftForm() {
@@ -43,7 +43,7 @@ public class ShiftForm {
     return INSTANCE;
   }
 
-  public boolean createShiftFormPdf(TimeCode[] timeCodes, int month, int year, int maxShifts, int mentorShift2ndPos, int mentorShift3rdPos) {
+  public boolean createShiftFormPdf(TimeCode[] timeCodes, String[] commentStrings, int month, int year, int maxShifts, int mentorShift2ndPos, int mentorShift3rdPos) {
     File dir = new File("Frageboegen");
     if (!dir.isDirectory()) {
       dir.mkdir();
@@ -57,7 +57,7 @@ public class ShiftForm {
       PdfWriter pdfWriter = PdfWriter.getInstance(shiftFormDocument, new FileOutputStream(filePath));
       shiftFormDocument.open();
       shiftFormDocument.newPage();
-      pdfCreated = createPdf(shiftFormDocument, timeCodes, month, year, maxShifts, mentorShift2ndPos, mentorShift3rdPos);
+      pdfCreated = createPdf(shiftFormDocument, timeCodes, commentStrings, month, year, maxShifts, mentorShift2ndPos, mentorShift3rdPos);
       shiftFormDocument.close();
       // TODO: for JDK7 use Multicatch
     } catch (Exception ex){//FileNotFoundException | DocumentException ex) {
@@ -72,7 +72,7 @@ public class ShiftForm {
     return false;
   }
 
-  private boolean createPdf(Document shiftFormDocument, TimeCode[] timeCodes, int month, int year, int maxShifts, int mentorShift2ndPos, int mentorShift3rdPos) {
+  private boolean createPdf(Document shiftFormDocument, TimeCode[] timeCodes, String[] commentStrings, int month, int year, int maxShifts, int mentorShift2ndPos, int mentorShift3rdPos) {
     try {
       Font helveticaFont8 = FontFactory.getFont(FontFactory.HELVETICA, 8);
       Font helveticaFont8Bold = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 8);
@@ -162,7 +162,7 @@ public class ShiftForm {
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month, 1);
         for (int i = 0; i < 31; i++) {
-          String weekday = "", date = "", timeCodeString = "";
+          String weekday = "", date = "", timeCodeString = "", comment = "";
           if (calendar.get(Calendar.MONTH) == month && i < timeCodes.length) {
             weekday = UtilityBox.getDayOfWeekString(calendar.get(Calendar.DAY_OF_WEEK));
             date = UtilityBox.getFormattedDateString(calendar.getTime());
@@ -170,11 +170,12 @@ public class ShiftForm {
             if (timeCode != TimeCode.EMPTY) {
               timeCodeString = timeCode.name();
             }
+            comment = commentStrings[i];
           }
           table1.addCell(getNewCell(1, Element.ALIGN_CENTER, helveticaFont11, weekday));
           table1.addCell(getNewCell(1, Element.ALIGN_CENTER, helveticaFont11, date));
           table1.addCell(getNewCell(1, Element.ALIGN_CENTER, helveticaFont11, timeCodeString));
-          table1.addCell(getNewCell(4, Element.ALIGN_CENTER, helveticaFont11, ""));
+          table1.addCell(getNewCell(4, Element.ALIGN_CENTER, helveticaFont11, comment));
           calendar.add(Calendar.DATE, 1);
         }
       }
