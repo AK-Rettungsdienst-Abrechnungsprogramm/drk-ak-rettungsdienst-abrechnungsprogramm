@@ -4,7 +4,7 @@ Wir freuen uns euch endlich das neue Abrechnungsprogramm zur Verfügung zu stell
 
 Wir haben uns bemüht das neue Programm dem alten so ähnlich wie möglich zu gestalten, um die Umstellung einfach zu machen. 
 
-Sollten Schwierigkeiten oder Fragen auftauchen, könnt ihr uns unter <a href="mailto:software@ak-rd.de">Software@ak-rd.de</a>. Häufig gestellte Fragen werden wir auf der [FAQ] Seite beantworten.
+Sollten Schwierigkeiten oder Fragen auftauchen, könnt ihr uns unter <a url="mailto:software@ak-rd.de">Software@ak-rd.de</a>. Häufig gestellte Fragen werden wir auf der [FAQ] Seite beantworten.
 
 <p align=center>
 <img width=80% src="https://drk-ak-rettungsdienst-abrechnungsprogramm.googlecode.com/svn/wiki/img/MainWindow.png"/></p>
