@@ -171,6 +171,9 @@ public class ShiftForm {
               timeCodeString = timeCode.name();
             }
             comment = commentStrings[i];
+            if(comment.length() > 100) {
+              comment = comment.substring(0, 40);
+            }
           }
           table1.addCell(getNewCell(1, Element.ALIGN_CENTER, helveticaFont11, weekday));
           table1.addCell(getNewCell(1, Element.ALIGN_CENTER, helveticaFont11, date));
