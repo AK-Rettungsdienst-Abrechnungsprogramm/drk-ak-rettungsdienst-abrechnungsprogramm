@@ -53,5 +53,5 @@ Hier könnt ihr eure gesammelten Schichtdaten monatsweise exportieren, um sie da
 
 ===Info/Update===
 Ein Problem des alten Programms war es, dass viele Versionen unterwegs waren und man nie genau wusste, welche jetzt die aktuelle ist.
-Das neue Programm überprüft selbstständig, ob eine neue Version verfügbar ist und informiert darüber per Popup und in der Status-Zeile unten im Fenster. 
+Das neue Programm überprüft selbstständig, ob eine neue Version verfügbar ist und informiert darüber in der Status-Zeile unten im Fenster. 
 Darüber hinaus kann der Schicht-Datensatz im laufenden Programm aktualisiert werden, indem ihr im Info/Update Tab auf "Schicht-Update" klickt.
