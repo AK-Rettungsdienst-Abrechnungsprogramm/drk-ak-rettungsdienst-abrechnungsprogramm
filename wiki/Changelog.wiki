@@ -4,9 +4,6 @@
 
 Hier könnt ihr nachlesen, was in den jeweiligen Versionen neu ist und wann sie rausgekommen sind.
 
-= Details =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+  ===version 0.8 (26.04.2013)=== 
+Die erste öffentliche Test Version. Diese Version wurde herausgegeben, ohne das das produzierte Formular freigegeben wurde.
+Es ist daher eine reine Testversion
