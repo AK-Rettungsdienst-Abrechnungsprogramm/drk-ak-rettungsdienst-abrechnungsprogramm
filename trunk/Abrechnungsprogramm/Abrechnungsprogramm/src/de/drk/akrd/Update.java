@@ -23,12 +23,12 @@ public class Update {
    */
   public static void downloadNewShiftFile() {
       try {
-        Update.downloadFile("http://drk-ak-rettungsdienst-abrechnungsprogramm.googlecode.com/files/Schichten.xml");
+        Update.downloadFile("https://drk-ak-rettungsdienst-abrechnungsprogramm.googlecode.com/svn/trunk/Abrechnungsprogramm/Abrechnungsprogramm/data/Schichten.xml");
         UtilityBox.getInstance().displayInfoPopup("Schichten.xml", "Die Schichtliste wurde aktualisiert.");
       } catch (Exception ex) {
         try {
           // TODO: display URL as Link
-          URL url = new URL("http://drk-ak-rettungsdienst-abrechnungsprogramm.googlecode.com/files/Schichten.xml");
+          URL url = new URL("https://drk-ak-rettungsdienst-abrechnungsprogramm.googlecode.com/svn/trunk/Abrechnungsprogramm/Abrechnungsprogramm/data/Schichten.xml");
           UtilityBox.getInstance().displayErrorPopup("Download", "Fehler beim Download. Die Datei kann unter\n"+url+"\nheruntergeladen werden.");
         } catch (MalformedURLException ex1) {
           Logger.getLogger(XMLEditor.class.getName()).log(Level.SEVERE, null, ex1);
@@ -89,6 +89,7 @@ public class Update {
       if (scanner.hasNext()) {
     	  result = Float.parseFloat(scanner.next());
       }
+      System.out.println(result);
       scanner.close();
     } catch (MalformedURLException e) {
       return -1;
