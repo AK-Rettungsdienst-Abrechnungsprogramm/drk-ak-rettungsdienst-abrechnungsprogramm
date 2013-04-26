@@ -634,7 +634,11 @@ public class PdfCreator {
       // sign-field
       PdfPTable table9 = new PdfPTable(1);
       table9.setWidthPercentage(100);
-      PdfPCell cell48 = new PdfPCell(new Paragraph("Unterschrift Mitarbeiter/in:", helveticaFont11Bold));
+      String signatureString = "Unterschrift Mitarbeiter/in:";
+      if(true) { // TODO: wenn version veraltet
+        signatureString += " NICHT FREIGEGEBENE VERSION. NICHT ABGEBEN.";
+      }
+      PdfPCell cell48 = new PdfPCell(new Paragraph(signatureString, helveticaFont11Bold));
       cell48.setVerticalAlignment(Rectangle.ALIGN_MIDDLE);
       cell48.setFixedHeight(25);
       cell48.setBorderWidth(2);

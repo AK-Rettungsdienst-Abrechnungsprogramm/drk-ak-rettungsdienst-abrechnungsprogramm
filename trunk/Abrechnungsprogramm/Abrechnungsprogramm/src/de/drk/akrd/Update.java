@@ -56,7 +56,6 @@ public class Update {
     FileOutputStream out = new FileOutputStream(outputFile);
 
     byte[] buffer = new byte[1024];
-    //System.out.println("dödö");
     for (int n; (n = pmis.read(buffer)) != -1; out.write(buffer, 0, n));
 
     pmis.close();
@@ -68,16 +67,14 @@ public class Update {
   public static float getLatestProgramVersion() {
     float result = -1f;
     try {
-       URL url = new URL("https://drk-ak-rettungsdienst-abrechnungsprogramm.googlecode.com/svn/trunk/Abrechnungsprogramm/Abrechnungsprogramm/versionIndicators/programVersion");
+      URL url = new URL("https://drk-ak-rettungsdienst-abrechnungsprogramm.googlecode.com/svn/trunk/Abrechnungsprogramm/Abrechnungsprogramm/versionIndicators/programVersion");
       //URL url = new URL("https://drk-ak-rettungsdienst-abrechnungsprogramm.googlecode.com/svn/trunk/Abrechnungsprogramm/Abrechnungsprogramm/versionIndicators/newerProgramVersion");
       Scanner scanner = new Scanner(url.openStream());
       if (scanner.hasNext()) {
     	  result = Float.parseFloat(scanner.next());
       }
       scanner.close();
-    } catch (MalformedURLException e) {
-      return -1;
-    } catch (IOException e) {
+    } catch (Exception e) {
       return -1;
     }
     return result;
@@ -92,7 +89,7 @@ public class Update {
       if (scanner.hasNext()) {
     	  result = Float.parseFloat(scanner.next());
       }
-      System.out.println(result);
+      //System.out.println(result);
       scanner.close();
     } catch (MalformedURLException e) {
       return -1;
