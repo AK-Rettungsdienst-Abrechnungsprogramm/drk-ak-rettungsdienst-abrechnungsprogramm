@@ -622,8 +622,7 @@ public static void instanciate(MainWindow mainWindow) {
    */
   public static boolean hasPreparationTime(ShiftContainer.ShiftType type) {
     if (type == ShiftContainer.ShiftType.RTW || type == ShiftContainer.ShiftType.KTW 
-    	|| type == ShiftContainer.ShiftType.BREISACH || type == ShiftContainer.ShiftType.KIZA
-    	|| type == ShiftContainer.ShiftType.BABY) {
+    	|| type == ShiftContainer.ShiftType.BREISACH || type == ShiftContainer.ShiftType.KIZA) {
       return true;
     }
     return false;
