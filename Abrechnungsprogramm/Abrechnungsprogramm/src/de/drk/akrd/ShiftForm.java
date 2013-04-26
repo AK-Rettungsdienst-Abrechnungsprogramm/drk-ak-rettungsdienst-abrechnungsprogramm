@@ -26,7 +26,7 @@ import java.util.Calendar;
 public class ShiftForm {
 
   private static ShiftForm INSTANCE = null;
-  private static final float minimumCellHeight = 14f;
+  private static final float minimumCellHeight = 15f;
 
   public enum TimeCode {
 
@@ -186,20 +186,25 @@ public class ShiftForm {
       // Block 4 shortcuts and "Mentorenschichten"
       {
         PdfPCell cell2 = getEmptyCell(7, Rectangle.NO_BORDER);
-        cell2.setRowspan(2);
-        cell2.setFixedHeight(20);
+        cell2.setRowspan(1);
+        cell2.setFixedHeight(10);
         table1.addCell(cell2);
         table1.addCell(getNewCell(1, Element.ALIGN_RIGHT, helveticaFont10, "Kürzel: ", Rectangle.NO_BORDER));
-        table1.addCell(getNewCell(6, Element.ALIGN_LEFT, helveticaFont10, "X: ganzer Tag / F: Frühdienst / S: Spätdienst / T: Tag (Früh&Spät) / N: Nachtdienst / G: Geteilt (Früh&Nacht) / K: Komplex (Spät&Nacht)", Rectangle.NO_BORDER));
+        PdfPCell shortcutCell = getNewCell(6, Element.ALIGN_LEFT, helveticaFont10, "X: "
+                + "ganzer Tag / F: Frühdienst / S: Spätdienst / T: Tag "
+                + "(Früh&Spät) / \nN: Nachtdienst / G: Geteilt (Früh&Nacht) / K: "
+                + "Komplex (Spät&Nacht)", Rectangle.NO_BORDER);
+        shortcutCell.setFixedHeight(27);
+        table1.addCell(shortcutCell);
         PdfPCell cell = getEmptyCell(7, Rectangle.NO_BORDER);
-        cell.setFixedHeight(10);
+        cell.setFixedHeight(5);
         table1.addCell(cell);
         PdfPCell lineCell = getNewCell(7, Element.ALIGN_CENTER, helveticaFont9, null);
-        lineCell.setFixedHeight(0.5f);
+        lineCell.setFixedHeight(0.1f);
         table1.addCell(lineCell);
         PdfPCell cell1 = getEmptyCell(7, Rectangle.NO_BORDER);
         cell1.setRowspan(2);
-        cell1.setFixedHeight(20);
+        cell1.setFixedHeight(10);
         table1.addCell(cell1);
         table1.addCell(getNewCell(7, Element.ALIGN_CENTER, helveticaFont10Bold, "Anzahl benötigter Mentorenschichten:", Rectangle.NO_BORDER));
         table1.addCell(getEmptyCell(7, Rectangle.NO_BORDER));
@@ -213,22 +218,25 @@ public class ShiftForm {
         table1.addCell(getNewCell(1, Element.ALIGN_RIGHT, helveticaFont10, String.valueOf(mentorShift3rdPos)));
         table1.addCell(getEmptyCell(2, Rectangle.NO_BORDER));
         table1.addCell(getEmptyCell(7, Rectangle.NO_BORDER));
-        table1.addCell(getEmptyCell(7, Rectangle.NO_BORDER));
       }
 
       // Block 5 Version etc.
       {
         PdfPCell cell1 = getNewCell(2, Element.ALIGN_LEFT, helveticaFont8, "Version 1.0\nStand: 05.01.10");
         cell1.setRowspan(2);
+        cell1.setFixedHeight(20);
         table1.addCell(cell1);
         PdfPCell cell2 = getNewCell(2, Element.ALIGN_LEFT, helveticaFont8, "Erstellt / Aktualisiert:\nMager, I. / Kälble, R.");
         cell2.setRowspan(2);
+        cell2.setFixedHeight(20);
         table1.addCell(cell2);
         PdfPCell cell3 = getNewCell(2, Element.ALIGN_LEFT, helveticaFont8, "Freigegeben:\nKälble, R.");
         cell3.setRowspan(2);
+        cell3.setFixedHeight(20);
         table1.addCell(cell3);
         PdfPCell cell4 = getNewCell(2, Element.ALIGN_LEFT, helveticaFont8, "Seite 1 von 1\nfragebogen.doc");
         cell4.setRowspan(2);
+        cell4.setFixedHeight(20);
         table1.addCell(cell4);
 
       }
@@ -251,6 +259,7 @@ public class ShiftForm {
   private PdfPCell getNewCell(int colspan, int verticalAlignment, Font font, String text) {
     PdfPCell returnCell = new PdfPCell(new Paragraph(text, font));
     returnCell.setMinimumHeight(minimumCellHeight);
+    returnCell.setFixedHeight(minimumCellHeight);
     returnCell.setColspan(colspan);
     returnCell.setHorizontalAlignment(Element.ALIGN_CENTER);
     returnCell.setVerticalAlignment(verticalAlignment);
