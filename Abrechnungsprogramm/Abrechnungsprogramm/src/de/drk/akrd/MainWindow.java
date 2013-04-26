@@ -110,7 +110,11 @@ public class MainWindow extends JFrame {
     setTitle("AK-RD Abrechnungsprogramm");
     getContentPane().setPreferredSize(new Dimension (900, 600)); // default size is 0,0
     pack();
-    setLocation(10, 200);
+    // place the window in the middle of the screen
+    Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+    Dimension windowSize = this.getSize();
+    int xPos = screenSize.width/2 - windowSize.width/2;
+    setLocation(xPos, 100);
     addWindowListener(new WindowClosingAdapter(true));
 
     JPanel basePanel = new JPanel();
