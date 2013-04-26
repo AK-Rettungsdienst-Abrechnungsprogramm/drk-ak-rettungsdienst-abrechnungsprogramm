@@ -6,7 +6,8 @@ Wir haben uns bemüht das neue Programm dem alten so ähnlich wie möglich zu ge
 
 Sollten Schwierigkeiten oder Fragen auftauchen, könnt ihr uns unter software@ak-rd.de. Häufig gestellte Fragen werden wir auf der [FAQ] Seite beantworten.
 
-
+<p align=center>
+<img width=80% src="https://drk-ak-rettungsdienst-abrechnungsprogramm.googlecode.com/svn/wiki/img/MainWindow.png"/></p>
 
 == Warum überhaupt ein neues Programm? ==
 Diese Frage wurde uns seit der Vorstellung beim AK Wochenende häufig gestellt. Die beiden Hauptgründe sind: 
@@ -21,4 +22,17 @@ Insbesondere wird es während der Entwicklung getestet auf Windows, MacOS und Li
 Für jedes der oben genannten Betriebssysteme haben wir auf der Downloads Seite ein ZIP-Archiv bereitgestellt. Entpackt dieses an einen beliebigen Ort und startet dann das Programm durch Doppelklick auf _Abrechnungsprogramm.exe_ unter Windows oder _start.sh_ unter MacOS und Linux. Das wars auch schon.
 
 == Was bleibt beim alten? ==
-Eigentlich alles alles! Insbesondere beim nutzen der Wachenversion werden weiterhin zuerst die Stammdaten unter "Persönliche Daten" eingetragen und dann die Schichten im "Schichten" Tab gesammelt und die Abrechnung erstellt.
+Eigentlich alles alles! Insbesondere beim nutzen der Wachenversion werden weiterhin zuerst die Stammdaten unter "Persönliche Daten" eingetragen und dann die Schichten im "Schichten" Tab gesammelt und die Abrechnung erstellt. 
+<p align=center>
+<img width=80% src="https://drk-ak-rettungsdienst-abrechnungsprogramm.googlecode.com/svn/wiki/img/SchichtenTab.png /></p>
+
+== Was ist neu? ==
+===Schichten===
+Neu im Schichten Tab sind die beiden unteren Menüs, über die man das angezeigte Jahr und den Monat auswählen kann. So könnt ihr z.B. schnell mal schauen, was ihr letzten Monat so verdient habt.
+===Dienstplan auslesen==
+Über den Tab Dienstplan auslesen könnt ihr die PDF-Datei mit dem Monatsdienstplan automatisch auslesen lassen. Eure Dienste werden dann rausgesucht und aufgelistet. Die gefundenen Dienste können dann als iCal Datei exportiert werden oder direkt in einen Google Kalender eingetragen werden.
+<p align=center>
+<img width=80% src="https://drk-ak-rettungsdienst-abrechnungsprogramm.googlecode.com/svn/wiki/img/DPL_ausgelesen.png /></p>
+Dabei gibt es allerdings einen Haken: Das PDF Format ist nicht dazu gemacht maschinell ausgelesen zu werden und wir mussten ein bisschen tricksen, um diese Funktion zu ermöglichen. Den Aufmerksamen unter euch wird aufgefallen sein, dass die Dienstplanung unterschiedliche Formate herausgibt. Das auslesen funktioniert *nur* mit den Monatsdienstplänen, die die Zeile "Arbeitszeit pro Tag" enthalten.
+<p align=center>
+<img width=50% src="https://drk-ak-rettungsdienst-abrechnungsprogramm.googlecode.com/svn/wiki/img/DPL.png" /></p>
