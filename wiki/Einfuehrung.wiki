@@ -36,3 +36,20 @@ Neu im Schichten Tab sind die beiden unteren Menüs, über die man das angezeigt
 Dabei gibt es allerdings einen Haken: Das PDF Format ist nicht dazu gemacht maschinell ausgelesen zu werden und wir mussten ein bisschen tricksen, um diese Funktion zu ermöglichen. Den Aufmerksamen unter euch wird aufgefallen sein, dass die Dienstplanung unterschiedliche Formate herausgibt. Das auslesen funktioniert *nur* mit den Monatsdienstplänen, die die Zeile "Arbeitszeit pro Tag" enthalten.
 <p align=center>
 <img width=50% src="https://drk-ak-rettungsdienst-abrechnungsprogramm.googlecode.com/svn/wiki/img/DPL.png" /></p>
+
+===Fragebogen===
+Wie im bisherigen Programm könnt ihr wieder eure Dienstplan-Wunsch-Abgaben erstellen. Einfach den Monat auswählen, die gewünschten Abgaben 
+anklicken und auf Ausgeben klicken. Ein PDF mit dem Namen Fragebogen_MONAT_JAHR.pdf erscheint im Ordner Fragebögen.
+
+<p align=center>
+<img width=80% src="https://drk-ak-rettungsdienst-abrechnungsprogramm.googlecode.com/svn/wiki/img/Fragebogen.png"/></p>
+
+===Import/Export===
+Hier könnt ihr eure gesammelten Schichtdaten monatsweise exportieren, um sie dann z.B. auf die Wache mitzunehmen, um sie dort zu drucken.
+<p align=center>
+<img width=80% src="https://drk-ak-rettungsdienst-abrechnungsprogramm.googlecode.com/svn/wiki/img/ImportExport.png"/></p>
+
+===Info/Update===
+Ein Problem des alten Programms war es, dass viele Versionen unterwegs waren und man nie genau wusste, welche jetzt die aktuelle ist.
+Das neue Programm überprüft selbstständig, ob eine neue Version verfügbar ist und informiert darüber per Popup und in der Status-Zeile unten im Fenster. 
+Darüber hinaus kann der Schicht-Datensatz im laufenden Programm aktualisiert werden, indem ihr im Info/Update Tab auf "Schicht-Update" klickt.
