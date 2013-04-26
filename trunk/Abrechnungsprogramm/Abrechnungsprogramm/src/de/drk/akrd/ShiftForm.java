@@ -127,7 +127,6 @@ public class ShiftForm {
         PersonalData personalData = PersonalData.getInstance();
         String nameString = personalData.getLastName() + ", " + personalData.getFirstName();
         table1.addCell(getEmptyCell(7, Rectangle.NO_BORDER));
-        table1.addCell(getEmptyCell(7, Rectangle.NO_BORDER));
         PdfPCell cell1 = getNewCell(4, Element.ALIGN_LEFT, helveticaFont11Bold, "Name, Vorname", Rectangle.NO_BORDER);
         cell1.setMinimumHeight(16);
         table1.addCell(cell1);
