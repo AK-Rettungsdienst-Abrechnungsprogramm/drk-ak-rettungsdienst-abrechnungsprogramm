@@ -114,7 +114,7 @@ public class MainWindow extends JFrame {
     Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
     Dimension windowSize = this.getSize();
     int xPos = screenSize.width/2 - windowSize.width/2;
-    setLocation(xPos, 100);
+    setLocation(xPos, 50);
     addWindowListener(new WindowClosingAdapter(true));
 
     JPanel basePanel = new JPanel();
