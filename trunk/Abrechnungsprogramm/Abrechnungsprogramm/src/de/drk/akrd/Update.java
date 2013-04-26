@@ -68,7 +68,10 @@ public class Update {
        URL url = new URL("https://drk-ak-rettungsdienst-abrechnungsprogramm.googlecode.com/svn/trunk/Abrechnungsprogramm/Abrechnungsprogramm/versionIndicators/programVersion");
       //URL url = new URL("https://drk-ak-rettungsdienst-abrechnungsprogramm.googlecode.com/svn/trunk/Abrechnungsprogramm/Abrechnungsprogramm/versionIndicators/newerProgramVersion");
       Scanner scanner = new Scanner(url.openStream());
-      result = scanner.nextFloat();
+      if (scanner.hasNext()) {
+    	  result = Float.parseFloat(scanner.next());
+      }
+      scanner.close();
     } catch (MalformedURLException e) {
       return -1;
     } catch (IOException e) {
@@ -83,7 +86,10 @@ public class Update {
 //      URL url = new URL("https://drk-ak-rettungsdienst-abrechnungsprogramm.googlecode.com/svn/trunk/Abrechnungsprogramm/Abrechnungsprogramm/versionIndicators/programVersion");
       URL url = new URL("https://drk-ak-rettungsdienst-abrechnungsprogramm.googlecode.com/svn/trunk/Abrechnungsprogramm/Abrechnungsprogramm/versionIndicators/shiftFileVersion");
       Scanner scanner = new Scanner(url.openStream());
-      result = scanner.nextFloat();
+      if (scanner.hasNext()) {
+    	  result = Float.parseFloat(scanner.next());
+      }
+      scanner.close();
     } catch (MalformedURLException e) {
       return -1;
     } catch (IOException e) {
