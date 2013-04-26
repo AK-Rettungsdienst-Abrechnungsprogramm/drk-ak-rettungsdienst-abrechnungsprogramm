@@ -369,24 +369,6 @@
     <Tage>Mo-So</Tage>
   </Schicht>
   <Schicht>
-    <ArtUndOrt>BABY</ArtUndOrt>
-    <von>700</von>
-    <bis>1700</bis>
-    <Pause>000</Pause>
-    <Schichtname>YT</Schichtname>
-    <RuestzeitMin>010</RuestzeitMin>
-    <Tage>Mo-So</Tage>
-  </Schicht>
-  <Schicht>
-    <ArtUndOrt>BABY</ArtUndOrt>
-    <von>1700</von>
-    <bis>700</bis>
-    <Pause>000</Pause>
-    <Schichtname>YN</Schichtname>
-    <RuestzeitMin>010</RuestzeitMin>
-    <Tage>Mo-So</Tage>
-  </Schicht>
-  <Schicht>
     <ArtUndOrt>KVS</ArtUndOrt>
     <von>700</von>
     <bis>1500</bis>
@@ -424,7 +406,7 @@
   </Schicht>
   <Schicht>
     <ArtUndOrt>KVS</ArtUndOrt>
-    <von>1500</von>
+    <von>1600</von>
     <bis>2300</bis>
     <Pause>000</Pause>
     <Schichtname>KVS5</Schichtname>
@@ -433,7 +415,7 @@
   </Schicht>
   <Schicht>
     <ArtUndOrt>KVS</ArtUndOrt>
-    <von>1600</von>
+    <von>1500</von>
     <bis>2100</bis>
     <Pause>000</Pause>
     <Schichtname>KVS6</Schichtname>
