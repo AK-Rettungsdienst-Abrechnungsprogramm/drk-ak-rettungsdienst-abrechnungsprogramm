@@ -271,6 +271,9 @@ public class ShiftFormTab extends JPanel {
     while (e.hasMoreElements()) {
       panel.add(e.nextElement());
       JTextField commentField = new JTextField(100);
+      commentField.setColumns(10);
+      commentField.setBounds(x + 450, y, 300, 17);
+      commentField.setEnabled(active);
       allCommentFields.add(commentField);
       panel.add(commentField);
     }
