@@ -75,6 +75,7 @@ public class ShiftCollectorTab extends JPanel {
 	JLabel lblPartner = new JLabel("Schichtpartner:");
 	JLabel lblComment = new JLabel("Kommentar:");
 	JLabel lblMonthSelection = new JLabel("Anzeigen:");
+	JLabel prepTimeLabel = new JLabel("Rüstzeit:");
 	boolean initialized = false;
 
 	// Text fields
@@ -84,14 +85,13 @@ public class ShiftCollectorTab extends JPanel {
 	JTextField endField = new JTextField();
 	JTextField breakField = new JTextField();
 	JTextField commentField = new JTextField();
+	JTextField prepTime = new JTextField();
 	
 	// Buttons
 	JButton submitButton = new JButton();
 	JButton createSalaryStatementButton = new JButton();
     JButton deleteRegisteredShiftButton = new JButton();
     JButton editRegisteredShiftButton = new JButton();
-    
-    JCheckBox prepTimeBox = new JCheckBox();
     
     JComboBox<ShiftType> shiftTypeChooser = new JComboBox<ShiftType>();
     
@@ -143,7 +143,6 @@ public class ShiftCollectorTab extends JPanel {
 	    	}
 	    });
 
-	    prepTimeBox.setText("10 min Rüstzeit");
 	    
 	    deleteRegisteredShiftButton.setText("Löschen");
 	    editRegisteredShiftButton.setText("Bearbeiten");
@@ -169,7 +168,11 @@ public class ShiftCollectorTab extends JPanel {
 	    		//	    				return;
 	    		//	    			}
 	    		ShiftContainer.ShiftType type = (ShiftContainer.ShiftType)shiftTypeChooser.getSelectedItem();
-	    		prepTimeBox.setSelected(UtilityBox.hasPreparationTime(type));
+	    		if (UtilityBox.hasPreparationTime(type)) {
+	    			prepTime.setText("7");
+	    		} else {
+	    			prepTime.setText("0");
+	    		}
 
 	    		updateShiftContainer();
 
@@ -294,8 +297,8 @@ public class ShiftCollectorTab extends JPanel {
 		dateField.setText(shift.getDateString());
 		commentField.setText(shift.getComment());
 		shiftTypeChooser.setSelectedItem(shift.getType());
-		prepTimeBox.setSelected(shift.PreparationTimeSet());
-		
+
+		prepTime.setText(Integer.toString(shift.getPrepTime()));
 		// delete the shift
 		UtilityBox.getInstance().getShiftContainer().deleteShift(shift.getId());
 		updateRegisteredShifts();
@@ -326,7 +329,11 @@ public class ShiftCollectorTab extends JPanel {
 		breakField.setText(breakTime);
 		// mainWindow.noShiftTypeUpdate = true;
 		shiftTypeChooser.setSelectedItem(shiftType);
-        prepTimeBox.setSelected(UtilityBox.hasPreparationTime(shiftType));
+        if(UtilityBox.hasPreparationTime(shiftType)) {
+        	prepTime.setText("7");
+        } else {
+        	prepTime.setText("0");
+        }
 	}
 
 	// This method handles display and function of the date picker
@@ -469,8 +476,11 @@ public class ShiftCollectorTab extends JPanel {
 		this.add(breakField);
 		breakField.setBounds(formX + 70, formY + lineSpacing * 4, timeFieldWidth, textFieldHeight);
 		
-		this.add(prepTimeBox);
-		prepTimeBox.setBounds(formX + 170, formY + lineSpacing * 4, SwingUtilities.computeStringWidth(fm, prepTimeBox.getText()) + 50, labelHeight);
+		this.add(prepTimeLabel);
+		prepTimeLabel.setBounds(formX + 170, formY + lineSpacing * 4, SwingUtilities.computeStringWidth(fm, prepTimeLabel.getText()) + 50, labelHeight);
+		
+		this.add(prepTime);
+		prepTime.setBounds(formX + 240, formY + lineSpacing * 4, timeFieldWidth,textFieldHeight);
 		
 		// Line 6
 		
@@ -597,6 +607,20 @@ public class ShiftCollectorTab extends JPanel {
 			  UtilityBox.getInstance().displayErrorPopup("Fehler", "Bitte Schichtpartner angeben!");
 			  return;
 		  }
+		  
+		  // check prep time
+		  int preparationTime = 0;
+		  try {
+			  preparationTime = Integer.parseInt(prepTime.getText());
+		  } 
+		  catch (NumberFormatException e) {
+			  UtilityBox.getInstance().displayErrorPopup("Fehler", "Rüstzeit muss zwischen 0 und 7 sein!");
+			  return;
+		  }
+		  if (preparationTime > 7  || preparationTime < 0) {
+			  UtilityBox.getInstance().displayErrorPopup("Fehler", "Rüstzeit muss zwischen 0 und 7 sein!");
+			  return;  
+		  }
 
 		  UtilityBox.getInstance().getShiftContainer().registerShift(
 				  (ShiftContainer.ShiftType)shiftTypeChooser.getSelectedItem(), date,
@@ -605,7 +629,7 @@ public class ShiftCollectorTab extends JPanel {
 				  breakTime,
 				  partner,
 				  commentField.getText(),
-				  prepTimeBox.isSelected());
+				  prepTime.getText());
 		  
 		  // set the year and month combo boxes to display the month the shift just registered was in
 		  DateFormat f = new SimpleDateFormat("dd.MM.yyyy");
@@ -627,6 +651,8 @@ public class ShiftCollectorTab extends JPanel {
 		  beginField.setText("");
 		  endField.setText("");
 		  shiftPartnerField.setText("");
+		  prepTime.setText("");
+		  breakField.setText("");
 	  }
 	  
 	  /**

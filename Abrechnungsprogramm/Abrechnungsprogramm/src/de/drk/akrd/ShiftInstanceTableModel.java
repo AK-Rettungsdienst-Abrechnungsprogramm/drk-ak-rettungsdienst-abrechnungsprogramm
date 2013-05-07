@@ -51,7 +51,7 @@ public class ShiftInstanceTableModel extends AbstractTableModel {
       case 0:
         return data.get(row).getDateString();
       case 1:
-        return UtilityBox.createTimeStringFromInt(data.get(row).getActualStartingTime());
+        return UtilityBox.createTimeStringFromInt(data.get(row).getActualStartingTimeWithPrepTime());
       case 2:
         return UtilityBox.createTimeStringFromInt(data.get(row).getActualEndTime());
       case 3:
