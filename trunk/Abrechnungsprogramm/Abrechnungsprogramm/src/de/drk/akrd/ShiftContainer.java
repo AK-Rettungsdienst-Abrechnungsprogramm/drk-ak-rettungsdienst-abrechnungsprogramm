@@ -216,7 +216,7 @@ public class ShiftContainer  {
    * @param comment 
    * @author niklas
    */
-  protected void registerShift(ShiftContainer.ShiftType type, String date, int actualStart, int actualEnd, int actualBreak, String partner, String comment, boolean prepTime) {
+  protected void registerShift(ShiftContainer.ShiftType type, String date, int actualStart, int actualEnd, int actualBreak, String partner, String comment, String prepTime) {
     // calculate time in float
     float startingFloat = ShiftInstance.timeToFloat(actualStart);
     float endFloat = ShiftInstance.timeToFloat(actualEnd);
@@ -234,8 +234,9 @@ public class ShiftContainer  {
     if (type == ShiftType.KIZA || type == ShiftType.BREISACH) {
     	commuteExpenses = 12;
     }
+    
 
-    ShiftInstance entry = new ShiftInstance(shiftIdCounter, type, date, actualStart, actualEnd, actualBreak, commuteExpenses, prepTime, partner, comment);
+    ShiftInstance entry = new ShiftInstance(shiftIdCounter, type, date, actualStart, actualEnd, actualBreak, commuteExpenses, Integer.parseInt(prepTime), partner, comment);
     // increment id counter
     shiftIdCounter++;
 

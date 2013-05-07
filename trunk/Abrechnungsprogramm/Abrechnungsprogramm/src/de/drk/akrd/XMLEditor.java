@@ -272,6 +272,18 @@ public class XMLEditor {
     List shiftNodes = node.getChildren();
     for (int j = 0; j < shiftNodes.size(); j++) {
       Element currentNode = (Element) shiftNodes.get(j);
+      
+      // load preparation time which is now an integer, but used to be a bool,
+      // We provide compatibility with both versions:
+      int prepTime = 0;
+      try {
+    	  prepTime = Integer.parseInt(currentNode.getChildText("preparationTime"));
+      } catch(NumberFormatException e) {
+    	  if (Boolean.parseBoolean(currentNode.getChildText("preparationTime"))) {
+    			prepTime = 7;  
+    	  }
+      }
+      
       returnList.add(new ShiftInstance( -1,
               ShiftContainer.getShiftTypeFromId(currentNode.getChildText("id")),
               currentNode.getChildText("date"),
@@ -279,7 +291,7 @@ public class XMLEditor {
               Integer.parseInt(currentNode.getChildText("actEndTime")),
               Integer.parseInt(currentNode.getChildText("actBreakTime")),
               Integer.parseInt(currentNode.getChildText("commuteExpenses")),
-              Boolean.parseBoolean(currentNode.getChildText("preparationTime")),
+              prepTime,
               currentNode.getChildText("partner"),
               currentNode.getChildText("comment")));
     }
@@ -398,7 +410,7 @@ public class XMLEditor {
     element.addContent(new Element("actEndTime").setText(Integer.toString(shift.getActualEndTime())));
     element.addContent(new Element("actBreakTime").setText(Integer.toString(shift.getActualBreakTime())));
     element.addContent(new Element("commuteExpenses").setText(Integer.toString(shift.getCommuteExpenses())));
-    element.addContent(new Element("preparationTime").setText(Boolean.toString(shift.PreparationTimeSet())));
+    element.addContent(new Element("preparationTime").setText(Integer.toString(shift.getPrepTime())));
     element.addContent(new Element("partner").setText(shift.getPartner()));
     element.addContent(new Element("comment").setText(shift.getComment()));
   }

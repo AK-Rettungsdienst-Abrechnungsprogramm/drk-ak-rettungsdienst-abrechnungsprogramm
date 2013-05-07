@@ -24,7 +24,7 @@ public class ShiftInstance implements Comparable<ShiftInstance> {
   private int commuteExpenses;
   private String partner;
   private String comment;
-  private boolean preparationTime;
+  private int preparationTime;
 
   /**
    * create a new ShiftInstance
@@ -37,7 +37,7 @@ public class ShiftInstance implements Comparable<ShiftInstance> {
    * @param comment comment; maximal 36 characters
    */
   public ShiftInstance(int id, ShiftContainer.ShiftType type, String dateString, int actualStartingTime, 
-          int actualEndTime, int actualBreakTime, int commuteExpenses, boolean prepTime, String partner, String comment) {
+          int actualEndTime, int actualBreakTime, int commuteExpenses, int prepTime, String partner, String comment) {
     this.id = id;
     this.type = type;
     this.dateString = dateString;
@@ -58,22 +58,20 @@ public class ShiftInstance implements Comparable<ShiftInstance> {
     
     int start = actualStartingTime;
     // if prepTime was set, calculate actualStartingTimeWithPrepTime
-	if(prepTime)
+
+	// subtract prepTime minutes
+	int minutes = start%100;
+	if(minutes >= prepTime) {
+		start -= prepTime;
+	} else
 	{
-		// subtract 10 minutes
-		int minutes = start%100;
-		if(minutes >= 10) {
-			start -= 10;
+		int diff = prepTime - minutes;
+		if (start > 100)
+		{
+			start = start - 40 - prepTime;
 		} else
 		{
-			int diff = 10 - minutes;
-			if (start > 100)
-			{
-				start = start - 40 - 10;
-			} else
-			{
-				start = 2400 - 40 - diff;
-			}
+			start = 2400 - 40 - diff;
 		}
 	}
 	this.actualStartingTimeWithPrepTime = start;
@@ -99,11 +97,7 @@ public int getActualStartingTimeWithPrepTime() {
 	return actualStartingTimeWithPrepTime;
 }
 
-public boolean PreparationTimeSet() {
-	return preparationTime;
-}
-
-public void setPreparationTime(boolean preparationTime) {
+public void setPreparationTime(int preparationTime) {
 	this.preparationTime = preparationTime;
 }
 
@@ -181,4 +175,8 @@ public void setPreparationTime(boolean preparationTime) {
     else
       return 1;
   }
+
+public int getPrepTime() {
+	return preparationTime;
+}
 }
