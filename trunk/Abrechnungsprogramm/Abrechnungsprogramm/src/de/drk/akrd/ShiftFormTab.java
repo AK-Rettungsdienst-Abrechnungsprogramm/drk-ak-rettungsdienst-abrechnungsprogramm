@@ -47,7 +47,7 @@ public class ShiftFormTab extends JPanel {
   private Calendar calendar = Calendar.getInstance();
   private int amountDaysPreviousMonth = 0;
   //private MouseListener checkBoxListener = new CheckboxListener();
-  private CheckboxItemListener checkboxItemListener = new CheckboxItemListener();
+
 
   // The scroll pane that holds the weeks
   private JScrollPane scrollPane = new JScrollPane();
@@ -447,29 +447,27 @@ public class ShiftFormTab extends JPanel {
 //      }
 //    }
 //  }
-  private class CheckboxItemListener implements ItemListener {
-//    public CheckboxItemListener() {
-//      super();
-//    }
 
-    @Override
-    public void itemStateChanged(ItemEvent e) {
-      ExtendedJCheckBox source = (ExtendedJCheckBox) e.getSource();
-      for (int i = 0; i < allButtonGroups.size(); i++) {
-        ButtonGroup buttonGroup = allButtonGroups.get(i);
-        Enumeration<AbstractButton> buttons = buttonGroup.getElements();
-        while (buttons.hasMoreElements()) {
-          if (buttons.nextElement().equals(source)) {
-            boolean newSelectStatus = !source.isChecked();
-            setExtendedJCheckboxInButtonGroupToValue(buttonGroup, source, newSelectStatus);
-            return;
-          }
-        }
-      }
-    }
-  }
-
+  /** After click on a checkbox, this method updates the whole group
+   * 
+   * @param buttonGroup
+   * @param checkbox
+   * @param value
+   */
   private void setExtendedJCheckboxInButtonGroupToValue(ButtonGroup buttonGroup, ExtendedJCheckBox checkbox, boolean value) {
+    Enumeration<AbstractButton> buttons = buttonGroup.getElements();
+    // iterate over all checkboxes and set the new state to the clicked one
+    // and false to all others
+    while (buttons.hasMoreElements()) {
+    	ExtendedJCheckBox cb = (ExtendedJCheckBox) buttons.nextElement();
+        if (cb.equals(checkbox)) {
+        	cb.setChecked(value);
+        	
+        } else {
+        	cb.setChecked(false);
+        }
+    }
+    // so some trickery to get the UI checkbox to repaint
     buttonGroup.remove(checkbox);
     checkbox.setChecked(value);
     checkbox.setSelected(value);
@@ -485,6 +483,7 @@ public class ShiftFormTab extends JPanel {
     @Override
     public void actionPerformed(ActionEvent e) {
       ExtendedJCheckBox source = (ExtendedJCheckBox) e.getSource();
+
       for (int i = 0; i < allButtonGroups.size(); i++) {
         ButtonGroup buttonGroup = allButtonGroups.get(i);
         Enumeration<AbstractButton> buttons = buttonGroup.getElements();
