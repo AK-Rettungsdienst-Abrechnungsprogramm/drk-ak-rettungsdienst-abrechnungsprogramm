@@ -147,6 +147,7 @@ public class PdfCreator {
       Font helveticaFont7 = FontFactory.getFont(FontFactory.HELVETICA, 7);
       Font helveticaFont7Bold = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 7);
       Font helveticaFont8 = FontFactory.getFont(FontFactory.HELVETICA, 8);
+      Font helveticaFont8Bold = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 8);
       Font helveticaFont9 = FontFactory.getFont(FontFactory.HELVETICA, 9);
       Font helveticaFont10 = FontFactory.getFont(FontFactory.HELVETICA, 10);
       Font helveticaFont9Bold = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 9);
@@ -155,33 +156,50 @@ public class PdfCreator {
       Font helveticaFont18Bold = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18);
       PdfPTable table1 = new PdfPTable(3);
       table1.setWidthPercentage(100);
-      float[] table1CellWidth = new float[]{22.87f, 51.45f, 19.29f};
+      float[] table1CellWidth = new float[]{18f, 48f, 20f};
       table1.setWidths(table1CellWidth);
       PdfPCell cell1 = new PdfPCell();
-      cell1.addElement(new Paragraph("Rettungsdienst Freiburg", helveticaFont9));
-      cell1.setVerticalAlignment(Element.ALIGN_BOTTOM);
-      cell1.setMinimumHeight(28f);
+      cell1.addElement(new Paragraph("DRK Freiburg\nRettungsdienst Freiburg", helveticaFont8));
+      cell1.setVerticalAlignment(Element.ALIGN_TOP);
+      cell1.setFixedHeight(27f);
+      cell1.setPaddingTop(0);
       cell1.setBorderWidth(1);
       Image drkLogo = Image.getInstance(MainWindow.class.getResource("logo_Abrechnung.jpg"));
       drkLogo.scaleAbsolute(115f, 14f);
-      drkLogo.setAbsolutePosition(38f, 788f);
+      drkLogo.setAbsolutePosition(441f, 784f);
       PdfPCell cell2 = new PdfPCell(new Paragraph("Abrechnung AK-RD/Aushilfen", helveticaFont18Bold));
       cell2.setHorizontalAlignment(Element.ALIGN_CENTER);
+      cell2.setVerticalAlignment(Element.ALIGN_MIDDLE);
       cell2.setPaddingBottom(6);
       cell2.setBorderWidth(1);
-      PdfPCell cell3 = new PdfPCell(new Paragraph("Ablage:\nPersAbtlg./Lohnabrechn.", helveticaFont8));
-      cell3.setHorizontalAlignment(Element.ALIGN_RIGHT);
-      cell3.setVerticalAlignment(Element.ALIGN_BOTTOM);
+      cell2.setRowspan(2);
+      PdfPCell cell3 = new PdfPCell();
       cell3.setBorderWidth(1);
+      PdfPCell cell1p1 = new PdfPCell();
+      cell1p1.setFixedHeight(10f);
+      cell1p1.setPaddingTop(0);
+      cell1p1.addElement(new Paragraph("Gültig ab: 01.06.2013", helveticaFont8));
+      cell1p1.setHorizontalAlignment(Element.ALIGN_LEFT);
+      cell1p1.setVerticalAlignment(Element.ALIGN_TOP);
+      cell1p1.setBorderWidth(1);
+      PdfPCell cell2p1 = new PdfPCell();
+      cell2p1.setPaddingTop(0);
+      cell2p1.addElement(new Paragraph("Ablage: Personalabteilung", helveticaFont8));
+      cell2p1.setHorizontalAlignment(Element.ALIGN_RIGHT);
+      cell2p1.setVerticalAlignment(Element.ALIGN_TOP);
+      cell2p1.setBorderWidth(1);
 
       table1.addCell(cell1);
       table1.addCell(cell2);
       table1.addCell(cell3);
+      table1.addCell(cell1p1);
+      table1.addCell(cell2p1);
+      //table1.addCell(cell1p1);
       // create empty line
       PdfPTable table2 = new PdfPTable(1);
       table2.setWidthPercentage(100);
       PdfPCell cellEmpty = new PdfPCell();
-      cellEmpty.setMinimumHeight(8f);
+      cellEmpty.setMinimumHeight(6f);
       cellEmpty.setBorder(Rectangle.NO_BORDER);
       table2.addCell(cellEmpty);
 
@@ -190,7 +208,7 @@ public class PdfCreator {
       table3.setWidthPercentage(100);
       PdfPCell cell4 = new PdfPCell(new Paragraph("  RD Freiburg", helveticaFont9Bold));
       cell4.setVerticalAlignment(Element.ALIGN_MIDDLE);
-      cell4.setMinimumHeight(26f);
+      cell4.setMinimumHeight(18f);
       cell4.setUseBorderPadding(true);
       PdfPCell cell5 = new PdfPCell(new Paragraph("  KTP Freiburg", helveticaFont9Bold));
       cell5.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -206,7 +224,7 @@ public class PdfCreator {
       cell8.setUseBorderPadding(true);
       // set checkboxcells
       PdfPCell cell9 = new PdfPCell();
-      cell9.setMinimumHeight(90f);
+      cell9.setMinimumHeight(92f);
       PdfPCell cell10 = new PdfPCell();
       PdfPCell cell11 = new PdfPCell();
       PdfPCell cell12 = new PdfPCell();
@@ -327,7 +345,7 @@ public class PdfCreator {
             boolArray[checkboxSetter] = true;
           }
         }
-        createCheckbox(writer, accountingDocument, helveticaFont9, KoSt[i], xPosition, 740, boolArray, pageNr);
+        createCheckbox(writer, accountingDocument, helveticaFont9, KoSt[i], xPosition, 736, boolArray, pageNr);
         boolArray = new boolean[]{false, false, false, false, false, false};
         xPosition += 105;
       }
@@ -336,14 +354,17 @@ public class PdfCreator {
       PdfPTable table4 = new PdfPTable(1);
       table4.setWidthPercentage(100);
       PdfPCell cellEmpty2 = new PdfPCell();
-      cellEmpty2.setMinimumHeight(6f);
+      cellEmpty2.setFixedHeight(5f);
       cellEmpty2.setBorder(Rectangle.NO_BORDER);
       table4.addCell(cellEmpty2);
 
-      // create personal-date-table
+      // create personal-data-table
+      float personalDataCellHeight = 18f;
+      Font personalDataFont = helveticaFont10Bold;
       PdfPTable table5 = new PdfPTable(5);
       table5.setWidthPercentage(100);
       table5.setWidths(new float[]{137f, 4f, 192f, 30f, 115f});
+      String adress = "Bekannt";
       String bankNameAndCity = "Bekannt";
       String accountNumber = "Bekannt";
       String blz = "Bekannt";
@@ -354,10 +375,10 @@ public class PdfCreator {
       }
 
       // name
-      PdfPCell cell20 = new PdfPCell(new Paragraph("Name", helveticaFont11Bold));
-      cell20.setFixedHeight(22f);
+      PdfPCell cell20 = new PdfPCell(new Paragraph("Name", personalDataFont));
+      cell20.setFixedHeight(personalDataCellHeight);
       cell20.disableBorderSide(Rectangle.RIGHT);
-      PdfPCell cell21 = new PdfPCell(new Paragraph(":", helveticaFont11Bold));
+      PdfPCell cell21 = new PdfPCell(new Paragraph(":", personalDataFont));
       cell21.disableBorderSide(Rectangle.LEFT);
       cell21.disableBorderSide(Rectangle.RIGHT);
       PdfPCell cell22 = new PdfPCell(
@@ -365,36 +386,46 @@ public class PdfCreator {
               + personalData.getLastName()));
       cell22.setColspan(3);
       cell22.disableBorderSide(Rectangle.LEFT);
+      // adress
+      PdfPCell cell22p1 = new PdfPCell(new Paragraph("Adresse*", personalDataFont));
+      cell22p1.setFixedHeight(personalDataCellHeight);
+      cell22p1.disableBorderSide(Rectangle.RIGHT);
+      PdfPCell cell22p2 = new PdfPCell(new Paragraph(":", personalDataFont));
+      cell22p2.disableBorderSide(Rectangle.LEFT);
+      cell22p2.disableBorderSide(Rectangle.RIGHT);
+      PdfPCell cell22p3 = new PdfPCell(new Paragraph(" " + bankNameAndCity));
+      cell22p3.disableBorderSide(Rectangle.LEFT);
+      cell22p3.setColspan(3);
       // bankname
-      PdfPCell cell23 = new PdfPCell(new Paragraph("Bankname und Ort*", helveticaFont11Bold));
-      cell23.setFixedHeight(22f);
+      PdfPCell cell23 = new PdfPCell(new Paragraph("Bankname und Ort*", personalDataFont));
+      cell23.setFixedHeight(personalDataCellHeight);
       cell23.disableBorderSide(Rectangle.RIGHT);
-      PdfPCell cell24 = new PdfPCell(new Paragraph(":", helveticaFont11Bold));
+      PdfPCell cell24 = new PdfPCell(new Paragraph(":", personalDataFont));
       cell24.disableBorderSide(Rectangle.LEFT);
       cell24.disableBorderSide(Rectangle.RIGHT);
       PdfPCell cell25 = new PdfPCell(new Paragraph(" " + bankNameAndCity));
       cell25.disableBorderSide(Rectangle.LEFT);
       cell25.setColspan(3);
       // accountnr
-      PdfPCell cell26 = new PdfPCell(new Paragraph("Kontonummer*", helveticaFont11Bold));
-      cell26.setFixedHeight(22f);
+      PdfPCell cell26 = new PdfPCell(new Paragraph("Kontonummer*", personalDataFont));
+      cell26.setFixedHeight(personalDataCellHeight);
       cell26.disableBorderSide(Rectangle.RIGHT);
-      PdfPCell cell27 = new PdfPCell(new Paragraph(":", helveticaFont11Bold));
+      PdfPCell cell27 = new PdfPCell(new Paragraph(":", personalDataFont));
       cell27.disableBorderSide(Rectangle.LEFT);
       cell27.disableBorderSide(Rectangle.RIGHT);
       PdfPCell cell28 = new PdfPCell(new Paragraph(" " + accountNumber));
       cell28.disableBorderSide(Rectangle.LEFT);
       cell28.disableBorderSide(Rectangle.RIGHT);
-      PdfPCell cell29 = new PdfPCell(new Paragraph("BLZ :", helveticaFont11Bold));
+      PdfPCell cell29 = new PdfPCell(new Paragraph("BLZ :", personalDataFont));
       cell29.disableBorderSide(Rectangle.LEFT);
       cell29.disableBorderSide(Rectangle.RIGHT);
       PdfPCell cell2930 = new PdfPCell(new Paragraph(blz));
       cell2930.disableBorderSide(Rectangle.LEFT);
 
-      PdfPCell cell30 = new PdfPCell(new Paragraph("zu belastende Kostenstelle", helveticaFont11Bold));
-      cell30.setFixedHeight(22f);
+      PdfPCell cell30 = new PdfPCell(new Paragraph("zu belastende Kostenstelle", personalDataFont));
+      cell30.setFixedHeight(personalDataCellHeight);
       cell30.disableBorderSide(Rectangle.RIGHT);
-      PdfPCell cell3031 = new PdfPCell(new Paragraph(":", helveticaFont11Bold));
+      PdfPCell cell3031 = new PdfPCell(new Paragraph(":", personalDataFont));
       cell3031.disableBorderSide(Rectangle.LEFT);
       cell3031.disableBorderSide(Rectangle.RIGHT);
       PdfPCell cell3032 = new PdfPCell(new Paragraph(" "+costUnit));
@@ -404,6 +435,9 @@ public class PdfCreator {
       table5.addCell(cell20);
       table5.addCell(cell21);
       table5.addCell(cell22);
+      table5.addCell(cell22p1);
+      table5.addCell(cell22p2);
+      table5.addCell(cell22p3);
       table5.addCell(cell23);
       table5.addCell(cell24);
       table5.addCell(cell25);
@@ -420,7 +454,7 @@ public class PdfCreator {
       PdfPTable table6 = new PdfPTable(1);
       table6.setWidthPercentage(100);
       PdfPCell cell31 = new PdfPCell(new Paragraph("* Angabe nur bei Neueinstellung oder Veränderungen", helveticaFont8));
-      cell31.setFixedHeight(13f);
+      cell31.setFixedHeight(12f);
       cell31.setBorder(Rectangle.NO_BORDER);
       table6.addCell(cell31);
 
@@ -429,39 +463,43 @@ public class PdfCreator {
       table7.setWidthPercentage(100);
       table7.setWidths(new float[]{1.96f, 0.9f, 1.8f, 1.8f, 2.9f, 1.96f, 1.96f, 1.85f, 1.85f, 1.4f, 2.2f});
       // headlines
-      PdfPCell cell32 = new PdfPCell(new Paragraph("Datum", helveticaFont9Bold));
+      Font shiftTableHeadlineFont = helveticaFont8Bold;
+      PdfPCell cell32 = new PdfPCell(new Paragraph("Datum", shiftTableHeadlineFont));
       cell32.setFixedHeight(50f);
       cell32.setVerticalAlignment(Rectangle.ALIGN_MIDDLE);
       cell32.setHorizontalAlignment(Rectangle.ALIGN_CENTER);
 
-      PdfPCell cell33 = new PdfPCell(new Paragraph("Tag", helveticaFont9Bold));
+      PdfPCell cell33 = new PdfPCell(new Paragraph("Tag", shiftTableHeadlineFont));
       cell33.setVerticalAlignment(Rectangle.ALIGN_MIDDLE);
       cell33.setHorizontalAlignment(Rectangle.ALIGN_CENTER);
-      PdfPCell cell34 = new PdfPCell(new Paragraph("Uhrzeit\nvon", helveticaFont9Bold));
+      PdfPCell cell34 = new PdfPCell(new Paragraph("Uhrzeit\nvon", shiftTableHeadlineFont));
       cell34.setVerticalAlignment(Rectangle.ALIGN_MIDDLE);
       cell34.setHorizontalAlignment(Rectangle.ALIGN_CENTER);
-      PdfPCell cell35 = new PdfPCell(new Paragraph("Uhrzeit\nbis", helveticaFont9Bold));
+      PdfPCell cell35 = new PdfPCell(new Paragraph("Uhrzeit\nbis", shiftTableHeadlineFont));
       cell35.setVerticalAlignment(Rectangle.ALIGN_MIDDLE);
       cell35.setHorizontalAlignment(Rectangle.ALIGN_CENTER);
-      PdfPCell cell36 = new PdfPCell(new Paragraph("Besatzung", helveticaFont9Bold));
+      PdfPCell cell36 = new PdfPCell(new Paragraph("Besatzung", shiftTableHeadlineFont));
       cell36.setVerticalAlignment(Rectangle.ALIGN_MIDDLE);
       cell36.setHorizontalAlignment(Rectangle.ALIGN_CENTER);
-      PdfPCell cell37 = new PdfPCell(new Paragraph("Anzahl geleisteter Stunden (Zeit)", helveticaFont9Bold));
+      PdfPCell cell37 = new PdfPCell(new Paragraph("Anzahl geleisteter Stunden (Zeit)", shiftTableHeadlineFont));
       cell37.setVerticalAlignment(Rectangle.ALIGN_MIDDLE);
       cell37.setHorizontalAlignment(Rectangle.ALIGN_CENTER);
-      PdfPCell cell38 = new PdfPCell(new Paragraph("Anzahl geleisteter Stunden (Dezimal)", helveticaFont9Bold));
+      PdfPCell cell38 = new PdfPCell(new Paragraph("Anzahl geleisteter Stunden (Dezimal)", shiftTableHeadlineFont));
       cell38.setVerticalAlignment(Rectangle.ALIGN_MIDDLE);
       cell38.setHorizontalAlignment(Rectangle.ALIGN_CENTER);
-      PdfPCell cell39 = new PdfPCell(new Paragraph("Lohn pro\nStunde", helveticaFont9Bold));
+      PdfPCell cell39 = new PdfPCell(new Paragraph("Lohn pro\nStunde", shiftTableHeadlineFont));
       cell39.setVerticalAlignment(Rectangle.ALIGN_MIDDLE);
       cell39.setHorizontalAlignment(Rectangle.ALIGN_CENTER);
-      PdfPCell cell40 = new PdfPCell(new Paragraph("Lohn\ngesamt", helveticaFont9Bold));
+      PdfPCell cell40 = new PdfPCell(new Paragraph("Lohn\ngesamt", shiftTableHeadlineFont));
       cell40.setVerticalAlignment(Rectangle.ALIGN_MIDDLE);
       cell40.setHorizontalAlignment(Rectangle.ALIGN_CENTER);
-      PdfPCell cell401 = new PdfPCell(new Paragraph("Fahrt-\nkosten\n5803", helveticaFont9Bold));
+      Paragraph travelExpensesParagraph = new Paragraph();
+      travelExpensesParagraph.add(new Phrase("Fahrt-\nkosten\n", shiftTableHeadlineFont));
+      travelExpensesParagraph.add(new Phrase("(Kostenart 5803)", helveticaFont5));
+      PdfPCell cell401 = new PdfPCell(travelExpensesParagraph);
       cell401.setVerticalAlignment(Rectangle.ALIGN_MIDDLE);
       cell401.setHorizontalAlignment(Rectangle.ALIGN_CENTER);
-      PdfPCell cell41 = new PdfPCell(new Paragraph("Kommentar", helveticaFont9Bold));
+      PdfPCell cell41 = new PdfPCell(new Paragraph("Kommentar", shiftTableHeadlineFont));
       cell41.setVerticalAlignment(Rectangle.ALIGN_MIDDLE);
       cell41.setHorizontalAlignment(Rectangle.ALIGN_CENTER);
 
@@ -635,7 +673,7 @@ public class PdfCreator {
       PdfPTable table9 = new PdfPTable(1);
       table9.setWidthPercentage(100);
       String signatureString = "Unterschrift Mitarbeiter/in:";
-      if(true) { // TODO: wenn version veraltet
+      if(false) { // TODO: wenn version veraltet
         signatureString += " NICHT FREIGEGEBENE VERSION. NICHT ABGEBEN.";
       }
       PdfPCell cell48 = new PdfPCell(new Paragraph(signatureString, helveticaFont11Bold));
@@ -678,6 +716,11 @@ public class PdfCreator {
       table10.addCell(cell52);
       table10.addCell(cell53);
       table10.addCell(cell54);
+      
+      // add department-box
+      PdfContentByte contentByte = writer.getDirectContent();
+      contentByte.setLineWidth(1f);
+      contentByte.rectangle(400, 50, 40, 25);
 
       // use table8 for a empty line again
       // Version/Author
@@ -687,11 +730,11 @@ public class PdfCreator {
       table11.addCell(new PdfPCell(new Paragraph("Erstellt:", helveticaFont9)));
       table11.addCell(new PdfPCell(new Paragraph("Freigegeben:", helveticaFont9)));
       table11.addCell(new PdfPCell(new Paragraph("Seite 1 von 1", helveticaFont9)));
-      table11.addCell(new PdfPCell(new Paragraph("Stand: 12.03.2013", helveticaFont9)));
+      table11.addCell(new PdfPCell(new Paragraph("Stand: 01.06..2013", helveticaFont9)));
       table11.addCell(new PdfPCell(new Paragraph("B. Sakschewski, J. Güttler", helveticaFont9)));
-      table11.addCell(new PdfPCell(new Paragraph("Wolfgang Schäfer-Mai", helveticaFont9)));
-      table11.addCell(new PdfPCell(new Paragraph("Gültig ab 01.04.2013", helveticaFont9)));
-
+      table11.addCell(new PdfPCell(new Paragraph("Karin Müller", helveticaFont9)));
+      table11.addCell(new PdfPCell(new Paragraph("Personalservice", helveticaFont9)));      
+      
       // add tables to document
       accountingDocument.add(table1);
       accountingDocument.add(drkLogo);
