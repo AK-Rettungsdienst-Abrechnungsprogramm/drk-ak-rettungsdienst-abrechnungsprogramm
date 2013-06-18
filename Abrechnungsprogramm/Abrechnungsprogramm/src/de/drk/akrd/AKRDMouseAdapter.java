@@ -24,7 +24,6 @@ import de.drk.akrd.ShiftContainer.ShiftType;
 public class AKRDMouseAdapter extends MouseAdapter {
 
 	private MainWindow mainWindow;
-    private CreateAccountmentFrame createAccountmentFrame;
 
 	// JButton used to apply date from calendar
 	private JButton apply = new JButton("Übernehmen");

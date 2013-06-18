@@ -267,7 +267,7 @@ public class ShiftCollectorTab extends JPanel {
 		int year = (y == "Alle")? -1 : Integer.parseInt(y);
 		int month = monthChooser.getSelectedIndex() - 1;
 		
-        new CreateAccountmentFrame(year, month);
+        CreateAccountmentFrame caf = new CreateAccountmentFrame(year, month);
 		
 	}
 

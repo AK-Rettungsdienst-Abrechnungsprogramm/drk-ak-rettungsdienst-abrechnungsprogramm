@@ -21,13 +21,12 @@ import javax.swing.JScrollPane;
  *
  * @author Jo
  */
-public class CreateAccountmentFrame {
-
-  private JFrame createAccountmentFrame = new JFrame("Abrechnung erstellen");
+public class CreateAccountmentFrame extends JFrame{
   private ArrayList<ShiftInstance> selectedShifts = null;
   private JComboBox<String> yearComboBox = new JComboBox<String>();
   private JComboBox<String> monthComboBox = new JComboBox<String>();;
   private JCheckBox printCheckbox;
+  private JCheckBox saveCheckbox;
   private JScrollPane displayPane;
   private JTable displayTable;
   private DefaultTableModel displayTableModel = new DefaultTableModel(
@@ -48,6 +47,7 @@ public class CreateAccountmentFrame {
   private int selectedMonth = 0;
 
   public CreateAccountmentFrame(int year, int month) {
+    this.setTitle("Abrechnung erstellen");
 	// position relative to main window
 	int x = UtilityBox.getInstance().getWindowPosX();
 	int y = UtilityBox.getInstance().getWindowPosY();
@@ -55,32 +55,41 @@ public class CreateAccountmentFrame {
 	selectedYear = year;
 	selectedMonth = month;
 
-    createAccountmentFrame.setBounds(x + 20, y + 20, 600, 400);
-    createAccountmentFrame.getContentPane().setLayout(null);
-    createAccountmentFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    this.setBounds(x + 20, y + 20, 600, 400);
+    this.getContentPane().setLayout(null);
+    this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     calendar.setTimeInMillis(System.currentTimeMillis());
     JButton btnAbbrechen = new JButton("Abbrechen");
     btnAbbrechen.addActionListener(new ActionListener() {
-
+      @Override
       public void actionPerformed(ActionEvent e) {
-        createAccountmentFrame.dispose();
+        dispose();
       }
     });
     btnAbbrechen.setBounds(460, 320, 120, 30);
-    createAccountmentFrame.getContentPane().add(btnAbbrechen);
+    this.getContentPane().add(btnAbbrechen);
 
     JButton btnAusgeben = new JButton("Ausgeben");
     btnAusgeben.addActionListener(new ActionListener() {
 
       public void actionPerformed(ActionEvent arg0) {
-        String filePath = PdfCreator.createAccounting(selectedShifts.toArray(new ShiftInstance[selectedShifts.size()]), selectedMonth, selectedYear);
+        if (!printCheckbox.isSelected() && !saveCheckbox.isSelected()) {
+          UtilityBox.getInstance().displayInfoPopup("Keine Funktion ausgewählt",
+                  "Bitte \"Drucken\" oder \"Abrechnung speichern\" auswählen.");
+          return;
+        }
+        String filePath = PdfCreator.createAccounting(
+                selectedShifts.toArray(new ShiftInstance[selectedShifts.size()]),
+                selectedMonth, selectedYear, saveCheckbox.isSelected());
         if (printCheckbox.isSelected() && (filePath != null)) {
           UtilityBox.getInstance().printFile(filePath);
         }
+        // close Window
+        dispose();
       }
     });
     btnAusgeben.setBounds(330, 320, 120, 30);
-    createAccountmentFrame.getContentPane().add(btnAusgeben);
+    this.getContentPane().add(btnAusgeben);
 
     calendar.setTime(new Date());
     if (selectedYear == -1 || selectedMonth == -1) selectedYear = calendar.get(Calendar.YEAR);
@@ -94,7 +103,7 @@ public class CreateAccountmentFrame {
         setSelectedShifts(selectedMonth, selectedYear);
       }
     });
-    createAccountmentFrame.getContentPane().add(yearComboBox);
+    this.getContentPane().add(yearComboBox);
 
     if (selectedYear == -1 || selectedMonth == -1) selectedMonth = calendar.get(Calendar.MONTH);
     monthComboBox.setModel(new DefaultComboBoxModel<String>(new String[]{"Januar", "Februar", "M\u00E4rz", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"}));
@@ -109,7 +118,7 @@ public class CreateAccountmentFrame {
         setSelectedShifts(selectedMonth, selectedYear);
       }
     });
-    createAccountmentFrame.getContentPane().add(monthComboBox);
+    this.getContentPane().add(monthComboBox);
 
     displayTable = new JTable(displayTableModel);
     displayTable.getTableHeader().setReorderingAllowed(false);
@@ -118,14 +127,19 @@ public class CreateAccountmentFrame {
     displayPane.setBounds(10, 48, 580, 263);
     //displayPane.setAutoscrolls(true);
     displayTableModel.addRow(new String[]{"do", "datum?", "1-3", "ktw"});
-    createAccountmentFrame.getContentPane().add(displayPane);
+    this.getContentPane().add(displayPane);
 
     printCheckbox = new JCheckBox("Drucken");
     printCheckbox.setBounds(250, 15, 100, 23);
     printCheckbox.setSelected(true);
-    createAccountmentFrame.getContentPane().add(printCheckbox);
+    this.getContentPane().add(printCheckbox);
+    
+    saveCheckbox = new JCheckBox("Abrechnung speichern");
+    saveCheckbox.setBounds(350, 15, 250, 23);
+    saveCheckbox.setSelected(!MainWindow.WACHENVERSION);
+    this.getContentPane().add(saveCheckbox);
 
-    createAccountmentFrame.setVisible(true);
+    this.setVisible(true);
     // fill the displayTable
     setSelectedShifts(selectedMonth, selectedYear);
   }
