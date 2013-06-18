@@ -7,6 +7,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.ColumnText;
 import java.io.*;
 import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -127,7 +128,9 @@ public class PdfCreator {
         accounting.close();
         if (success && !MainWindow.WACHENVERSION) UtilityBox.getInstance().displayInfoPopup("Abrechnung", "Abrechnung unter "+filePath+" gespeichert.");
       } catch (Exception e) {
-        System.out.println("Dokument nicht geschlossen: "+e.getMessage());
+        UtilityBox.getInstance().displayErrorPopup("Abrechnung", "Fehler beim "
+                + "Erstellen der Abrechnung:\nDokument nicht geschlossen:\n"
+                + ""+e.getMessage());
         filePath = null;
       }
     }
@@ -184,7 +187,7 @@ public class PdfCreator {
       cell1p1.setBorderWidth(1);
       PdfPCell cell2p1 = new PdfPCell();
       cell2p1.setPaddingTop(0);
-      cell2p1.addElement(new Paragraph("Ablage: Personalabteilung", helveticaFont8));
+      cell2p1.addElement(new Paragraph("Ablage: Personalservice", helveticaFont8));
       cell2p1.setHorizontalAlignment(Element.ALIGN_RIGHT);
       cell2p1.setVerticalAlignment(Element.ALIGN_TOP);
       cell2p1.setBorderWidth(1);
@@ -692,7 +695,7 @@ public class PdfCreator {
       cell49.setHorizontalAlignment(Rectangle.ALIGN_LEFT);
       cell49.setBorderWidthBottom(0);
       cell49.setFixedHeight(48);
-      PdfPCell cell50 = new PdfPCell(new Paragraph("Eingang Personalabteilung", helveticaFont10));
+      PdfPCell cell50 = new PdfPCell(new Paragraph("Eingang Personalservice", helveticaFont10));
       cell50.setVerticalAlignment(Rectangle.ALIGN_TOP);
       cell50.setHorizontalAlignment(Rectangle.ALIGN_LEFT);
       cell50.setBorderWidthBottom(0);
@@ -718,10 +721,27 @@ public class PdfCreator {
       table10.addCell(cell54);
       
       // add department-box
+      float departmentBoxX = 345;
+      float departmentBoxY = 123;
+      float departmentBoxWidth = 103;
+      float departmentBoxHeight = 28;
+      float departmentBoxTextY = departmentBoxY+20;
       PdfContentByte contentByte = writer.getDirectContent();
-      contentByte.setLineWidth(1f);
-      contentByte.rectangle(400, 50, 40, 25);
+      contentByte.setLineWidth(.7f);
+      contentByte.rectangle(departmentBoxX, departmentBoxY, departmentBoxWidth, departmentBoxHeight);
+      contentByte.rectangle(departmentBoxX+departmentBoxWidth, departmentBoxY, departmentBoxWidth, departmentBoxHeight);
+      contentByte.beginText();
+      contentByte.setFontAndSize(BaseFont.createFont("Helvetica", "", false), 8);
+      contentByte.showTextAligned(PdfContentByte.ALIGN_CENTER, "Dienstplanung", (int)(departmentBoxX +(departmentBoxWidth/2)), departmentBoxTextY, 0);
+      contentByte.setFontAndSize(BaseFont.createFont("Helvetica", "", false), 8);
+      contentByte.showTextAligned(PdfContentByte.ALIGN_CENTER, "bei SAN-Diensten Abt.RK", (int)(departmentBoxX +(departmentBoxWidth*1.5)), departmentBoxTextY, 0);
+      contentByte.endText();
 
+      // add payment order-box
+      float paymentOrderBoxY = 75;
+      float paymentOrderBoxTextY = paymentOrderBoxY+20;
+      contentByte.rectangle(departmentBoxX, paymentOrderBoxY, 2*departmentBoxWidth, departmentBoxHeight);
+      
       // use table8 for a empty line again
       // Version/Author
       PdfPTable table11 = new PdfPTable(4);
