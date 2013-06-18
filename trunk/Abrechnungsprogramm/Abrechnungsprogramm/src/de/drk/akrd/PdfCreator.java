@@ -28,9 +28,10 @@ public class PdfCreator {
    * @param shiftsToAccount
    * @param month
    * @param year
+   * @param saveAccounting
    * @return 
    */
-  public static String createAccounting(ShiftInstance[] shiftsToAccount, int month, int year) {
+  public static String createAccounting(ShiftInstance[] shiftsToAccount, int month, int year, boolean saveAccounting) {
     // check if personal Data exists
     if (!PersonalData.getInstance().isDataSet()) {
       UtilityBox.getInstance().displayInfoPopup("Fehlende Daten", "Um die "
@@ -121,12 +122,25 @@ public class PdfCreator {
       }
       // TODO: for JDK7 use Multicatch
     } catch (Exception e){//DocumentException | IOException e) {
-      UtilityBox.getInstance().displayErrorPopup("Abrechnung", "Fehler beim Erstellen der Abrechnung:\n"+e.getMessage());
+      UtilityBox.getInstance().displayErrorPopup("Abrechnung", "Fehler beim "
+              + "Erstellen der Abrechnung:\n"+e.getMessage());
       filePath = null;
     } finally {
       try {
         accounting.close();
-        if (success && !MainWindow.WACHENVERSION) UtilityBox.getInstance().displayInfoPopup("Abrechnung", "Abrechnung unter "+filePath+" gespeichert.");
+        if (success) {
+          if (saveAccounting) {
+            UtilityBox.getInstance().displayInfoPopup("Abrechnung",
+                    "Abrechnung unter "+filePath+" gespeichert.");
+          } else {
+            File deleteFile = new File(filePath);
+            if (!deleteFile.delete()) {
+              UtilityBox.getInstance().displayErrorPopup("Löschen der "
+                      + "temporären Datei", "Die temporäre Abrechnungs-Datei "
+                      + "unter\n"+filePath+"\nkonnte nicht gelöscht werden.");
+            }
+          }
+        }
       } catch (Exception e) {
         UtilityBox.getInstance().displayErrorPopup("Abrechnung", "Fehler beim "
                 + "Erstellen der Abrechnung:\nDokument nicht geschlossen:\n"
@@ -633,23 +647,28 @@ public class PdfCreator {
       //calculate the complete salary
       salarySum = timeSumAsFloat * salary;
       PdfPCell cell42 = emptyPdfPCell();
+      cell42.setFixedHeight(20);
       cell42.setBorderWidth(2);
       cell42.setColspan(6);
-      cell42.addElement(new Paragraph("Summe der geleisteten Stunden / Auszahlungsbetrag / Fahrtkosten:", helveticaFont7Bold));
+      cell42.addElement(new Paragraph("Summe der geleisteten Stunden / Auszahlungsbetrag:", helveticaFont8Bold));
       cell42.setVerticalAlignment(Rectangle.ALIGN_MIDDLE);
       cell42.setPaddingBottom(6);
       PdfPCell cell43 = new PdfPCell(new Paragraph(euroFormat.format(timeSumAsFloat), helveticaFont9Bold));
+      cell43.setVerticalAlignment(Rectangle.ALIGN_MIDDLE);
       cell43.setBorderWidthBottom(2);
       cell43.setBorderWidthTop(2);
       cell43.setBorderWidthLeft(2);
       PdfPCell cell44 = new PdfPCell(new Paragraph(euroFormat.format(salary)+" €", helveticaFont9Bold));
+      cell44.setVerticalAlignment(Rectangle.ALIGN_MIDDLE);
       cell44.setBorderWidthBottom(2);
       cell44.setBorderWidthTop(2);
       PdfPCell cell45 = new PdfPCell(new Paragraph(euroFormat.format(salarySum)+ " €", helveticaFont9Bold));
+      cell45.setVerticalAlignment(Rectangle.ALIGN_MIDDLE);
       cell45.setColspan(1);
       cell45.setBorderWidthBottom(2);
       cell45.setBorderWidthTop(2);
       PdfPCell cell46 = new PdfPCell(new Paragraph(euroFormat.format(completeCommuteExpenses)+ " €", helveticaFont9Bold));
+      cell46.setVerticalAlignment(Rectangle.ALIGN_MIDDLE);
       cell46.setBorderWidthBottom(2);
       cell46.setBorderWidthTop(2);
       PdfPCell cell461 = emptyPdfPCell();
