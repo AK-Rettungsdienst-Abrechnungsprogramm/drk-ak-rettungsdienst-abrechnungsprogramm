@@ -44,9 +44,14 @@ public class GoogleConnect extends CalendarManager {
 
     try {
       PersonalData personalData = PersonalData.getInstance();
+      // extract calendar id from personal data
+      String registeredId = personalData.getCalendarId();
+      int index = registeredId.indexOf("@");
+      if (index >= 0) {
+        registeredId = registeredId.substring(0, index);
+      }
       URL postUrl =
-              new URL("http://www.google.com/calendar/feeds/"+personalData.getCalendarId()+"@group.calendar.google.com/private/full");
-
+              new URL("http://www.google.com/calendar/feeds/"+registeredId+"@group.calendar.google.com/private/full");
       GoogleService myService = new GoogleService("cl", "AKRD-AKRD_Abrechnungsprogramm-0.1");
       JPasswordField passwordField = new JPasswordField();
       passwordField.setEchoChar('*');
