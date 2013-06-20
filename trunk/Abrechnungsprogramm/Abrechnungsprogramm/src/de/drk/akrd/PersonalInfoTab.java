@@ -39,6 +39,7 @@ public class PersonalInfoTab extends JPanel {
 	// TextFields
 	private JTextField firstNameField = new JTextField();
 	private JTextField lastNameField = new JTextField();
+    private JTextField addressField = new JTextField();
 	private JTextField blzField = new JTextField();
 	private JTextField accountNoField = new JTextField();
 	private JTextField bankNameField = new JTextField();
@@ -91,6 +92,8 @@ public class PersonalInfoTab extends JPanel {
 	private void submitChangesCallback() {
 		String firstName = firstNameField.getText();
 		String lastName = lastNameField.getText();
+        // TODO: Abfragen für das Adressfeld
+        String address = "";//addressField.getText();
 
 		PersonalData.Qualification quali = (PersonalData.Qualification)trainingChooser.getSelectedItem();
 
@@ -140,7 +143,7 @@ public class PersonalInfoTab extends JPanel {
 
 		PersonalData pd = PersonalData.getInstance();
 
-		boolean success = pd.setData(firstName, lastName, bankName, account, blz, quali, dataKnown, gmail, calID);
+		boolean success = pd.setData(firstName, lastName, address, bankName, account, blz, quali, dataKnown, gmail, calID);
 		if (success) {
 			UtilityBox.getInstance().displayInfoPopup("Persönliche Daten", "Daten gespeichert.");
 		}

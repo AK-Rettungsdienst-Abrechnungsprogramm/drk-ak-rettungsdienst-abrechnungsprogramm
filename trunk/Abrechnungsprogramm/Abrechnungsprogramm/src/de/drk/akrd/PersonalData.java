@@ -18,6 +18,7 @@ public class PersonalData {
   private boolean dataSet = false;
   private String firstName;
   private String lastName;
+  private String address;
   private String bankNameAndCity;
   private int accountNumber;
   private int blz;
@@ -71,13 +72,14 @@ public class PersonalData {
    * (only necessary if PersonalData.getInstance(); returns null!)
    * @param firstName
    * @param LastName
+   * @param address
    * @param BankNameAndCity
    * @param accountNumber
    * @param blz
    * @param qualifikation (enum PersonalData.Qualification)
    * @param dataKnown 
    */
-  public boolean setData(String firstName, String LastName,
+  public boolean setData(String firstName, String LastName, String address,
           String BankNameAndCity, int accountNumber, int blz, Qualification qualifikation,
           boolean dataKnown, String emailAdress, String calendarId) {
 
@@ -86,6 +88,7 @@ public class PersonalData {
     this.blz = blz;
     this.firstName = firstName;
     this.lastName = LastName;
+    this.address = address;
     this.qualification = qualifikation;
     this.dataKnown = dataKnown;
     this.dataSet = true;
@@ -108,7 +111,7 @@ public class PersonalData {
    * @param calendarId
    * @return 
    */
-  public boolean setData(String firstName, String lastName,
+  public boolean setData(String firstName, String lastName, String address,
           String bankNameAndCity, String accountNumber, String blz, String quali,
           String dataKnown, String emailAdress, String calendarId){
 
@@ -125,6 +128,7 @@ public class PersonalData {
     boolean success = PersonalData.getInstance().setData(
             firstName,
             lastName,
+            address,
             bankNameAndCity,
             Integer.parseInt(accountNumber),
             Integer.parseInt(blz),Qualification.valueOf(quali),
@@ -180,6 +184,14 @@ public class PersonalData {
    */
   public String getLastName() {
     return lastName;
+  }
+  
+  /**
+   * 
+   * @return the address
+   */
+  public String getAddress() {
+    return address;
   }
 
   /**

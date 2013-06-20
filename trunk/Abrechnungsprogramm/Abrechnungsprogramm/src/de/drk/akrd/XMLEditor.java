@@ -112,10 +112,12 @@ public class XMLEditor {
     // TODO: for JDK7 use try-with
     try {//(FileWriter fileWriter = new FileWriter(dataFile)) {
       FileWriter fileWriter = new FileWriter(dataFile);
-      String[] elementNames = new String[]{"firstName", "lastName",
+      String[] elementNames = new String[]{"firstName", "lastName", "address",
         "bankaccountAndCity", "accountNumber", "blz", "qualification", "dataKnown", "emailAdress", "calendarId"};
       String[] elemetArray = new String[]{dataInstance.getFirstName(),
-        dataInstance.getLastName(), dataInstance.getBankNameAndCity(),
+        dataInstance.getLastName(), 
+        dataInstance.getAddress(),
+        dataInstance.getBankNameAndCity(),
         Integer.toString(dataInstance.getAccountNumber()),
         Integer.toString(dataInstance.getBlz()),
         dataInstance.getQualification().name(),
@@ -147,11 +149,13 @@ public class XMLEditor {
     if (element == null) {
       return;
     }
-    String[] elementNames = new String[]{"firstName", "lastName",
+    String[] elementNames = new String[]{"firstName", "lastName", "adress",
       "bankaccountAndCity", "accountNumber", "blz", "qualification",
       "dataKnown", "emailAdress", "calendarId"};
     String[] elemetArray = new String[]{dataInstance.getFirstName(),
-      dataInstance.getLastName(), dataInstance.getBankNameAndCity(),
+      dataInstance.getLastName(),
+      dataInstance.getAddress(),
+      dataInstance.getBankNameAndCity(),
       Integer.toString(dataInstance.getAccountNumber()),
       Integer.toString(dataInstance.getBlz()),
       dataInstance.getQualification().name(),
@@ -196,7 +200,8 @@ public class XMLEditor {
                 persData.get(5),
                 persData.get(6),
                 persData.get(7),
-                persData.get(8));
+                persData.get(8),
+                persData.get(9));
         return true;
         // TODO: for JDK7 use Multicatch
       } catch (Exception e) {//JDOMException | IOException | NumberFormatException e) {
@@ -228,6 +233,7 @@ public class XMLEditor {
 
     persDataList.add(node.getChildText("firstName"));
     persDataList.add(node.getChildText("lastName"));
+    persDataList.add(node.getChildText("address"));
     persDataList.add(node.getChildText("bankaccountAndCity"));
     persDataList.add(node.getChildText("accountNumber"));
     persDataList.add(node.getChildText("blz"));
@@ -311,12 +317,12 @@ public class XMLEditor {
     }
     String documentName = "Schichten" + year;
     String fileName = "data" + System.getProperty("file.separator") + documentName + ".xml";
-    System.out.println("filname: "+fileName);
+    //System.out.println("filname: "+fileName);
     try {
       SAXBuilder saxBuilder = new SAXBuilder();
-      System.out.println("checkpoint2");
+      //System.out.println("checkpoint2");
       File xmlFile = new File(fileName);
-      System.out.println("checkpoint3");
+      //System.out.println("checkpoint3");
       if (/*!xmlFile.exists()*/true) { // TODO: übergangslösung: es wird immer ein neues file angelegt
         return storeShiftsInNewFile(shiftList, documentName);
       }/* else {
@@ -353,7 +359,7 @@ public class XMLEditor {
     } catch (Exception e) {//JDOMException | IOException | ParseException e) {
       System.out.println("Exception in XMLEditor.storeShifts: "+e.getMessage());
     }
-    System.out.println("checkpoint1");
+    //System.out.println("checkpoint1");
     return false;
   }
 
