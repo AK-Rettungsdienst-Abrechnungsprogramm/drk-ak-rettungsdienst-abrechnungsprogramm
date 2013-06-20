@@ -87,7 +87,8 @@ public class ImportExport {
             importedPersData.get(5),
             importedPersData.get(6),
             importedPersData.get(7),
-            importedPersData.get(8));
+            importedPersData.get(8),
+            importedPersData.get(9));
     }
     
   }
