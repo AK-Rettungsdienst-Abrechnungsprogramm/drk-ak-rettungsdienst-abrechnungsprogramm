@@ -381,7 +381,11 @@ public class PdfCreator {
       PdfPTable table5 = new PdfPTable(5);
       table5.setWidthPercentage(100);
       table5.setWidths(new float[]{137f, 4f, 192f, 30f, 115f});
-      String adress = "Bekannt";
+      String address = "Bekannt";
+      // if address is not known put it into the form
+      if (!personalData.addressKnown()) {
+    	  address = personalData.getAddress();
+      }
       String bankNameAndCity = "Bekannt";
       String accountNumber = "Bekannt";
       String blz = "Bekannt";
@@ -410,7 +414,7 @@ public class PdfCreator {
       PdfPCell cell22p2 = new PdfPCell(new Paragraph(":", personalDataFont));
       cell22p2.disableBorderSide(Rectangle.LEFT);
       cell22p2.disableBorderSide(Rectangle.RIGHT);
-      PdfPCell cell22p3 = new PdfPCell(new Paragraph(" " + bankNameAndCity));
+      PdfPCell cell22p3 = new PdfPCell(new Paragraph(" " + address));
       cell22p3.disableBorderSide(Rectangle.LEFT);
       cell22p3.setColspan(3);
       // bankname

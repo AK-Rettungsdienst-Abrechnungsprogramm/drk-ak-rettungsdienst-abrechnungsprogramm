@@ -32,6 +32,8 @@ public class PersonalInfoTab extends JPanel {
 	private JLabel lblAccountNo = new JLabel("Kontonummer:");
 	private JLabel lblBankName = new JLabel("Name der Bank:");
 	
+	private JLabel lblAdress = new JLabel("Adresse:");
+	
 	private JLabel lblGoogleHeader = new JLabel("<html>Diese Angaben brauchst du nur, wenn du den Dienstplan automatisch in deinen Google Kalender<br>importieren willst.</html>");
 	private JLabel lblMail = new JLabel("Google Mail Adresse:");
 	private JLabel lblCalendar = new JLabel("Calendar ID:");
@@ -49,6 +51,7 @@ public class PersonalInfoTab extends JPanel {
 	
 	// checkboxes
 	private JCheckBox bankInfoKnown = new JCheckBox("Bankdaten bekannt");
+	private JCheckBox addressKnown = new JCheckBox("bekannt");
 	
 	private JComboBox<Qualification>  trainingChooser = new JComboBox<Qualification>();
 	
@@ -77,11 +80,23 @@ public class PersonalInfoTab extends JPanel {
 				bankInfoKnownClickCallback(e.getStateChange());
 			}
 		});
+		
+		addressKnown.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				addressKnownClickCallback(e.getStateChange());
+			}
+		});
 		layoutUiElements();
 		
 		loadPersonalData();
 	}
 	
+	protected void addressKnownClickCallback(int stateChange) {
+		boolean newState = (stateChange == ItemEvent.DESELECTED);
+		addressField.setEditable(newState);
+	}
+
 	protected void bankInfoKnownClickCallback(int stateChange) {
 		boolean newState = (stateChange == ItemEvent.DESELECTED);
 		blzField.setEditable(newState);
@@ -92,8 +107,13 @@ public class PersonalInfoTab extends JPanel {
 	private void submitChangesCallback() {
 		String firstName = firstNameField.getText();
 		String lastName = lastNameField.getText();
-        // TODO: Abfragen für das Adressfeld
-        String address = "";//addressField.getText();
+        
+        String address = addressField.getText();
+        boolean isAddressKnown = addressKnown.isSelected();
+        if (!isAddressKnown && address.length() == 0) {
+        	UtilityBox.getInstance().displayErrorPopup("Fehler", "Bitte Adresse eingeben!");
+        	return;
+        }
 
 		PersonalData.Qualification quali = (PersonalData.Qualification)trainingChooser.getSelectedItem();
 
@@ -143,7 +163,7 @@ public class PersonalInfoTab extends JPanel {
 
 		PersonalData pd = PersonalData.getInstance();
 
-		boolean success = pd.setData(firstName, lastName, address, bankName, account, blz, quali, dataKnown, gmail, calID);
+		boolean success = pd.setData(firstName, lastName, address, bankName, account, blz, quali, dataKnown, gmail, calID, addressKnown.isSelected());
 		if (success) {
 			UtilityBox.getInstance().displayInfoPopup("Persönliche Daten", "Daten gespeichert.");
 		}
@@ -177,6 +197,10 @@ public class PersonalInfoTab extends JPanel {
 		lblTraining.setBounds(0, lineSpacing * 2, SwingUtilities.computeStringWidth(fm, lblTraining.getText()), labelHeight);
 		lblTraining.setFont(font);
 		
+		nameAndTraining.add(lblAdress);
+		lblAdress.setBounds(0, lineSpacing * 3 + 10, SwingUtilities.computeStringWidth(fm, lblTraining.getText()), labelHeight);
+		lblAdress.setFont(font);
+		
 		int nameFieldX = 100;
 		int nameFieldWidth = 250;
 		nameAndTraining.add(firstNameField);
@@ -188,8 +212,13 @@ public class PersonalInfoTab extends JPanel {
 		nameAndTraining.add(trainingChooser);
 		trainingChooser.setBounds(nameFieldX, lineSpacing * 2, nameFieldWidth, comboBoxHeight);
 		
+		nameAndTraining.add(addressKnown);
+		addressKnown.setBounds(nameFieldX, lineSpacing * 3 + 10, SwingUtilities.computeStringWidth(fm, addressKnown.getText()) + 50, labelHeight);
+		
+		nameAndTraining.add(addressField);
+		addressField.setBounds(nameFieldX, lineSpacing * 4 + 10, nameFieldWidth, textFieldHeight);
 		this.add(nameAndTraining);
-		nameAndTraining.setBounds(20, 50, 350, 150);
+		nameAndTraining.setBounds(20, 20, 350, 150);
 		
 		// Assemble Bank info panel
 		
@@ -277,6 +306,8 @@ public class PersonalInfoTab extends JPanel {
 		      mailField.setText(pd.getEmailAdress());
 		      calIdField.setText(pd.getCalendarId());
 		      bankNameField.setText(pd.getBankNameAndCity());
+		      addressField.setText(pd.getAddress());
+		      addressKnown.setSelected(pd.addressKnown());
 		    }
 		  }
 

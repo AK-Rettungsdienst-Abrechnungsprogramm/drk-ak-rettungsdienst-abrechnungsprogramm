@@ -113,7 +113,7 @@ public class XMLEditor {
     try {//(FileWriter fileWriter = new FileWriter(dataFile)) {
       FileWriter fileWriter = new FileWriter(dataFile);
       String[] elementNames = new String[]{"firstName", "lastName", "address",
-        "bankaccountAndCity", "accountNumber", "blz", "qualification", "dataKnown", "emailAdress", "calendarId"};
+        "bankaccountAndCity", "accountNumber", "blz", "qualification", "dataKnown", "emailAdress", "calendarId", "addressKnown"};
       String[] elemetArray = new String[]{dataInstance.getFirstName(),
         dataInstance.getLastName(), 
         dataInstance.getAddress(),
@@ -123,7 +123,8 @@ public class XMLEditor {
         dataInstance.getQualification().name(),
         Boolean.toString(dataInstance.isDataKnown()),
         dataInstance.getEmailAdress(),
-        dataInstance.getCalendarId()};
+        dataInstance.getCalendarId(),
+        Boolean.toString(dataInstance.addressKnown())};
       fileWriter.write("<personalData version=\"1.0\">" + System.getProperty("line.separator"));
       fileWriter.write("  <dataset>" + System.getProperty("line.separator"));
       for (int i = 0; i < elementNames.length; i++) {
@@ -151,7 +152,7 @@ public class XMLEditor {
     }
     String[] elementNames = new String[]{"firstName", "lastName", "adress",
       "bankaccountAndCity", "accountNumber", "blz", "qualification",
-      "dataKnown", "emailAdress", "calendarId"};
+      "dataKnown", "emailAdress", "calendarId", "addressKnown"};
     String[] elemetArray = new String[]{dataInstance.getFirstName(),
       dataInstance.getLastName(),
       dataInstance.getAddress(),
@@ -161,7 +162,8 @@ public class XMLEditor {
       dataInstance.getQualification().name(),
       Boolean.toString(dataInstance.isDataKnown()),
       dataInstance.getEmailAdress(),
-      dataInstance.getCalendarId()};
+      dataInstance.getCalendarId(),
+      Boolean.toString(dataInstance.addressKnown())};
     for (int i = 0; i < elemetArray.length; i++) {
       element.addContent(new Element(elementNames[i]).setText(elemetArray[i]));
 
@@ -201,7 +203,8 @@ public class XMLEditor {
                 persData.get(6),
                 persData.get(7),
                 persData.get(8),
-                persData.get(9));
+                persData.get(9),
+                persData.get(10));
         return true;
         // TODO: for JDK7 use Multicatch
       } catch (Exception e) {//JDOMException | IOException | NumberFormatException e) {
@@ -231,6 +234,12 @@ public class XMLEditor {
       dataKnown = true;
     }
 
+    boolean addressKnown = false;
+    
+    if (node.getChild("addressKnown") != null &&  node.getChildText("addressKnown").equals("true")) {
+    	addressKnown = true;
+    }
+    
     persDataList.add(node.getChildText("firstName"));
     persDataList.add(node.getChildText("lastName"));
     persDataList.add(node.getChildText("address"));
@@ -241,6 +250,7 @@ public class XMLEditor {
     persDataList.add(node.getChildText("dataKnown"));
     persDataList.add(node.getChildText("emailAdress"));
     persDataList.add(node.getChildText("calendarId"));
+    persDataList.add(Boolean.toString(addressKnown));
   }
 
   /**
