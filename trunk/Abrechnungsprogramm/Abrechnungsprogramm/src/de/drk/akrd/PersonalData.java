@@ -26,6 +26,7 @@ public class PersonalData {
   private boolean dataKnown;
   private String emailAdress;
   private String calendarId;
+private boolean addressKnown;
   public static enum Qualification {
     RH, RS, RA;
     @Override
@@ -81,7 +82,7 @@ public class PersonalData {
    */
   public boolean setData(String firstName, String LastName, String address,
           String BankNameAndCity, int accountNumber, int blz, Qualification qualifikation,
-          boolean dataKnown, String emailAdress, String calendarId) {
+          boolean dataKnown, String emailAdress, String calendarId, boolean addressKnown) {
 
     this.accountNumber = accountNumber;
     this.bankNameAndCity = BankNameAndCity;
@@ -94,6 +95,7 @@ public class PersonalData {
     this.dataSet = true;
     this.emailAdress = emailAdress;
     this.calendarId = calendarId;
+    this.addressKnown = addressKnown;
     boolean success = XMLEditor.writePersonalData(instance);
     return success;
   }
@@ -113,7 +115,7 @@ public class PersonalData {
    */
   public boolean setData(String firstName, String lastName, String address,
           String bankNameAndCity, String accountNumber, String blz, String quali,
-          String dataKnown, String emailAdress, String calendarId){
+          String dataKnown, String emailAdress, String calendarId, String addressKnown){
 
     if (emailAdress.equals("null")) {
       emailAdress = null;
@@ -134,7 +136,8 @@ public class PersonalData {
             Integer.parseInt(blz),Qualification.valueOf(quali),
             isDataKnown,
             emailAdress,
-            calendarId);
+            calendarId,
+            addressKnown.equals("true"));
     return success;
   }
 
@@ -224,5 +227,10 @@ public class PersonalData {
   public String getEmailAdress() {
     return emailAdress;
   }
+
+public boolean addressKnown() {
+	// TODO Auto-generated method stub
+	return addressKnown;
+}
   
 }
