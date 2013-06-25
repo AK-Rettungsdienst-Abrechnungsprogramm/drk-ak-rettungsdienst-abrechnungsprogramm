@@ -16,6 +16,9 @@ import javax.swing.table.DefaultTableModel;
 public class ImportExport {
   private static ImportExport INSTANCE = null;
   private ArrayList<ShiftInstance> selectedShifts;
+  // selectedMonth: 0=full year; 1= january...
+  private int selectedMonth;
+  private int selectedYear;
   private MainWindow mainWindow;
   Calendar calendar = Calendar.getInstance();
   private SimpleDateFormat sdf = UtilityBox.SIMPLE_DATE_FORMAT;
@@ -38,10 +41,15 @@ public class ImportExport {
   public boolean exportSelected() {
     UtilityBox ub = UtilityBox.getInstance();
     if (selectedShifts.isEmpty()) {
-      ub.displayInfoPopup("Import", "Keine Schichten ausgewählt.");
+      ub.displayInfoPopup("Export", "Keine Schichten ausgewählt.");
       return false;
     }
-    boolean success = XMLEditor.exportData(selectedShifts);
+    String filename = "ExportSchichten";
+    if (selectedMonth > 0) {
+      filename += UtilityBox.getMonthString(selectedMonth-1);
+    }
+    filename += Integer.toString(selectedYear);
+    boolean success = XMLEditor.exportData(selectedShifts, filename);
     if (success) {
       UtilityBox.getInstance().displayInfoPopup("Export", "Die angezeigten Schichten wurden exportiert.");
     }
@@ -100,7 +108,8 @@ public class ImportExport {
    * @param year 
    */
   public void setSelected(DefaultTableModel shiftTableModel, int month, int year) {
-    // TODO: globale variable setzen, month ist hier 0=ganzes jahr, 1=januar...
+    selectedMonth = month;
+    selectedYear = selectableYears[year];
     selectedShifts = new ArrayList<ShiftInstance>();
     ArrayList<ShiftInstance> allShifts = mainWindow.shiftContainer.shiftInstances;
     boolean wholeYear = (month == 0)? true: false;
@@ -147,9 +156,9 @@ public class ImportExport {
     }
   }
 
-  public void showSaveDialog(int month, int year) {
-    // TODO: savedialog
-  }
+//  public void showSaveDialog(int month, int year) {
+//    // TODO: savedialog
+//  }
 
   /**
    * FileChooser-dialog to select an XML-inputfile
@@ -172,9 +181,6 @@ public class ImportExport {
    */
   public String[] getYearStrings() {
     calendar.setTime(new Date());
-//    int currentYear = calendar.get(Calendar.YEAR);
-//    selectableYears = new int[]{currentYear-1, currentYear};
-    // TODO: alle jahre von denen schichten existieren
     ArrayList<Integer> yearList = UtilityBox.getInstance().getShiftContainer().getSortedYearList();
     int nYears = yearList.size();
     selectableYears = new int[nYears];
