@@ -381,7 +381,6 @@ public class XMLEditor {
    */
   private static boolean storeShiftsInNewFile(ArrayList<ShiftInstance> shiftList, String documentName) {
     try {
-      System.out.println("documentname in new file: "+documentName);
       Element documentElement = new Element(documentName);//, "version");// + " version=\"1.0\"");
       documentElement.setAttribute("version", "1.0");
 //      documentElement.getAttribute("version").setValue("1.0");
@@ -450,7 +449,7 @@ public class XMLEditor {
     return null;
   }
 
-  public static boolean exportData(ArrayList<ShiftInstance> shiftList) {
+  public static boolean exportData(ArrayList<ShiftInstance> shiftList, String filename) {
     try {
       Element documentElement = new Element("exportData");
       Document document = new Document(documentElement);
@@ -472,7 +471,7 @@ public class XMLEditor {
         documentElement.getChild("shifts").addContent(tempElement);
       }
       XMLOutputter xmlOutput = new XMLOutputter();
-      String fileName = UtilityBox.getInstance().saveDialog(".xml", "SchichtenIrgendwann", "XML-Dateien");
+      String fileName = UtilityBox.getInstance().saveDialog(".xml", filename, "XML-Dateien");
       if (fileName != null) {
         xmlOutput.output(document, new FileWriter(fileName));
         return true;
