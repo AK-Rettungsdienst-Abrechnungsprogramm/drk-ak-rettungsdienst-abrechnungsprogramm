@@ -828,22 +828,6 @@ public class PdfCreator {
       Image checkbox = Image.getInstance(MainWindow.class.getResource("checkbox.jpg"));
       checkbox.scaleAbsolute(10f, 10f);
       for (int i = 0; i < label.length; i++) {
-//        rect = new Rectangle((xPosition + 10), (yPosition - 10 - i * 15), xPosition, yPosition - i * 15);
-//        rect.setBorderWidth(1.5f);
-//        rect.setBorderColor(BaseColor.BLACK);
-//        // Add the check boxes
-//        checkbox = new RadioCheckField(writer, rect, xPosition + "," + pageNr + i, "on");
-//        checkbox.setChecked(checked[i]);
-//        checkbox.setOptions(RadioCheckField.READ_ONLY);
-//        checkbox.setBorderColor(BaseColor.BLACK);
-//        checkbox.setBackgroundColor(GrayColor.WHITE);
-//        checkbox.setBorderWidth(1.5f);
-//        checkbox.setCheckType(RadioCheckField.TYPE_DIAMOND);
-//        checkbox.setVisibility(RadioCheckField.VISIBLE);
-//        field = checkbox.getCheckField();
-//        field.setFlags(PdfFormField.FLAGS_PRINT);
-//        
-//        writer.addAnnotation(field);
         Image checkboxImage;
         if (checked[i]) {
           checkboxImage = Image.getInstance(checkbox_checked);
