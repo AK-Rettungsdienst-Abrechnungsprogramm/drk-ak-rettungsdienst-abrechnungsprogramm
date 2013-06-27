@@ -92,7 +92,9 @@ public class CreateAccountmentFrame extends JFrame{
           // else show "saved"-message
           if (!saveCheckbox.isSelected()) {
             File deleteFile = new File(filePath);
-            if (!deleteFile.delete()) {
+            boolean deleteSuccess = deleteFile.delete();
+            if (!deleteSuccess) {
+              System.out.println("deletesucc:"+deleteSuccess);
               UtilityBox.getInstance().displayErrorPopup("Löschen der "
                       + "temporären Datei", "Die temporäre Abrechnungs-Datei "
                       + "unter\n"+filePath+"\nkonnte nicht gelöscht werden.");
