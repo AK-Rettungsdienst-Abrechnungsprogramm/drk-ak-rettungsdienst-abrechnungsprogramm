@@ -501,9 +501,6 @@ public static void instanciate(MainWindow mainWindow) {
         }
       }
     }
-    if (MainWindow.WACHENVERSION) {
-      file.delete();
-    }
     return false;
   }
 
