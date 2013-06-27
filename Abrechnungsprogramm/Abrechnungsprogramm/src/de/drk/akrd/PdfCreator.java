@@ -28,10 +28,9 @@ public class PdfCreator {
    * @param shiftsToAccount
    * @param month
    * @param year
-   * @param saveAccounting
    * @return 
    */
-  public static String createAccounting(ShiftInstance[] shiftsToAccount, int month, int year, boolean saveAccounting) {
+  public static String createAccounting(ShiftInstance[] shiftsToAccount, int month, int year) {
     // check if personal Data exists
     if (!PersonalData.getInstance().isDataSet()) {
       UtilityBox.getInstance().displayInfoPopup("Fehlende Daten", "Um die "
@@ -128,19 +127,6 @@ public class PdfCreator {
     } finally {
       try {
         accounting.close();
-        if (success) {
-          if (saveAccounting) {
-            UtilityBox.getInstance().displayInfoPopup("Abrechnung",
-                    "Abrechnung unter "+filePath+" gespeichert.");
-          } else {
-            File deleteFile = new File(filePath);
-            if (!deleteFile.delete()) {
-              UtilityBox.getInstance().displayErrorPopup("Löschen der "
-                      + "temporären Datei", "Die temporäre Abrechnungs-Datei "
-                      + "unter\n"+filePath+"\nkonnte nicht gelöscht werden.");
-            }
-          }
-        }
       } catch (Exception e) {
         UtilityBox.getInstance().displayErrorPopup("Abrechnung", "Fehler beim "
                 + "Erstellen der Abrechnung:\nDokument nicht geschlossen:\n"

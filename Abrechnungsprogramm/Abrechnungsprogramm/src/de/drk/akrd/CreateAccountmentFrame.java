@@ -11,6 +11,7 @@ import javax.swing.JCheckBox;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -73,6 +74,7 @@ public class CreateAccountmentFrame extends JFrame{
     btnAusgeben.addActionListener(new ActionListener() {
 
       public void actionPerformed(ActionEvent arg0) {
+        // no checkbox selected
         if (!printCheckbox.isSelected() && !saveCheckbox.isSelected()) {
           UtilityBox.getInstance().displayInfoPopup("Keine Funktion ausgewählt",
                   "Bitte \"Drucken\" oder \"Abrechnung speichern\" auswählen.");
@@ -80,9 +82,25 @@ public class CreateAccountmentFrame extends JFrame{
         }
         String filePath = PdfCreator.createAccounting(
                 selectedShifts.toArray(new ShiftInstance[selectedShifts.size()]),
-                selectedMonth, selectedYear, saveCheckbox.isSelected());
-        if (printCheckbox.isSelected() && (filePath != null)) {
+                selectedMonth, selectedYear);
+        if (filePath != null) {
+          // print file if "print"-checkbox is selected
+          if (printCheckbox.isSelected()) {
           UtilityBox.getInstance().printFile(filePath);
+          }
+          // if "save"-checkbox is deselected delete accountment-file
+          // else show "saved"-message
+          if (!saveCheckbox.isSelected()) {
+            File deleteFile = new File(filePath);
+            if (!deleteFile.delete()) {
+              UtilityBox.getInstance().displayErrorPopup("Löschen der "
+                      + "temporären Datei", "Die temporäre Abrechnungs-Datei "
+                      + "unter\n"+filePath+"\nkonnte nicht gelöscht werden.");
+            }
+          } else {
+            UtilityBox.getInstance().displayInfoPopup("Abrechnung",
+                    "Abrechnung unter "+filePath+" gespeichert.");
+          }
         }
         // close Window
         dispose();
@@ -113,7 +131,6 @@ public class CreateAccountmentFrame extends JFrame{
 
       @Override
       public void actionPerformed(ActionEvent e) {
-        // TODO: monat wurde ge�ndert-> liste neu laden
         selectedMonth = monthComboBox.getSelectedIndex();
         setSelectedShifts(selectedMonth, selectedYear);
       }
