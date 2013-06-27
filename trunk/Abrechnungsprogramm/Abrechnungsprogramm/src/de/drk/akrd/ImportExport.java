@@ -108,12 +108,15 @@ public class ImportExport {
    * @param year 
    */
   public void setSelected(DefaultTableModel shiftTableModel, int month, int year) {
-    selectedMonth = month;
-    selectedYear = selectableYears[year];
     selectedShifts = new ArrayList<ShiftInstance>();
     ArrayList<ShiftInstance> allShifts = mainWindow.shiftContainer.shiftInstances;
+    if (allShifts.size() < 1) {
+      return;
+    }
     boolean wholeYear = (month == 0)? true: false;
     try {
+      selectedMonth = month;
+      selectedYear = selectableYears[year];
       for (int i = 0; i < allShifts.size(); i++) {
         ShiftInstance shiftInstance = allShifts.get(i);
         calendar.setTime(sdf.parse(shiftInstance.getDateString()));

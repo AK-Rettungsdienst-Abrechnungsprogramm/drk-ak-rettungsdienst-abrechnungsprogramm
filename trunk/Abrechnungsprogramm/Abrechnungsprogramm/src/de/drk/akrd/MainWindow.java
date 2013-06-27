@@ -107,7 +107,11 @@ public class MainWindow extends JFrame {
     shiftContainer.loadShifts("Schichten.xml");
     shiftContainer.registerShifts(ShiftLoadSave.loadSavedShifts(), false);
 
-    setTitle("AK-RD Abrechnungsprogramm");
+    if (WACHENVERSION) {
+      setTitle("AK-RD Abrechnungsprogramm  -  Wachenversion");
+    } else {
+      setTitle("AK-RD Abrechnungsprogramm");
+    }
     getContentPane().setPreferredSize(new Dimension (900, 600)); // default size is 0,0
     pack();
     // place the window in the middle of the screen
