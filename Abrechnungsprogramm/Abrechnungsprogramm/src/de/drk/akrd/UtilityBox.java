@@ -628,6 +628,7 @@ public static void instanciate(MainWindow mainWindow) {
   // Used to trigger a reload of the shifts file 
   public void requestShiftListReload() {
 	  mainWindow.shiftContainer.loadShifts("Schichten.xml");
+	  mainWindow.sc.updateShiftContainer();
 	  checkVersion();
   }
   // returns the x position of the main window
