@@ -55,3 +55,5 @@ Hier könnt ihr eure gesammelten Schichtdaten monatsweise exportieren, um sie da
 Ein Problem des alten Programms war es, dass viele Versionen unterwegs waren und man nie genau wusste, welche jetzt die aktuelle ist.
 Das neue Programm überprüft selbstständig, ob eine neue Version verfügbar ist und informiert darüber in der Status-Zeile unten im Fenster. 
 Darüber hinaus kann der Schicht-Datensatz im laufenden Programm aktualisiert werden, indem ihr im Info/Update Tab auf "Schicht-Update" klickt.
+
+Das Programm selbst kann sich nicht automatisch updaten, sondern nur feststellen ob eine neue Version verfügbar ist. Um das Programm zu aktualisieren müsst ihr *nur* die Abrechnungsprogramm.exe (Windows), bzw. Abrechnungsprogramm.jar (Linux/MacOS) austauschen und *nicht* den _data_ Ordner. So bleiben eure gespeicherten Daten erhalten.
