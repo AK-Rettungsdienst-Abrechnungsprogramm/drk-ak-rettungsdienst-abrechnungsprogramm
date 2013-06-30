@@ -68,6 +68,9 @@ public class MainWindow extends JFrame {
     }
   };
   
+  // Shift collector tab
+  protected ShiftCollectorTab sc;
+  
   // DPL Tab
   protected JButton read_DPL;
   protected JButton iCalButton;
@@ -134,7 +137,7 @@ public class MainWindow extends JFrame {
     tabbedPane.addTab("Persönliche Daten", null, personalDataTab, "Persönliche Daten eingeben");    
 
     // Shift Collector
-    ShiftCollectorTab sc = new ShiftCollectorTab(shiftContainer);
+    sc = new ShiftCollectorTab(shiftContainer);
     tabbedPane.addTab("Schichten", null, sc, "Schichten eingeben und bearbeiten");
 
 

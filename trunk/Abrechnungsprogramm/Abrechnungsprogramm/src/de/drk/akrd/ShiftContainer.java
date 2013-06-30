@@ -100,6 +100,7 @@ public class ShiftContainer  {
 	}
   
   public void loadShifts(String shiftfilePath) {
+	shifts.clear();
     XMLEditor.fillShiftList("data" + System.getProperty("file.separator") + "Schichten.xml", shifts);
    
 //    UtilityBox.getInstance().displayInfoPopup("benutzer pfad: data",  System.getProperty("user.home") + "Schichten.xml\n");
