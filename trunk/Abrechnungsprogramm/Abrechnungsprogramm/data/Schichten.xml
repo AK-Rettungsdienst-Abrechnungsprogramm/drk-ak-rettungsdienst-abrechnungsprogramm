@@ -1,4 +1,4 @@
-<Dienste version="1.3">
+<Dienste version="1.4">
   <Schicht>
     <ArtUndOrt>KTW</ArtUndOrt>
     <von>600</von>
@@ -271,10 +271,37 @@
   </Schicht>
   <Schicht>
     <ArtUndOrt>RTW</ArtUndOrt>
+    <von>615</von>
+    <bis>1315</bis>
+    <Pause>000</Pause>
+    <Schichtname>R2F</Schichtname>
+    <RuestzeitMin>010</RuestzeitMin>
+    <Tage>Mo-So</Tage>
+  </Schicht>
+  <Schicht>
+    <ArtUndOrt>RTW</ArtUndOrt>
+    <von>1315</von>
+    <bis>2115</bis>
+    <Pause>000</Pause>
+    <Schichtname>R2S</Schichtname>
+    <RuestzeitMin>010</RuestzeitMin>
+    <Tage>Mo-So</Tage>
+  </Schicht>
+  <Schicht>
+    <ArtUndOrt>RTW</ArtUndOrt>
+    <von>2115</von>
+    <bis>615</bis>
+    <Pause>000</Pause>
+    <Schichtname>R2N</Schichtname>
+    <RuestzeitMin>010</RuestzeitMin>
+    <Tage>Mo-So</Tage>
+  </Schicht>
+    <Schicht>
+    <ArtUndOrt>RTW</ArtUndOrt>
     <von>630</von>
     <bis>1330</bis>
     <Pause>000</Pause>
-    <Schichtname>R2F</Schichtname>
+    <Schichtname>R3F</Schichtname>
     <RuestzeitMin>010</RuestzeitMin>
     <Tage>Mo-So</Tage>
   </Schicht>
@@ -283,7 +310,7 @@
     <von>1330</von>
     <bis>2130</bis>
     <Pause>000</Pause>
-    <Schichtname>R2S</Schichtname>
+    <Schichtname>R3S</Schichtname>
     <RuestzeitMin>010</RuestzeitMin>
     <Tage>Mo-So</Tage>
   </Schicht>
@@ -291,33 +318,6 @@
     <ArtUndOrt>RTW</ArtUndOrt>
     <von>2130</von>
     <bis>630</bis>
-    <Pause>000</Pause>
-    <Schichtname>R2N</Schichtname>
-    <RuestzeitMin>010</RuestzeitMin>
-    <Tage>Mo-So</Tage>
-  </Schicht>
-    <Schicht>
-    <ArtUndOrt>RTW</ArtUndOrt>
-    <von>600</von>
-    <bis>1300</bis>
-    <Pause>000</Pause>
-    <Schichtname>R3F</Schichtname>
-    <RuestzeitMin>010</RuestzeitMin>
-    <Tage>Mo-So</Tage>
-  </Schicht>
-  <Schicht>
-    <ArtUndOrt>RTW</ArtUndOrt>
-    <von>1300</von>
-    <bis>2100</bis>
-    <Pause>000</Pause>
-    <Schichtname>R3S</Schichtname>
-    <RuestzeitMin>010</RuestzeitMin>
-    <Tage>Mo-So</Tage>
-  </Schicht>
-  <Schicht>
-    <ArtUndOrt>RTW</ArtUndOrt>
-    <von>2100</von>
-    <bis>600</bis>
     <Pause>000</Pause>
     <Schichtname>R3N</Schichtname>
     <RuestzeitMin>010</RuestzeitMin>
