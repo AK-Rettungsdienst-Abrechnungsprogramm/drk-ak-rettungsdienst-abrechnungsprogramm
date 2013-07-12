@@ -54,6 +54,7 @@ public class PdfCreator {
     ArrayList<ShiftInstance> sc = new ArrayList<ShiftInstance>();
     ArrayList<ShiftInstance> concert_hall = new ArrayList<ShiftInstance>();
     ArrayList<ShiftInstance> kvs = new ArrayList<ShiftInstance>();
+    ArrayList<ShiftInstance> elw = new ArrayList<ShiftInstance>();
 
     // add shifts to seperate shift lists
     for (int i = 0; i < shiftsToAccount.length; i++) {
@@ -66,6 +67,9 @@ public class PdfCreator {
           break;
         case HINTERGRUND:
           rd.add(shiftsToAccount[i]);
+          break;
+        case ELW:
+          elw.add(shiftsToAccount[i]);
           break;
         case EVENT:
           event.add(shiftsToAccount[i]);
@@ -90,8 +94,8 @@ public class PdfCreator {
       }
     }
     ArrayList<ShiftInstance>[] allShifts = (ArrayList<ShiftInstance>[])(
-            new ArrayList[]{rd, ktp, baby, breisach, kiza, event, sc,
-              concert_hall, kvs});
+            new ArrayList[]{rd, elw, ktp, baby, breisach, kiza, event, sc,
+              concert_hall, kvs});// TODO: add elw
     try {
       accounting.setPageSize(PageSize.A4);
       PdfWriter pdfWriter = PdfWriter.getInstance(accounting, new FileOutputStream(filePath));
@@ -285,6 +289,10 @@ public class PdfCreator {
       switch (shifts.get(0).getType()) {
         case RTW:
         case HINTERGRUND:
+          accountType = 0;
+          costUnit = "964001";
+          break;
+        case ELW:
           accountType = 0;
           costUnit = "964001";
           break;
