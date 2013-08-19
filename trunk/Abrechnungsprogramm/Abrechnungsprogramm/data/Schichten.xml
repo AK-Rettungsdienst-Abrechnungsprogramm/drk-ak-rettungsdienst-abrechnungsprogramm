@@ -1,4 +1,4 @@
-<Dienste version="1.4">
+<Dienste version="1.5">
   <Schicht>
     <ArtUndOrt>KTW</ArtUndOrt>
     <von>600</von>
@@ -373,7 +373,7 @@
     <von>700</von>
     <bis>1500</bis>
     <Pause>000</Pause>
-    <Schichtname>KVS1</Schichtname>
+    <Schichtname>F1</Schichtname>
     <RuestzeitMin>000</RuestzeitMin>
     <Tage>Mo-So</Tage>
   </Schicht>
@@ -382,7 +382,7 @@
     <von>800</von>
     <bis>1600</bis>
     <Pause>000</Pause>
-    <Schichtname>KVS2</Schichtname>
+    <Schichtname>F2</Schichtname>
     <RuestzeitMin>000</RuestzeitMin>
     <Tage>Mo-So</Tage>
   </Schicht>
@@ -391,7 +391,7 @@
     <von>1200</von>
     <bis>2100</bis>
     <Pause>000</Pause>
-    <Schichtname>KVS3</Schichtname>
+    <Schichtname>S20</Schichtname>
     <RuestzeitMin>000</RuestzeitMin>
     <Tage>Mo-So</Tage>
   </Schicht>
@@ -400,7 +400,7 @@
     <von>1400</von>
     <bis>2100</bis>
     <Pause>000</Pause>
-    <Schichtname>KVS4</Schichtname>
+    <Schichtname>S21</Schichtname>
     <RuestzeitMin>000</RuestzeitMin>
     <Tage>Mo-So</Tage>
   </Schicht>
@@ -409,7 +409,7 @@
     <von>1600</von>
     <bis>2300</bis>
     <Pause>000</Pause>
-    <Schichtname>KVS5</Schichtname>
+    <Schichtname>S2</Schichtname>
     <RuestzeitMin>000</RuestzeitMin>
     <Tage>Mo-So</Tage>
   </Schicht>
@@ -418,7 +418,7 @@
     <von>1500</von>
     <bis>2100</bis>
     <Pause>000</Pause>
-    <Schichtname>KVS6</Schichtname>
+    <Schichtname>S1</Schichtname>
     <RuestzeitMin>000</RuestzeitMin>
     <Tage>Mo-So</Tage>
   </Schicht>
@@ -427,7 +427,7 @@
     <von>1630</von>
     <bis>2130</bis>
     <Pause>000</Pause>
-    <Schichtname>KVS7</Schichtname>
+    <Schichtname>S30</Schichtname>
     <RuestzeitMin>000</RuestzeitMin>
     <Tage>Mo-So</Tage>
   </Schicht>
@@ -436,7 +436,7 @@
     <von>2100</von>
     <bis>700</bis>
     <Pause>000</Pause>
-    <Schichtname>KVS8</Schichtname>
+    <Schichtname>N1</Schichtname>
     <RuestzeitMin>000</RuestzeitMin>
     <Tage>Mo-So</Tage>
   </Schicht>
@@ -445,7 +445,7 @@
     <von>2300</von>
     <bis>700</bis>
     <Pause>000</Pause>
-    <Schichtname>KVS9</Schichtname>
+    <Schichtname>N2</Schichtname>
     <RuestzeitMin>000</RuestzeitMin>
     <Tage>Mo-So</Tage>
   </Schicht>
