@@ -502,10 +502,10 @@ public class PdfCreator {
       PdfPCell cell38 = new PdfPCell(new Paragraph("Anzahl geleisteter Stunden (Dezimal)", shiftTableHeadlineFont));
       cell38.setVerticalAlignment(Rectangle.ALIGN_MIDDLE);
       cell38.setHorizontalAlignment(Rectangle.ALIGN_CENTER);
-      PdfPCell cell39 = new PdfPCell(new Paragraph("Lohn pro\nStunde", shiftTableHeadlineFont));
+      PdfPCell cell39 = new PdfPCell(new Paragraph("€ pro\nStunde", shiftTableHeadlineFont));
       cell39.setVerticalAlignment(Rectangle.ALIGN_MIDDLE);
       cell39.setHorizontalAlignment(Rectangle.ALIGN_CENTER);
-      PdfPCell cell40 = new PdfPCell(new Paragraph("Lohn\ngesamt", shiftTableHeadlineFont));
+      PdfPCell cell40 = new PdfPCell(new Paragraph("€\ngesamt", shiftTableHeadlineFont));
       cell40.setVerticalAlignment(Rectangle.ALIGN_MIDDLE);
       cell40.setHorizontalAlignment(Rectangle.ALIGN_CENTER);
       Paragraph travelExpensesParagraph = new Paragraph();

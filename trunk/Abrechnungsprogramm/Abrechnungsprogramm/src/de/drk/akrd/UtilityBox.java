@@ -478,7 +478,11 @@ public static void instanciate(MainWindow mainWindow) {
     }
     return holidayDates;
   }
-  
+  /**
+   * print a given file with System-specific standard-printer
+   * @param filePath
+   * @return 
+   */
   public boolean printFile(String filePath) {
     File file = new File(filePath);
     if (!file.exists()) {
