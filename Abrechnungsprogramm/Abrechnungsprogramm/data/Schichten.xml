@@ -1,4 +1,4 @@
-<Dienste version="1.5">
+<Dienste version="1.6">
   <Schicht>
     <ArtUndOrt>KTW</ArtUndOrt>
     <von>600</von>
@@ -383,6 +383,15 @@
     <bis>1600</bis>
     <Pause>000</Pause>
     <Schichtname>F2</Schichtname>
+    <RuestzeitMin>000</RuestzeitMin>
+    <Tage>Mo-So</Tage>
+  </Schicht>
+    <Schicht>
+    <ArtUndOrt>KVS</ArtUndOrt>
+    <von>1200</von>
+    <bis>2130</bis>
+    <Pause>000</Pause>
+    <Schichtname>S19</Schichtname>
     <RuestzeitMin>000</RuestzeitMin>
     <Tage>Mo-So</Tage>
   </Schicht>
