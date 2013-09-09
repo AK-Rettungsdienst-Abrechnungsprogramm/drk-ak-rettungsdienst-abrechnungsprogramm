@@ -17,6 +17,7 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.jdom.Document;
 import java.util.List;
+import org.jdom.output.Format;
 
 /**
  * read and write xml-files
@@ -109,9 +110,14 @@ public class XMLEditor {
     }
     File dataFile = new File("data" + System.getProperty("file.separator") + "PersonalData.xml");
     boolean fileExists = dataFile.exists();
-    // TODO: for JDK7 use try-with
-    try {//(FileWriter fileWriter = new FileWriter(dataFile)) {
-      FileWriter fileWriter = new FileWriter(dataFile);
+    String documentName = "PersonalData";
+    try {
+      Element documentElement = new Element(documentName);
+      documentElement.setAttribute("version", "1.0");
+      Document document = new Document(documentElement);
+      document.setRootElement(documentElement);
+      Element datasetElement = new Element("dataset");
+      documentElement.addContent(datasetElement);
       String[] elementNames = new String[]{"firstName", "lastName", "address",
         "bankaccountAndCity", "accountNumber", "blz", "qualification", "dataKnown", "emailAdress", "calendarId", "addressKnown"};
       String[] elemetArray = new String[]{dataInstance.getFirstName(),
@@ -125,15 +131,15 @@ public class XMLEditor {
         dataInstance.getEmailAdress(),
         dataInstance.getCalendarId(),
         Boolean.toString(dataInstance.addressKnown())};
-      fileWriter.write("<personalData version=\"1.0\">" + System.getProperty("line.separator"));
-      fileWriter.write("  <dataset>" + System.getProperty("line.separator"));
       for (int i = 0; i < elementNames.length; i++) {
-        fileWriter.write("    <" + elementNames[i] + ">" + elemetArray[i] + "</"
-                + elementNames[i] + ">" + System.getProperty("line.separator"));
+        Element tempElement = new Element(elementNames[i]);
+        tempElement.setText(elemetArray[i]);
+        datasetElement.addContent(tempElement);
       }
-      fileWriter.write("  </dataset>" + System.getProperty("line.separator"));
-      fileWriter.write("</personalData>" + System.getProperty("line.separator"));
-      fileWriter.flush();
+      XMLOutputter serializer = new XMLOutputter();
+      serializer.setFormat(Format.getPrettyFormat());
+      serializer.output(document, new FileWriter("data"+System.getProperty("file.separator") + documentName + ".xml"));
+
       return true;
       // TODO: for JDK7 use Multicatch
     } catch (Exception e) {//IOException | NullPointerException e) {
