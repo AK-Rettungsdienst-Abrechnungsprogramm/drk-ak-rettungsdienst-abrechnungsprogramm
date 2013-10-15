@@ -29,7 +29,7 @@ import javax.swing.event.ChangeListener;
 
 public class MainWindow extends JFrame {
   public static final boolean WACHENVERSION = false;
-  public static final float PROGRAM_VERSION = 1.1f;
+  public static final float PROGRAM_VERSION = 1.11f;
   public static float SHIFT_FILE_VERSION = 0f;
 
   private static final long serialVersionUID = 1L;

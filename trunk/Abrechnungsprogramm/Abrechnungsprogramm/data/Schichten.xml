@@ -145,8 +145,8 @@
   </Schicht>
   <Schicht>
     <ArtUndOrt>KTW</ArtUndOrt>
-    <von>1700</von>
-    <bis>100</bis>
+    <von>1800</von>
+    <bis>200</bis>
     <Pause>030</Pause>
     <Schichtname>K17</Schichtname>
     <RuestzeitMin>010</RuestzeitMin>

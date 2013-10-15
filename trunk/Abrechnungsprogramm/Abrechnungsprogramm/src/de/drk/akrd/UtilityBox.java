@@ -289,7 +289,7 @@ public static void instanciate(MainWindow mainWindow) {
 				}
 				break;
 			case KVS:
-				salary = 9f;
+				salary = 10f;
 				break;
 			//KIZA, BREISACH, EVENT and SC
 			default:
