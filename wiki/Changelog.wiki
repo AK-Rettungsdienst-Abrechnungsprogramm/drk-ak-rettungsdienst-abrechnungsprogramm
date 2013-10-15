@@ -4,11 +4,14 @@
 
 Hier könnt ihr nachlesen, was in den jeweiligen Versionen neu ist und wann sie rausgekommen sind.
 
-  ===version 1.1 (27.08.2013)===
+ ===version 1.11 (15.10.2013)===
+ * KVS-Gehalt angepasst
+
+ ===version 1.1 (27.08.2013)===
  * Problem mit Abrechnen von ELW Einsätzen behoben
  * Anpassungen am Formular
 
-  ===version 1.0 (30.06.2013)===
+ ===version 1.0 (30.06.2013)===
 Die erste offizielle Verion mit aktuellem und genehmigtem Formular.
 
   ===version 0.8 (26.04.2013)=== 
