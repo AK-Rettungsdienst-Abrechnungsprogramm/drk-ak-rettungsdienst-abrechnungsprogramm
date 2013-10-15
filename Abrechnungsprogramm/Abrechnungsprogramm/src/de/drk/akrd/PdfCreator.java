@@ -268,7 +268,7 @@ public class PdfCreator {
         "Kirchzarten - 10", "RH (5,90 €/h)", "RS (6,70 €/h)", "RA (7,60 €/h)"};
       KoSt[3] = new String[]{"Veranstaltung - 01","SC-Freiburg - 02","Konzerthaus - 03","RH (5,90 €/h)",
         "RS (6,70 €/h)", "RA (7,60 €/h)"};
-      KoSt[4] = new String[]{"RH - RA (9,00 €/h)"};
+      KoSt[4] = new String[]{"RH-RA (10,00 €/h)"};
       boolean[] boolArray = new boolean[]{false, false, false, false, false, false};
       int checkboxSetter;
       switch (PersonalData.getInstance().getQualification()) {
