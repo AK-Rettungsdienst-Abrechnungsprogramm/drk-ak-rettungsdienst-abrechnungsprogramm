@@ -1,4 +1,9 @@
-<Dienste version="1.7">
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Changelog:
+	v1.8: 13.02.2014 Änderung Schichtzeiten ÄNFD 
+-->
+<Dienste version="1.8">
   <Schicht>
     <ArtUndOrt>KTW</ArtUndOrt>
     <von>600</von>
@@ -370,8 +375,8 @@
   </Schicht>
   <Schicht>
     <ArtUndOrt>KVS</ArtUndOrt>
-    <von>700</von>
-    <bis>1500</bis>
+    <von>730</von>
+    <bis>1230</bis>
     <Pause>000</Pause>
     <Schichtname>F1</Schichtname>
     <RuestzeitMin>000</RuestzeitMin>
@@ -380,25 +385,16 @@
   <Schicht>
     <ArtUndOrt>KVS</ArtUndOrt>
     <von>800</von>
-    <bis>1600</bis>
+    <bis>1500</bis>
     <Pause>000</Pause>
     <Schichtname>F2</Schichtname>
     <RuestzeitMin>000</RuestzeitMin>
     <Tage>Mo-So</Tage>
   </Schicht>
-    <Schicht>
-    <ArtUndOrt>KVS</ArtUndOrt>
-    <von>1200</von>
-    <bis>2130</bis>
-    <Pause>000</Pause>
-    <Schichtname>S19</Schichtname>
-    <RuestzeitMin>000</RuestzeitMin>
-    <Tage>Mo-So</Tage>
-  </Schicht>
   <Schicht>
     <ArtUndOrt>KVS</ArtUndOrt>
-    <von>1200</von>
-    <bis>2100</bis>
+    <von>1230</von>
+    <bis>2000</bis>
     <Pause>000</Pause>
     <Schichtname>S20</Schichtname>
     <RuestzeitMin>000</RuestzeitMin>
@@ -407,7 +403,16 @@
   <Schicht>
     <ArtUndOrt>KVS</ArtUndOrt>
     <von>1400</von>
-    <bis>2100</bis>
+    <bis>2000</bis>
+    <Pause>000</Pause>
+    <Schichtname>S20W</Schichtname>
+    <RuestzeitMin>000</RuestzeitMin>
+    <Tage>Mo-So</Tage>
+  </Schicht>
+  <Schicht>
+    <ArtUndOrt>KVS</ArtUndOrt>
+    <von>1500</von>
+    <bis>2200</bis>
     <Pause>000</Pause>
     <Schichtname>S21</Schichtname>
     <RuestzeitMin>000</RuestzeitMin>
@@ -415,10 +420,10 @@
   </Schicht>
   <Schicht>
     <ArtUndOrt>KVS</ArtUndOrt>
-    <von>1600</von>
+    <von>1500</von>
     <bis>2300</bis>
     <Pause>000</Pause>
-    <Schichtname>S2</Schichtname>
+    <Schichtname>S22</Schichtname>
     <RuestzeitMin>000</RuestzeitMin>
     <Tage>Mo-So</Tage>
   </Schicht>
@@ -433,8 +438,17 @@
   </Schicht>
   <Schicht>
     <ArtUndOrt>KVS</ArtUndOrt>
-    <von>1630</von>
-    <bis>2130</bis>
+    <von>1600</von>
+    <bis>2300</bis>
+    <Pause>000</Pause>
+    <Schichtname>S2</Schichtname>
+    <RuestzeitMin>000</RuestzeitMin>
+    <Tage>Mo-So</Tage>
+  </Schicht>
+  <Schicht>
+    <ArtUndOrt>KVS</ArtUndOrt>
+    <von>1700</von>
+    <bis>2200</bis>
     <Pause>000</Pause>
     <Schichtname>S30</Schichtname>
     <RuestzeitMin>000</RuestzeitMin>
@@ -442,16 +456,7 @@
   </Schicht>
   <Schicht>
     <ArtUndOrt>KVS</ArtUndOrt>
-    <von>2100</von>
-    <bis>700</bis>
-    <Pause>000</Pause>
-    <Schichtname>N1</Schichtname>
-    <RuestzeitMin>000</RuestzeitMin>
-    <Tage>Mo-So</Tage>
-  </Schicht>
-  <Schicht>
-    <ArtUndOrt>KVS</ArtUndOrt>
-    <von>2300</von>
+    <von>2200</von>
     <bis>700</bis>
     <Pause>000</Pause>
     <Schichtname>N2</Schichtname>
