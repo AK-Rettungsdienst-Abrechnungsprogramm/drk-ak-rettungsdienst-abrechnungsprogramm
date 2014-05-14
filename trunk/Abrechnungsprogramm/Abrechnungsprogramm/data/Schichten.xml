@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 	Changelog:
-	v1.8: 13.02.2014 Änderung Schichtzeiten ÄNFD 
+	v1.8: 13.02.2014 Änderung Schichtzeiten ÄNFD
+	v1.9: 14.05.2014 Änderung Schichtzeiten ÄNFD
 -->
-<Dienste version="1.8">
+<Dienste version="1.9">
   <Schicht>
     <ArtUndOrt>KTW</ArtUndOrt>
     <von>600</von>
@@ -375,8 +376,8 @@
   </Schicht>
   <Schicht>
     <ArtUndOrt>KVS</ArtUndOrt>
-    <von>730</von>
-    <bis>1230</bis>
+    <von>700</von>
+    <bis>1400</bis>
     <Pause>000</Pause>
     <Schichtname>F1</Schichtname>
     <RuestzeitMin>000</RuestzeitMin>
@@ -388,6 +389,15 @@
     <bis>1500</bis>
     <Pause>000</Pause>
     <Schichtname>F2</Schichtname>
+    <RuestzeitMin>000</RuestzeitMin>
+    <Tage>Mo-So</Tage>
+  </Schicht>
+    <Schicht>
+    <ArtUndOrt>KVS</ArtUndOrt>
+    <von>1230</von>
+    <bis>2200</bis>
+    <Pause>000</Pause>
+    <Schichtname>S19</Schichtname>
     <RuestzeitMin>000</RuestzeitMin>
     <Tage>Mo-So</Tage>
   </Schicht>
@@ -429,28 +439,19 @@
   </Schicht>
   <Schicht>
     <ArtUndOrt>KVS</ArtUndOrt>
-    <von>1500</von>
-    <bis>2100</bis>
-    <Pause>000</Pause>
-    <Schichtname>S1</Schichtname>
-    <RuestzeitMin>000</RuestzeitMin>
-    <Tage>Mo-So</Tage>
-  </Schicht>
-  <Schicht>
-    <ArtUndOrt>KVS</ArtUndOrt>
-    <von>1600</von>
-    <bis>2300</bis>
-    <Pause>000</Pause>
-    <Schichtname>S2</Schichtname>
-    <RuestzeitMin>000</RuestzeitMin>
-    <Tage>Mo-So</Tage>
-  </Schicht>
-  <Schicht>
-    <ArtUndOrt>KVS</ArtUndOrt>
     <von>1700</von>
     <bis>2200</bis>
     <Pause>000</Pause>
     <Schichtname>S30</Schichtname>
+    <RuestzeitMin>000</RuestzeitMin>
+    <Tage>Mo-So</Tage>
+  </Schicht>
+    <Schicht>
+    <ArtUndOrt>KVS</ArtUndOrt>
+    <von>2000</von>
+    <bis>700</bis>
+    <Pause>000</Pause>
+    <Schichtname>N1</Schichtname>
     <RuestzeitMin>000</RuestzeitMin>
     <Tage>Mo-So</Tage>
   </Schicht>
