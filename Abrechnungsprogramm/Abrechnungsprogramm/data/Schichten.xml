@@ -3,8 +3,9 @@
 	Changelog:
 	v1.8: 13.02.2014 Änderung Schichtzeiten ÄNFD
 	v1.9: 14.05.2014 Änderung Schichtzeiten ÄNFD
+	v2.0: 04.10.2014 Änderung der KTW Schichtzeiten (neue Zeiten ab August 2014)
 -->
-<Dienste version="1.9">
+<Dienste version="2.0">
   <Schicht>
     <ArtUndOrt>KTW</ArtUndOrt>
     <von>600</von>
@@ -44,8 +45,8 @@
   <Schicht>
     <ArtUndOrt>KTW</ArtUndOrt>
     <von>800</von>
-    <bis>1700</bis>
-    <Pause>045</Pause>
+    <bis>1600</bis>
+    <Pause>030</Pause>
     <Schichtname>K05</Schichtname>
     <RuestzeitMin>010</RuestzeitMin>
     <Tage>Mo-Fr</Tage>
@@ -61,8 +62,8 @@
   </Schicht>
   <Schicht>
     <ArtUndOrt>KTW</ArtUndOrt>
-    <von>900</von>
-    <bis>1700</bis>
+    <von>800</von>
+    <bis>1600</bis>
     <Pause>030</Pause>
     <Schichtname>K07</Schichtname>
     <RuestzeitMin>010</RuestzeitMin>
@@ -97,9 +98,9 @@
   </Schicht>
   <Schicht>
     <ArtUndOrt>KTW</ArtUndOrt>
-    <von>1000</von>
-    <bis>1900</bis>
-    <Pause>045</Pause>
+    <von>900</von>
+    <bis>1700</bis>
+    <Pause>030</Pause>
     <Schichtname>K11</Schichtname>
     <RuestzeitMin>010</RuestzeitMin>
     <Tage>Mo-Fr</Tage>
@@ -115,9 +116,9 @@
   </Schicht>
   <Schicht>
     <ArtUndOrt>KTW</ArtUndOrt>
-    <von>1030</von>
-    <bis>2000</bis>
-    <Pause>045</Pause>
+    <von>930</von>
+    <bis>1730</bis>
+    <Pause>030</Pause>
     <Schichtname>K13</Schichtname>
     <RuestzeitMin>010</RuestzeitMin>
     <Tage>Mo-Fr</Tage>
@@ -151,8 +152,8 @@
   </Schicht>
   <Schicht>
     <ArtUndOrt>KTW</ArtUndOrt>
-    <von>1800</von>
-    <bis>200</bis>
+    <von>1700</von>
+    <bis>100</bis>
     <Pause>030</Pause>
     <Schichtname>K17</Schichtname>
     <RuestzeitMin>010</RuestzeitMin>
