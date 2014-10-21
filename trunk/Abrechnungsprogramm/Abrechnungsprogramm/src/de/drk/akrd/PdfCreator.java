@@ -103,23 +103,18 @@ public class PdfCreator {
       for (int i = 0; i < allShifts.length; i++) {
         if (!allShifts[i].isEmpty()) {
           int numberOfPages = ((int) (allShifts[i].size() / 13)) + 1;
-          int counter = 0;
+          int counter = allShifts[i].size()-1;
           for (int j = 1; j <= numberOfPages; j++) {
             ArrayList<ShiftInstance> tempShiftInstances = new ArrayList<ShiftInstance>();
             for (int k = 0; k < 13; k++) {
-              if (counter >= (allShifts[i].size())) {
+              if (counter < 0) {
                 break;
               }
               tempShiftInstances.add(allShifts[i].get(counter));
-              counter++;
+              counter--;
             }
             accounting.newPage();
-            ArrayList<ShiftInstance> tempShiftInstancesReverse = new ArrayList<ShiftInstance>();
-            for (int k = 0; k < tempShiftInstances.size(); k++) {
-              ShiftInstance shiftInstance = tempShiftInstances.get(tempShiftInstances.size()-k-1);
-              tempShiftInstancesReverse.add(shiftInstance);
-            }
-            success = createSingleAccounting(accounting, pdfWriter, tempShiftInstancesReverse, i*10+j);
+            success = createSingleAccounting(accounting, pdfWriter, tempShiftInstances, i*10+j);
           }
         }
       }
