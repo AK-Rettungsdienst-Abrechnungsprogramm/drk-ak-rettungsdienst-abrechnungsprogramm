@@ -273,7 +273,7 @@ public static void instanciate(MainWindow mainWindow) {
 				salary = 8.8f;
 				break;
 			case CONCERT_HALL:
-				salary = 9.5f;
+				salary = 8.5f;
 				break;
 			case KTW:
 			case RTW:
