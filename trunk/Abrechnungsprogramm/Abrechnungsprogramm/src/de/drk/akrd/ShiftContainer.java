@@ -198,7 +198,6 @@ public class ShiftContainer  {
       entry.add(input[i].getPartner());
       entry.add(input[i].getType().toString());
       entry.add(input[i].getComment());
-      entry.add(Integer.toString(input[i].getCommuteExpenses()) + " €");
       result.add((String[]) entry.toArray(new String[entry.size()]));
     }
 

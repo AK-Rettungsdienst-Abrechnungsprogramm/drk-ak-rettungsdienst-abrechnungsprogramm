@@ -572,7 +572,7 @@ public class PdfCreator {
           timeSumAsFloat += currentShift.getTimeAsFloat();
           salaryPerHour = euroFormat.format(salary)+ " €";
           shiftSalary = euroFormat.format(currentShift.getTimeAsFloat() * salary)+" €";
-          int shiftCommuteExpenses = currentShift.getCommuteExpenses();
+          int shiftCommuteExpenses = 0;
           completeCommuteExpenses += shiftCommuteExpenses;
           commuteExpenses = euroFormat.format(shiftCommuteExpenses) + " €";
           comment = currentShift.getComment();

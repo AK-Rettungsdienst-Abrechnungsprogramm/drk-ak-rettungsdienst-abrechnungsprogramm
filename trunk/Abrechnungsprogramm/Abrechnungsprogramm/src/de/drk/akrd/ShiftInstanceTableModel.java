@@ -14,7 +14,7 @@ public class ShiftInstanceTableModel extends AbstractTableModel {
 
   // the column names
   private String[] columns = new String[]{"Datum", "Beginn", "Ende",
-      "Pause", "Dezimal", "Schichtpartner", "Art", "Kommentar","Fahrtkosten",
+      "Pause", "Dezimal", "Schichtpartner", "Art", "Kommentar",
       "Verdienst"};
   
   // all shift instances displayed
@@ -65,9 +65,7 @@ public class ShiftInstanceTableModel extends AbstractTableModel {
         return data.get(row).getType().toString();
       case 7:
         return data.get(row).getComment();
-      case 8:
-        return Integer.toString(data.get(row).getCommuteExpenses()) + " €";
-      case 9: {
+      case 8: {
         DecimalFormat df = new DecimalFormat("#0.00");
         return df.format(UtilityBox.calculateSalary(data.get(row), PersonalData.getInstance().getQualification())) + " €";}
       default:

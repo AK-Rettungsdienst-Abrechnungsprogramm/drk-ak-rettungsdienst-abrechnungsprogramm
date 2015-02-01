@@ -291,7 +291,10 @@ public static void instanciate(MainWindow mainWindow) {
 			case KVS:
 				salary = 10f;
 				break;
-			//KIZA, BREISACH, EVENT and SC
+			case BREISACH:
+			case KIZA:
+				salary = 8.6f;
+			// EVENT and SC
 			default:
 				switch (qualification) {
 				case RH:
@@ -321,8 +324,6 @@ public static void instanciate(MainWindow mainWindow) {
 	  float hourlySalary = calculateSalaryPerHour(shift, quali);
 	  // salary without commute expenses
 	  float salary = hourlySalary * shift.getTimeAsFloat();
-	  // add comute expenses
-	  salary += shift.getCommuteExpenses();
 	 
 	  return salary;
 	}

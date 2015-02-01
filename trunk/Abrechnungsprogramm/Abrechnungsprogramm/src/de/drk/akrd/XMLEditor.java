@@ -430,7 +430,7 @@ public class XMLEditor {
     element.addContent(new Element("actStartingTime").setText(Integer.toString(shift.getActualStartingTime())));
     element.addContent(new Element("actEndTime").setText(Integer.toString(shift.getActualEndTime())));
     element.addContent(new Element("actBreakTime").setText(Integer.toString(shift.getActualBreakTime())));
-    element.addContent(new Element("commuteExpenses").setText(Integer.toString(shift.getCommuteExpenses())));
+    element.addContent(new Element("commuteExpenses").setText(Integer.toString(0)));
     element.addContent(new Element("preparationTime").setText(Integer.toString(shift.getPrepTime())));
     element.addContent(new Element("partner").setText(shift.getPartner()));
     element.addContent(new Element("comment").setText(shift.getComment()));
