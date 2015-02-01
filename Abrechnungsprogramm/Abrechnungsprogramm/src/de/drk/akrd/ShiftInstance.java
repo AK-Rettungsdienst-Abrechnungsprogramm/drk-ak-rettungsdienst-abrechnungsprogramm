@@ -85,10 +85,6 @@ public class ShiftInstance implements Comparable<ShiftInstance> {
     this.id = id;
   }
 
-  public int getCommuteExpenses() {
-	return commuteExpenses;
-}
-
 public void setCommuteExpenses(int commuteExpenses) {
 	this.commuteExpenses = commuteExpenses;
 }
