@@ -344,7 +344,7 @@ public class PdfCreator {
                 break;
               default:                                    // CONCERT_HALL
                 boolArray[2] = true;
-                costUnit = costUnit+"03 (Konzerthaus, 9,50 €/h)";
+                costUnit = costUnit+"03 (Konzerthaus, 8,50 €/h)";
                 break;
             }
           } else {
