@@ -757,12 +757,12 @@ public class PdfCreator {
       // Version/Author
       PdfPTable table11 = new PdfPTable(4);
       table11.setWidthPercentage(100);
-      table11.addCell(new PdfPCell(new Paragraph("Version 4.1", helveticaFont9)));
-      table11.addCell(new PdfPCell(new Paragraph("Erstellt:", helveticaFont9)));
+      table11.addCell(new PdfPCell(new Paragraph("Version 4.2", helveticaFont9)));
+      table11.addCell(new PdfPCell(new Paragraph("geändert:", helveticaFont9)));
       table11.addCell(new PdfPCell(new Paragraph("Freigegeben:", helveticaFont9)));
       table11.addCell(new PdfPCell(new Paragraph("Seite 1 von 1", helveticaFont9)));
-      table11.addCell(new PdfPCell(new Paragraph("Stand: 01.06..2013", helveticaFont9)));
-      table11.addCell(new PdfPCell(new Paragraph("B. Sakschewski, J. Güttler", helveticaFont9)));
+      table11.addCell(new PdfPCell(new Paragraph("Stand: 26.01.2015", helveticaFont9)));
+      table11.addCell(new PdfPCell(new Paragraph("E. Willaredt, J. Güttler", helveticaFont9)));
       table11.addCell(new PdfPCell(new Paragraph("Karin Müller", helveticaFont9)));
       table11.addCell(new PdfPCell(new Paragraph("Personalservice", helveticaFont9)));      
       

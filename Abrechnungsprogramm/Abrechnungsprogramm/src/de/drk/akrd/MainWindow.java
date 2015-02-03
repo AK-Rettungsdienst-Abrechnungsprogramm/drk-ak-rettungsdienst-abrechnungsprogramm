@@ -29,7 +29,7 @@ import javax.swing.event.ChangeListener;
 
 public class MainWindow extends JFrame {
   public static final boolean WACHENVERSION = false;
-  public static final float PROGRAM_VERSION = 1.11f;
+  public static final float PROGRAM_VERSION = 1.2f; //1.2:mit geänderten Außenwachentarifen auf 8,60
   public static float SHIFT_FILE_VERSION = 0f;
 
   private static final long serialVersionUID = 1L;
@@ -299,9 +299,13 @@ public class MainWindow extends JFrame {
     importPanel.add(importButton);
     importExport.setSelected(importExportDisplayTableModel, 0, exportYearComboBox.getSelectedIndex());
 
+    // add statistics tab
+    StatisticTab statisticTab = new StatisticTab();
+    tabbedPane.addTab("Statistik", statisticTab);
     // add info / update-tab
     InfoUpdateTab infoUpdateTab = new InfoUpdateTab();
     tabbedPane.addTab("Info / Update", null, infoUpdateTab);
+    
   }
 
   public static void main(String[] args) {
