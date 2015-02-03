@@ -299,9 +299,9 @@ public class MainWindow extends JFrame {
     importPanel.add(importButton);
     importExport.setSelected(importExportDisplayTableModel, 0, exportYearComboBox.getSelectedIndex());
 
-    // add statistics tab
-    StatisticTab statisticTab = new StatisticTab();
-    tabbedPane.addTab("Statistik", statisticTab);
+//    // add statistics tab
+//    StatisticTab statisticTab = new StatisticTab();
+//    tabbedPane.addTab("Statistik", statisticTab);
     // add info / update-tab
     InfoUpdateTab infoUpdateTab = new InfoUpdateTab();
     tabbedPane.addTab("Info / Update", null, infoUpdateTab);
