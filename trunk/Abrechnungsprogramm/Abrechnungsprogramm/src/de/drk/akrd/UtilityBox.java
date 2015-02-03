@@ -294,6 +294,7 @@ public static void instanciate(MainWindow mainWindow) {
 			case BREISACH:
 			case KIZA:
 				salary = 8.6f;
+                break;
 			// EVENT and SC
 			default:
 				switch (qualification) {
