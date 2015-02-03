@@ -7,7 +7,9 @@ Hier könnt ihr nachlesen, was in den jeweiligen Versionen neu ist und wann sie 
  ===version 1.2 (in Arbeit)===
  * Konzerthausgehalt korrigiert
  * Problem mit der Speicherung der pers. Daten behoben, das dazu führte, dass gespeicherte Daten nicht ausgelesen werden konnten
- * Sortierungsproblem von mehr als 13 Schichten gleichen Typs / Monat behoben 
+ * Sortierungsproblem von mehr als 13 Schichten gleichen Typs / Monat behoben
+ * Außenwachentarif auf 8,60€ für alle Qualifikationen umgestellt
+ * Fahrtkostenpauschale entfernt
 
  ===version 1.11 (15.10.2013)===
  * KVS-Gehalt angepasst
