@@ -503,12 +503,6 @@ public class PdfCreator {
       PdfPCell cell40 = new PdfPCell(new Paragraph("€\ngesamt", shiftTableHeadlineFont));
       cell40.setVerticalAlignment(Rectangle.ALIGN_MIDDLE);
       cell40.setHorizontalAlignment(Rectangle.ALIGN_CENTER);
-//      Paragraph travelExpensesParagraph = new Paragraph();
-//      travelExpensesParagraph.add(new Phrase("Fahrt-\nkosten\n", shiftTableHeadlineFont));
-//      travelExpensesParagraph.add(new Phrase("(Kostenart 5803)", helveticaFont5));
-//      PdfPCell cell401 = new PdfPCell(travelExpensesParagraph);
-//      cell401.setVerticalAlignment(Rectangle.ALIGN_MIDDLE);
-//      cell401.setHorizontalAlignment(Rectangle.ALIGN_CENTER);
       PdfPCell cell41 = new PdfPCell(new Paragraph("Kommentar", shiftTableHeadlineFont));
       cell41.setVerticalAlignment(Rectangle.ALIGN_MIDDLE);
       cell41.setHorizontalAlignment(Rectangle.ALIGN_CENTER);
@@ -522,7 +516,6 @@ public class PdfCreator {
       table7.addCell(cell38);
       table7.addCell(cell39);
       table7.addCell(cell40);
-//      table7.addCell(cell401);
       table7.addCell(cell41);
 
       float salary = UtilityBox.getInstance().calculateSalaryPerHour(shifts.get(0), PersonalData.getInstance().getQualification());
@@ -624,10 +617,6 @@ public class PdfCreator {
         content = new Paragraph(shiftSalary, helveticaFont9);
         tempCell.addElement(content);
         table7.addCell(tempCell);
-//        tempCell = emptyPdfPCell();
-//        content = new Paragraph(commuteExpenses, helveticaFont9);
-//        tempCell.addElement(content);
-//        table7.addCell(tempCell);
         tempCell = emptyPdfPCell();
         content = new Paragraph(comment, commentFont);
         tempCell.addElement(content);
@@ -657,10 +646,7 @@ public class PdfCreator {
       cell45.setColspan(1);
       cell45.setBorderWidthBottom(2);
       cell45.setBorderWidthTop(2);
-//      PdfPCell cell46 = new PdfPCell(new Paragraph(euroFormat.format(completeCommuteExpenses)+ " €", helveticaFont9Bold));
-//      cell46.setVerticalAlignment(Rectangle.ALIGN_MIDDLE);
-//      cell46.setBorderWidthBottom(2);
-//      cell46.setBorderWidthTop(2);
+
       //commentcell
       PdfPCell cell461 = emptyPdfPCell();
       cell461.setColspan(2);
