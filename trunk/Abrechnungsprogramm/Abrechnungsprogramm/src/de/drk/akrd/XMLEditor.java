@@ -7,8 +7,11 @@ package de.drk.akrd;
 import java.io.IOException;
 import java.text.ParseException;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.io.FileWriter;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Iterator;
@@ -112,6 +115,8 @@ public class XMLEditor {
     boolean fileExists = dataFile.exists();
     String documentName = "PersonalData";
     try {
+      OutputStream outStream = new FileOutputStream(dataFile);
+      OutputStreamWriter osWriter = new OutputStreamWriter(outStream, "UTF-8");
       Element documentElement = new Element(documentName);
       documentElement.setAttribute("version", String.valueOf(PERSONAL_DATA_FILE_VERSION));
       Document document = new Document(documentElement);
@@ -137,8 +142,10 @@ public class XMLEditor {
         datasetElement.addContent(tempElement);
       }
       XMLOutputter serializer = new XMLOutputter();
-      serializer.setFormat(Format.getPrettyFormat());
-      serializer.output(document, new FileWriter("data"+System.getProperty("file.separator") + documentName + ".xml"));
+      
+      serializer.setFormat(Format.getPrettyFormat().setEncoding("UTF-8"));
+      serializer.output(document, osWriter);
+      //serializer.output(document, new FileWriter("data"+System.getProperty("file.separator") + documentName + ".xml"));
 
       return true;
       // TODO: for JDK7 use Multicatch

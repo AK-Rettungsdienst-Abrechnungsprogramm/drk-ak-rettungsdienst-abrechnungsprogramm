@@ -95,7 +95,7 @@ public class PdfCreator {
     }
     ArrayList<ShiftInstance>[] allShifts = (ArrayList<ShiftInstance>[])(
             new ArrayList[]{rd, elw, ktp, baby, breisach, kiza, event, sc,
-              concert_hall, kvs});// TODO: add elw
+              concert_hall, kvs});
     try {
       accounting.setPageSize(PageSize.A4);
       PdfWriter pdfWriter = PdfWriter.getInstance(accounting, new FileOutputStream(filePath));
