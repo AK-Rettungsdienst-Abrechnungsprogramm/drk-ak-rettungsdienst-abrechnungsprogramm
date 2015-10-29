@@ -80,6 +80,7 @@ public class PersonalInfoTab extends JPanel {
 				bankInfoKnownClickCallback(e.getStateChange());
 			}
 		});
+        
 		
 		addressKnown.addItemListener(new ItemListener() {
 			@Override
@@ -87,9 +88,15 @@ public class PersonalInfoTab extends JPanel {
 				addressKnownClickCallback(e.getStateChange());
 			}
 		});
+        
+        
 		layoutUiElements();
 		
 		loadPersonalData();
+        if(MainWindow.WACHENVERSION) {
+          bankInfoKnown.doClick();
+          addressKnown.doClick();
+        }
 	}
 	
 	protected void addressKnownClickCallback(int stateChange) {
