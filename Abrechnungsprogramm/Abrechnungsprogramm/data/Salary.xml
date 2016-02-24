@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Changelog:
+	v1.0: Created
+-->
+<Salaries version="3.0">
+	<Shifttype>
+		<name>RTW</name>
+		<RA>9.90</RA>
+		<RS>8.80</RS>
+		<RH>8.50</RH>
+	</Shifttype>
+	<Shifttype>
+		<name>KTW</name>
+		<RA>9.90</RA>
+		<RS>8.80</RS>
+		<RH>8.50</RH>
+	</Shifttype>
+	<Shifttype>
+		<name>KIZA</name>
+		<RA>9.90</RA>
+		<RS>8.80</RS>
+		<RH>8.50</RH>
+	</Shifttype>
+	<Shifttype>
+		<name>BREISACH</name>
+		<RA>9.90</RA>
+		<RS>8.80</RS>
+		<RH>8.50</RH>
+	</Shifttype>
+	<Shifttype>
+		<name>EVENT</name>
+		<RA>7.60</RA>
+		<RS>6.70</RS>
+		<RH>5.90</RH>
+	</Shifttype>
+	<Shifttype>
+		<name>KVS</name>
+		<RA>10</RA>
+		<RS>10</RS>
+		<RH>10</RH>
+	</Shifttype>
+	<Shifttype>
+		<name>SC</name>
+		<RA>7.60</RA>
+		<RS>6.70</RS>
+		<RH>5.90</RH>
+	</Shifttype>
+	<Shifttype>
+		<name>CONCERT_HALL</name>
+		<RA>8.50</RA>
+		<RS>8.50</RS>
+		<RH>8.50</RH>
+	</Shifttype>
+</Salaries>

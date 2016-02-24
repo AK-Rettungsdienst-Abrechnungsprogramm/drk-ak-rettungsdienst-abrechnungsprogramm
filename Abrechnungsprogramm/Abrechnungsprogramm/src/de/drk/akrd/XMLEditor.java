@@ -7,7 +7,9 @@ package de.drk.akrd;
 import java.io.IOException;
 import java.text.ParseException;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.io.FileWriter;
 import java.io.OutputStream;
@@ -20,6 +22,8 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.jdom.Document;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jdom.output.Format;
 
 /**
@@ -44,24 +48,17 @@ public class XMLEditor {
    */
   public static boolean fillShiftList(String filePath, ArrayList<Shift> shiftList) {
     SAXBuilder saxBuilder = new SAXBuilder();
-    File xmlFile = new File(filePath);
+    FileReader xmlFileReader;
     try {
-      Document document = (Document) saxBuilder.build(xmlFile);
+      xmlFileReader = new FileReader(new File(filePath));
+    } catch (FileNotFoundException ex) {
+      System.out.println("Exception in function XMLEditor.fillShiftList: "+ex.getStackTrace().toString());
+      return false;
+    }
+    try {
+      Document document = (Document) saxBuilder.build(xmlFileReader);
+      xmlFileReader.close();
       Element documentElement = document.getRootElement();
-      // check file Version
-      {
-        String documentVersionString = documentElement.getAttributeValue("version");
-        float documentVersion = Float.parseFloat(documentVersionString);
-        MainWindow.SHIFT_FILE_VERSION = documentVersion;
-        if (documentVersion < SHIFT_FILE_VERSION) {
-          boolean downloadNew = UtilityBox.getInstance().displayYesNoPopup(
-            "Schichten.xml", "Die Liste der Schichten ist veraltet.\nNeuste"
-            + "Version herunterladen?");
-          if(downloadNew){
-            Update.downloadNewShiftFile();
-          }
-        }
-      }
       List nodeList = documentElement.getChildren("Schicht");
       for (int i = 0; i < nodeList.size(); i++) {
         Element node = (Element) nodeList.get(i);

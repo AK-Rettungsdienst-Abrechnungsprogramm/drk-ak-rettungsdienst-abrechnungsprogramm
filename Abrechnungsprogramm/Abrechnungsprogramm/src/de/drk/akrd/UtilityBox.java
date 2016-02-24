@@ -50,34 +50,53 @@ public class UtilityBox {
     checkVersion();
   }
 
+  
+  /**
+   * 
+   */
   public void checkVersion() {
     // get newest available version
     Thread versionChecker = new Thread() {
       public void run() {
         // get latest Program version
-        float programVersion = Update.getLatestProgramVersion();
-        UtilityBox.getInstance().setNewestVersion(programVersion);
+        Update.readUpdateData();
+        float latestProgramVersion = Update.getLatestProgramVersion();
+        UtilityBox.getInstance().setNewestVersion(latestProgramVersion);
         // query sucessfull + no newer version
-        if (programVersion <= MainWindow.PROGRAM_VERSION && programVersion > 0) {
+        if (latestProgramVersion <= MainWindow.PROGRAM_VERSION && latestProgramVersion > 0) {
           // check shift file version
           float newestShiftFileVersion = Update.getLatestShiftFileVersion();
-
+          float newestSalaryFileVersion = Update.getLatestSalaryFileVersion();
+          boolean newShiftFile = false;
+          boolean newSalaryFile = false;
           if (newestShiftFileVersion > MainWindow.SHIFT_FILE_VERSION) {
+            newShiftFile = true;   
+          }
+          if (newestSalaryFileVersion > MainWindow.SALARY_FILE_VERSION) {
+            newSalaryFile = true;
+          }
+          if (newSalaryFile && newShiftFile) {
+            setStatusBarText("Es sind neue Versionen der Schichten- und Gehaltsdateien verfügbar. Bitte unter Info/Update herunterladen!", new Color(180, 0, 0));
+            return;
+          } else if (newSalaryFile) {
+            setStatusBarText("Es ist eine neue Version der Gehalts-Datei verfügbar. Bitte unter Info/Update herunterladen!", new Color(180, 0, 0));
+            return;
+          } else if (newShiftFile) {
             setStatusBarText("Es ist eine neue Version der Schichten Datei verfügbar. Bitte unter Info/Update herunterladen!", new Color(180, 0, 0));
-            return;   
+            return;
           }
           setStatusBarText("Das Programm ist auf dem neusten Stand!", new Color(0, 100, 0));
           return;
         }
         // query sicessfull & newer version available
-        if (programVersion > MainWindow.PROGRAM_VERSION)
+        if (latestProgramVersion > MainWindow.PROGRAM_VERSION)
         {
-          setStatusBarText("Es ist eine neue Version (" + Float.toString(programVersion) +
+          setStatusBarText("Es ist eine neue Version (" + Float.toString(latestProgramVersion) +
               ") verfügbar. Bitte lade diese herunter!", new Color(180, 0, 0));
           return;   
         }
         // query not sucessfull
-        if (programVersion < 0) {
+        if (latestProgramVersion < 0) {
           setStatusBarText("Konnte die aktuelle Version nicht feststellen. Evtl. besteht keine Verbindung zum Internet.", 
               new Color(200, 150, 0));
           return;

@@ -1,7 +1,9 @@
 package de.drk.akrd;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -11,6 +13,10 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ProgressMonitorInputStream;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
 
 /**
  *
@@ -18,28 +24,111 @@ import javax.swing.ProgressMonitorInputStream;
  */
 public class Update {
 
+  private static final String UPDATE_DATA_FILE_URL = "https://raw.githubusercontent.com/AK-Rettungsdienst-Abrechnungsprogramm/drk-ak-rettungsdienst-abrechnungsprogramm/master/Abrechnungsprogramm/Abrechnungsprogramm/data/updatedata.xml";
+  private static final String UPDATE_DATA_FILE_PATH = "data" + System.getProperty("file.separator") + "updatedata.xml";
+  private static final String SHIFT_FILE_PATH = "data" + System.getProperty("file.separator") + "Schichten.xml";
+  private static final String SALARY_FILE_PATH = "data" + System.getProperty("file.separator") + "Salary.xml";
+  private static float latestProgramVersion = -1f;
+  private static float latestShiftFileVersion = -1f;
+  private static float latestSalaryFileVersion = -1f;
+  public static String SHIFT_FILE_URL = "";
+  public static String SALARY_FILE_URL = "";
+
   /**
-   * download actual shiftlist
-   * @return 
+   * read shiftfile and salaryfile-versions and safe in MainWindow fields
    */
-  public static float downloadNewShiftFile() {
-      try {
-        Update.downloadFile("https://drk-ak-rettungsdienst-abrechnungsprogramm.googlecode.com/svn/trunk/Abrechnungsprogramm/Abrechnungsprogramm/data/Schichten.xml");
-        UtilityBox.getInstance().displayInfoPopup("Schichten.xml", "Die Schichtliste wurde aktualisiert.");
-      } catch (Exception ex) {
-        try {
-          // TODO: display URL as Link
-          URL url = new URL("https://drk-ak-rettungsdienst-abrechnungsprogramm.googlecode.com/svn/trunk/Abrechnungsprogramm/Abrechnungsprogramm/data/Schichten.xml");
-          UtilityBox.getInstance().displayErrorPopup("Download", "Fehler beim Download. Die Datei kann unter\n"+url+"\nheruntergeladen werden.");
-        } catch (MalformedURLException ex1) {
-          Logger.getLogger(XMLEditor.class.getName()).log(Level.SEVERE, null, ex1);
-        }
-      }
-      
-      return 0f;
+  public static void readFileVersions() {
+    FileReader xmlFileReader;
+    try {
+      xmlFileReader = new FileReader(new File(SHIFT_FILE_PATH));
+      MainWindow.SHIFT_FILE_VERSION = readVersionFromFileReader(xmlFileReader);
+    } catch (FileNotFoundException ex) {
+      System.out.println("Exception in function XMLEditor.fillShiftList: " + ex.getStackTrace().toString());
+    }
+    try {
+      xmlFileReader = new FileReader(new File(SALARY_FILE_PATH));
+      MainWindow.SALARY_FILE_VERSION= readVersionFromFileReader(xmlFileReader);
+    } catch (FileNotFoundException ex) {
+      System.out.println("Exception in function XMLEditor.fillShiftList: " + ex.getStackTrace().toString());
+    }
   }
 
-  public static void downloadFile(String http) throws Exception {
+  private static float readVersionFromFileReader(FileReader fileReader) {
+    try {
+      SAXBuilder saxBuilder = new SAXBuilder();
+      Document document = (Document) saxBuilder.build(fileReader);
+      Element documentElement = document.getRootElement();
+      String documentVersionString = documentElement.getAttributeValue("version");
+      float version = Float.parseFloat(documentVersionString);
+      return version;
+    } catch (Exception ex) { //TODO: multicatch IOException | JDOMException
+      System.err.println("Exception in Update.readVersionFromFileReader: " + ex.getStackTrace().toString());
+      return 0f;
+    }
+  }
+
+  /**
+   * download new updatedata file and check versions
+   */
+  public static void readUpdateData() {
+    downloadNewUpdatefile(UPDATE_DATA_FILE_URL);
+    SAXBuilder saxBuilder = new SAXBuilder();
+    try {
+      FileReader xmlFileReader = new FileReader(new File(UPDATE_DATA_FILE_PATH));
+      Document document = (Document) saxBuilder.build(xmlFileReader);
+      Element documentElement = document.getRootElement();
+      latestProgramVersion = Float.parseFloat(documentElement.getChildText("program-version"));
+      latestShiftFileVersion = Float.parseFloat(documentElement.getChildText("shiftfile-version"));
+      latestSalaryFileVersion = Float.parseFloat(documentElement.getChildText("salaryfile-version"));
+      // TODO: set URLs
+      SHIFT_FILE_URL = documentElement.getChildText("shiftfile-url");
+      SALARY_FILE_URL = documentElement.getChildText("salaryfile-url");
+    } catch (Exception e) { // TODO: multicatch in 1.7 JDOMException | IOException | FileNotFoundException e
+      System.out.println("Exception in function XMLEditor.fillShiftList: " + e.getMessage());
+    }
+  }
+
+  /**
+   * download current shiftlist
+   *
+   * @return
+   */
+  public static float downloadNewShiftFile() {
+    System.out.println("url salary file: " + SALARY_FILE_URL);
+    try {
+      Update.downloadFile(SHIFT_FILE_URL, "Schichten.xml");
+      UtilityBox.getInstance().displayInfoPopup("Schichten.xml", "Die Schichtliste wurde aktualisiert.");
+    } catch (Exception ex) {
+      try {
+        // TODO: display URL as Link
+        URL url = new URL(SHIFT_FILE_URL);
+        UtilityBox.getInstance().displayErrorPopup("Download", "Fehler beim Download. Die Datei kann unter\n" + url + "\nheruntergeladen werden.");
+      } catch (MalformedURLException ex1) {
+        Logger.getLogger(XMLEditor.class.getName()).log(Level.SEVERE, null, ex1);
+      }
+    }
+
+    return 0f;
+  }
+
+  public static float downloadNewSalaryFile() {
+    try {
+      Update.downloadFile(SALARY_FILE_URL, "Salary.xml");
+      UtilityBox.getInstance().displayInfoPopup("Salary.xml", "Die Gehaltsliste wurde aktualisiert.");
+    } catch (Exception ex) {
+      try {
+        // TODO: display URL as Link
+        URL url = new URL(SALARY_FILE_URL);
+        UtilityBox.getInstance().displayErrorPopup("Download", "Fehler beim Download. Die Datei kann unter\n" + url + "\nheruntergeladen werden.");
+      } catch (MalformedURLException ex1) {
+        Logger.getLogger(XMLEditor.class.getName()).log(Level.SEVERE, null, ex1);
+      }
+    }
+
+    return 0f;
+  }
+
+  public static void downloadFile(String http, String fileName) throws Exception {
 //    throw new NotImplementedException();
     URL url = new URL(http);
     URLConnection uc = url.openConnection();
@@ -49,10 +138,10 @@ public class Update {
     // check if data dir exists and if not create it
     File dataDir = new File("data");
     if (!dataDir.exists()) {
-    	dataDir.mkdir();
+      dataDir.mkdir();
     }
 
-    File outputFile = new File("data" + File.separatorChar + "Schichten.xml");
+    File outputFile = new File("data" + File.separatorChar + fileName);
     FileOutputStream out = new FileOutputStream(outputFile);
 
     byte[] buffer = new byte[1024];
@@ -62,40 +151,33 @@ public class Update {
     out.flush();
     out.close();
   }
-  
-  // tries to get the newest version number that is available at code.google.com
-  public static float getLatestProgramVersion() {
-    float result = -1f;
+
+  private static float downloadNewUpdatefile(String http) {
     try {
-      URL url = new URL("https://drk-ak-rettungsdienst-abrechnungsprogramm.googlecode.com/svn/trunk/Abrechnungsprogramm/Abrechnungsprogramm/versionIndicators/programVersion");
-      //URL url = new URL("https://drk-ak-rettungsdienst-abrechnungsprogramm.googlecode.com/svn/trunk/Abrechnungsprogramm/Abrechnungsprogramm/versionIndicators/newerProgramVersion");
-      Scanner scanner = new Scanner(url.openStream());
-      if (scanner.hasNext()) {
-    	  result = Float.parseFloat(scanner.next());
+      Update.downloadFile(http, "updatedata.xml");
+      //UtilityBox.getInstance().displayInfoPopup("updateinfo.xml", "Updateinformationen einholen...");
+    } catch (Exception ex) {
+      try {
+        // TODO: display URL as Link
+        URL url = new URL(http);
+        UtilityBox.getInstance().displayErrorPopup("Download", "Fehler beim Download. Die Datei kann unter\n" + url + "\nheruntergeladen werden.");
+      } catch (MalformedURLException ex1) {
+        Logger.getLogger(XMLEditor.class.getName()).log(Level.SEVERE, null, ex1);
       }
-      scanner.close();
-    } catch (Exception e) {
-      return -1;
     }
-    return result;
+
+    return 0f;
+  }
+
+  public static float getLatestProgramVersion() {
+    return latestProgramVersion;
   }
 
   public static float getLatestShiftFileVersion() {
-    float result = -1f;
-    try {
-//      URL url = new URL("https://drk-ak-rettungsdienst-abrechnungsprogramm.googlecode.com/svn/trunk/Abrechnungsprogramm/Abrechnungsprogramm/versionIndicators/programVersion");
-      URL url = new URL("https://drk-ak-rettungsdienst-abrechnungsprogramm.googlecode.com/svn/trunk/Abrechnungsprogramm/Abrechnungsprogramm/versionIndicators/shiftFileVersion");
-      Scanner scanner = new Scanner(url.openStream());
-      if (scanner.hasNext()) {
-    	  result = Float.parseFloat(scanner.next());
-      }
-      //System.out.println(result);
-      scanner.close();
-    } catch (MalformedURLException e) {
-      return -1;
-    } catch (IOException e) {
-      return -1;
-    }
-    return result;
+    return latestShiftFileVersion;
+  }
+
+  public static float getLatestSalaryFileVersion() {
+    return latestSalaryFileVersion;
   }
 }

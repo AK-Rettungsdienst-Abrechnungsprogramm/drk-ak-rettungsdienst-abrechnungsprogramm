@@ -58,6 +58,7 @@ public class InfoUpdateTab extends JPanel{
 
       @Override
       public void actionPerformed(ActionEvent e) {
+        Update.downloadNewSalaryFile();
         Update.downloadNewShiftFile();
         UtilityBox.getInstance().requestShiftListReload();
         updateInfoLabel(MainWindow.SHIFT_FILE_VERSION);
