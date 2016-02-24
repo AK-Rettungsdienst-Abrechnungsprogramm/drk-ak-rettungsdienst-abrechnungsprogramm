@@ -24,8 +24,6 @@ public class PersonalData {
   private int blz;
   private Qualification qualification;
   private boolean dataKnown;
-  private String emailAdress;
-  private String calendarId;
 private boolean addressKnown;
   public static enum Qualification {
     RH, RS, RA;
@@ -82,7 +80,7 @@ private boolean addressKnown;
    */
   public boolean setData(String firstName, String LastName, String address,
           String BankNameAndCity, int accountNumber, int blz, Qualification qualifikation,
-          boolean dataKnown, String emailAdress, String calendarId, boolean addressKnown) {
+          boolean dataKnown, boolean addressKnown) {
 
     this.accountNumber = accountNumber;
     this.bankNameAndCity = BankNameAndCity;
@@ -93,8 +91,7 @@ private boolean addressKnown;
     this.qualification = qualifikation;
     this.dataKnown = dataKnown;
     this.dataSet = true;
-    this.emailAdress = emailAdress;
-    this.calendarId = calendarId;
+
     this.addressKnown = addressKnown;
     boolean success = XMLEditor.writePersonalData(instance);
     return success;
@@ -135,8 +132,6 @@ private boolean addressKnown;
             Integer.parseInt(accountNumber),
             Integer.parseInt(blz),Qualification.valueOf(quali),
             isDataKnown,
-            emailAdress,
-            calendarId,
             addressKnown.equals("true"));
     return success;
   }
@@ -204,13 +199,6 @@ private boolean addressKnown;
   public Qualification getQualification() {
     return qualification;
   }
-  /**
-   * 
-   * @return the google calendar Id
-   */
-  public String getCalendarId() {
-    return calendarId;
-  }
 
   /**
    * 
@@ -220,13 +208,6 @@ private boolean addressKnown;
     return dataSet;
   }
 
-  /**
-   * 
-   * @return the email adress
-   */
-  public String getEmailAdress() {
-    return emailAdress;
-  }
 
 public boolean addressKnown() {
 	// TODO Auto-generated method stub

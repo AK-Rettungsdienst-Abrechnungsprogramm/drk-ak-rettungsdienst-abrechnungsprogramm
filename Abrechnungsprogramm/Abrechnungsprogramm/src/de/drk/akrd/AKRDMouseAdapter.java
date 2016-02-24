@@ -54,37 +54,6 @@ public class AKRDMouseAdapter extends MouseAdapter {
 			messagePopup.setVisible(false);
 			return;
 		}
-
-		// Read DPL
-		if(source == mainWindow.read_DPL)
-		{
-			DRManager.GetInstance().parseDutyRota();
-			mainWindow.updateShiftsFromDPL();
-			return;
-		}
-		
-		// Export calendar data
-		if(source == mainWindow.iCalButton || source == mainWindow.googleCalButton)
-		{
-			if(DRManager.GetInstance().getSavedShifts() == null)
-			{
-				UtilityBox.getInstance().displayErrorPopup("Fehler", "Bitte zuerst Dienstplan auslesen!");
-				return;
-			}
-			
-			if(source == mainWindow.iCalButton)
-			{
-			 ICalendar iCalendar = new ICalendar();
-	         iCalendar.createICalendarFile(DRManager.GetInstance().getSavedShifts(), DRManager.GetInstance().getSavedShiftDates());
-	         return;
-			}
-			if(source == mainWindow.googleCalButton)
-			{
-				GoogleConnect gc = new GoogleConnect();
-				
-				gc.createGoogleCalendarEntry(DRManager.GetInstance().getSavedShifts(), DRManager.GetInstance().getSavedShiftDates());
-			}
-		}
 	}
 
 
