@@ -8,6 +8,6 @@
   <shiftfile-version>2.0</shiftfile-version>
   <shiftfile-url>https://github.com/AK-Rettungsdienst-Abrechnungsprogramm/drk-ak-rettungsdienst-abrechnungsprogramm/raw/master/Abrechnungsprogramm/Abrechnungsprogramm/data/Schichten.xml</shiftfile-url>
   <salaryfile-version>0.0</salaryfile-version>
-  <salaryfile-url>https://github.com/AK-Rettungsdienst-Abrechnungsprogramm/drk-ak-rettungsdienst-abrechnungsprogramm/raw/master/Abrechnungsprogramm/Abrechnungsprogramm/data/updatedata.xml</salaryfile-url>
+  <salaryfile-url>https://github.com/AK-Rettungsdienst-Abrechnungsprogramm/drk-ak-rettungsdienst-abrechnungsprogramm/raw/master/Abrechnungsprogramm/Abrechnungsprogramm/data/Salary.xml</salaryfile-url>
   <program-download-link>http://www.abrechnung.ak-rd.de</program-download-link>
 </updatedata>
