@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Update-Daten für das Arbeitskreis Rettungsdienst-Abrechnungsprogramm des DRK KV Freiburg
+	https://github.com/AK-Rettungsdienst-Abrechnungsprogramm/drk-ak-rettungsdienst-abrechnungsprogramm/
+-->
+<updatedata version="0.1">
+  <program-version>1.2</program-version>
+  <shiftfile-version>2.0</shiftfile-version>
+  <shiftfile-url>https://github.com/AK-Rettungsdienst-Abrechnungsprogramm/drk-ak-rettungsdienst-abrechnungsprogramm/raw/master/Abrechnungsprogramm/Abrechnungsprogramm/data/Schichten.xml</shiftfile-url>
+  <salaryfile-version>0.0</salaryfile-version>
+  <salaryfile-url>https://github.com/AK-Rettungsdienst-Abrechnungsprogramm/drk-ak-rettungsdienst-abrechnungsprogramm/raw/master/Abrechnungsprogramm/Abrechnungsprogramm/data/updatedata.xml</salaryfile-url>
+  <program-download-link>http://www.abrechnung.ak-rd.de</program-download-link>
+</updatedata>
