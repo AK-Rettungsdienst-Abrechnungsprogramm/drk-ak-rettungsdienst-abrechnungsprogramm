@@ -4,8 +4,18 @@
 	v1.8: 13.02.2014 Änderung Schichtzeiten ÄNFD
 	v1.9: 14.05.2014 Änderung Schichtzeiten ÄNFD
 	v2.0: 04.10.2014 Änderung der KTW Schichtzeiten (neue Zeiten ab August 2014)
+    v3.0: 30.01.2016 Änderungen KTW und RTW Schichten
 -->
-<Dienste version="2.0">
+<Dienste version="3.0">
+  <Schicht>
+    <ArtUndOrt>KTW</ArtUndOrt>
+    <von>600</von>
+    <bis>1430</bis>
+    <Pause>030</Pause>
+    <Schichtname>KTWF</Schichtname>
+    <RuestzeitMin>010</RuestzeitMin>
+    <Tage>Mo-Fr</Tage>
+  </Schicht>
   <Schicht>
     <ArtUndOrt>KTW</ArtUndOrt>
     <von>600</von>
@@ -17,8 +27,8 @@
   </Schicht>
   <Schicht>
     <ArtUndOrt>KTW</ArtUndOrt>
-    <von>615</von>
-    <bis>1445</bis>
+    <von>900</von>
+    <bis>1730</bis>
     <Pause>030</Pause>
     <Schichtname>K02</Schichtname>
     <RuestzeitMin>010</RuestzeitMin>
@@ -26,19 +36,10 @@
   </Schicht>
   <Schicht>
     <ArtUndOrt>KTW</ArtUndOrt>
-    <von>630</von>
-    <bis>1500</bis>
+    <von>700</von>
+    <bis>1530</bis>
     <Pause>030</Pause>
     <Schichtname>K03</Schichtname>
-    <RuestzeitMin>010</RuestzeitMin>
-    <Tage>Mo-Fr</Tage>
-  </Schicht>
-  <Schicht>
-    <ArtUndOrt>KTW</ArtUndOrt>
-    <von>800</von>
-    <bis>1400</bis>
-    <Pause>000</Pause>
-    <Schichtname>K04</Schichtname>
     <RuestzeitMin>010</RuestzeitMin>
     <Tage>Mo-Fr</Tage>
   </Schicht>
@@ -53,19 +54,10 @@
   </Schicht>
   <Schicht>
     <ArtUndOrt>KTW</ArtUndOrt>
-    <von>830</von>
-    <bis>1700</bis>
+    <von>930</von>
+    <bis>1800</bis>
     <Pause>030</Pause>
     <Schichtname>K06</Schichtname>
-    <RuestzeitMin>010</RuestzeitMin>
-    <Tage>Mo-Fr</Tage>
-  </Schicht>
-  <Schicht>
-    <ArtUndOrt>KTW</ArtUndOrt>
-    <von>800</von>
-    <bis>1600</bis>
-    <Pause>030</Pause>
-    <Schichtname>K07</Schichtname>
     <RuestzeitMin>010</RuestzeitMin>
     <Tage>Mo-Fr</Tage>
   </Schicht>
@@ -125,17 +117,17 @@
   </Schicht>
   <Schicht>
     <ArtUndOrt>KTW</ArtUndOrt>
-    <von>1230</von>
-    <bis>2100</bis>
-    <Pause>030</Pause>
-    <Schichtname>K14</Schichtname>
+    <von>1330</von>
+    <bis>2200</bis>
+    <Pause>045</Pause>
+    <Schichtname>KTWS</Schichtname>
     <RuestzeitMin>010</RuestzeitMin>
     <Tage>Mo-Fr</Tage>
   </Schicht>
   <Schicht>
     <ArtUndOrt>KTW</ArtUndOrt>
     <von>1600</von>
-    <bis>000</bis>
+    <bis>0</bis>
     <Pause>030</Pause>
     <Schichtname>K15</Schichtname>
     <RuestzeitMin>010</RuestzeitMin>
@@ -143,8 +135,8 @@
   </Schicht>
   <Schicht>
     <ArtUndOrt>KTW</ArtUndOrt>
-    <von>2200</von>
-    <bis>700</bis>
+    <von>2100</von>
+    <bis>600</bis>
     <Pause>045</Pause>
     <Schichtname>K16</Schichtname>
     <RuestzeitMin>010</RuestzeitMin>
@@ -179,19 +171,19 @@
   </Schicht>
   <Schicht>
     <ArtUndOrt>KTW</ArtUndOrt>
-    <von>700</von>
-    <bis>1300</bis>
-    <Pause>000</Pause>
-    <Schichtname>K52 Samstag</Schichtname>
+    <von>1000</von>
+    <bis>1930</bis>
+    <Pause>045</Pause>
+    <Schichtname>K53 Samstag</Schichtname>
     <RuestzeitMin>010</RuestzeitMin>
     <Tage>Sa</Tage>
   </Schicht>
   <Schicht>
     <ArtUndOrt>KTW</ArtUndOrt>
     <von>1000</von>
-    <bis>1930</bis>
-    <Pause>045</Pause>
-    <Schichtname>K53 Samstag</Schichtname>
+    <bis>1600</bis>
+    <Pause>000</Pause>
+    <Schichtname>K54 Samstag</Schichtname>
     <RuestzeitMin>010</RuestzeitMin>
     <Tage>Sa</Tage>
   </Schicht>
@@ -249,84 +241,33 @@
     <RuestzeitMin>010</RuestzeitMin>
     <Tage>So</Tage>
   </Schicht>
+
+  <!-- RTW Schichten  -->
+
   <Schicht>
     <ArtUndOrt>RTW</ArtUndOrt>
     <von>600</von>
-    <bis>1300</bis>
+    <bis>1400</bis>
     <Pause>000</Pause>
-    <Schichtname>R1F</Schichtname>
+    <Schichtname>RTW Früh</Schichtname>
     <RuestzeitMin>010</RuestzeitMin>
     <Tage>Mo-So</Tage>
   </Schicht>
   <Schicht>
     <ArtUndOrt>RTW</ArtUndOrt>
-    <von>1300</von>
-    <bis>2100</bis>
+    <von>1400</von>
+    <bis>2200</bis>
     <Pause>000</Pause>
-    <Schichtname>R1S</Schichtname>
+    <Schichtname>RTW Spät</Schichtname>
     <RuestzeitMin>010</RuestzeitMin>
     <Tage>Mo-So</Tage>
   </Schicht>
   <Schicht>
     <ArtUndOrt>RTW</ArtUndOrt>
-    <von>2100</von>
+    <von>2200</von>
     <bis>600</bis>
     <Pause>000</Pause>
-    <Schichtname>R1N</Schichtname>
-    <RuestzeitMin>010</RuestzeitMin>
-    <Tage>Mo-So</Tage>
-  </Schicht>
-  <Schicht>
-    <ArtUndOrt>RTW</ArtUndOrt>
-    <von>615</von>
-    <bis>1315</bis>
-    <Pause>000</Pause>
-    <Schichtname>R2F</Schichtname>
-    <RuestzeitMin>010</RuestzeitMin>
-    <Tage>Mo-So</Tage>
-  </Schicht>
-  <Schicht>
-    <ArtUndOrt>RTW</ArtUndOrt>
-    <von>1315</von>
-    <bis>2115</bis>
-    <Pause>000</Pause>
-    <Schichtname>R2S</Schichtname>
-    <RuestzeitMin>010</RuestzeitMin>
-    <Tage>Mo-So</Tage>
-  </Schicht>
-  <Schicht>
-    <ArtUndOrt>RTW</ArtUndOrt>
-    <von>2115</von>
-    <bis>615</bis>
-    <Pause>000</Pause>
-    <Schichtname>R2N</Schichtname>
-    <RuestzeitMin>010</RuestzeitMin>
-    <Tage>Mo-So</Tage>
-  </Schicht>
-    <Schicht>
-    <ArtUndOrt>RTW</ArtUndOrt>
-    <von>630</von>
-    <bis>1330</bis>
-    <Pause>000</Pause>
-    <Schichtname>R3F</Schichtname>
-    <RuestzeitMin>010</RuestzeitMin>
-    <Tage>Mo-So</Tage>
-  </Schicht>
-  <Schicht>
-    <ArtUndOrt>RTW</ArtUndOrt>
-    <von>1330</von>
-    <bis>2130</bis>
-    <Pause>000</Pause>
-    <Schichtname>R3S</Schichtname>
-    <RuestzeitMin>010</RuestzeitMin>
-    <Tage>Mo-So</Tage>
-  </Schicht>
-  <Schicht>
-    <ArtUndOrt>RTW</ArtUndOrt>
-    <von>2130</von>
-    <bis>630</bis>
-    <Pause>000</Pause>
-    <Schichtname>R3N</Schichtname>
+    <Schichtname>RTW Nacht</Schichtname>
     <RuestzeitMin>010</RuestzeitMin>
     <Tage>Mo-So</Tage>
   </Schicht>
@@ -342,7 +283,7 @@
   <Schicht>
     <ArtUndOrt>BREISACH</ArtUndOrt>
     <von>700</von>
-    <bis>1800</bis>
+    <bis>1900</bis>
     <Pause>000</Pause>
     <Schichtname>BRT</Schichtname>
     <RuestzeitMin>010</RuestzeitMin>
@@ -350,7 +291,7 @@
   </Schicht>
   <Schicht>
     <ArtUndOrt>BREISACH</ArtUndOrt>
-    <von>1800</von>
+    <von>1900</von>
     <bis>700</bis>
     <Pause>000</Pause>
     <Schichtname>BRN</Schichtname>
@@ -359,8 +300,8 @@
   </Schicht>
   <Schicht>
     <ArtUndOrt>KIZA</ArtUndOrt>
-    <von>700</von>
-    <bis>1800</bis>
+    <von>630</von>
+    <bis>1830</bis>
     <Pause>000</Pause>
     <Schichtname>KT</Schichtname>
     <RuestzeitMin>010</RuestzeitMin>
@@ -368,8 +309,8 @@
   </Schicht>
   <Schicht>
     <ArtUndOrt>KIZA</ArtUndOrt>
-    <von>1800</von>
-    <bis>700</bis>
+    <von>1830</von>
+    <bis>6300</bis>
     <Pause>000</Pause>
     <Schichtname>KN</Schichtname>
     <RuestzeitMin>010</RuestzeitMin>
