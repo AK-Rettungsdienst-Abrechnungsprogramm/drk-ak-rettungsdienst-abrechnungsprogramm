@@ -3,7 +3,7 @@
 	Changelog:
 	v1.0: Created
 -->
-<Salaries version="3.0">
+<Salaries version="1.0">
 	<Shifttype>
 		<name>RTW</name>
 		<RA>9.90</RA>
