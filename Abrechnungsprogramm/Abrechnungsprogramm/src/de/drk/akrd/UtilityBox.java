@@ -113,7 +113,7 @@ public class UtilityBox {
           return;
         }
         // query not sucessfull
-        if (latestProgramVersion < 0) {
+        if (latestProgramVersion <= 0) {
           setStatusBarText("Konnte die aktuelle Version nicht feststellen. Evtl. besteht keine Verbindung zum Internet.",
                            new Color(200, 150, 0));
           return;

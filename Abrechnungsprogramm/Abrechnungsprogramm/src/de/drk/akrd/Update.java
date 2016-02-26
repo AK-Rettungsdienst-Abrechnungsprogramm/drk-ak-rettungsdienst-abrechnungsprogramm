@@ -71,7 +71,8 @@ public class Update {
    * download new updatedata file and check versions
    */
   public static void readUpdateData() {
-    downloadNewUpdatefile(UPDATE_DATA_FILE_URL);
+    boolean downloadSuccess = downloadNewUpdatefile(UPDATE_DATA_FILE_URL);
+    if (downloadSuccess) {
     SAXBuilder saxBuilder = new SAXBuilder();
     try {
       FileReader xmlFileReader = new FileReader(new File(UPDATE_DATA_FILE_PATH));
@@ -85,6 +86,7 @@ public class Update {
       SALARY_FILE_URL = documentElement.getChildText("salaryfile-url");
     } catch (Exception e) { // TODO: multicatch in 1.7 JDOMException | IOException | FileNotFoundException e
       System.out.println("Exception in function XMLEditor.fillShiftList: " + e.getMessage());
+    }
     }
   }
 
@@ -153,21 +155,22 @@ public class Update {
     out.close();
   }
 
-  private static float downloadNewUpdatefile(String http) {
+  private static boolean downloadNewUpdatefile(String http) {
     try {
       Update.downloadFile(http, "updatedata.xml");
       //UtilityBox.getInstance().displayInfoPopup("updateinfo.xml", "Updateinformationen einholen...");
+      return true;
     } catch (Exception ex) {
       try {
         // TODO: display URL as Link
         URL url = new URL(http);
-        UtilityBox.getInstance().displayErrorPopup("Download", "Fehler beim Download. Die Datei kann unter\n" + url + "\nheruntergeladen werden.");
+        //UtilityBox.getInstance().displayErrorPopup("Download", "Fehler beim Download. Die Datei kann unter\n" + url + "\nheruntergeladen werden.");
       } catch (MalformedURLException ex1) {
         Logger.getLogger(XMLEditor.class.getName()).log(Level.SEVERE, null, ex1);
       }
     }
 
-    return 0f;
+    return false;
   }
 
   public static float getLatestProgramVersion() {

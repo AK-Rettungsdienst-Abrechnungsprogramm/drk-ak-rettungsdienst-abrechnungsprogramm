@@ -2,8 +2,8 @@
 Abrechnungsprogramm Arbeitskreis Rettungsdienst Freiburg i.Br. 
 ##############################################################
 
-Version 1.2 (Windows)
-©2015 Johannes Güttler, Niklas Meinzer
+Version 1.3 (Windows)
+©2016 Johannes Güttler, Niklas Meinzer
 
 ##############################################################
 
@@ -18,7 +18,7 @@ Update einer bestehenden Version:
 
 Soll eine frühere Version des Programms aktualisiert werden,
 genügt es die alte "Abrechnungsprogramm.exe"-Datei mit der Datei aus dem vorliegenden Zip-Archiv zu ersetzen.
-Gegebenenfalls über den "Schicht-Update"-Button im Reiter "Info / Update" ein Update der Schichtliste ausführen.
+Gegebenenfalls über den "Update"-Button im Reiter "Info / Update" ein Update der Gehalts- und Schichtliste ausführen.
 
 
 Weitere Informationen:
