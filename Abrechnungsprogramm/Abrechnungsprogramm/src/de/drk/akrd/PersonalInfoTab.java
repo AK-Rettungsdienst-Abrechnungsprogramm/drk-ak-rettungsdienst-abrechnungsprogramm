@@ -34,10 +34,6 @@ public class PersonalInfoTab extends JPanel {
 	
 	private JLabel lblAdress = new JLabel("Adresse:");
 	
-	private JLabel lblGoogleHeader = new JLabel("<html>Diese Angaben brauchst du nur, wenn du den Dienstplan automatisch in deinen Google Kalender<br>importieren willst.</html>");
-	private JLabel lblMail = new JLabel("Google Mail Adresse:");
-	private JLabel lblCalendar = new JLabel("Calendar ID:");
-	
 	// TextFields
 	private JTextField firstNameField = new JTextField();
 	private JTextField lastNameField = new JTextField();
@@ -45,9 +41,6 @@ public class PersonalInfoTab extends JPanel {
 	private JTextField blzField = new JTextField();
 	private JTextField accountNoField = new JTextField();
 	private JTextField bankNameField = new JTextField();
-	
-	private JTextField mailField = new JTextField();
-	private JTextField calIdField = new JTextField();
 	
 	// checkboxes
 	private JCheckBox bankInfoKnown = new JCheckBox("Bankdaten bekannt");
@@ -60,11 +53,9 @@ public class PersonalInfoTab extends JPanel {
 	// panel to keep bank info
 	private JPanel bankForm = new JPanel();
 	private JPanel nameAndTraining = new JPanel();
-	private JPanel googleCal = new JPanel();
-	
+
 	public PersonalInfoTab() {
 		bankForm.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		googleCal.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		
 		trainingChooser.setModel(new DefaultComboBoxModel<Qualification>(Qualification.values()));
 		
@@ -165,12 +156,9 @@ public class PersonalInfoTab extends JPanel {
 			}
 		}
 
-		String gmail = mailField.getText();
-		String calID = calIdField.getText();
-
 		PersonalData pd = PersonalData.getInstance();
 
-		boolean success = pd.setData(firstName, lastName, address, bankName, account, blz, quali, dataKnown, gmail, calID, addressKnown.isSelected());
+		boolean success = pd.setData(firstName, lastName, address, bankName, account, blz, quali, dataKnown, addressKnown.isSelected());
 		if (success) {
 			UtilityBox.getInstance().displayInfoPopup("Persönliche Daten", "Daten gespeichert.");
 		}
@@ -262,36 +250,10 @@ public class PersonalInfoTab extends JPanel {
 		this.add(bankForm);
 		bankForm.setBounds(400, 10, 400, 180);
 		
-		// Assemble google calendar panel
-		
-		googleCal.setLayout(null);
-		googleCal.add(lblGoogleHeader);
-		lblGoogleHeader.setBounds(30, 0, 800, 50);
-		lblGoogleHeader.setFont(font);
-		
-		int googleY = 70;
-		
-		googleCal.add(lblMail);
-		lblMail.setBounds(30, googleY, SwingUtilities.computeStringWidth(fm, lblMail.getText()), labelHeight);
-		lblMail.setFont(font);
-		
-		googleCal.add(mailField);
-		mailField.setBounds(200, googleY, 200, textFieldHeight);
-		
-		googleCal.add(lblCalendar);
-		lblCalendar.setBounds(450, googleY, SwingUtilities.computeStringWidth(fm, lblCalendar.getText()), labelHeight);
-		lblCalendar.setFont(font);
-		
-		googleCal.add(calIdField);
-		calIdField.setBounds(550, googleY, 200, textFieldHeight);
-		
-		this.add(googleCal);
-		googleCal.setBounds(10, 200, 850, 150);
-		
 		this.add(submitChanges);
 		
 		int buttonWidth = SwingUtilities.computeStringWidth(fm, submitChanges.getText()) + 40;
-		submitChanges.setBounds(420 - buttonWidth/2, 360, buttonWidth, 30);
+		submitChanges.setBounds(420 - buttonWidth/2, 260, buttonWidth, 30);
 	}
 	
 	  public void loadPersonalData() {
@@ -310,8 +272,6 @@ public class PersonalInfoTab extends JPanel {
 		      accountNoField.setText(Integer.toString(pd.getAccountNumber()));
 		      bankInfoKnown.setSelected(pd.isDataKnown());
 		      lastNameField.setText(pd.getLastName());
-		      mailField.setText(pd.getEmailAdress());
-		      calIdField.setText(pd.getCalendarId());
 		      bankNameField.setText(pd.getBankNameAndCity());
 		      addressField.setText(pd.getAddress());
 		      addressKnown.setSelected(pd.addressKnown());

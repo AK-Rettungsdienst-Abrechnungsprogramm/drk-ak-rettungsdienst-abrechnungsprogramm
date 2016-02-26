@@ -133,8 +133,6 @@ public class XMLEditor {
         Integer.toString(dataInstance.getBlz()),
         dataInstance.getQualification().name(),
         Boolean.toString(dataInstance.isDataKnown()),
-        dataInstance.getEmailAdress(),
-        dataInstance.getCalendarId(),
         Boolean.toString(dataInstance.addressKnown())};
       for (int i = 0; i < elementNames.length; i++) {
         Element tempElement = new Element(elementNames[i]);
@@ -174,8 +172,6 @@ public class XMLEditor {
       Integer.toString(dataInstance.getBlz()),
       dataInstance.getQualification().name(),
       Boolean.toString(dataInstance.isDataKnown()),
-      dataInstance.getEmailAdress(),
-      dataInstance.getCalendarId(),
       Boolean.toString(dataInstance.addressKnown())};
     for (int i = 0; i < elemetArray.length; i++) {
       element.addContent(new Element(elementNames[i]).setText(elemetArray[i]));
