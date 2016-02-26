@@ -50,7 +50,7 @@ public class UtilityBox {
   // the default font used throughout the program 
   Font defaultFont = new Font("Dialog", Font.BOLD, 12);
   // round to 2 decimal places
-  private static DecimalFormat decimalFormat = new DecimalFormat("#0.00"); 
+  private static DecimalFormat decimalFormat = new DecimalFormat("#0.00");
 
   public UtilityBox(MainWindow mainWindow) {
     instance = this;
@@ -61,6 +61,7 @@ public class UtilityBox {
     checkVersion();
     readSalary();
   }
+
   public static void instanciate(MainWindow mainWindow) {
     if (instance != null) {
       return;
@@ -126,6 +127,7 @@ public class UtilityBox {
 
   /**
    * read salary from Salary.xml to salaryMap
+   *
    * @return success
    */
   private static boolean readSalary() {
@@ -146,7 +148,7 @@ public class UtilityBox {
           List qualificationNodes = shiftTypeNode.getChildren();
           HashMap<Qualification, Float> qualificationSalaryMap = new HashMap<Qualification, Float>();
           for (Iterator iterator1 = qualificationNodes.iterator(); iterator1.hasNext();) {
-            Element qualificationNode = (Element)iterator1.next();
+            Element qualificationNode = (Element) iterator1.next();
             Qualification q = Qualification.valueOf(qualificationNode.getName());
             qualificationSalaryMap.put(q, Float.parseFloat(qualificationNode.getValue()));
           }
@@ -163,14 +165,13 @@ public class UtilityBox {
         }
       }
     }
-    
+
     return false;
   }
 
   public ShiftContainer getShiftContainer() {
     return shiftContainer;
   }
-
 
   public static UtilityBox getInstance() {
     return instance;
@@ -339,7 +340,7 @@ public class UtilityBox {
     Float salary;
     if (salaryMap == null) {
       if (!readSalary()) {
-        // TODO: show error message
+
         return 0f;
       }
     }
@@ -347,12 +348,14 @@ public class UtilityBox {
     if ((qualificationMap != null) && (salary = qualificationMap.get(qualification)) != null) {
       return salary;
     }
-    
+
     return 0f;
   }
+
   public static float calculateSalaryPerHour(ShiftInstance shiftType, Qualification qualification) {
     return calculateSalaryPerHour(shiftType.getType(), qualification);
   }
+
   public static String salaryPerHourString(ShiftContainer.ShiftType shiftType, Qualification qualification) {
     return decimalFormat.format(calculateSalaryPerHour(shiftType, qualification));
   }
@@ -715,4 +718,12 @@ public class UtilityBox {
     mainWindow.statusBar.setText(text);
   }
 
+  public static boolean isSalarySet() {
+    if (salaryMap == null) {
+      if (readSalary()) {
+        return true;
+      }
+    }
+    return false;
+  }
 }

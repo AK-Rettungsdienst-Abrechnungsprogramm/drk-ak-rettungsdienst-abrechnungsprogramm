@@ -10,7 +10,7 @@ package de.drk.akrd;
 //import sun.security.jca.GetInstance;
 
 /**
- *
+ * 
  * @author Jo
  */
 public class PersonalData {
@@ -24,6 +24,8 @@ public class PersonalData {
   private int blz;
   private Qualification qualification;
   private boolean dataKnown;
+  private String emailAdress;
+  private String calendarId;
 private boolean addressKnown;
   public static enum Qualification {
     RH, RS, RA;
@@ -55,7 +57,7 @@ private boolean addressKnown;
   private PersonalData(){}
 
   /**
-   *
+   * 
    * @return the data-instance if a datafile exists
    * null oterwise
    */
@@ -76,11 +78,14 @@ private boolean addressKnown;
    * @param accountNumber
    * @param blz
    * @param qualifikation (enum PersonalData.Qualification)
-   * @param dataKnown
+   * @param dataKnown 
+   * @param emailAdress 
+   * @param calendarId 
+   * @param addressKnown 
    */
   public boolean setData(String firstName, String LastName, String address,
           String BankNameAndCity, String accountNumber, int blz, Qualification qualifikation,
-          boolean dataKnown, boolean addressKnown) {
+          boolean dataKnown, String emailAdress, String calendarId, boolean addressKnown) {
 
     this.accountNumber = accountNumber;
     this.bankNameAndCity = BankNameAndCity;
@@ -91,7 +96,8 @@ private boolean addressKnown;
     this.qualification = qualifikation;
     this.dataKnown = dataKnown;
     this.dataSet = true;
-
+    this.emailAdress = emailAdress;
+    this.calendarId = calendarId;
     this.addressKnown = addressKnown;
     boolean success = XMLEditor.writePersonalData(instance);
     return success;
@@ -108,7 +114,7 @@ private boolean addressKnown;
    * @param dataKnown
    * @param emailAdress
    * @param calendarId
-   * @return
+   * @return 
    */
   public boolean setData(String firstName, String lastName, String address,
           String bankNameAndCity, String accountNumber, String blz, String quali,
@@ -132,12 +138,14 @@ private boolean addressKnown;
             accountNumber,
             Integer.parseInt(blz),Qualification.valueOf(quali),
             isDataKnown,
+            emailAdress,
+            calendarId,
             addressKnown.equals("true"));
     return success;
   }
 
   /**
-   *
+   * 
    * @return the account number
    */
   public String getAccountNumber() {
@@ -145,7 +153,7 @@ private boolean addressKnown;
   }
 
   /**
-   *
+   * 
    * @return the bank name and city as string
    */
   public String getBankNameAndCity() {
@@ -153,7 +161,7 @@ private boolean addressKnown;
   }
 
   /**
-   *
+   * 
    * @return the BLZ
    */
   public int getBlz() {
@@ -161,7 +169,7 @@ private boolean addressKnown;
   }
 
   /**
-   *
+   * 
    * @return true if (bank-)data is already known, false otherwise
    */
   public boolean isDataKnown() {
@@ -169,7 +177,7 @@ private boolean addressKnown;
   }
 
   /**
-   *
+   * 
    * @return the first name
    */
   public String getFirstName() {
@@ -177,15 +185,15 @@ private boolean addressKnown;
   }
 
   /**
-   *
+   * 
    * @return the last name
    */
   public String getLastName() {
     return lastName;
   }
-
+  
   /**
-   *
+   * 
    * @return the address
    */
   public String getAddress() {
@@ -193,25 +201,39 @@ private boolean addressKnown;
   }
 
   /**
-   *
+   * 
    * @return the qualification (see enum PersonalData.Qualification)
    */
   public Qualification getQualification() {
     return qualification;
   }
+  /**
+   * 
+   * @return the google calendar Id
+   */
+  public String getCalendarId() {
+    return calendarId;
+  }
 
   /**
-   *
+   * 
    * @return weather the data is already set
    */
   public boolean isDataSet() {
     return dataSet;
   }
 
+  /**
+   * 
+   * @return the email adress
+   */
+  public String getEmailAdress() {
+    return emailAdress;
+  }
 
 public boolean addressKnown() {
 	// TODO Auto-generated method stub
 	return addressKnown;
 }
-
+  
 }

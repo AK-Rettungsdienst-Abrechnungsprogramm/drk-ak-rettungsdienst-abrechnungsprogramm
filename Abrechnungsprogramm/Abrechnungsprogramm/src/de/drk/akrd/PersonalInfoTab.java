@@ -158,7 +158,10 @@ public class PersonalInfoTab extends JPanel {
 
 		PersonalData pd = PersonalData.getInstance();
 
-		boolean success = pd.setData(firstName, lastName, address, bankName, account, blz, quali, dataKnown, addressKnown.isSelected());
+    // TODO: gmail+calId
+    String gmail = "";
+    String calID = "";
+		boolean success = pd.setData(firstName, lastName, address, bankName, account, blz, quali, dataKnown, gmail, calID, addressKnown.isSelected());
 		if (success) {
 			UtilityBox.getInstance().displayInfoPopup("Persönliche Daten", "Daten gespeichert.");
 		}

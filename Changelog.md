@@ -2,6 +2,11 @@
 
 Hier könnt ihr nachlesen, was in den jeweiligen Versionen neu ist und wann sie rausgekommen sind.
 
+> ### version 1.3 (27.02.2016) ###
+  * Gehaltsdaten in xml-File ausgelagert. Diese können bei einer Änderung jetzt bequem über den Update-Button aktualisiert werden.
+  * "Dienstplan auslesen"-Tab und Google-Calender Funktion deaktiviert, da der Dienstplan nicht in Computerlesbarem Format bereitgestellt wird.
+  * Kontonummer kann beliebig viele Stellen haben
+
 > ### version 1.2 (24.02.2015) ###
   * Konzerthausgehalt korrigiert
   * Problem mit der Speicherung der pers. Daten behoben, das dazu führte, dass gespeicherte Daten nicht ausgelesen werden konnten

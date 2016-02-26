@@ -34,7 +34,6 @@ public class XMLEditor {
 
   private static SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
   private static Calendar calendar = Calendar.getInstance();
-  public static final float SHIFT_FILE_VERSION = 1.1f;
   public static final float PERSONAL_DATA_FILE_VERSION = 1.1f;
 
   public XMLEditor() {
@@ -108,6 +107,11 @@ public class XMLEditor {
     if (MainWindow.WACHENVERSION) {
       return true;
     }
+    // check if data dir exists and if not create it
+    File dataDir = new File("data");
+    if (!dataDir.exists()) {
+      dataDir.mkdir();
+    }
     File dataFile = new File("data" + System.getProperty("file.separator") + "PersonalData.xml");
     boolean fileExists = dataFile.exists();
     String documentName = "PersonalData";
@@ -130,6 +134,8 @@ public class XMLEditor {
         Integer.toString(dataInstance.getBlz()),
         dataInstance.getQualification().name(),
         Boolean.toString(dataInstance.isDataKnown()),
+        dataInstance.getEmailAdress(),
+        dataInstance.getCalendarId(),
         Boolean.toString(dataInstance.addressKnown())};
       for (int i = 0; i < elementNames.length; i++) {
         Element tempElement = new Element(elementNames[i]);

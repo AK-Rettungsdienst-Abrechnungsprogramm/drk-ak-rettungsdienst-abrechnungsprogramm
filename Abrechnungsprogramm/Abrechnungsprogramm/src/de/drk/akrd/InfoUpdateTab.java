@@ -10,6 +10,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -47,7 +49,7 @@ public class InfoUpdateTab extends JPanel {
     updateInfo.setHorizontalAlignment(SwingConstants.CENTER);
     this.add(updateInfo);
     // create and add update-button
-    JButton updateButton = new JButton("Schicht-Update");
+    JButton updateButton = new JButton("Update");
     updateButton.setFont(new Font(updateButton.getFont().getName(),
                                   updateButton.getFont().getStyle(), updateButton.getFont().getSize()));
     updateButton.setMaximumSize(new Dimension(150, 50));
@@ -73,21 +75,16 @@ public class InfoUpdateTab extends JPanel {
   private void updateInfoLabel() {
     float shiftFileversion = MainWindow.SHIFT_FILE_VERSION;
     float salaryFileVersion = MainWindow.SALARY_FILE_VERSION;
-    float latestShiftFileVersion = Update.getLatestShiftFileVersion();
-    float latestSalaryFileVersion = Update.getLatestSalaryFileVersion();
     String updateInfoString =
         "<html><CENTER><h1>Update der Hintegrunddaten</h1></CENTER>"
         + "Mit Klick auf den Update-Button werden die neusten Versionen der "
-        + "Schicht-Liste und Gehalts-Liste heruntergeladen.<br>"
-        + "Aktuelle Versionen:<br>"
-        + "<table ><tr>"
-        + "<b><td>aktuell</td><td>neuste</td></b></tr>"
-        + "<tr><td>Schichten: </td><td>" + shiftFileversion + "</td>"
-        + "<td>" + latestShiftFileVersion + "</td></tr>"
-        + "<tr><td>Gehalt: </td><td>" + salaryFileVersion + "</td>"
-        + "<td>" + latestSalaryFileVersion + "</td></tr>"
+        + "Schicht-Liste und Gehalts-Liste heruntergeladen.<br><br>"
+        + "Aktuelle Versionen:"
+        + "<table>"
+        + "<tr><td>Schichten: </td><td>" + shiftFileversion + "</td></tr>"
+        + "<tr><td>Gehalt: </td><td>" + salaryFileVersion + "</td></tr>"
+        + "</table>"
         + "</html>";
     updateInfo.setText(updateInfoString);
   }
-
 }

@@ -562,6 +562,12 @@ public class ShiftCollectorTab extends JPanel {
 			  UtilityBox.getInstance().displayErrorPopup("Fehler", "Bitte persönliche Daten eintragen und übernehmen!\nSonst kann dein Gehalt nicht berechnet werden ;-)");
 			  return;
 		  }
+      
+      // check if salary data was set
+		  if(!UtilityBox.isSalarySet()){
+			  UtilityBox.getInstance().displayErrorPopup("Fehler", "Keine Gehaltsdaten gefunden. Bitte Gehaltsdatei im Reiter Info/Update aktualisieren.");
+			  return;
+		  }
 
 		  // if no type was selected, display error
 		  if (shiftTypeChooser.getSelectedItem() == ShiftContainer.ShiftType.Alle)
