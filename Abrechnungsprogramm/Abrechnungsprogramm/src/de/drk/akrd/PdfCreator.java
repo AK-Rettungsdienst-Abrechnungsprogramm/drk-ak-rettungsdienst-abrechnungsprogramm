@@ -398,7 +398,7 @@ public class PdfCreator {
       String blz = "Bekannt";
       if (!personalData.isDataKnown()) {
         bankNameAndCity = personalData.getBankNameAndCity();
-        accountNumber = Integer.toString(personalData.getAccountNumber());
+        accountNumber = personalData.getAccountNumber();
         blz = Integer.toString(personalData.getBlz());
       }
 

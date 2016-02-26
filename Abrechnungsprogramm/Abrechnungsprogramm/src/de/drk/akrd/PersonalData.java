@@ -20,7 +20,7 @@ public class PersonalData {
   private String lastName;
   private String address;
   private String bankNameAndCity;
-  private int accountNumber;
+  private String accountNumber;
   private int blz;
   private Qualification qualification;
   private boolean dataKnown;
@@ -81,7 +81,7 @@ private boolean addressKnown;
    * @param dataKnown 
    */
   public boolean setData(String firstName, String LastName, String address,
-          String BankNameAndCity, int accountNumber, int blz, Qualification qualifikation,
+          String BankNameAndCity, String accountNumber, int blz, Qualification qualifikation,
           boolean dataKnown, String emailAdress, String calendarId, boolean addressKnown) {
 
     this.accountNumber = accountNumber;
@@ -132,7 +132,7 @@ private boolean addressKnown;
             lastName,
             address,
             bankNameAndCity,
-            Integer.parseInt(accountNumber),
+            accountNumber,
             Integer.parseInt(blz),Qualification.valueOf(quali),
             isDataKnown,
             emailAdress,
@@ -145,7 +145,7 @@ private boolean addressKnown;
    * 
    * @return the account number
    */
-  public int getAccountNumber() {
+  public String getAccountNumber() {
     return accountNumber;
   }
 

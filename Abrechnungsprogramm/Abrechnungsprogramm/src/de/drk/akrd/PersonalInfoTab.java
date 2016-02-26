@@ -141,14 +141,14 @@ public class PersonalInfoTab extends JPanel {
 		boolean dataKnown = bankInfoKnown.isSelected();
 
 		int blz = 0;
-		int account = 0;
+		String account = "";
 		String bankName = "";
 
 		if(!dataKnown) {
 			try
 			{
 				blz = Integer.parseInt(blzField.getText());
-				account = Integer.parseInt(accountNoField.getText());
+				account = accountNoField.getText();
 			}
 			catch(NumberFormatException exeption)
 			{
@@ -307,7 +307,7 @@ public class PersonalInfoTab extends JPanel {
 		      firstNameField.setText(pd.getFirstName());
 		      trainingChooser.setSelectedItem(pd.getQualification());
 		      blzField.setText(Integer.toString(pd.getBlz()));
-		      accountNoField.setText(Integer.toString(pd.getAccountNumber()));
+		      accountNoField.setText(pd.getAccountNumber());
 		      bankInfoKnown.setSelected(pd.isDataKnown());
 		      lastNameField.setText(pd.getLastName());
 		      mailField.setText(pd.getEmailAdress());
