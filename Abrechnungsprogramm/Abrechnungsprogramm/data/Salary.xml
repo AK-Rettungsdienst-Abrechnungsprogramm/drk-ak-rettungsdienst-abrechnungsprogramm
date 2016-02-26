@@ -3,51 +3,43 @@
 	Changelog:
 	v1.0: Created
 -->
-<Salaries version="3.0">
-	<Shifttype>
-		<name>RTW</name>
+<Salaries version="1.0">
+	<Shifttype name="RTW">
 		<RA>9.90</RA>
 		<RS>8.80</RS>
 		<RH>8.50</RH>
 	</Shifttype>
-	<Shifttype>
-		<name>KTW</name>
+	<Shifttype name="KTW">
 		<RA>9.90</RA>
 		<RS>8.80</RS>
 		<RH>8.50</RH>
 	</Shifttype>
-	<Shifttype>
-		<name>KIZA</name>
+	<Shifttype name="KIZA">
 		<RA>9.90</RA>
 		<RS>8.80</RS>
 		<RH>8.50</RH>
 	</Shifttype>
-	<Shifttype>
-		<name>BREISACH</name>
+	<Shifttype name="BREISACH">
 		<RA>9.90</RA>
 		<RS>8.80</RS>
 		<RH>8.50</RH>
 	</Shifttype>
-	<Shifttype>
-		<name>EVENT</name>
+	<Shifttype name="EVENT">
 		<RA>7.60</RA>
 		<RS>6.70</RS>
 		<RH>5.90</RH>
 	</Shifttype>
-	<Shifttype>
-		<name>KVS</name>
+	<Shifttype name="KVS">
 		<RA>10</RA>
 		<RS>10</RS>
 		<RH>10</RH>
 	</Shifttype>
-	<Shifttype>
-		<name>SC</name>
+	<Shifttype name="SC">
 		<RA>7.60</RA>
 		<RS>6.70</RS>
 		<RH>5.90</RH>
 	</Shifttype>
-	<Shifttype>
-		<name>CONCERT_HALL</name>
+	<Shifttype name="CONCERT_HALL">
 		<RA>8.50</RA>
 		<RS>8.50</RS>
 		<RH>8.50</RH>

@@ -52,7 +52,7 @@ public class XMLEditor {
     try {
       xmlFileReader = new FileReader(new File(filePath));
     } catch (FileNotFoundException ex) {
-      System.out.println("Exception in function XMLEditor.fillShiftList: "+ex.getStackTrace().toString());
+      System.out.println("Exception in function XMLEditor.fillShiftList: "+ex.getMessage());
       return false;
     }
     try {
