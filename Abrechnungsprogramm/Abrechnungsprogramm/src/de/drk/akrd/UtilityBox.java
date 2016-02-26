@@ -17,15 +17,25 @@ import de.drk.akrd.PersonalData.Qualification;
 import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.jdom.Element;
+import org.jdom.input.SAXBuilder;
 
 public class UtilityBox {
 
@@ -35,69 +45,23 @@ public class UtilityBox {
   private Calendar calendar = null;
   public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
   private Date[] holidays = null;
-  
-  private float newestAvailableVersion = -2f;
-  
+  private static HashMap<ShiftContainer.ShiftType, HashMap<Qualification, Float>> salaryMap;
+
   // the default font used throughout the program 
   Font defaultFont = new Font("Dialog", Font.BOLD, 12);
+  // round to 2 decimal places
+  private static DecimalFormat decimalFormat = new DecimalFormat("#0.00"); 
 
   public UtilityBox(MainWindow mainWindow) {
     instance = this;
     this.mainWindow = mainWindow;
     this.shiftContainer = mainWindow.shiftContainer;
     calendar = Calendar.getInstance();
-    
+
     checkVersion();
+    readSalary();
   }
-
-  public void checkVersion() {
-    // get newest available version
-    Thread versionChecker = new Thread() {
-      public void run() {
-        // get latest Program version
-        float programVersion = Update.getLatestProgramVersion();
-        UtilityBox.getInstance().setNewestVersion(programVersion);
-        // query sucessfull + no newer version
-        if (programVersion <= MainWindow.PROGRAM_VERSION && programVersion > 0) {
-          // check shift file version
-          float newestShiftFileVersion = Update.getLatestShiftFileVersion();
-
-          if (newestShiftFileVersion > MainWindow.SHIFT_FILE_VERSION) {
-            setStatusBarText("Es ist eine neue Version der Schichten Datei verfügbar. Bitte unter Info/Update herunterladen!", new Color(180, 0, 0));
-            return;   
-          }
-          setStatusBarText("Das Programm ist auf dem neusten Stand!", new Color(0, 100, 0));
-          return;
-        }
-        // query sicessfull & newer version available
-        if (programVersion > MainWindow.PROGRAM_VERSION)
-        {
-          setStatusBarText("Es ist eine neue Version (" + Float.toString(programVersion) +
-              ") verfügbar. Bitte lade diese herunter!", new Color(180, 0, 0));
-          return;   
-        }
-        // query not sucessfull
-        if (programVersion < 0) {
-          setStatusBarText("Konnte die aktuelle Version nicht feststellen. Evtl. besteht keine Verbindung zum Internet.", 
-              new Color(200, 150, 0));
-          return;
-        }
-        
-       }
-    };
-    
-    versionChecker.start();
-  }
-
-  protected void setNewestVersion(float latestVersion) {
-    newestAvailableVersion = latestVersion;
-  }
-
-  public ShiftContainer getShiftContainer() {
-	return shiftContainer;
-}
-
-public static void instanciate(MainWindow mainWindow) {
+  public static void instanciate(MainWindow mainWindow) {
     if (instance != null) {
       return;
     }
@@ -105,47 +69,146 @@ public static void instanciate(MainWindow mainWindow) {
     instance = new UtilityBox(mainWindow);
   }
 
+  /**
+   *
+   */
+  public void checkVersion() {
+    // get newest available version
+    Thread versionChecker = new Thread() {
+      public void run() {
+        // get latest Program version
+        Update.readUpdateData();
+        float latestProgramVersion = Update.getLatestProgramVersion();
+        // query sucessfull + no newer version
+        if (latestProgramVersion <= MainWindow.PROGRAM_VERSION && latestProgramVersion > 0) {
+          // check shift file version
+          float newestShiftFileVersion = Update.getLatestShiftFileVersion();
+          float newestSalaryFileVersion = Update.getLatestSalaryFileVersion();
+          boolean newShiftFile = false;
+          boolean newSalaryFile = false;
+          if (newestShiftFileVersion > MainWindow.SHIFT_FILE_VERSION) {
+            newShiftFile = true;
+          }
+          if (newestSalaryFileVersion > MainWindow.SALARY_FILE_VERSION) {
+            newSalaryFile = true;
+          }
+          if (newSalaryFile && newShiftFile) {
+            setStatusBarText("Es sind neue Versionen der Schichten- und Gehaltsdateien verfügbar. Bitte unter Info/Update herunterladen!", new Color(180, 0, 0));
+            return;
+          } else if (newSalaryFile) {
+            setStatusBarText("Es ist eine neue Version der Gehalts-Datei verfügbar. Bitte unter Info/Update herunterladen!", new Color(180, 0, 0));
+            return;
+          } else if (newShiftFile) {
+            setStatusBarText("Es ist eine neue Version der Schichten Datei verfügbar. Bitte unter Info/Update herunterladen!", new Color(180, 0, 0));
+            return;
+          }
+          setStatusBarText("Das Programm ist auf dem neusten Stand!", new Color(0, 100, 0));
+          return;
+        }
+        // query sicessfull & newer version available
+        if (latestProgramVersion > MainWindow.PROGRAM_VERSION) {
+          setStatusBarText("Es ist eine neue Version (" + Float.toString(latestProgramVersion)
+              + ") verfügbar. Bitte lade diese herunter!", new Color(180, 0, 0));
+          return;
+        }
+        // query not sucessfull
+        if (latestProgramVersion < 0) {
+          setStatusBarText("Konnte die aktuelle Version nicht feststellen. Evtl. besteht keine Verbindung zum Internet.",
+                           new Color(200, 150, 0));
+          return;
+        }
+
+      }
+    };
+
+    versionChecker.start();
+  }
+
+  /**
+   * read salary from Salary.xml to salaryMap
+   * @return success
+   */
+  private static boolean readSalary() {
+    File salaryFile = new File(Update.SALARY_FILE_PATH);
+    if (salaryFile.exists()) {
+      salaryMap = new HashMap<ShiftContainer.ShiftType, HashMap<Qualification, Float>>();
+      FileReader fileReader = null;
+      try {
+        SAXBuilder saxb = new SAXBuilder();
+        fileReader = new FileReader(salaryFile);
+        org.jdom.Document salaryFileDocument = saxb.build(fileReader);
+        List elements = salaryFileDocument.getRootElement().getChildren("Shifttype");
+        for (Iterator iterator = elements.iterator(); iterator.hasNext();) {
+          Element shiftTypeNode = (Element) iterator.next();
+          String shiftTypeName = shiftTypeNode.getAttributeValue("name");
+          ShiftContainer.ShiftType shiftType = ShiftContainer.ShiftType.valueOf(shiftTypeName);
+          // fill map with <qualification, salary>
+          List qualificationNodes = shiftTypeNode.getChildren();
+          HashMap<Qualification, Float> qualificationSalaryMap = new HashMap<Qualification, Float>();
+          for (Iterator iterator1 = qualificationNodes.iterator(); iterator1.hasNext();) {
+            Element qualificationNode = (Element)iterator1.next();
+            Qualification q = Qualification.valueOf(qualificationNode.getName());
+            qualificationSalaryMap.put(q, Float.parseFloat(qualificationNode.getValue()));
+          }
+          salaryMap.put(shiftType, qualificationSalaryMap);
+        }
+        return true;
+      } catch (Exception ex) { // TODO: multicatch FileNotFoundException | JDOMException
+        Logger.getLogger(UtilityBox.class.getName()).log(Level.SEVERE, null, ex);
+      } finally {
+        try {
+          fileReader.close();
+        } catch (IOException ex) {
+          Logger.getLogger(UtilityBox.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      }
+    }
+    
+    return false;
+  }
+
+  public ShiftContainer getShiftContainer() {
+    return shiftContainer;
+  }
+
+
   public static UtilityBox getInstance() {
     return instance;
   }
 
   /**
    * Display an error message
-   * 
-   * @param title
-   *            Title of the message
-   * @param message
-   *            Message
+   *
+   * @param title Title of the message
+   * @param message Message
    */
   public void displayErrorPopup(String title, String message) {
     displayPopup(title, message, JOptionPane.ERROR_MESSAGE);
   }
 
-    /**
+  /**
    * Display an information message
-   * 
-   * @param title
-   *            Title of the message
-   * @param message
-   *            Message
+   *
+   * @param title Title of the message
+   * @param message Message
    */
   public void displayInfoPopup(String title, String message) {
     displayPopup(title, message, JOptionPane.INFORMATION_MESSAGE);
   }
+
   /**
-   * 
-   * @param title
-   *            Title of the message
-   * @param message
-   *            Message text
-   * @param messageType
-   *            Message Type (e.g error)
+   *
+   * @param title Title of the message
+   * @param message Message text
+   * @param messageType Message Type (e.g error)
    */
   private void displayPopup(String title, String message, int messageType) {
     JOptionPane.showMessageDialog(mainWindow, message, title, messageType);
   }
+
   /**
    * Display a Yes-No-dialog
+   *
    * @param title
    * @param message
    * @return true if "Yes" was clicked, false otherwise
@@ -159,7 +222,7 @@ public static void instanciate(MainWindow mainWindow) {
   }
 
   /**
-   * 
+   *
    * @param time the time value as integer
    * @return
    */
@@ -171,13 +234,14 @@ public static void instanciate(MainWindow mainWindow) {
       timeString = "0" + ((int) (time / 100));
     }
     timeString = timeString + (((time % 100) < 10) ? ":0" : ":")
-            + (time % 100);
+        + (time % 100);
     return timeString;
   }
 
   /**
-   * get a german month-name from an int value. note that months start with 
-   * 0 for january in this case
+   * get a german month-name from an int value. note that months start with 0
+   * for january in this case
+   *
    * @param month a value from 0 to 11
    * @return german month-name
    */
@@ -209,10 +273,11 @@ public static void instanciate(MainWindow mainWindow) {
         return "Dezember";
     }
   }
+
   /**
-   * returns the first 2 letters of the german dayname
-   * i.e. for the input Calendar.MONDAY the function will return "Mo".
-   * Default: ""
+   * returns the first 2 letters of the german dayname i.e. for the input
+   * Calendar.MONDAY the function will return "Mo". Default: ""
+   *
    * @param dayOfWeek Calendar.dayname
    * @return first two letters of german dayname
    */
@@ -236,8 +301,10 @@ public static void instanciate(MainWindow mainWindow) {
         return "";
     }
   }
+
   /**
    * return a date-string in format dd.mm.yyyy
+   *
    * @param date
    * @return date-string
    */
@@ -245,96 +312,76 @@ public static void instanciate(MainWindow mainWindow) {
     Calendar calendar = Calendar.getInstance();
     calendar.setTime(date);
     return getTwoLetterStringFromInt(calendar.get(Calendar.DAY_OF_MONTH)) + "."
-            + getTwoLetterStringFromInt(calendar.get(Calendar.MONTH)+1) + "."
-            + calendar.get(Calendar.YEAR);
+        + getTwoLetterStringFromInt(calendar.get(Calendar.MONTH) + 1) + "."
+        + calendar.get(Calendar.YEAR);
   }
+
   /**
    * returns a two-letter-string if x € {0, ..., 99}
+   *
    * @param x
-   * @return 
+   * @return
    */
   public static String getTwoLetterStringFromInt(int x) {
     return ((x < 10) ? ("0" + x) : x + "");
   }
 
   /**
-   * calculates the salary for a given shiftInstance in dependence of the 
+   * calculates the salary for a given shiftInstance in dependence of the
    * Qualification
-   * @param shift
+   *
+   * @param shiftType
    * @param qualification
-   * @return salary as float (0 if an exception occurs, meaning no personal data is known)
+   * @return salary as float (0 if an exception occurs, meaning no personal data
+   * is known)
    */
-	public static float calculateSalaryPerHour(ShiftInstance shift, Qualification qualification) {
-		float salary;
-		try {
-			switch (shift.getType()) {
-			// ELW is paid RS salary regardless of qualification
-			case ELW:
-				salary = 8.8f;
-				break;
-			case CONCERT_HALL:
-				salary = 8.5f;
-				break;
-			case KTW:
-			case RTW:
-				switch (qualification) {
-				case RH:
-					salary = 7.8f;
-					break;
-				case RS:
-					salary = 8.8f;
-					break;
-				default:
-					salary = 9.9f;
-				}
-				break;
-			case KVS:
-				salary = 10f;
-				break;
-			case BREISACH:
-			case KIZA:
-				salary = 8.6f;
-                break;
-			// EVENT and SC
-			default:
-				switch (qualification) {
-				case RH:
-					salary = 5.9f;
-					break;
-				case RS:
-					salary = 6.7f;
-					break;
-				default:
-					salary = 7.6f;
-				}
-			}
-		} catch (Exception e) {
-			return 0;
-		}
-		
-		return salary;
-	}
-	/** Takes a shift instance and a qualification and returns the salary for the complete shift
-	 * 
-	 * @param shift
-	 * @param quali
-	 * @return
-	 */
-	public static float calculateSalary(ShiftInstance shift, Qualification quali) {
-	  // calculate salary per hour
-	  float hourlySalary = calculateSalaryPerHour(shift, quali);
-	  // salary without commute expenses
-	  float salary = hourlySalary * shift.getTimeAsFloat();
-	 
-	  return salary;
-	}
+  public static float calculateSalaryPerHour(ShiftContainer.ShiftType shiftType, Qualification qualification) {
+    Float salary;
+    if (salaryMap == null) {
+      if (!readSalary()) {
+        // TODO: show error message
+        return 0f;
+      }
+    }
+    HashMap<Qualification, Float> qualificationMap = salaryMap.get(shiftType);
+    if ((qualificationMap != null) && (salary = qualificationMap.get(qualification)) != null) {
+      return salary;
+    }
+    
+    return 0f;
+  }
+  public static float calculateSalaryPerHour(ShiftInstance shiftType, Qualification qualification) {
+    return calculateSalaryPerHour(shiftType.getType(), qualification);
+  }
+  public static String salaryPerHourString(ShiftContainer.ShiftType shiftType, Qualification qualification) {
+    return decimalFormat.format(calculateSalaryPerHour(shiftType, qualification));
+  }
+
+  /**
+   * Takes a shift instance and a qualification and returns the salary for the
+   * complete shift
+   *
+   * @param shift
+   * @param quali
+   * @return
+   */
+  public static float calculateSalary(ShiftInstance shift, Qualification quali) {
+    // calculate salary per hour
+    float hourlySalary = calculateSalaryPerHour(shift, quali);
+    // salary without commute expenses
+    float salary = hourlySalary * shift.getTimeAsFloat();
+
+    return salary;
+  }
+
   public String calculateTimeInHours(int start, int end, int breakTime) {
     int time = calculateTime(start, end, breakTime);
     int hours = ((int) (time / 100));
     int minutes = (time % 100);
-    return createTimeStringFromInt((hours*100)+minutes);
+    return createTimeStringFromInt((hours * 100) + minutes);
   }
-  public void  testTime() {
+
+  public void testTime() {
     printTestTime(0, 1400, 30, 1330);
     printTestTime(1500, 600, 0, 1500);
     printTestTime(600, 1431, 30, 801);
@@ -346,28 +393,31 @@ public static void instanciate(MainWindow mainWindow) {
     printTestTime(1550, 20, 30, 800);
     printTestTime(1506, 57, 30, 921);
   }
+
   private void printTestTime(int start, int end, int breakTime, int expected) {
-    System.out.println(createTimeStringFromInt(start)+"-"
-            +createTimeStringFromInt(end) +"; pause: "
-            +createTimeStringFromInt(breakTime) +"; Ergebnis(String): "
-            +calculateTimeInHours(start, end, breakTime) +" Ergebnis(float): "
-            +calculateTimeAsFloat(start, end, breakTime) + " Ergebnis(fkt): "
-            + calculateTime(start, end, breakTime)+" Erwartet: "+expected);
+    System.out.println(createTimeStringFromInt(start) + "-"
+        + createTimeStringFromInt(end) + "; pause: "
+        + createTimeStringFromInt(breakTime) + "; Ergebnis(String): "
+        + calculateTimeInHours(start, end, breakTime) + " Ergebnis(float): "
+        + calculateTimeAsFloat(start, end, breakTime) + " Ergebnis(fkt): "
+        + calculateTime(start, end, breakTime) + " Erwartet: " + expected);
   }
-  
-  /** Takes starting time, end time and breaktime and returns the time not on break
-   *  as a float (e.g. two hours 45 minutes -> 2.75)
-   * 
-   * @param start Starting time as an int representing a 24h time (e.g. 02:45 -> 245)
+
+  /**
+   * Takes starting time, end time and breaktime and returns the time not on
+   * break as a float (e.g. two hours 45 minutes -> 2.75)
+   *
+   * @param start Starting time as an int representing a 24h time (e.g. 02:45 ->
+   * 245)
    * @param end same for end
-   * @param breaktime 
+   * @param breaktime
    * @return
    */
   public static float calculateTimeAsFloat(int start, int end, int breaktime) {
     int time = calculateTime(start, end, breaktime);
     int hours = ((int) (time / 100));
     int minutes = (time % 100);
-    return ((float)(hours+(minutes/60.0)));
+    return ((float) (hours + (minutes / 60.0)));
   }
 
   private static int calculateTime(int start, int end, int breakTime) {
@@ -381,11 +431,12 @@ public static void instanciate(MainWindow mainWindow) {
     } else {
       time = endMinutes - startMinutes - breakTimeMinutes;
     }
-    int hours = (int) (time/60);
+    int hours = (int) (time / 60);
     int minutes = time % 60;
-    
-    return ((hours*100) + minutes);
+
+    return ((hours * 100) + minutes);
   }
+
   public boolean isHoliday(Date date) {
     calendar.setTime(date);
     int day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -396,8 +447,8 @@ public static void instanciate(MainWindow mainWindow) {
     }
     for (int i = 0; i < holidays.length; i++) {
       calendar.setTime(holidays[i]);
-      if(day == calendar.get(Calendar.DAY_OF_MONTH)
-              && month == calendar.get(Calendar.MONTH)) {
+      if (day == calendar.get(Calendar.DAY_OF_MONTH)
+          && month == calendar.get(Calendar.MONTH)) {
         return true;
       }
     }
@@ -412,7 +463,7 @@ public static void instanciate(MainWindow mainWindow) {
       int säkularzahl = (int) Math.floor(year / 100);
       // säkulareMondschaltung
       int säkulareMondschaltung = (int) (15 + Math.floor((3 * säkularzahl + 3) / 4)
-              - Math.floor((8 * säkularzahl + 13) / 25));
+          - Math.floor((8 * säkularzahl + 13) / 25));
       // säkulareSonnenschaltung
       int säkulareSonnenschaltung = (int) (2 - Math.floor((3 * säkularzahl + 3) / 4));
       // Mondarameter
@@ -421,9 +472,9 @@ public static void instanciate(MainWindow mainWindow) {
       int ersterFruehlingsVollmond = (19 * mondParameter + säkulareMondschaltung) % 30;
       // kalendarische Korrekturgröße
       int kalendarischeKorrekturgroesse = (int) (Math.floor(ersterFruehlingsVollmond / 29)
-              + (Math.floor(ersterFruehlingsVollmond / 28)
-              - Math.floor(ersterFruehlingsVollmond / 29))
-              * (Math.floor(mondParameter / 11)));
+          + (Math.floor(ersterFruehlingsVollmond / 28)
+          - Math.floor(ersterFruehlingsVollmond / 29))
+          * (Math.floor(mondParameter / 11)));
 
       // Ostergrenze:
       int OG = 21 + ersterFruehlingsVollmond - kalendarischeKorrekturgroesse;
@@ -480,10 +531,12 @@ public static void instanciate(MainWindow mainWindow) {
     }
     return holidayDates;
   }
+
   /**
    * print a given file with System-specific standard-printer
+   *
    * @param filePath
-   * @return 
+   * @return
    */
   public boolean printFile(String filePath) {
     File file = new File(filePath);
@@ -511,8 +564,8 @@ public static void instanciate(MainWindow mainWindow) {
   }
 
   public String getFilePathFromFileCooser(final String fileEnding, final String fileTypeDescription, String directory) {
-    String startDirectory = (directory == null) ?
-            System.getProperty("user.dir") : directory;
+    String startDirectory = (directory == null)
+        ? System.getProperty("user.dir") : directory;
     JFileChooser fileChooser = new JFileChooser(new File(startDirectory));
     fileChooser.setMultiSelectionEnabled(false);
     fileChooser.setFileFilter(new FileFilter() {
@@ -576,8 +629,10 @@ public static void instanciate(MainWindow mainWindow) {
       ex.printStackTrace();
     }
   }
+
   /**
    * Create a Directory
+   *
    * @param path
    * @return true if successful, false otherwise
    */
@@ -591,6 +646,7 @@ public static void instanciate(MainWindow mainWindow) {
     }
     return success;
   }
+
   public String saveDialog(final String fileEnding, String fileName, final String fileTypeDescription) {
     String filePath;
     JFileChooser jFileChooser = new JFileChooser(new File(System.getProperty("user.dir")));
@@ -618,45 +674,45 @@ public static void instanciate(MainWindow mainWindow) {
     }
     return filePath;
   }
+
   /**
    * returns true if type is a shift with preparation time
+   *
    * @param type
-   * @return 
+   * @return
    */
   public static boolean hasPreparationTime(ShiftContainer.ShiftType type) {
-    if (type == ShiftContainer.ShiftType.RTW || type == ShiftContainer.ShiftType.KTW 
-    	|| type == ShiftContainer.ShiftType.BREISACH || type == ShiftContainer.ShiftType.KIZA) {
+    if (type == ShiftContainer.ShiftType.RTW || type == ShiftContainer.ShiftType.KTW
+        || type == ShiftContainer.ShiftType.BREISACH || type == ShiftContainer.ShiftType.KIZA) {
       return true;
     }
     return false;
   }
-  
+
   // Used to trigger a reload of the shifts file 
   public void requestShiftListReload() {
-	  mainWindow.shiftContainer.loadShifts("Schichten.xml");
-	  mainWindow.sc.updateShiftContainer();
-	  checkVersion();
+    mainWindow.shiftContainer.loadShifts("Schichten.xml");
+    mainWindow.sc.updateShiftContainer();
+    checkVersion();
   }
+
   // returns the x position of the main window
   int getWindowPosX() {
-	return this.mainWindow.getLocation().x;
+    return this.mainWindow.getLocation().x;
   }
+
   // returns the y position of the main window
   int getWindowPosY() {
-		return this.mainWindow.getLocation().y;
+    return this.mainWindow.getLocation().y;
   }
-  
-  Font getDefaultFont(){
-	  return defaultFont;
+
+  Font getDefaultFont() {
+    return defaultFont;
   }
-  
-  // get the newest available version
-  float getNewestVersion() {
-   return newestAvailableVersion;
-  }
-  
+
   public void setStatusBarText(String text, Color color) {
     mainWindow.statusBar.setForeground(color);
     mainWindow.statusBar.setText(text);
   }
+
 }

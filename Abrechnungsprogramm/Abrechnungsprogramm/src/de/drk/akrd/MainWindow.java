@@ -29,8 +29,9 @@ import javax.swing.event.ChangeListener;
 
 public class MainWindow extends JFrame {
   public static final boolean WACHENVERSION = false;
-  public static final float PROGRAM_VERSION = 1.2f; //1.2:mit geänderten Außenwachentarifen auf 8,60
+  public static final float PROGRAM_VERSION = 1.3f;
   public static float SHIFT_FILE_VERSION = 0f;
+  public static float SALARY_FILE_VERSION = 0f;
 
   private static final long serialVersionUID = 1L;
   // Listeners and Adapters
@@ -96,9 +97,12 @@ public class MainWindow extends JFrame {
   
   public MainWindow() {
 
-    // Instanciate UtilityBox
-    UtilityBox.instanciate(this);
     
+    // Instanciate UtilityBox
+    // this also checks the latest file- and program versions
+    UtilityBox.instanciate(this);
+    //read existing file versions
+    Update.readFileVersions();
     // Setup ShiftContainer
     shiftContainer.loadShifts("Schichten.xml");
     shiftContainer.registerShifts(ShiftLoadSave.loadSavedShifts(), false);

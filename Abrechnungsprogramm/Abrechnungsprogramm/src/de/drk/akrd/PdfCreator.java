@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 
+
 /**
  *
  * @author Jo
@@ -256,14 +257,31 @@ public class PdfCreator {
 
       // checkboxes
       String[][] KoSt = new String[5][];
-      KoSt[0] = new String[]{"RH (7,80 €/h)", "RS (8,80 €/h)",
-        "RA (9,90 €/h)"};
+      // RD Freiburg
+      KoSt[0] = new String[]{
+        "RH (" + UtilityBox.salaryPerHourString(ShiftContainer.ShiftType.RTW, PersonalData.Qualification.RH) + " €/h)",
+        "RS (" + UtilityBox.salaryPerHourString(ShiftContainer.ShiftType.RTW, PersonalData.Qualification.RS) + " €/h)",
+        "RA (" + UtilityBox.salaryPerHourString(ShiftContainer.ShiftType.RTW, PersonalData.Qualification.RA) + " €/h)"};
+      // KTP Freiburg
       KoSt[1] = KoSt[0];
-      KoSt[2] = new String[]{/*"Baby-NAW - 01", */"Breisach - 03",
-        "Kirchzarten - 10", "RH-RA (8,60 €/h)"};
-      KoSt[3] = new String[]{"Veranstaltung - 01","SC-Freiburg - 02","Konzerthaus - 03","RH (5,90 €/h)",
-        "RS (6,70 €/h)", "RA (7,60 €/h)"};
-      KoSt[4] = new String[]{"RH-RA (10,00 €/h)"};
+      // RD Aussenwache
+      KoSt[2] = new String[]{/*"Baby-NAW - 01", */
+        "Breisach - 03",
+        "Kirchzarten - 10",
+        "RH (" + UtilityBox.salaryPerHourString(ShiftContainer.ShiftType.BREISACH, PersonalData.Qualification.RH) + " €/h)",
+        "RS (" + UtilityBox.salaryPerHourString(ShiftContainer.ShiftType.BREISACH, PersonalData.Qualification.RS) + " €/h)",
+        "RA (" + UtilityBox.salaryPerHourString(ShiftContainer.ShiftType.BREISACH, PersonalData.Qualification.RA) + " €/h)"};
+      // Sanitätsdienste
+      KoSt[3] = new String[]{
+        "Veranstaltung - 01",
+        "SC-Freiburg - 02",
+        "Konzerthaus - 03",
+        "RH (" + UtilityBox.salaryPerHourString(ShiftContainer.ShiftType.EVENT, PersonalData.Qualification.RH) + " €/h)",
+        "RS (" + UtilityBox.salaryPerHourString(ShiftContainer.ShiftType.EVENT, PersonalData.Qualification.RS) + " €/h)",
+        "RA (" + UtilityBox.salaryPerHourString(ShiftContainer.ShiftType.EVENT, PersonalData.Qualification.RA) + " €/h)"};
+      // KVS Freiburg
+      KoSt[4] = new String[]{
+        "RH-RA (" + UtilityBox.salaryPerHourString(ShiftContainer.ShiftType.KVS, PersonalData.Qualification.RH) + " €/h)"};
       boolean[] boolArray = new boolean[]{false, false, false, false, false, false};
       int checkboxSetter;
       switch (PersonalData.getInstance().getQualification()) {
@@ -329,7 +347,7 @@ public class PdfCreator {
                 boolArray[1] = true;
                 costUnit = costUnit+"10 (RD Kirchzarten)";
             }
-            boolArray[2] = true;
+            boolArray[checkboxSetter + 2] = true;
           } else if (i==3) {        // Sandienst etc.
             switch (shifts.get(0).getType()) {
               case SC:
@@ -380,7 +398,7 @@ public class PdfCreator {
       String blz = "Bekannt";
       if (!personalData.isDataKnown()) {
         bankNameAndCity = personalData.getBankNameAndCity();
-        accountNumber = Integer.toString(personalData.getAccountNumber());
+        accountNumber = personalData.getAccountNumber();
         blz = Integer.toString(personalData.getBlz());
       }
 

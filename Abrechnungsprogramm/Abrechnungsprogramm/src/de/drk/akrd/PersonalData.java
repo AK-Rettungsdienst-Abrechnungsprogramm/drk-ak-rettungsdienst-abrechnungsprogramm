@@ -10,7 +10,7 @@ package de.drk.akrd;
 //import sun.security.jca.GetInstance;
 
 /**
- * 
+ *
  * @author Jo
  */
 public class PersonalData {
@@ -20,7 +20,7 @@ public class PersonalData {
   private String lastName;
   private String address;
   private String bankNameAndCity;
-  private int accountNumber;
+  private String accountNumber;
   private int blz;
   private Qualification qualification;
   private boolean dataKnown;
@@ -55,7 +55,7 @@ private boolean addressKnown;
   private PersonalData(){}
 
   /**
-   * 
+   *
    * @return the data-instance if a datafile exists
    * null oterwise
    */
@@ -76,7 +76,7 @@ private boolean addressKnown;
    * @param accountNumber
    * @param blz
    * @param qualifikation (enum PersonalData.Qualification)
-   * @param dataKnown 
+   * @param dataKnown
    */
   public boolean setData(String firstName, String LastName, String address,
           String BankNameAndCity, int accountNumber, int blz, Qualification qualifikation,
@@ -108,7 +108,7 @@ private boolean addressKnown;
    * @param dataKnown
    * @param emailAdress
    * @param calendarId
-   * @return 
+   * @return
    */
   public boolean setData(String firstName, String lastName, String address,
           String bankNameAndCity, String accountNumber, String blz, String quali,
@@ -129,7 +129,7 @@ private boolean addressKnown;
             lastName,
             address,
             bankNameAndCity,
-            Integer.parseInt(accountNumber),
+            accountNumber,
             Integer.parseInt(blz),Qualification.valueOf(quali),
             isDataKnown,
             addressKnown.equals("true"));
@@ -137,15 +137,15 @@ private boolean addressKnown;
   }
 
   /**
-   * 
+   *
    * @return the account number
    */
-  public int getAccountNumber() {
+  public String getAccountNumber() {
     return accountNumber;
   }
 
   /**
-   * 
+   *
    * @return the bank name and city as string
    */
   public String getBankNameAndCity() {
@@ -153,7 +153,7 @@ private boolean addressKnown;
   }
 
   /**
-   * 
+   *
    * @return the BLZ
    */
   public int getBlz() {
@@ -161,7 +161,7 @@ private boolean addressKnown;
   }
 
   /**
-   * 
+   *
    * @return true if (bank-)data is already known, false otherwise
    */
   public boolean isDataKnown() {
@@ -169,7 +169,7 @@ private boolean addressKnown;
   }
 
   /**
-   * 
+   *
    * @return the first name
    */
   public String getFirstName() {
@@ -177,15 +177,15 @@ private boolean addressKnown;
   }
 
   /**
-   * 
+   *
    * @return the last name
    */
   public String getLastName() {
     return lastName;
   }
-  
+
   /**
-   * 
+   *
    * @return the address
    */
   public String getAddress() {
@@ -193,7 +193,7 @@ private boolean addressKnown;
   }
 
   /**
-   * 
+   *
    * @return the qualification (see enum PersonalData.Qualification)
    */
   public Qualification getQualification() {
@@ -201,7 +201,7 @@ private boolean addressKnown;
   }
 
   /**
-   * 
+   *
    * @return weather the data is already set
    */
   public boolean isDataSet() {
@@ -213,5 +213,5 @@ public boolean addressKnown() {
 	// TODO Auto-generated method stub
 	return addressKnown;
 }
-  
+
 }
