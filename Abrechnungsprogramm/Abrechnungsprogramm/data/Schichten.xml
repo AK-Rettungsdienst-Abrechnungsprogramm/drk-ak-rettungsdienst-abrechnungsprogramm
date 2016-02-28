@@ -249,7 +249,7 @@
     <von>600</von>
     <bis>1400</bis>
     <Pause>000</Pause>
-    <Schichtname>RTW Früh</Schichtname>
+    <Schichtname>RTW Fr\u00FCh</Schichtname>
     <RuestzeitMin>010</RuestzeitMin>
     <Tage>Mo-So</Tage>
   </Schicht>
@@ -258,7 +258,7 @@
     <von>1400</von>
     <bis>2200</bis>
     <Pause>000</Pause>
-    <Schichtname>RTW Spät</Schichtname>
+    <Schichtname>RTW Sp\u00E4t</Schichtname>
     <RuestzeitMin>010</RuestzeitMin>
     <Tage>Mo-So</Tage>
   </Schicht>
