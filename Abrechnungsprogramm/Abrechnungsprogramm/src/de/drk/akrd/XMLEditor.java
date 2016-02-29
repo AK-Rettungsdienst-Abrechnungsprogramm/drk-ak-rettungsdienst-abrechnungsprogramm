@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.io.FileWriter;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Iterator;
@@ -22,9 +23,8 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.jdom.Document;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.jdom.output.Format;
+import org.xml.sax.InputSource;
 
 /**
  * read and write xml-files
@@ -48,14 +48,16 @@ public class XMLEditor {
   public static boolean fillShiftList(String filePath, ArrayList<Shift> shiftList) {
     SAXBuilder saxBuilder = new SAXBuilder();
     FileReader xmlFileReader;
+    InputSource inputSource;
     try {
       xmlFileReader = new FileReader(new File(filePath));
+      inputSource = new InputSource(xmlFileReader);
     } catch (FileNotFoundException ex) {
-      System.out.println("Exception in function XMLEditor.fillShiftList: "+ex.getMessage());
+      //System.out.println("Exception in function XMLEditor.fillShiftList: "+ex.getMessage());
       return false;
     }
     try {
-      Document document = (Document) saxBuilder.build(xmlFileReader);
+      Document document = saxBuilder.build(inputSource);//xmlFileReader);
       xmlFileReader.close();
       Element documentElement = document.getRootElement();
       List nodeList = documentElement.getChildren("Schicht");
@@ -93,7 +95,7 @@ public class XMLEditor {
       return true;
       // TODO: for JDK7 use Multicatch
     } catch (Exception e) { //JDOMException | IOException | NumberFormatException e) {
-      System.out.println("Exception in function XMLEditor.fillShiftList: " + e.getMessage());
+      System.err.println("Exception in function XMLEditor.fillShiftList: " + e.getMessage());
     }
     return false;
   }

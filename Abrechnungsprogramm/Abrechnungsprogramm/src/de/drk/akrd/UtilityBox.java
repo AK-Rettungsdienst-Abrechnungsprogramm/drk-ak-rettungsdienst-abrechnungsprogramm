@@ -48,7 +48,8 @@ public class UtilityBox {
   private static HashMap<ShiftContainer.ShiftType, HashMap<Qualification, Float>> salaryMap;
 
   // the default font used throughout the program 
-  Font defaultFont = new Font("Dialog", Font.BOLD, 12);
+  private static final Font defaultFont = new Font("Dialog", Font.BOLD, 12);
+
   // round to 2 decimal places
   private static DecimalFormat decimalFormat = new DecimalFormat("#0.00");
 
@@ -143,6 +144,7 @@ public class UtilityBox {
         for (Iterator iterator = elements.iterator(); iterator.hasNext();) {
           Element shiftTypeNode = (Element) iterator.next();
           String shiftTypeName = shiftTypeNode.getAttributeValue("name");
+
           ShiftContainer.ShiftType shiftType = ShiftContainer.ShiftType.valueOf(shiftTypeName);
           // fill map with <qualification, salary>
           List qualificationNodes = shiftTypeNode.getChildren();
@@ -709,7 +711,7 @@ public class UtilityBox {
     return this.mainWindow.getLocation().y;
   }
 
-  Font getDefaultFont() {
+  public static Font getDefaultFont() {
     return defaultFont;
   }
 
@@ -722,8 +724,12 @@ public class UtilityBox {
     if (salaryMap == null) {
       if (readSalary()) {
         return true;
+      } else {
+        return false;
       }
+    } else {
+      return true;
     }
-    return false;
+
   }
 }

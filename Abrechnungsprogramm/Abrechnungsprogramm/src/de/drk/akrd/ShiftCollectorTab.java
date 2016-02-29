@@ -1,5 +1,6 @@
 package de.drk.akrd;
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.util.StringStack;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.HeadlessException;
@@ -32,6 +33,8 @@ import javax.swing.table.DefaultTableModel;
 import com.toedter.calendar.JCalendar;
 
 import de.drk.akrd.ShiftContainer.ShiftType;
+import java.nio.charset.Charset;
+import java.util.Arrays;
 
 public class ShiftCollectorTab extends JPanel {
 
@@ -50,7 +53,7 @@ public class ShiftCollectorTab extends JPanel {
 	JScrollPane shiftCataloguePane = new JScrollPane();
 	JTable shiftCatalogueTable = new JTable();
 	protected DefaultTableModel shiftCatalogueTableModel = new DefaultTableModel(
-	          new Object[][]{}, new String[]{"Schichtkürzel", "Beginn",
+	          new String[][]{}, new String[]{"Schichtkürzel", "Beginn",
 	            "Ende", "Pause"}) {
 
 	    private static final long serialVersionUID = 1L;
@@ -198,7 +201,8 @@ public class ShiftCollectorTab extends JPanel {
 	    	}
 	    });	    
 	    shiftCatalogueTable.setShowGrid(false);
-	    Object[][] data = ShiftContainer.shiftToTableData(shiftContainer.getShifts());
+      shiftCatalogueTable.setFont(new Font("Dialog", Font.PLAIN, shiftCatalogueTable.getFont().getSize()));
+	    String[][] data = ShiftContainer.shiftToTableData(shiftContainer.getShifts());
 	    for (int i = 0; i < data.length; i++) {
 	      shiftCatalogueTableModel.addRow(data[i]);
 	    }

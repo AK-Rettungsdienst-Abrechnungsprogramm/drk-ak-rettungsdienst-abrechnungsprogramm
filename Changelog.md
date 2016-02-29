@@ -2,7 +2,7 @@
 
 Hier könnt ihr nachlesen, was in den jeweiligen Versionen neu ist und wann sie rausgekommen sind.
 
-> ### version 1.3 (27.02.2016) ###
+> ### version 1.3 (29.02.2016) ###
   * Gehaltsdaten in xml-File ausgelagert. Diese können bei einer Änderung jetzt bequem über den Update-Button aktualisiert werden.
   * "Dienstplan auslesen"-Tab und Google-Calender Funktion deaktiviert, da der Dienstplan nicht in Computerlesbarem Format bereitgestellt wird.
   * Kontonummer kann beliebig viele Stellen haben

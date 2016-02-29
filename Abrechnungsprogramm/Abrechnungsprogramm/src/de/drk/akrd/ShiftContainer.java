@@ -157,7 +157,7 @@ public class ShiftContainer  {
    * @return the converted object
    * @author niklas
    */
-  public static Object[][] shiftToTableData(Shift[] input) {
+  public static String[][] shiftToTableData(Shift[] input) {
     ArrayList<String[]> result = new ArrayList<String[]>();
 
     for (int i = 0; i < input.length; i++) {
@@ -170,7 +170,7 @@ public class ShiftContainer  {
       result.add((String[]) entry.toArray(new String[entry.size()]));
     }
 
-    return (Object[][]) result.toArray(new Object[result.size()][4]);
+    return (String[][]) result.toArray(new String[result.size()][4]);
 
 
   }
