@@ -38,663 +38,664 @@ import java.util.Arrays;
 
 public class ShiftCollectorTab extends JPanel {
 
-	private static final long serialVersionUID = 1L;
-	
-	// the weekday currently selected
-	int currentlySelectedDay = -1;
-	
-	// UI Elements
-	
-	// The calendar widget
-	private JCalendar calendar = new JCalendar();
-	private Popup calendarPopup;
-	
-	// Scroll pane containing the known shifts
-	JScrollPane shiftCataloguePane = new JScrollPane();
-	JTable shiftCatalogueTable = new JTable();
-	protected DefaultTableModel shiftCatalogueTableModel = new DefaultTableModel(
-	          new String[][]{}, new String[]{"Schichtkürzel", "Beginn",
-	            "Ende", "Pause"}) {
+  private static final long serialVersionUID = 1L;
 
-	    private static final long serialVersionUID = 1L;
+  // the weekday currently selected
+  int currentlySelectedDay = -1;
 
-	    @Override
-	    public boolean isCellEditable(int row, int column) {
-	      // all cells false
-	      return false;
-	    }
-	  };
-	// Scroll pane and table containing the registered shifts
-	JScrollPane shiftInstancePane = new JScrollPane();
-	JTable shiftInstanceTable = new JTable();
-	ShiftInstanceTableModel shiftInstanceTableModel = new ShiftInstanceTableModel();
-	
-	// Labels
-	JLabel lblBegin = new JLabel("Beginn:");
-	JLabel lblEnd = new JLabel("Ende:");
-	JLabel lblBreak = new JLabel("Pause:");
-	JLabel lblShiftType = new JLabel("Schichtart:");
-	JLabel lblDate = new JLabel("Datum:");
-	JLabel lblPartner = new JLabel("Schichtpartner:");
-	JLabel lblComment = new JLabel("Kommentar:");
-	JLabel lblMonthSelection = new JLabel("Anzeigen:");
-	JLabel prepTimeLabel = new JLabel("Rüstzeit:");
-	boolean initialized = false;
+  // UI Elements
+  // The calendar widget
+  private JCalendar calendar = new JCalendar();
+  private Popup calendarPopup;
 
-	// Text fields
-	JTextField shiftPartnerField = new JTextField();
-	JTextField dateField = new JTextField();
-	JTextField beginField = new JTextField();
-	JTextField endField = new JTextField();
-	JTextField breakField = new JTextField();
-	JTextField commentField = new JTextField();
-	JTextField prepTime = new JTextField();
-	
-	// Buttons
-	JButton submitButton = new JButton();
-	JButton createSalaryStatementButton = new JButton();
-    JButton deleteRegisteredShiftButton = new JButton();
-    JButton editRegisteredShiftButton = new JButton();
-    
-    JComboBox<ShiftType> shiftTypeChooser = new JComboBox<ShiftType>();
-    
-    // ComboBoxes for the selection of shifts to display
-    JComboBox<String> yearChooser = new JComboBox<String>();
-    JComboBox<String> monthChooser = new JComboBox<String>();
+  // Scroll pane containing the known shifts
+  JScrollPane shiftCataloguePane = new JScrollPane();
+  JTable shiftCatalogueTable = new JTable();
+  protected DefaultTableModel shiftCatalogueTableModel = new DefaultTableModel(
+      new String[][]{}, new String[]{"Schichtkürzel", "Beginn",
+        "Ende", "Pause"}) {
 
-    public ShiftCollectorTab(ShiftContainer shiftContainer) throws HeadlessException {
-    	super();
-    	
-    	// set UI elements up
-	    dateField.setText("bitte auswählen");
-	    dateField.addMouseListener(new MouseAdapter() {
-	    	public void mouseClicked(MouseEvent e) {
-	    		datePickerCallback();
-	    	}
-	    	});
-	    dateField.setEditable(false);
-	    dateField.setColumns(10);
-	    
-	    calendar.setLocale(Locale.GERMANY);
+    private static final long serialVersionUID = 1L;
 
-	    shiftInstanceTable.getTableHeader().setReorderingAllowed(false);
-	    shiftInstanceTable.getTableHeader().setResizingAllowed(true);
+    @Override
+    public boolean isCellEditable(int row, int column) {
+      // all cells false
+      return false;
+    }
+  };
+  // Scroll pane and table containing the registered shifts
+  JScrollPane shiftInstancePane = new JScrollPane();
+  JTable shiftInstanceTable = new JTable();
+  ShiftInstanceTableModel shiftInstanceTableModel = new ShiftInstanceTableModel();
 
-	    shiftPartnerField.setColumns(10);
+  // Labels
+  JLabel lblBegin = new JLabel("Beginn:");
+  JLabel lblEnd = new JLabel("Ende:");
+  JLabel lblBreak = new JLabel("Pause:");
+  JLabel lblShiftType = new JLabel("Schichtart:");
+  JLabel lblDate = new JLabel("Datum:");
+  JLabel lblPartner = new JLabel("Schichtpartner:");
+  JLabel lblComment = new JLabel("Kommentar:");
+  JLabel lblMonthSelection = new JLabel("Anzeigen:");
+  JLabel prepTimeLabel = new JLabel("Rüstzeit:");
+  boolean initialized = false;
 
-	    // DefaultComboBoxModel<ShiftContainer.ShiftType> enumModel = new DefaultComboBoxModel<ShiftType>(ShiftType.values());
-      // Suport old shift types in the table but support only new ones for new entrys
-      ShiftType[] selectableShiftTypes = {ShiftType.Alle, ShiftType.RTW, ShiftType.KTW, ShiftType.KIZA, ShiftType.BREISACH};
-      DefaultComboBoxModel<ShiftContainer.ShiftType> enumModel = new DefaultComboBoxModel<ShiftType>(selectableShiftTypes);
-	    shiftTypeChooser.setModel(enumModel);
+  // Text fields
+  JTextField shiftPartnerField = new JTextField();
+  JTextField dateField = new JTextField();
+  JTextField beginField = new JTextField();
+  JTextField endField = new JTextField();
+  JTextField breakField = new JTextField();
+  JTextField commentField = new JTextField();
+  JTextField prepTime = new JTextField();
 
-	    beginField.setColumns(10);
+  // Buttons
+  JButton submitButton = new JButton();
+  JButton createSalaryStatementButton = new JButton();
+  JButton deleteRegisteredShiftButton = new JButton();
+  JButton editRegisteredShiftButton = new JButton();
 
-	    endField.setColumns(10);
+  JComboBox<ShiftType> shiftTypeChooser = new JComboBox<ShiftType>();
 
-	    breakField.setColumns(10);
+  // ComboBoxes for the selection of shifts to display
+  JComboBox<String> yearChooser = new JComboBox<String>();
+  JComboBox<String> monthChooser = new JComboBox<String>();
 
-	    submitButton.setText("Eintragen");
-	    submitButton.addMouseListener(new MouseAdapter(){
-	    	public void mouseClicked(MouseEvent e) {
-	    		registerShiftButtonCallback();
-	    	}
-	    });
-	    
-	    createSalaryStatementButton.setText("Abrechnung erstellen");
-	    createSalaryStatementButton.addMouseListener(new MouseAdapter() {
-	    	public void mouseClicked(MouseEvent e){
-	    		createSalaryStatementCallback();
-	    	}
-	    });
+  public ShiftCollectorTab(ShiftContainer shiftContainer) throws HeadlessException {
+    super();
 
-	    
-	    deleteRegisteredShiftButton.setText("Löschen");
-	    editRegisteredShiftButton.setText("Bearbeiten");
-	    deleteRegisteredShiftButton.addMouseListener(new MouseAdapter(){
-	    	public void mouseClicked(MouseEvent e){
-	    		deleteShiftButtonCallback();
-	    	}
-	    });
-	    editRegisteredShiftButton.addMouseListener(new MouseAdapter(){
-	    	public void mouseClicked(MouseEvent e) {
-	    		editShiftButtonCallback();
-	    	}
-	    });
-	    
-	    shiftTypeChooser.addItemListener(new ItemListener() {
-	    	public void itemStateChanged(ItemEvent e) {
-	    		// If this is the deselect event don't do anything
-	    		if(e.getStateChange() == ItemEvent.DESELECTED) return;
-	    		// If override flag was set don't do anything
-	    		//	    			if(mainWindow.noShiftTypeUpdate)
-	    		//	    			{
-	    		//	    				mainWindow.noShiftTypeUpdate = false;
-	    		//	    				return;
-	    		//	    			}
-	    		ShiftContainer.ShiftType type = (ShiftContainer.ShiftType)shiftTypeChooser.getSelectedItem();
-	    		if (UtilityBox.hasPreparationTime(type)) {
-	    			prepTime.setText("7");
-	    		} else {
-	    			prepTime.setText("0");
-	    		}
+    // set UI elements up
+    dateField.setText("bitte auswählen");
+    dateField.addMouseListener(new MouseAdapter() {
+      public void mouseClicked(MouseEvent e) {
+        datePickerCallback();
+      }
+    });
+    dateField.setEditable(false);
+    dateField.setColumns(10);
 
-	    		updateShiftContainer();
+    calendar.setLocale(Locale.GERMANY);
 
-	    		// if ELW was selected, fill comment field
-	    		if(type == ShiftContainer.ShiftType.ELW) {
-	    			commentField.setText("ELW Einsatz");
-	    		}
-	    		// if Hintergrund was selected also....
-	    		if(type == ShiftContainer.ShiftType.HINTERGRUND) {
-	    		  commentField.setText("RTW Hintergrund");
-	    		}
+    shiftInstanceTable.getTableHeader().setReorderingAllowed(false);
+    shiftInstanceTable.getTableHeader().setResizingAllowed(true);
 
-	    		return;
+    shiftPartnerField.setColumns(10);
 
-	    	}
-	    });
+    // DefaultComboBoxModel<ShiftContainer.ShiftType> enumModel = new DefaultComboBoxModel<ShiftType>(ShiftType.values());
+    // Suport old shift types in the table but support only new ones for new entrys
+    ShiftType[] selectableShiftTypes = {ShiftType.Alle, ShiftType.RTW, ShiftType.KTW, ShiftType.KIZA, ShiftType.BREISACH};
+    DefaultComboBoxModel<ShiftContainer.ShiftType> enumModel = new DefaultComboBoxModel<ShiftType>(selectableShiftTypes);
+    shiftTypeChooser.setModel(enumModel);
 
-	    shiftCatalogueTable.getTableHeader().setReorderingAllowed(false);
-	    shiftCatalogueTable.getTableHeader().setResizingAllowed(false);
-	    shiftCatalogueTable.addMouseListener(new MouseAdapter() {
-	    	public void mouseClicked(MouseEvent e) {
-				 shiftCatalogueClickCallback();
-	    	}
-	    });	    
-	    shiftCatalogueTable.setShowGrid(false);
-      shiftCatalogueTable.setFont(new Font("Dialog", Font.PLAIN, shiftCatalogueTable.getFont().getSize()));
-	    String[][] data = ShiftContainer.shiftToTableData(shiftContainer.getShifts());
-	    for (int i = 0; i < data.length; i++) {
-	      shiftCatalogueTableModel.addRow(data[i]);
-	    }
-	    shiftCatalogueTable.setModel(shiftCatalogueTableModel);
-	    shiftInstanceTable.setModel(shiftInstanceTableModel);
-	    int timeColumnWidth = 30;
-	    shiftInstanceTable.getColumnModel().getColumn(1).setPreferredWidth(timeColumnWidth);
-	    shiftInstanceTable.getColumnModel().getColumn(2).setPreferredWidth(timeColumnWidth);
-	    shiftInstanceTable.getColumnModel().getColumn(3).setPreferredWidth(timeColumnWidth);
-	    shiftInstanceTable.getColumnModel().getColumn(4).setPreferredWidth(timeColumnWidth);
-	    shiftCataloguePane.setViewportView(shiftCatalogueTable);
-	    shiftInstancePane.setViewportView(shiftInstanceTable);
-	    
-	    // set the time range selectors  
-	    setYearComboBox();
-	    setMonthComboBox();
-	    yearChooser.addItemListener(new ItemListener() {
-	    	public void itemStateChanged(ItemEvent e) {
-	    		displaySelectionStateChangeCallback(e);
-	    	}
-	    });
-	    monthChooser.addItemListener(new ItemListener() {
-	    	public void itemStateChanged(ItemEvent e) {
-	    		displaySelectionStateChangeCallback(e);
-	    	}
-	    });
-	    
-	    // Place UI Elements in Panel
-	    layoutUiElements();
-	    
-	    updateRegisteredShifts();
-	    initialized = true;
-	}
+    beginField.setColumns(10);
 
-    private void displaySelectionStateChangeCallback(ItemEvent e) {
-		// do nothing if this is the DESELECT event
-		if (e.getStateChange() == ItemEvent.DESELECTED || ! initialized)  return;
-		updateRegisteredShifts(true);
-	}
+    endField.setColumns(10);
 
-	private void setYearComboBox() {
-	    ArrayList<Integer> yearsToDisplay = UtilityBox.getInstance().getShiftContainer().getSortedYearList();
-	    Integer currentYear = Calendar.getInstance().get(Calendar.YEAR);
-	    // if the current year is not in the display list add it
-	    if (!yearsToDisplay.contains(currentYear))
-	    	yearsToDisplay.add(currentYear);
-	    DefaultComboBoxModel<String> yearModel = new DefaultComboBoxModel<String>();
-	    yearModel.addElement("Alle");
-	    for(Integer i : yearsToDisplay) 
-	    	yearModel.addElement(i.toString());
-	    yearChooser.setModel(yearModel);		
-	    yearChooser.setSelectedItem(currentYear.toString());
-	}
-    
-    private void setMonthComboBox() {
-    	String[] months = new String[] {"Alle", "Januar", "Februar", "März", "April", "Mai", "Juni", "Juli",
-    									"August", "September", "Oktober", "November", "Dezember"};
-    	DefaultComboBoxModel<String> monthModel = new DefaultComboBoxModel<String>(months);
-    	monthChooser.setModel(monthModel);
-    	// set the current month as selected
-    	monthChooser.setSelectedIndex(Calendar.getInstance().get(Calendar.MONTH) + 1);
+    breakField.setColumns(10);
+
+    submitButton.setText("Eintragen");
+    submitButton.addMouseListener(new MouseAdapter() {
+      public void mouseClicked(MouseEvent e) {
+        registerShiftButtonCallback();
+      }
+    });
+
+    createSalaryStatementButton.setText("Abrechnung erstellen");
+    createSalaryStatementButton.addMouseListener(new MouseAdapter() {
+      public void mouseClicked(MouseEvent e) {
+        createSalaryStatementCallback();
+      }
+    });
+
+    deleteRegisteredShiftButton.setText("Löschen");
+    editRegisteredShiftButton.setText("Bearbeiten");
+    deleteRegisteredShiftButton.addMouseListener(new MouseAdapter() {
+      public void mouseClicked(MouseEvent e) {
+        deleteShiftButtonCallback();
+      }
+    });
+    editRegisteredShiftButton.addMouseListener(new MouseAdapter() {
+      public void mouseClicked(MouseEvent e) {
+        editShiftButtonCallback();
+      }
+    });
+
+    shiftTypeChooser.addItemListener(new ItemListener() {
+      public void itemStateChanged(ItemEvent e) {
+        // If this is the deselect event don't do anything
+        if (e.getStateChange() == ItemEvent.DESELECTED) {
+          return;
+        }
+        // If override flag was set don't do anything
+        //	    			if(mainWindow.noShiftTypeUpdate)
+        //	    			{
+        //	    				mainWindow.noShiftTypeUpdate = false;
+        //	    				return;
+        //	    			}
+        ShiftContainer.ShiftType type = (ShiftContainer.ShiftType) shiftTypeChooser.getSelectedItem();
+        /*
+        if (UtilityBox.hasPreparationTime(type)) {
+          prepTime.setText("7");
+        } else {
+          prepTime.setText("0");
+        }*/
+
+        updateShiftContainer();
+
+        // if ELW was selected, fill comment field
+        if (type == ShiftContainer.ShiftType.ELW) {
+          commentField.setText("ELW Einsatz");
+        }
+        // if Hintergrund was selected also....
+        if (type == ShiftContainer.ShiftType.HINTERGRUND) {
+          commentField.setText("RTW Hintergrund");
+        }
+
+        return;
+
+      }
+    });
+
+    shiftCatalogueTable.getTableHeader().setReorderingAllowed(false);
+    shiftCatalogueTable.getTableHeader().setResizingAllowed(false);
+    shiftCatalogueTable.addMouseListener(new MouseAdapter() {
+      public void mouseClicked(MouseEvent e) {
+        shiftCatalogueClickCallback();
+      }
+    });
+    shiftCatalogueTable.setShowGrid(false);
+    shiftCatalogueTable.setFont(new Font("Dialog", Font.PLAIN, shiftCatalogueTable.getFont().getSize()));
+    String[][] data = ShiftContainer.shiftToTableData(shiftContainer.getShifts());
+    for (int i = 0; i < data.length; i++) {
+      shiftCatalogueTableModel.addRow(data[i]);
+    }
+    shiftCatalogueTable.setModel(shiftCatalogueTableModel);
+    shiftInstanceTable.setModel(shiftInstanceTableModel);
+    int timeColumnWidth = 30;
+    shiftInstanceTable.getColumnModel().getColumn(1).setPreferredWidth(timeColumnWidth);
+    shiftInstanceTable.getColumnModel().getColumn(2).setPreferredWidth(timeColumnWidth);
+    shiftInstanceTable.getColumnModel().getColumn(3).setPreferredWidth(timeColumnWidth);
+    shiftInstanceTable.getColumnModel().getColumn(4).setPreferredWidth(timeColumnWidth);
+    shiftCataloguePane.setViewportView(shiftCatalogueTable);
+    shiftInstancePane.setViewportView(shiftInstanceTable);
+
+    // set the time range selectors  
+    setYearComboBox();
+    setMonthComboBox();
+    yearChooser.addItemListener(new ItemListener() {
+      public void itemStateChanged(ItemEvent e) {
+        displaySelectionStateChangeCallback(e);
+      }
+    });
+    monthChooser.addItemListener(new ItemListener() {
+      public void itemStateChanged(ItemEvent e) {
+        displaySelectionStateChangeCallback(e);
+      }
+    });
+
+    // Place UI Elements in Panel
+    layoutUiElements();
+
+    updateRegisteredShifts();
+    initialized = true;
+  }
+
+  private void displaySelectionStateChangeCallback(ItemEvent e) {
+    // do nothing if this is the DESELECT event
+    if (e.getStateChange() == ItemEvent.DESELECTED || !initialized) {
+      return;
+    }
+    updateRegisteredShifts(true);
+  }
+
+  private void setYearComboBox() {
+    ArrayList<Integer> yearsToDisplay = UtilityBox.getInstance().getShiftContainer().getSortedYearList();
+    Integer currentYear = Calendar.getInstance().get(Calendar.YEAR);
+    // if the current year is not in the display list add it
+    if (!yearsToDisplay.contains(currentYear)) {
+      yearsToDisplay.add(currentYear);
+    }
+    DefaultComboBoxModel<String> yearModel = new DefaultComboBoxModel<String>();
+    yearModel.addElement("Alle");
+    for (Integer i : yearsToDisplay) {
+      yearModel.addElement(i.toString());
+    }
+    yearChooser.setModel(yearModel);
+    yearChooser.setSelectedItem(currentYear.toString());
+  }
+
+  private void setMonthComboBox() {
+    String[] months = new String[]{"Alle", "Januar", "Februar", "März", "April", "Mai", "Juni", "Juli",
+      "August", "September", "Oktober", "November", "Dezember"};
+    DefaultComboBoxModel<String> monthModel = new DefaultComboBoxModel<String>(months);
+    monthChooser.setModel(monthModel);
+    // set the current month as selected
+    monthChooser.setSelectedIndex(Calendar.getInstance().get(Calendar.MONTH) + 1);
+  }
+
+  private void createSalaryStatementCallback() {
+    String y = (String) yearChooser.getSelectedItem();
+    int year = (y == "Alle") ? -1 : Integer.parseInt(y);
+    int month = monthChooser.getSelectedIndex() - 1;
+
+    CreateAccountmentFrame caf = new CreateAccountmentFrame(year, month);
+
+  }
+
+  private void deleteShiftButtonCallback() {
+    // get the currently selected shift
+    int selectedRow = shiftInstanceTable.getSelectedRow();
+
+    ShiftInstance selectedInstance = shiftInstanceTableModel.getItem(selectedRow);
+
+    if (selectedInstance == null) {
+      return;
     }
 
-	private void createSalaryStatementCallback() {
-		String y = (String) yearChooser.getSelectedItem();
-		int year = (y == "Alle")? -1 : Integer.parseInt(y);
-		int month = monthChooser.getSelectedIndex() - 1;
-		
-        CreateAccountmentFrame caf = new CreateAccountmentFrame(year, month);
-		
-	}
+    UtilityBox.getInstance().getShiftContainer().deleteShift(selectedInstance.getId());
+    updateRegisteredShifts();
+  }
 
-	private void deleteShiftButtonCallback() {
-		// get the currently selected shift
-		int selectedRow = shiftInstanceTable.getSelectedRow();
-		
-		ShiftInstance selectedInstance = shiftInstanceTableModel.getItem(selectedRow);
-		
-		if (selectedInstance == null) return;
-
-		UtilityBox.getInstance().getShiftContainer().deleteShift(selectedInstance.getId());
-		updateRegisteredShifts();
-	}
-
-	private void editShiftButtonCallback() {
-	  // get the selected row
+  private void editShiftButtonCallback() {
+    // get the selected row
     int selectedRow = shiftInstanceTable.getSelectedRow();
-		
-		ShiftInstance shift = shiftInstanceTableModel.getItem(selectedRow);
-		
-		// reset the fields
-		beginField.setText(UtilityBox.createTimeStringFromInt(shift.getActualStartingTime()));
-		endField.setText(UtilityBox.createTimeStringFromInt(shift.getActualEndTime()));
-		breakField.setText(UtilityBox.createTimeStringFromInt(shift.getActualBreakTime()));
-		shiftPartnerField.setText(shift.getPartner());
-		dateField.setText(shift.getDateString());
-		commentField.setText(shift.getComment());
-		shiftTypeChooser.setSelectedItem(shift.getType());
 
-		prepTime.setText(Integer.toString(shift.getPrepTime()));
-		// delete the shift
-		UtilityBox.getInstance().getShiftContainer().deleteShift(shift.getId());
-		updateRegisteredShifts();
-	}
+    ShiftInstance shift = shiftInstanceTableModel.getItem(selectedRow);
 
-	// This method handles selection of a shift from the catalogue by click 
-    // on the list
-    private void shiftCatalogueClickCallback() {
-    	// Get values from table
-		int selectedRow = shiftCatalogueTable.getSelectedRow();
-		String begin = (String) shiftCatalogueTable.getValueAt(
-				selectedRow, 1);
-		String end = (String) shiftCatalogueTable.getValueAt(selectedRow,
-				2);
-		String breakTime = (String) shiftCatalogueTable.getValueAt(
-				selectedRow, 3);
+    // reset the fields
+    beginField.setText(UtilityBox.createTimeStringFromInt(shift.getActualStartingTime()));
+    endField.setText(UtilityBox.createTimeStringFromInt(shift.getActualEndTime()));
+    breakField.setText(UtilityBox.createTimeStringFromInt(shift.getActualBreakTime()));
+    shiftPartnerField.setText(shift.getPartner());
+    dateField.setText(shift.getDateString());
+    commentField.setText(shift.getComment());
+    shiftTypeChooser.setSelectedItem(shift.getType());
 
-		String ID = (String) shiftCatalogueTable.getValueAt(
-				selectedRow, 0);
-		
-		Shift shift = Shift.getShiftFromId(ID);
-		
-		
-		// Set values to fields
-        ShiftType shiftType = shift.getType();
-		beginField.setText(begin);
-		endField.setText(end);
-		breakField.setText(breakTime);
-		// mainWindow.noShiftTypeUpdate = true;
-		shiftTypeChooser.setSelectedItem(shiftType);
-        if(UtilityBox.hasPreparationTime(shiftType)) {
-        	prepTime.setText("7");
+    prepTime.setText(Integer.toString(shift.getPrepTime()));
+    // delete the shift
+    UtilityBox.getInstance().getShiftContainer().deleteShift(shift.getId());
+    updateRegisteredShifts();
+  }
+
+  // This method handles selection of a shift from the catalogue by click 
+  // on the list
+  private void shiftCatalogueClickCallback() {
+    // Get values from table
+    int selectedRow = shiftCatalogueTable.getSelectedRow();
+    String begin = (String) shiftCatalogueTable.getValueAt(
+        selectedRow, 1);
+    String end = (String) shiftCatalogueTable.getValueAt(selectedRow,
+                                                         2);
+    String breakTime = (String) shiftCatalogueTable.getValueAt(
+        selectedRow, 3);
+
+    String ID = (String) shiftCatalogueTable.getValueAt(
+        selectedRow, 0);
+
+    Shift shift = Shift.getShiftFromId(ID);
+
+    // Set values to fields
+    ShiftType shiftType = shift.getType();
+    beginField.setText(begin);
+    endField.setText(end);
+    breakField.setText(breakTime);
+    // mainWindow.noShiftTypeUpdate = true;
+    shiftTypeChooser.setSelectedItem(shiftType);
+    prepTime.setText(Integer.toString(shift.getPreparationTime()));
+    /*if (UtilityBox.hasPreparationTime(shiftType)) {
+      prepTime.setText("7");
+    } else {
+      prepTime.setText("0");
+    }*/
+  }
+
+  // This method handles display and function of the date picker
+  private void datePickerCallback() {
+    PopupFactory factory = PopupFactory.getSharedInstance();
+
+    JPanel panel = new JPanel();
+    panel.add(calendar);
+    JButton apply = new JButton("Übernehmen");
+    apply.addMouseListener(new MouseAdapter() {
+      public void mouseClicked(MouseEvent e) {
+        Date selectedDate = calendar.getDate();
+
+        StringBuilder dateString = new StringBuilder();
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(selectedDate);
+
+        // pad day string with 0 if < 10
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        String daystring;
+        if (day < 10) {
+          daystring = "0" + Integer.toString(day);
         } else {
-        	prepTime.setText("0");
+          daystring = Integer.toString(day);
         }
-	}
 
-	// This method handles display and function of the date picker
-	private void datePickerCallback() {
-		PopupFactory factory = PopupFactory.getSharedInstance();
+        dateString.append(daystring);
+        dateString.append(".");
+        int month = cal.get(Calendar.MONTH) + 1;
+        if (month < 10) {
+          dateString.append("0");
+        }
+        dateString.append(Integer.toString(month));
+        dateString.append(".");
+        dateString.append(Integer.toString(cal.get(Calendar.YEAR)));
 
-		JPanel panel = new JPanel();
-		panel.add(calendar);
-		JButton apply = new JButton("Übernehmen");
-		apply.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e) {
-			Date selectedDate = calendar.getDate();
+        // Set the selected type of day in mainWindow
+        int dayType = cal.get(Calendar.DAY_OF_WEEK);
 
-			StringBuilder dateString = new StringBuilder();
+        switch (dayType) {
+          case 1: // sunday
+            currentlySelectedDay = 2;
+            break;
+          case 7: // saturday
+            currentlySelectedDay = 1;
+            break;
+          default:
+            currentlySelectedDay = 0;
+            break;
+        }
 
-			Calendar cal = Calendar.getInstance();
-			cal.setTime(selectedDate);
+        dateField.setText(dateString.toString());
+        calendarPopup.hide();
+        updateShiftContainer();
+        return;
+      }
+    });
+    panel.add(apply);
 
-			// pad day string with 0 if < 10
-			int day = cal.get(Calendar.DAY_OF_MONTH);
-			String daystring;
-			if (day < 10) {
-				daystring = "0" + Integer.toString(day);
-			} else {
-				daystring = Integer.toString(day);
-			}
-			
-			dateString.append(daystring);
-			dateString.append(".");
-			int month = cal.get(Calendar.MONTH) + 1;
-			if (month < 10)
-				dateString.append("0");
-			dateString.append(Integer.toString(month));
-			dateString.append(".");
-			dateString.append(Integer.toString(cal.get(Calendar.YEAR)));
+    calendarPopup = factory.getPopup(this,
+                                     panel, UtilityBox.getInstance().getWindowPosX(),
+                                     UtilityBox.getInstance().getWindowPosY());
+    calendarPopup.show();
+    return;
+  }
 
-			// Set the selected type of day in mainWindow
-			int dayType = cal.get(Calendar.DAY_OF_WEEK);
+  private void layoutUiElements() {
+    // base positions of the input form
+    int formX = 20;
+    int formY = 10;
 
-			switch (dayType) {
-			case 1: // sunday
-				currentlySelectedDay = 2;
-				break;
-			case 7: // saturday
-				currentlySelectedDay = 1;
-				break;
-			default:
-				currentlySelectedDay = 0;
-				break;
-			}
+    // place between lines in the form
+    int lineSpacing = 30;
 
-			dateField.setText(dateString.toString());
-			calendarPopup.hide();
-			updateShiftContainer();
-			return;
-		}
-		});
-		panel.add(apply);
+    Font font = UtilityBox.getInstance().getDefaultFont();
+    FontMetrics fm = this.getFontMetrics(font);
+    // height for all the labels
+    int labelHeight = fm.getHeight();
+    // height for all buttons
+    int buttonHeight = fm.getHeight() + 10;
+    // height for all text fields
+    int textFieldHeight = fm.getHeight() + 5;
+    int timeFieldWidth = 80;
+    int comboBoxHeight = 20;
 
-		calendarPopup = factory.getPopup(this,
-				panel, UtilityBox.getInstance().getWindowPosX(),
-				UtilityBox.getInstance().getWindowPosY());
-		calendarPopup.show();
-		return;
-	}
+    this.setLayout(null);
 
-	private void layoutUiElements() {
-		// base positions of the input form
-		int formX = 20;
-		int formY = 10;
-		
-		// place between lines in the form
-		int lineSpacing = 30;
-		
-		Font font = UtilityBox.getInstance().getDefaultFont();
-		FontMetrics fm = this.getFontMetrics(font);
-		// height for all the labels
-		int labelHeight = fm.getHeight();
-		// height for all buttons
-		int buttonHeight = fm.getHeight() + 10;
-		// height for all text fields
-		int textFieldHeight = fm.getHeight() + 5;
-		int timeFieldWidth = 80;
-		int comboBoxHeight = 20;
-		
-		this.setLayout(null);
-		
-		// FORM LAYOUT
-		
-		// Line 1
-		
-		this.add(lblShiftType);
-		lblShiftType.setBounds(formX, formY, SwingUtilities.computeStringWidth(fm, lblShiftType.getText()), labelHeight);
-		lblShiftType.setFont(font);
-		
-		this.add(shiftTypeChooser);
-		shiftTypeChooser.setBounds(90 + formX, formY, 150, comboBoxHeight);
-		
-		// Line 2
-		
-		this.add(lblDate);
-		lblDate.setBounds(formX, formY + lineSpacing, SwingUtilities.computeStringWidth(fm, lblDate.getText()), labelHeight);
-		lblDate.setFont(font);
-		
-		this.add(dateField);
-		dateField.setBounds(90 + formX, formY + lineSpacing, 120, 20);
-		
-		// Line 3
-		
-		this.add(lblPartner);
-		lblPartner.setBounds(formX, formY + lineSpacing * 2, SwingUtilities.computeStringWidth(fm, lblPartner.getText()), labelHeight);
-		lblPartner.setFont(font);
-		
-		this.add(shiftPartnerField);
-		shiftPartnerField.setBounds(SwingUtilities.computeStringWidth(fm, lblPartner.getText()) + 10 + formX, formY  + lineSpacing * 2,
-				100, textFieldHeight);
-		
-		// Line 4
-		
-		this.add(lblBegin);
-		lblBegin.setBounds(formX, formY +lineSpacing * 3, SwingUtilities.computeStringWidth(fm, lblBegin.getText()), labelHeight);
-		lblBegin.setFont(font);
-		
-		this.add(beginField);
-		beginField.setBounds(70 + formX, formY + lineSpacing * 3, timeFieldWidth, textFieldHeight);
-		
-		this.add(lblEnd);
-		lblEnd.setBounds(190 + formX, formY +lineSpacing * 3, SwingUtilities.computeStringWidth(fm, lblEnd.getText()), labelHeight);
-		lblEnd.setFont(font);
-	
-		this.add(endField);
-		endField.setBounds(240 + formX, formY + lineSpacing * 3, timeFieldWidth, textFieldHeight);
-		
-		// Line 5
-		
-		this.add(lblBreak);
-		lblBreak.setBounds(formX, formY + lineSpacing * 4, SwingUtilities.computeStringWidth(fm, lblBreak.getText()), labelHeight);
-		lblBreak.setFont(font);
-		
-		this.add(breakField);
-		breakField.setBounds(formX + 70, formY + lineSpacing * 4, timeFieldWidth, textFieldHeight);
-		
-		this.add(prepTimeLabel);
-		prepTimeLabel.setBounds(formX + 170, formY + lineSpacing * 4, SwingUtilities.computeStringWidth(fm, prepTimeLabel.getText()) + 50, labelHeight);
-		
-		this.add(prepTime);
-		prepTime.setBounds(formX + 240, formY + lineSpacing * 4, timeFieldWidth,textFieldHeight);
-		
-		// Line 6
-		
-		this.add(lblComment);
-		lblComment.setBounds(formX, formY + lineSpacing * 5, SwingUtilities.computeStringWidth(fm, lblComment.getText()), labelHeight);
-		lblComment.setFont(font);
-		
-		this.add(commentField);
-		commentField.setBounds(formX + 100, formY + lineSpacing * 5, 200, textFieldHeight);
-		
-		// Line 7
-		
-		this.add(submitButton);
-		submitButton.setBounds(formX + 100, formY + lineSpacing * 6, SwingUtilities.computeStringWidth(fm, submitButton.getText()) + 40, buttonHeight);
-		
-		// shifts to display selection
-		this.add(lblMonthSelection);
-		lblMonthSelection.setBounds(10, 250, SwingUtilities.computeStringWidth(fm, lblMonthSelection.getText()), labelHeight);
-		lblMonthSelection.setFont(font);
-		
-		this.add(monthChooser);
-		monthChooser.setBounds(100, 250, 120, comboBoxHeight);
-		
-		this.add(yearChooser);
-		yearChooser.setBounds(240, 250, 100, comboBoxHeight);
-		
-		
-		// Shift Catalogue
-		this.add(shiftCataloguePane);
-		shiftCataloguePane.setBounds(400, 10, 480, 250);
-		
-		// Shift Instances
-		this.add(shiftInstancePane);
-		shiftInstancePane.setBounds(10, 280, 870, 220);
-		
-		// lower buttons
-		int lowerButtonY = 510;
-		
-		this.add(createSalaryStatementButton);
-		createSalaryStatementButton.setBounds(150, lowerButtonY, SwingUtilities.computeStringWidth(fm, createSalaryStatementButton.getText()) + 40, buttonHeight);
-		
-		this.add(editRegisteredShiftButton);
-		editRegisteredShiftButton.setBounds(500, lowerButtonY, SwingUtilities.computeStringWidth(fm, editRegisteredShiftButton.getText()) + 40, buttonHeight);
-		
-		this.add(deleteRegisteredShiftButton);
-		deleteRegisteredShiftButton.setBounds(650, lowerButtonY, SwingUtilities.computeStringWidth(fm, deleteRegisteredShiftButton.getText()) + 40, buttonHeight);
-	}
-	
-	  /**
-	   * Gets the current day and shift type (for filter options) and updated the
-	   * Shift container
-	   * 
-	   * @author niklas
-	   */
-	  public void updateShiftContainer() {
-	    // Get currently selected shift type
-	    ShiftType type = (ShiftType) shiftTypeChooser.getSelectedItem();
+    // FORM LAYOUT
+    // Line 1
+    this.add(lblShiftType);
+    lblShiftType.setBounds(formX, formY, SwingUtilities.computeStringWidth(fm, lblShiftType.getText()), labelHeight);
+    lblShiftType.setFont(font);
 
-	    ShiftContainer shiftContainer = UtilityBox.getInstance().getShiftContainer();
-	    
-	    Object[][] data = ShiftContainer.shiftToTableData(shiftContainer.filterShifts(type, currentlySelectedDay));
-	    shiftCatalogueTableModel.setNumRows(0);
-	    for (int i = 0; i < data.length; i++) {
-	      shiftCatalogueTableModel.addRow(data[i]);
-	    }
+    this.add(shiftTypeChooser);
+    shiftTypeChooser.setBounds(90 + formX, formY, 150, comboBoxHeight);
 
-	  }
+    // Line 2
+    this.add(lblDate);
+    lblDate.setBounds(formX, formY + lineSpacing, SwingUtilities.computeStringWidth(fm, lblDate.getText()), labelHeight);
+    lblDate.setFont(font);
 
-	  // Handle clicks on register shift button
-	  private void registerShiftButtonCallback(){
-		  String date = dateField.getText();
-		  String partner = shiftPartnerField.getText();
-		  int begin = 0;
-		  int end = 0;
-		  int breakTime = 0;
+    this.add(dateField);
+    dateField.setBounds(90 + formX, formY + lineSpacing, 120, 20);
 
-		  // check if personal data was set
-		  if(!PersonalData.getInstance().isDataSet()){
-			  UtilityBox.getInstance().displayErrorPopup("Fehler", "Bitte persönliche Daten eintragen und übernehmen!\nSonst kann dein Gehalt nicht berechnet werden ;-)");
-			  return;
-		  }
-      
-      // check if salary data was set
-		  if(!UtilityBox.isSalarySet()){
-			  UtilityBox.getInstance().displayErrorPopup("Fehler", "Keine Gehaltsdaten gefunden. Bitte Gehaltsdatei im Reiter Info/Update aktualisieren.");
-			  return;
-		  }
+    // Line 3
+    this.add(lblPartner);
+    lblPartner.setBounds(formX, formY + lineSpacing * 2, SwingUtilities.computeStringWidth(fm, lblPartner.getText()), labelHeight);
+    lblPartner.setFont(font);
 
-		  // if no type was selected, display error
-		  if (shiftTypeChooser.getSelectedItem() == ShiftContainer.ShiftType.Alle)
-		  {
-			  UtilityBox.getInstance().displayErrorPopup("Fehler", "Bitte Schichttyp auswählen!");
-			  return;
-		  }
+    this.add(shiftPartnerField);
+    shiftPartnerField.setBounds(SwingUtilities.computeStringWidth(fm, lblPartner.getText()) + 10 + formX, formY + lineSpacing * 2,
+                                100, textFieldHeight);
 
-		  // If no date has been selected create popup
-		  if (date.equals("bitte auswählen")) {
-			  UtilityBox.getInstance().displayErrorPopup("Fehler", "Bitte Datum auswählen!");
-			  return;
-		  }
+    // Line 4
+    this.add(lblBegin);
+    lblBegin.setBounds(formX, formY + lineSpacing * 3, SwingUtilities.computeStringWidth(fm, lblBegin.getText()), labelHeight);
+    lblBegin.setFont(font);
 
-		  // Try to parse the begin time
-		  try {
-			  begin = Integer.parseInt(beginField.getText().replaceAll("[^\\d]",""));
-		  } catch (NumberFormatException exception) {
-			  UtilityBox.getInstance().displayErrorPopup("Fehler", "Ungültige Anfangszeit!");
-			  return;
-		  }
-		  try {
-			  end = Integer.parseInt(endField.getText().replaceAll("[^\\d]",""));
-		  } catch (NumberFormatException exception) {
-			  UtilityBox.getInstance().displayErrorPopup("Fehler", "Ungültige Endezeit!");
-			  return;
-		  }
-		  try {
-			  // If the break time field is empty, assume no break
-			  if (breakField.getText().length() == 0) {
-				  breakTime = 0;
-			  } else {
-				  breakTime = Integer.parseInt(breakField.getText().replaceAll("[^\\d]",""));
-			  }
-		  } catch (NumberFormatException exception) {
-			  UtilityBox.getInstance().displayErrorPopup("Fehler", "Ungültige Pausenzeit!");
-			  return;
-		  }
+    this.add(beginField);
+    beginField.setBounds(70 + formX, formY + lineSpacing * 3, timeFieldWidth, textFieldHeight);
 
-		  if(partner.equals("") && shiftTypeChooser.getSelectedItem() != ShiftContainer.ShiftType.KVS
-				  && shiftTypeChooser.getSelectedItem() != ShiftContainer.ShiftType.ELW)
-		  {
-			  UtilityBox.getInstance().displayErrorPopup("Fehler", "Bitte Schichtpartner angeben!");
-			  return;
-		  }
-		  
-		  // check prep time
-		  int preparationTime = 0;
-		  try {
-			  preparationTime = Integer.parseInt(prepTime.getText());
-		  } 
-		  catch (NumberFormatException e) {
-			  UtilityBox.getInstance().displayErrorPopup("Fehler", "Rüstzeit muss zwischen 0 und 7 sein!");
-			  return;
-		  }
-		  if (preparationTime > 7  || preparationTime < 0) {
-			  UtilityBox.getInstance().displayErrorPopup("Fehler", "Rüstzeit muss zwischen 0 und 7 sein!");
-			  return;  
-		  }
+    this.add(lblEnd);
+    lblEnd.setBounds(190 + formX, formY + lineSpacing * 3, SwingUtilities.computeStringWidth(fm, lblEnd.getText()), labelHeight);
+    lblEnd.setFont(font);
 
-		  UtilityBox.getInstance().getShiftContainer().registerShift(
-				  (ShiftContainer.ShiftType)shiftTypeChooser.getSelectedItem(), date,
-				  begin,
-				  end,
-				  breakTime,
-				  partner,
-				  commentField.getText(),
-				  prepTime.getText());
-		  
-		  // set the year and month combo boxes to display the month the shift just registered was in
-		  DateFormat f = new SimpleDateFormat("dd.MM.yyyy");
-		  Calendar cal = Calendar.getInstance();
-		  try {
-			  cal.setTime(f.parse(date));
-		  } catch (ParseException e) {
-			  // TODO Auto-generated catch block
-			  e.printStackTrace();
-		  }
+    this.add(endField);
+    endField.setBounds(240 + formX, formY + lineSpacing * 3, timeFieldWidth, textFieldHeight);
 
-		  updateRegisteredShifts();
-		  
-		  yearChooser.setSelectedItem(Integer.toString(cal.get(Calendar.YEAR)));
-		  monthChooser.setSelectedIndex(cal.get(Calendar.MONTH) + 1);
-		  
-		  // Finally clear the fields
-		  commentField.setText("");
-		  beginField.setText("");
-		  endField.setText("");
-		  shiftPartnerField.setText("");
-		  prepTime.setText("");
-		  breakField.setText("");
-	  }
-	  
-	  /**
-	   * Refreshes the table displaying the registered shifts
-	   */
-	  public void updateRegisteredShifts() {
-		  updateRegisteredShifts(false);
-	  }
-	  public void updateRegisteredShifts(boolean noYearMonthBoxUpdate) {
-	    
-	    // get the values from the time to display selectors
-	    int month = monthChooser.getSelectedIndex();
-	    String year = (String) yearChooser.getSelectedItem();
-	    
-	    // get the shifts to display
-	    // if the selected month is 0 this means all months are to be displayed, so it needs 
-	    // to be -1 for the function to understand it
-	    month--;
-	    if (year == "Alle") year = "-1";
+    // Line 5
+    this.add(lblBreak);
+    lblBreak.setBounds(formX, formY + lineSpacing * 4, SwingUtilities.computeStringWidth(fm, lblBreak.getText()), labelHeight);
+    lblBreak.setFont(font);
 
-	    // get all registered shifts and convert them to table data
-	    ArrayList<ShiftInstance> data = UtilityBox.getInstance().getShiftContainer().getShiftInsances(Integer.parseInt(year), month);
-	    // reset the table model
-	    shiftInstanceTableModel.clear();
-	    // iterate over all shifts
-	    for (int i = 0; i < data.size(); i++) {
-	     shiftInstanceTableModel.add(data.get(i));
-	    }
+    this.add(breakField);
+    breakField.setBounds(formX + 70, formY + lineSpacing * 4, timeFieldWidth, textFieldHeight);
 
-	    if (! noYearMonthBoxUpdate) setYearComboBox();
-	  }
+    this.add(prepTimeLabel);
+    prepTimeLabel.setBounds(formX + 170, formY + lineSpacing * 4, SwingUtilities.computeStringWidth(fm, prepTimeLabel.getText()) + 50, labelHeight);
+
+    this.add(prepTime);
+    prepTime.setBounds(formX + 240, formY + lineSpacing * 4, timeFieldWidth, textFieldHeight);
+
+    // Line 6
+    this.add(lblComment);
+    lblComment.setBounds(formX, formY + lineSpacing * 5, SwingUtilities.computeStringWidth(fm, lblComment.getText()), labelHeight);
+    lblComment.setFont(font);
+
+    this.add(commentField);
+    commentField.setBounds(formX + 100, formY + lineSpacing * 5, 200, textFieldHeight);
+
+    // Line 7
+    this.add(submitButton);
+    submitButton.setBounds(formX + 100, formY + lineSpacing * 6, SwingUtilities.computeStringWidth(fm, submitButton.getText()) + 40, buttonHeight);
+
+    // shifts to display selection
+    this.add(lblMonthSelection);
+    lblMonthSelection.setBounds(10, 250, SwingUtilities.computeStringWidth(fm, lblMonthSelection.getText()), labelHeight);
+    lblMonthSelection.setFont(font);
+
+    this.add(monthChooser);
+    monthChooser.setBounds(100, 250, 120, comboBoxHeight);
+
+    this.add(yearChooser);
+    yearChooser.setBounds(240, 250, 100, comboBoxHeight);
+
+    // Shift Catalogue
+    this.add(shiftCataloguePane);
+    shiftCataloguePane.setBounds(400, 10, 480, 250);
+
+    // Shift Instances
+    this.add(shiftInstancePane);
+    shiftInstancePane.setBounds(10, 280, 870, 220);
+
+    // lower buttons
+    int lowerButtonY = 510;
+
+    this.add(createSalaryStatementButton);
+    createSalaryStatementButton.setBounds(150, lowerButtonY, SwingUtilities.computeStringWidth(fm, createSalaryStatementButton.getText()) + 40, buttonHeight);
+
+    this.add(editRegisteredShiftButton);
+    editRegisteredShiftButton.setBounds(500, lowerButtonY, SwingUtilities.computeStringWidth(fm, editRegisteredShiftButton.getText()) + 40, buttonHeight);
+
+    this.add(deleteRegisteredShiftButton);
+    deleteRegisteredShiftButton.setBounds(650, lowerButtonY, SwingUtilities.computeStringWidth(fm, deleteRegisteredShiftButton.getText()) + 40, buttonHeight);
+  }
+
+  /**
+   * Gets the current day and shift type (for filter options) and updated the
+   * Shift container
+   *
+   * @author niklas
+   */
+  public void updateShiftContainer() {
+    // Get currently selected shift type
+    ShiftType type = (ShiftType) shiftTypeChooser.getSelectedItem();
+
+    ShiftContainer shiftContainer = UtilityBox.getInstance().getShiftContainer();
+
+    Object[][] data = ShiftContainer.shiftToTableData(shiftContainer.filterShifts(type, currentlySelectedDay));
+    shiftCatalogueTableModel.setNumRows(0);
+    for (int i = 0; i < data.length; i++) {
+      shiftCatalogueTableModel.addRow(data[i]);
+    }
+
+  }
+
+  // Handle clicks on register shift button
+  private void registerShiftButtonCallback() {
+    String date = dateField.getText();
+    String partner = shiftPartnerField.getText();
+    int begin = 0;
+    int end = 0;
+    int breakTime = 0;
+
+    // check if personal data was set
+    if (!PersonalData.getInstance().isDataSet()) {
+      UtilityBox.getInstance().displayErrorPopup("Fehler", "Bitte persönliche Daten eintragen und übernehmen!\nSonst kann dein Gehalt nicht berechnet werden ;-)");
+      return;
+    }
+
+    // check if salary data was set
+    if (!UtilityBox.isSalarySet()) {
+      UtilityBox.getInstance().displayErrorPopup("Fehler", "Keine Gehaltsdaten gefunden. Bitte Gehaltsdatei im Reiter Info/Update aktualisieren.");
+      return;
+    }
+
+    // if no type was selected, display error
+    if (shiftTypeChooser.getSelectedItem() == ShiftContainer.ShiftType.Alle) {
+      UtilityBox.getInstance().displayErrorPopup("Fehler", "Bitte Schichttyp auswählen!");
+      return;
+    }
+
+    // If no date has been selected create popup
+    if (date.equals("bitte auswählen")) {
+      UtilityBox.getInstance().displayErrorPopup("Fehler", "Bitte Datum auswählen!");
+      return;
+    }
+
+    // Try to parse the begin time
+    try {
+      begin = Integer.parseInt(beginField.getText().replaceAll("[^\\d]", ""));
+    } catch (NumberFormatException exception) {
+      UtilityBox.getInstance().displayErrorPopup("Fehler", "Ungültige Anfangszeit!");
+      return;
+    }
+    try {
+      end = Integer.parseInt(endField.getText().replaceAll("[^\\d]", ""));
+    } catch (NumberFormatException exception) {
+      UtilityBox.getInstance().displayErrorPopup("Fehler", "Ungültige Endezeit!");
+      return;
+    }
+    try {
+      // If the break time field is empty, assume no break
+      if (breakField.getText().length() == 0) {
+        breakTime = 0;
+      } else {
+        breakTime = Integer.parseInt(breakField.getText().replaceAll("[^\\d]", ""));
+      }
+    } catch (NumberFormatException exception) {
+      UtilityBox.getInstance().displayErrorPopup("Fehler", "Ungültige Pausenzeit!");
+      return;
+    }
+
+    if (partner.equals("") && shiftTypeChooser.getSelectedItem() != ShiftContainer.ShiftType.KVS
+        && shiftTypeChooser.getSelectedItem() != ShiftContainer.ShiftType.ELW) {
+      UtilityBox.getInstance().displayErrorPopup("Fehler", "Bitte Schichtpartner angeben!");
+      return;
+    }
+
+    // check prep time
+    /*int preparationTime = 0;
+    try {
+      preparationTime = Integer.parseInt(prepTime.getText());
+    } catch (NumberFormatException e) {
+      UtilityBox.getInstance().displayErrorPopup("Fehler", "Rüstzeit muss zwischen 0 und 7 sein!");
+      return;
+    }
+    if (preparationTime > 7 || preparationTime < 0) {
+      UtilityBox.getInstance().displayErrorPopup("Fehler", "Rüstzeit muss zwischen 0 und 7 sein!");
+      return;
+    }*/
+
+    UtilityBox.getInstance().getShiftContainer().registerShift(
+        (ShiftContainer.ShiftType) shiftTypeChooser.getSelectedItem(), date,
+        begin,
+        end,
+        breakTime,
+        partner,
+        commentField.getText(),
+        prepTime.getText());
+
+    // set the year and month combo boxes to display the month the shift just registered was in
+    DateFormat f = new SimpleDateFormat("dd.MM.yyyy");
+    Calendar cal = Calendar.getInstance();
+    try {
+      cal.setTime(f.parse(date));
+    } catch (ParseException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+    updateRegisteredShifts();
+
+    yearChooser.setSelectedItem(Integer.toString(cal.get(Calendar.YEAR)));
+    monthChooser.setSelectedIndex(cal.get(Calendar.MONTH) + 1);
+
+    // Finally clear the fields
+    commentField.setText("");
+    beginField.setText("");
+    endField.setText("");
+    shiftPartnerField.setText("");
+    prepTime.setText("");
+    breakField.setText("");
+  }
+
+  /**
+   * Refreshes the table displaying the registered shifts
+   */
+  public void updateRegisteredShifts() {
+    updateRegisteredShifts(false);
+  }
+
+  public void updateRegisteredShifts(boolean noYearMonthBoxUpdate) {
+
+    // get the values from the time to display selectors
+    int month = monthChooser.getSelectedIndex();
+    String year = (String) yearChooser.getSelectedItem();
+
+    // get the shifts to display
+    // if the selected month is 0 this means all months are to be displayed, so it needs 
+    // to be -1 for the function to understand it
+    month--;
+    if (year == "Alle") {
+      year = "-1";
+    }
+
+    // get all registered shifts and convert them to table data
+    ArrayList<ShiftInstance> data = UtilityBox.getInstance().getShiftContainer().getShiftInsances(Integer.parseInt(year), month);
+    // reset the table model
+    shiftInstanceTableModel.clear();
+    // iterate over all shifts
+    for (int i = 0; i < data.size(); i++) {
+      shiftInstanceTableModel.add(data.get(i));
+    }
+
+    if (!noYearMonthBoxUpdate) {
+      setYearComboBox();
+    }
+  }
 
 }

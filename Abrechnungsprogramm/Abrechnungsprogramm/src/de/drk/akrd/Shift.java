@@ -1,7 +1,6 @@
 package de.drk.akrd;
 
 // Represents a shift
-
 import java.util.ArrayList;
 
 public class Shift {
@@ -12,18 +11,19 @@ public class Shift {
   private ShiftContainer.ShiftType type;
   private int breakTime;
   private int days;
-  
+  private int preparationTime;
+
   public int getDays() {
-	return days;
-}
+    return days;
+  }
 
-public void setDays(int days) {
-	this.days = days;
-}
+  public void setDays(int days) {
+    this.days = days;
+  }
 
-private boolean external; // external shift? (i.e. Breisach and Kirchzarten)
+  private boolean external; // external shift? (i.e. Breisach and Kirchzarten)
 
-  public Shift(String id, int startingTime, int endTime, int breakTime, int days, String type) {
+  public Shift(String id, int startingTime, int endTime, int breakTime, int days, String type, int preparationTime) {
     super();
     this.id = id;
     this.startingTime = startingTime;
@@ -31,22 +31,26 @@ private boolean external; // external shift? (i.e. Breisach and Kirchzarten)
     this.breakTime = breakTime;
     this.days = days;
     this.type = ShiftContainer.getShiftTypeFromId(type);
+    this.preparationTime = preparationTime;
   }
+
 
   /**
    * identifie a shift by its id and return it
+   *
    * @param id the shift id
    * @return Shift-Object if the shift exists, null oterwise
    */
   public static Shift getShiftFromId(String id) {
     ArrayList<Shift> shifts = ShiftContainer.getShiftsAsList();
-    for (int i=0; i<shifts.size(); i++) {
+    for (int i = 0; i < shifts.size(); i++) {
       if (shifts.get(i).getId().equals(id)) {
         return shifts.get(i);
       }
     }
     return null;
   }
+
   /**
    * @return the breakTime
    */
@@ -111,4 +115,12 @@ private boolean external; // external shift? (i.e. Breisach and Kirchzarten)
   public boolean isExternal() {
     return external;
   }
+  
+  /**
+   * @return the preparation time
+   */
+  public int getPreparationTime() {
+    return preparationTime;
+  }
+
 }

@@ -68,6 +68,7 @@ public class XMLEditor {
         int begin = Integer.parseInt(node.getChildText("von"));
         int end = Integer.parseInt(node.getChildText("bis"));
         int breakTime = Integer.parseInt(node.getChildText("Pause"));
+        int preparationTime = Integer.parseInt(node.getChildText("RuestzeitMin"));
 
         // Identify days
         // TODO: method to handle single days
@@ -90,7 +91,7 @@ public class XMLEditor {
           System.err.println("Caused by shift: " + node.getChildText("Schichtname"));
         }
 
-        shiftList.add(new Shift(shiftId, begin, end, breakTime, days, type));
+        shiftList.add(new Shift(shiftId, begin, end, breakTime, days, type, preparationTime));
       }
       return true;
       // TODO: for JDK7 use Multicatch
