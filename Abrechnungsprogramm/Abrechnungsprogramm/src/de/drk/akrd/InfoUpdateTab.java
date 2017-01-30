@@ -37,7 +37,7 @@ public class InfoUpdateTab extends JPanel {
     String programInfo = "<html><br><h1>AK-RD Abrechnungsprogramm</h1>"
         + "Version " + Float.toString(MainWindow.PROGRAM_VERSION)
         + "<br><br>"
-        + "&copy; Johannes Güttler, Niklas Meinzer 2013<br>"
+        + "&copy; Johannes Güttler, Niklas Meinzer 2017<br>"
         + "Email: <a href='mailto:Software@ak-rd.de'>Software@ak-rd.de</a>"
         + "<br><br><br><br></html>";
     JLabel programInfoLabel = new JLabel(programInfo);
