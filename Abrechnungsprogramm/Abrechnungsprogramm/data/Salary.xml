@@ -2,27 +2,28 @@
 <!--
 	Changelog:
 	v1.0: Created
+  v1.1: RS+RH: 8,84 (01.01.2017)
 -->
-<Salaries version="1.0">
+<Salaries version="1.1">
 	<Shifttype name="RTW">
 		<RA>9.90</RA>
-		<RS>8.80</RS>
-		<RH>8.50</RH>
+		<RS>8.84</RS>
+		<RH>8.84</RH>
 	</Shifttype>
 	<Shifttype name="KTW">
 		<RA>9.90</RA>
-		<RS>8.80</RS>
-		<RH>8.50</RH>
+		<RS>8.84</RS>
+		<RH>8.84</RH>
 	</Shifttype>
 	<Shifttype name="KIZA">
 		<RA>9.90</RA>
-		<RS>8.80</RS>
-		<RH>8.50</RH>
+		<RS>8.84</RS>
+		<RH>8.84</RH>
 	</Shifttype>
 	<Shifttype name="BREISACH">
 		<RA>9.90</RA>
-		<RS>8.80</RS>
-		<RH>8.50</RH>
+		<RS>8.84</RS>
+		<RH>8.84</RH>
 	</Shifttype>
 	<Shifttype name="EVENT">
 		<RA>7.60</RA>
