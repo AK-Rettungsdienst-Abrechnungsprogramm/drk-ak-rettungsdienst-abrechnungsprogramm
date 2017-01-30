@@ -122,8 +122,10 @@ public class ShiftCollectorTab extends JPanel {
 
 	    shiftPartnerField.setColumns(10);
 
-	    DefaultComboBoxModel<ShiftContainer.ShiftType> enumModel = new DefaultComboBoxModel<ShiftType>(
-	            ShiftType.values());
+	    // DefaultComboBoxModel<ShiftContainer.ShiftType> enumModel = new DefaultComboBoxModel<ShiftType>(ShiftType.values());
+      // Suport old shift types in the table but support only new ones for new entrys
+      ShiftType[] selectableShiftTypes = {ShiftType.Alle, ShiftType.RTW, ShiftType.KTW, ShiftType.KIZA, ShiftType.BREISACH};
+      DefaultComboBoxModel<ShiftContainer.ShiftType> enumModel = new DefaultComboBoxModel<ShiftType>(selectableShiftTypes);
 	    shiftTypeChooser.setModel(enumModel);
 
 	    beginField.setColumns(10);
