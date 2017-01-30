@@ -2,8 +2,8 @@
 Abrechnungsprogramm Arbeitskreis Rettungsdienst Freiburg i.Br. 
 ##############################################################
 
-Version 1.3 (Linux/Mac)
-©2016 Johannes Güttler, Niklas Meinzer
+Version 1.4 (Linux/Mac)
+©2017 Johannes Güttler, Niklas Meinzer
 
 ##############################################################
 
