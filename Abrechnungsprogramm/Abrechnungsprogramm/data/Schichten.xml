@@ -6,15 +6,16 @@
 	v2.0: 04.10.2014 Änderung der KTW Schichtzeiten (neue Zeiten ab August 2014)
   v3.0: 30.01.2016 Änderungen KTW und RTW Schichten
   v4.0: 01.01.2017 Nur noch RTW + KTW + Außenwachen (Streichung von KVS-Schichten)
+  v5.0: 03.04.2017 Rüstzeit KTW gestrichen
 -->
-<Dienste version="4.0">
+<Dienste version="5.0">
   <Schicht>
     <ArtUndOrt>KTW</ArtUndOrt>
     <von>600</von>
     <bis>1430</bis>
     <Pause>030</Pause>
     <Schichtname>KTWF</Schichtname>
-    <RuestzeitMin>014</RuestzeitMin>
+    <RuestzeitMin>0</RuestzeitMin>
     <Tage>Mo-Fr</Tage>
   </Schicht>
   <Schicht>
@@ -23,7 +24,7 @@
     <bis>1400</bis>
     <Pause>030</Pause>
     <Schichtname>K01</Schichtname>
-    <RuestzeitMin>014</RuestzeitMin>
+    <RuestzeitMin>0</RuestzeitMin>
     <Tage>Mo-Fr</Tage>
   </Schicht>
   <Schicht>
@@ -32,7 +33,7 @@
     <bis>1730</bis>
     <Pause>030</Pause>
     <Schichtname>K02</Schichtname>
-    <RuestzeitMin>014</RuestzeitMin>
+    <RuestzeitMin>0</RuestzeitMin>
     <Tage>Mo-Fr</Tage>
   </Schicht>
   <Schicht>
@@ -41,7 +42,7 @@
     <bis>1530</bis>
     <Pause>030</Pause>
     <Schichtname>K03</Schichtname>
-    <RuestzeitMin>014</RuestzeitMin>
+    <RuestzeitMin>0</RuestzeitMin>
     <Tage>Mo-Fr</Tage>
   </Schicht>
   <Schicht>
@@ -50,7 +51,7 @@
     <bis>1600</bis>
     <Pause>030</Pause>
     <Schichtname>K05</Schichtname>
-    <RuestzeitMin>014</RuestzeitMin>
+    <RuestzeitMin>0</RuestzeitMin>
     <Tage>Mo-Fr</Tage>
   </Schicht>
   <Schicht>
@@ -59,7 +60,7 @@
     <bis>1800</bis>
     <Pause>030</Pause>
     <Schichtname>K06</Schichtname>
-    <RuestzeitMin>014</RuestzeitMin>
+    <RuestzeitMin>0</RuestzeitMin>
     <Tage>Mo-Fr</Tage>
   </Schicht>
   <Schicht>
@@ -68,7 +69,7 @@
     <bis>1800</bis>
     <Pause>030</Pause>
     <Schichtname>K08</Schichtname>
-    <RuestzeitMin>014</RuestzeitMin>
+    <RuestzeitMin>0</RuestzeitMin>
     <Tage>Mo-Fr</Tage>
   </Schicht>
   <Schicht>
@@ -77,7 +78,7 @@
     <bis>1900</bis>
     <Pause>045</Pause>
     <Schichtname>K09</Schichtname>
-    <RuestzeitMin>014</RuestzeitMin>
+    <RuestzeitMin>0</RuestzeitMin>
     <Tage>Mo-Fr</Tage>
   </Schicht>
   <Schicht>
@@ -86,7 +87,7 @@
     <bis>1600</bis>
     <Pause>000</Pause>
     <Schichtname>K10</Schichtname>
-    <RuestzeitMin>014</RuestzeitMin>
+    <RuestzeitMin>0</RuestzeitMin>
     <Tage>Mo-Fr</Tage>
   </Schicht>
   <Schicht>
@@ -95,7 +96,7 @@
     <bis>1700</bis>
     <Pause>030</Pause>
     <Schichtname>K11</Schichtname>
-    <RuestzeitMin>014</RuestzeitMin>
+    <RuestzeitMin>0</RuestzeitMin>
     <Tage>Mo-Fr</Tage>
   </Schicht>
   <Schicht>
@@ -104,7 +105,7 @@
     <bis>1930</bis>
     <Pause>045</Pause>
     <Schichtname>K12</Schichtname>
-    <RuestzeitMin>014</RuestzeitMin>
+    <RuestzeitMin>0</RuestzeitMin>
     <Tage>Mo-Fr</Tage>
   </Schicht>
   <Schicht>
@@ -113,7 +114,7 @@
     <bis>1730</bis>
     <Pause>030</Pause>
     <Schichtname>K13</Schichtname>
-    <RuestzeitMin>014</RuestzeitMin>
+    <RuestzeitMin>0</RuestzeitMin>
     <Tage>Mo-Fr</Tage>
   </Schicht>
   <Schicht>
@@ -122,7 +123,7 @@
     <bis>2200</bis>
     <Pause>045</Pause>
     <Schichtname>KTWS</Schichtname>
-    <RuestzeitMin>014</RuestzeitMin>
+    <RuestzeitMin>0</RuestzeitMin>
     <Tage>Mo-Fr</Tage>
   </Schicht>
   <Schicht>
@@ -131,7 +132,7 @@
     <bis>0</bis>
     <Pause>030</Pause>
     <Schichtname>K15</Schichtname>
-    <RuestzeitMin>014</RuestzeitMin>
+    <RuestzeitMin>0</RuestzeitMin>
     <Tage>Mo-Fr</Tage>
   </Schicht>
   <Schicht>
@@ -140,7 +141,7 @@
     <bis>600</bis>
     <Pause>045</Pause>
     <Schichtname>K16</Schichtname>
-    <RuestzeitMin>014</RuestzeitMin>
+    <RuestzeitMin>0</RuestzeitMin>
     <Tage>Mo-Fr</Tage>
   </Schicht>
   <Schicht>
@@ -149,7 +150,7 @@
     <bis>100</bis>
     <Pause>030</Pause>
     <Schichtname>K17</Schichtname>
-    <RuestzeitMin>014</RuestzeitMin>
+    <RuestzeitMin>0</RuestzeitMin>
     <Tage>Mo-Fr</Tage>
   </Schicht>
   <Schicht>
@@ -158,7 +159,7 @@
     <bis>1430</bis>
     <Pause>030</Pause>
     <Schichtname>K50 Samstag</Schichtname>
-    <RuestzeitMin>014</RuestzeitMin>
+    <RuestzeitMin>0</RuestzeitMin>
     <Tage>Sa</Tage>
   </Schicht>
   <Schicht>
@@ -167,7 +168,7 @@
     <bis>1430</bis>
     <Pause>030</Pause>
     <Schichtname>K51 Samstag</Schichtname>
-    <RuestzeitMin>014</RuestzeitMin>
+    <RuestzeitMin>0</RuestzeitMin>
     <Tage>Sa</Tage>
   </Schicht>
   <Schicht>
@@ -176,7 +177,7 @@
     <bis>1930</bis>
     <Pause>045</Pause>
     <Schichtname>K53 Samstag</Schichtname>
-    <RuestzeitMin>014</RuestzeitMin>
+    <RuestzeitMin>0</RuestzeitMin>
     <Tage>Sa</Tage>
   </Schicht>
   <Schicht>
@@ -185,7 +186,7 @@
     <bis>1600</bis>
     <Pause>000</Pause>
     <Schichtname>K54 Samstag</Schichtname>
-    <RuestzeitMin>014</RuestzeitMin>
+    <RuestzeitMin>0</RuestzeitMin>
     <Tage>Sa</Tage>
   </Schicht>
   <Schicht>
@@ -194,7 +195,7 @@
     <bis>100</bis>
     <Pause>045</Pause>
     <Schichtname>K55 Samstag</Schichtname>
-    <RuestzeitMin>014</RuestzeitMin>
+    <RuestzeitMin>0</RuestzeitMin>
     <Tage>Sa</Tage>
   </Schicht>
   <Schicht>
@@ -203,7 +204,7 @@
     <bis>200</bis>
     <Pause>045</Pause>
     <Schichtname>K56 Samstag</Schichtname>
-    <RuestzeitMin>014</RuestzeitMin>
+    <RuestzeitMin>0</RuestzeitMin>
     <Tage>Sa</Tage>
   </Schicht>
   <Schicht>
@@ -212,7 +213,7 @@
     <bis>1530</bis>
     <Pause>030</Pause>
     <Schichtname>K60 Sonntag</Schichtname>
-    <RuestzeitMin>014</RuestzeitMin>
+    <RuestzeitMin>0</RuestzeitMin>
     <Tage>So</Tage>
   </Schicht>
   <Schicht>
@@ -221,7 +222,7 @@
     <bis>2000</bis>
     <Pause>045</Pause>
     <Schichtname>K61 Sonntag</Schichtname>
-    <RuestzeitMin>014</RuestzeitMin>
+    <RuestzeitMin>0</RuestzeitMin>
     <Tage>So</Tage>
   </Schicht>
   <Schicht>
@@ -230,7 +231,7 @@
     <bis>2200</bis>
     <Pause>000</Pause>
     <Schichtname>K65 Sonntag</Schichtname>
-    <RuestzeitMin>014</RuestzeitMin>
+    <RuestzeitMin>0</RuestzeitMin>
     <Tage>So</Tage>
   </Schicht>
   <Schicht>
@@ -239,7 +240,7 @@
     <bis>000</bis>
     <Pause>030</Pause>
     <Schichtname>K66 Sonntag</Schichtname>
-    <RuestzeitMin>014</RuestzeitMin>
+    <RuestzeitMin>0</RuestzeitMin>
     <Tage>So</Tage>
   </Schicht>
 
